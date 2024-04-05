@@ -1,4 +1,4 @@
-package a.orquerab.fitnexus;
+package aorquerab.fitnexus;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

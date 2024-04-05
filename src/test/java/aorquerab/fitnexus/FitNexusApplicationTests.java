@@ -1,4 +1,4 @@
-package a.orquerab.fitnexus;
+package aorquerab.fitnexus;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
