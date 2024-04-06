@@ -2,10 +2,10 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.4'
 	id 'io.spring.dependency-management' version '1.1.4'
-	id "com.github.node-gradle.node" version "3.5.0"
+	id "com.github.node-gradle.node" version "3.2.1" //node plugin before 3.5.0
 }
 
-group = 'a.orquerab'
+group = 'aorquerab'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -25,11 +25,11 @@ dependencies {
 //these paths to verify required plugins/modules
 node {
 	download = false
-	// identify working directory in project
+	//identify working directory in project
 	workDir = file("${project.projectDir}/src/frontend/fitnexus-ui/nodejs")
-	// NPM work directory
+	//NPM working directory
 	npmWorkDir = file("${project.projectDir}/src/frontend/fitnexus-ui/npm")
-	// node modules directory
+	//node modules directory
 	nodeModulesDir = file("${project.projectDir}/src/frontend/fitnexus-ui")
 }
 
@@ -49,9 +49,9 @@ tasks.register('appNpmBuild', NpmTask) {
 //task to copy created build from path (react app path inside spring boot ) to spring boot build path
 //so that it recognizes the files built
 tasks.register('copyToFrontend', Copy) {
-	from '$projectDir/src/frontend/fitnexus-ui/build/'
-	into '$buildDir/resources/main/static'
-}
+	from "C:\\Workspaces 2024\\fit-nexus\\src\\frontend\\fitnexus-ui\\build"
+	into "C:\\Workspaces 2024\\fit-nexus\\build\\resources\\main\\static"
+} //TODO: Change routes by getting from gradle: projectDir etc
 
 //Add sequence of tasks need to executed in gradle
 //appNpmInstall → appNpmBuild → copyToFrontend → compileJava
