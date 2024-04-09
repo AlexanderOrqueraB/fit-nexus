@@ -4,7 +4,7 @@
 Aplicación web de gestión de entrenamiento persona para entrenadores y sus clientes
 
 
-## Documentation
+## Documentación
 
 Aplicación web que facilita a los entrenadores la gestión de sus clientes y les permite diseñar y asignar rutinas personalizadas. Del mismo modo permite a cualquier cliente establecer un enlace con un entrenador personal que le creará una rutina personalizada y/o asignará pautas nutricionales que le permita llegar a cumplir sus objetivos.
 
@@ -20,7 +20,7 @@ Que no hace ésta aplicación: no está enfocada a la nutrición ni asignación 
 **Server:** Spring
 
 
-## Authors
+## Autor
 
 - [@AlexanderOrqueraB](https://www.github.com/AlexanderOrqueraB)
 
