@@ -18,7 +18,12 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '3.1.5'
+
+	compileOnly 'org.projectlombok:lombok:1.18.24'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 }
 
 //Node section to identify working directory for project , npm and node and its modules so that runtime will identify
