@@ -1,4 +1,4 @@
-package aorquerab.fitnexus.model.entity;
+package aorquerab.fitnexus.model.workout;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,9 +7,8 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Ejercicio {
+public class PautaNutricional {
     @Id
     @GeneratedValue
     private Long id;
-
 }

@@ -1,4 +1,4 @@
-package aorquerab.fitnexus.model.entity;
+package aorquerab.fitnexus.model.workout;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,8 +7,8 @@ import lombok.Data;
 
 @Entity
 @Data
-public class PlanDeEntrenamiento {
-    //Ejemplo: Octubre (ganar masa muscular) o Marzo (perder grasa)
+//TODO: ComponenteEntrenamiento o ComponenteDeEntrenamiento
+public class ComponenteEntrenamiento {
     @Id
     @GeneratedValue
     private Long id;

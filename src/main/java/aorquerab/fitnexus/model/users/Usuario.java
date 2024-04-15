@@ -1,4 +1,4 @@
-package aorquerab.fitnexus.model.entity;
+package aorquerab.fitnexus.model.users;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,9 +7,11 @@ import lombok.Data;
 
 @Entity
 @Data
-//TODO: ComponenteEntrenamiento o ComponenteDeEntrenamiento
-public class ComponenteEntrenamiento {
+public class Usuario {
+
     @Id
     @GeneratedValue
     private Long id;
+
+    private String name;
 }

@@ -1,4 +1,4 @@
-package aorquerab.fitnexus.model.entity;
+package aorquerab.fitnexus.model.workout;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
