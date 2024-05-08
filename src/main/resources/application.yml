@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: fit-nexus
+  #Just this stuff to run in H2
+  h2:
+    console:
+      enabled: true
+  #To specify the name of the database in H2
+  datasource:
+    generate-unique-name: false
+    name: h2database
+  #Just this stuff to run in H2
+    #To connect directly to postgresql DB up and running in local machine
+    #  datasource:
+    #    name: postgres
+    #    url: jdbc:postgresql://localhost:5432/postgres
+    #    username:
+    #    password:
+    #  sql:
+    #    init:
+    #      mode: always
+
+    #server:
+    #port: 8080
+    #error:
+    #include-stacktrace: never
