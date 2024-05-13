@@ -1,16 +1,29 @@
 package aorquerab.fitnexus.controller;
 
-import aorquerab.fitnexus.model.workout.Ejercicio;
+import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
+import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
+import aorquerab.fitnexus.repository.EjercicioRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
+import static aorquerab.fitnexus.constants.Constants.ENDPOINT_ROOT;
+
 @RestController
-@RequestMapping("/ejercicio")
+@RequestMapping({ENDPOINT_ROOT + "/ejercicio"})
 @Slf4j
 public class EjercicioController {
+
+    private final EjercicioRepository ejercicioRepository;
+
+    public EjercicioController(EjercicioRepository ejercicioRepository) {
+        this.ejercicioRepository = ejercicioRepository;
+    }
 
     @GetMapping("/get")
     public ResponseEntity<String> getDummyController() {
@@ -26,18 +39,67 @@ public class EjercicioController {
         return new ResponseEntity<>(body,HttpStatus.OK);
     }
 
-    //GET Ejercicio
+
+    //GET
     @GetMapping
-    public ResponseEntity<Ejercicio> ejercicioGet() {
-        log.info("EjercicioGet ejecutado");
-        Ejercicio ejercicio = new Ejercicio(1,"Press banca",2,2,30);
-        return new ResponseEntity<>(ejercicio,HttpStatus.CREATED);
+    public List<Ejercicio> getEjercicios() {
+        log.info("Ejecutando getEjercicios...");
+        return ejercicioRepository.findAll();
     }
 
-    //POST Ejercicio
+    //GET by Id
+    @GetMapping ("/{id}")
+    public Ejercicio getEjercicioById(@PathVariable Integer id) {
+        log.info("Ejecutando getEjercicioById...");
+        Optional<Ejercicio> ejercicioById = ejercicioRepository.findById(id);
+        if(ejercicioById.isEmpty()){
+            log.info("Ejercicio {} no encontrado en base de datos", id);
+            throw new EjercicioNotFoundException(HttpStatus.NOT_FOUND, "Ejercicio no encontrado en BD");
+        }
+        return ejercicioById.get();
+    }
+
+    //POST
     @PostMapping
-    public ResponseEntity<Ejercicio> ejercicioPost(@Valid @RequestBody Ejercicio ejercicio) {
-        log.info("EjercicioPost ejecutado");
-        return new ResponseEntity<>(ejercicio,HttpStatus.CREATED);
+    public ResponseEntity<Ejercicio> postEjercicio(
+            @Valid @RequestBody Ejercicio ejercicio) {
+        log.info("Ejecutando postEjercicio...");
+        ejercicioRepository.save(ejercicio);
+        return new ResponseEntity<> (HttpStatus.CREATED);
+    }
+
+    //PUT
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping ("actualizarEjercicio/{id}")
+    public void actualizarEjercicio (
+            @PathVariable Integer id,
+            @Valid @RequestBody Ejercicio ejercicio) {
+        log.info("Ejecutando actulizarEjercicio...");
+        Ejercicio ejercicioActualizar = getEjercicioById(id);
+        ejercicioActualizar.setNombreEjercicio(ejercicio.getNombreEjercicio());
+        ejercicioActualizar.setRepeticion(ejercicio.getRepeticion());
+        ejercicioActualizar.setSerie(ejercicio.getSerie());
+        ejercicioActualizar.setPeso(ejercicio.getPeso());
+        ejercicioRepository.save(ejercicioActualizar);
+
+    }
+
+    //DELETE
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping ("borrarEjercicio/{id}")
+    public void borrarEjercicio (@PathVariable Integer id) {
+        log.info("Ejecutando borrarEjercicio...");
+        Optional<Ejercicio> ejercicio = ejercicioRepository.findById(id);
+        if(ejercicio.isEmpty()) {
+            log.info("Ejercicio {} no encontrado en base de datos", id);
+            throw new EjercicioNotFoundException(HttpStatus.NOT_FOUND, "Ejercicio no encontrado en BD");
+        }
+        else ejercicioRepository.delete(ejercicio.get());
+    }
+
+    //CUSTOM REQUEST
+    @GetMapping("/nombreEjercicio/{nombreEjercicio}")
+    public List<Ejercicio> findEjerciciosPorNombre (@PathVariable String nombreEjercicio) {
+        return ejercicioRepository.findAllEjerciciosPorNombre(nombreEjercicio);
     }
 }

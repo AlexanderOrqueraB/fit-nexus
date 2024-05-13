@@ -35,20 +35,19 @@ dependencies {
 
 	//-----------------------------DATABASE RELATED
 
-	//data-jpa
-	//implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.0'
-
 	//Using H2 in MEMORY
-	runtimeOnly 'com.h2database:h2:2.2.224'
+	//runtimeOnly 'com.h2database:h2:2.2.224'
+	//implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.2.0'
+
+	//POSTGRESQL + SB-DOCKER-COMPOSE + DBVISUALIZER
+	runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
+	runtimeOnly 'org.postgresql:postgresql'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.2.0'
 
-	//POSTGRESQL + SB-DOCKER-COMPOSE
-	//runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
-	//runtimeOnly 'org.postgresql:postgresql'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//Using also SB DATA JDBC
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc:3.2.0'
 
-	//Spring JDBC
-	//implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.2.0'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }
 

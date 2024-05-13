@@ -1,4 +1,4 @@
-//package aorquerab.fitnexus.model.workout;
+//package aorquerab.fitnexus.model.componenteEntrenamiento;
 //
 //import jakarta.persistence.Entity;
 //import jakarta.persistence.GeneratedValue;

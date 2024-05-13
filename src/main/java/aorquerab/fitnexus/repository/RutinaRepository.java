@@ -1,6 +1,6 @@
 //package aorquerab.fitnexus.repository;
 //
-//import aorquerab.fitnexus.model.workout.Rutina;
+//import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 //import org.springframework.data.jpa.repository.JpaRepository;
 //
 ////TODO: JpaRepository o CrudRepository

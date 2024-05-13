@@ -1,4 +1,4 @@
-//package aorquerab.fitnexus.model.workout;
+//package aorquerab.fitnexus.model.componenteEntrenamiento;
 //
 //import jakarta.persistence.Entity;
 //import jakarta.persistence.GeneratedValue;
@@ -7,7 +7,8 @@
 //
 //@Entity
 //@Data
-//public class PautaNutricional {
+//public class PlanDeEntrenamiento {
+//    //Ejemplo: Octubre (ganar masa muscular) o Marzo (perder grasa)
 //    @Id
 //    @GeneratedValue
 //    private Long id;

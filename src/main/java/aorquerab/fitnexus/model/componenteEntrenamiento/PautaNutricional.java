@@ -1,4 +1,4 @@
-//package aorquerab.fitnexus.model.workout;
+//package aorquerab.fitnexus.model.componenteEntrenamiento;
 //
 //import jakarta.persistence.Entity;
 //import jakarta.persistence.GeneratedValue;
@@ -7,8 +7,7 @@
 //
 //@Entity
 //@Data
-////TODO: ComponenteEntrenamiento o ComponenteDeEntrenamiento
-//public class ComponenteEntrenamiento {
+//public class PautaNutricional {
 //    @Id
 //    @GeneratedValue
 //    private Long id;
