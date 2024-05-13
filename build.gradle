@@ -52,7 +52,7 @@ dependencies {
 
 }
 
-//TODO: Uncomment this out to trigger React build
+//TODO: Uncomment this out to trigger React build by executing: ./gradlew bootRun + open http://localhost:8080/
 //Node section to identify working directory for project , npm and node and its modules so that runtime will identify
 //these paths to verify required plugins/modules
 //node {

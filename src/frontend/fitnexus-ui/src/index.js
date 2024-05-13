@@ -1,8 +1,43 @@
-import React from 'react';
+import React, { Component } from "react";
 import ReactDOM from 'react-dom/client';
+import EjercicioLista from './components/Ejercicio';
+import './App.css';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+class index extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            exercises: []
+        }
+    }
+
+    componentDidMount() {
+        fetch("/ejercicio")
+            .then(res => res.json())
+            .then(
+                (response) => {
+                    this.setState({
+                        exercises: response
+                    });
+                },
+                (error) => {
+                    alert(error);
+                }
+            )
+    }
+
+    render() {
+        return (
+            <div>
+                <h1>Lista de ejercicios</h1>
+                <EjercicioLista exercises={this.state.exercises}/>
+            </div>
+        );
+    }
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -11,7 +46,6 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
+// If you want to start measuring performance in your app, pass a function to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

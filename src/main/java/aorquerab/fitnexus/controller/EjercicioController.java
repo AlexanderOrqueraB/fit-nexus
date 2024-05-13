@@ -26,7 +26,15 @@ public class EjercicioController {
         return new ResponseEntity<>(body,HttpStatus.OK);
     }
 
-    //POST GET Ejercicio
+    //GET Ejercicio
+    @GetMapping
+    public ResponseEntity<Ejercicio> ejercicioGet() {
+        log.info("EjercicioGet ejecutado");
+        Ejercicio ejercicio = new Ejercicio(1,"Press banca",2,2,30);
+        return new ResponseEntity<>(ejercicio,HttpStatus.CREATED);
+    }
+
+    //POST Ejercicio
     @PostMapping
     public ResponseEntity<Ejercicio> ejercicioPost(@Valid @RequestBody Ejercicio ejercicio) {
         log.info("EjercicioPost ejecutado");

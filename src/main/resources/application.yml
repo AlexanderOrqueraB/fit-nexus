@@ -16,6 +16,8 @@ spring:
     #    url: jdbc:postgresql://localhost:5432/postgres
     #    username:
     #    password:
+
+  #script-based initialization (to use schema.sql)
     #  sql:
     #    init:
     #      mode: always
