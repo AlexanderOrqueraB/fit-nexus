@@ -70,7 +70,7 @@ public class EjercicioController {
 
     //PUT
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PutMapping ("actualizarEjercicio/{id}")
+    @PutMapping ("/actualizarEjercicio/{id}")
     public void actualizarEjercicio (
             @PathVariable Integer id,
             @Valid @RequestBody Ejercicio ejercicio) {
@@ -81,12 +81,11 @@ public class EjercicioController {
         ejercicioActualizar.setSerie(ejercicio.getSerie());
         ejercicioActualizar.setPeso(ejercicio.getPeso());
         ejercicioRepository.save(ejercicioActualizar);
-
     }
 
     //DELETE
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping ("borrarEjercicio/{id}")
+    @DeleteMapping ("/borrarEjercicio/{id}")
     public void borrarEjercicio (@PathVariable Integer id) {
         log.info("Ejecutando borrarEjercicio...");
         Optional<Ejercicio> ejercicio = ejercicioRepository.findById(id);
@@ -98,7 +97,7 @@ public class EjercicioController {
     }
 
     //CUSTOM REQUEST
-    @GetMapping("nombreEjercicio/{nombreEjercicio}")
+    @GetMapping("/nombreEjercicio/{nombreEjercicio}")
     public List<Ejercicio> findEjerciciosPorNombre (@PathVariable String nombreEjercicio) {
         return ejercicioRepository.findAllByNombreEjercicio(nombreEjercicio);
     }
