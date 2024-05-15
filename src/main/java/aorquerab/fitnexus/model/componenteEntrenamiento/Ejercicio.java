@@ -14,6 +14,7 @@ import org.springframework.data.annotation.Version;
 public class Ejercicio {
 
     @Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotEmpty(message = "Nombre no puede ser vacío y el tamaño debe ser mayor que 0!")

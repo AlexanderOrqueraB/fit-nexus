@@ -46,6 +46,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.2.0'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc:3.2.0'
 
+	//To use GENERATEDVALUE in primary keys
+	//implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }
@@ -53,41 +56,41 @@ dependencies {
 //TODO: Uncomment this out to trigger React build by executing: ./gradlew bootRun + open http://localhost:8080/
 //Node section to identify working directory for project , npm and node and its modules so that runtime will identify
 //these paths to verify required plugins/modules
-//node {
-//	download = false
-//	//identify working directory in project
-//	workDir = file("${project.projectDir}/src/frontend/fitnexus-ui/nodejs")
-//	//NPM working directory
-//	npmWorkDir = file("${project.projectDir}/src/frontend/fitnexus-ui/npm")
-//	//node modules directory
-//	nodeModulesDir = file("${project.projectDir}/src/frontend/fitnexus-ui")
-//}
-//
-////Tasks to npm install and build , so that when we run spring boot app it will run these tasks and creates build
-//tasks.register('appNpmInstall', NpmTask) {
-//	description = "Read package.json and install all jars"
-//	workingDir = file("${project.projectDir}/src/frontend/fitnexus-ui")
-//	args = ["install"]
-//	//args =["install", " - debug"]
-//}
-//tasks.register('appNpmBuild', NpmTask) {
-//	description = "Builds application for your frontend"
-//	workingDir = file("${project.projectDir}/src/frontend/fitnexus-ui")
-//	args = ["run", "build"]
-//}
-//
-////task to copy created build from path (react app path inside spring boot ) to spring boot build path
-////so that it recognizes the files built
-//tasks.register('copyToFrontend', Copy) {
-//	from "C:\\Workspaces 2024\\fit-nexus\\src\\frontend\\fitnexus-ui\\build"
-//	into "C:\\Workspaces 2024\\fit-nexus\\build\\resources\\main\\static"
-//} //TODO: Change routes by getting from gradle: projectDir etc
-//
-////Add sequence of tasks need to executed in gradle
-////appNpmInstall → appNpmBuild → copyToFrontend → compileJava
-//appNpmBuild.dependsOn appNpmInstall
-//copyToFrontend.dependsOn appNpmBuild
-//compileJava.dependsOn copyToFrontend
+node {
+	download = false
+	//identify working directory in project
+	workDir = file("${project.projectDir}/src/frontend/fitnexus-ui/nodejs")
+	//NPM working directory
+	npmWorkDir = file("${project.projectDir}/src/frontend/fitnexus-ui/npm")
+	//node modules directory
+	nodeModulesDir = file("${project.projectDir}/src/frontend/fitnexus-ui")
+}
+
+//Tasks to npm install and build , so that when we run spring boot app it will run these tasks and creates build
+tasks.register('appNpmInstall', NpmTask) {
+	description = "Read package.json and install all jars"
+	workingDir = file("${project.projectDir}/src/frontend/fitnexus-ui")
+	args = ["install"]
+	//args =["install", " - debug"]
+}
+tasks.register('appNpmBuild', NpmTask) {
+	description = "Builds application for your frontend"
+	workingDir = file("${project.projectDir}/src/frontend/fitnexus-ui")
+	args = ["run", "build"]
+}
+
+//task to copy created build from path (react app path inside spring boot ) to spring boot build path
+//so that it recognizes the files built
+tasks.register('copyToFrontend', Copy) {
+	from "C:\\Workspaces 2024\\fit-nexus\\src\\frontend\\fitnexus-ui\\build"
+	into "C:\\Workspaces 2024\\fit-nexus\\build\\resources\\main\\static"
+} //TODO: Change routes by getting from gradle: projectDir etc
+
+//Add sequence of tasks need to executed in gradle
+//appNpmInstall → appNpmBuild → copyToFrontend → compileJava
+appNpmBuild.dependsOn appNpmInstall
+copyToFrontend.dependsOn appNpmBuild
+compileJava.dependsOn copyToFrontend
 
 tasks.named('test') {
 	useJUnitPlatform()
