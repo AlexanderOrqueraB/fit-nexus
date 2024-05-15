@@ -70,9 +70,12 @@ public class EjercicioController {
 
     //PUT
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    //TODO: this should send a different http response?
     @PutMapping ("/actualizarEjercicio/{id}")
     public void actualizarEjercicio (
             @PathVariable Integer id,
+            //TODO: Maybe this should not valid the request (what if you just want to change a field?)
+            //TODO: Also you cannot change the identifier via request
             @Valid @RequestBody Ejercicio ejercicio) {
         log.info("Ejecutando actulizarEjercicio...");
         Ejercicio ejercicioActualizar = getEjercicioById(id);
@@ -84,6 +87,7 @@ public class EjercicioController {
     }
 
     //DELETE
+    //TODO: this should send a different http response?
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping ("/borrarEjercicio/{id}")
     public void borrarEjercicio (@PathVariable Integer id) {
@@ -100,5 +104,6 @@ public class EjercicioController {
     @GetMapping("/nombreEjercicio/{nombreEjercicio}")
     public List<Ejercicio> findEjerciciosPorNombre (@PathVariable String nombreEjercicio) {
         return ejercicioRepository.findAllByNombreEjercicio(nombreEjercicio);
+        //TODO: Refactor to be able to get from the response body and status http
     }
 }
