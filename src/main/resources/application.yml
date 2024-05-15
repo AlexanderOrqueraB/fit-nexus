@@ -3,27 +3,27 @@ spring:
     name: fit-nexus
 
 #Add this stuff to run in H2
-  h2:
-    console:
-      enabled: true
+#  h2:
+#    console:
+#      enabled: true
   #To specify the name of the database in H2
-  datasource:
-    generate-unique-name: false
-    name: h2database
+#  datasource:
+#    generate-unique-name: false
+#    name: h2database
 #Add this stuff to run in H2
 
 #To connect directly to postgresql DB up and running in local machine
-    #  datasource:
-    #    name: mydatabase
-    #    url: jdbc:postgresql://localhost:5432/mydatabase
-    #    username: user
-    #    password:
-    #    driver-class-name: org.postgresql.Driver
+#    datasource:
+#      name: fitnexusdb
+#      url: jdbc:postgresql://localhost:5432/fitnexusdb
+#      username: user
+#      password:
+#      driver-class-name: org.postgresql.Driver
 
   #script-based initialization (to use schema.sql)
-    #  sql:
-    #    init:
-    #      mode: always
+  sql:
+    init:
+      mode: always
 
     #server:
     #port: 8080

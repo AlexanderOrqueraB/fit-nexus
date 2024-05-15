@@ -40,11 +40,10 @@ dependencies {
 	//implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.2.0'
 
 	//POSTGRESQL + SB-DOCKER-COMPOSE + DBVISUALIZER
+	//Using SB DATA JDBC (to be able to extends ListCrudRepository)
 	runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
 	runtimeOnly 'org.postgresql:postgresql'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.2.0'
-
-	//Using also SB DATA JDBC
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc:3.2.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

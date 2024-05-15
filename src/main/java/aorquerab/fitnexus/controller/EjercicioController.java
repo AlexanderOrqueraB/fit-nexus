@@ -98,8 +98,8 @@ public class EjercicioController {
     }
 
     //CUSTOM REQUEST
-    @GetMapping("/nombreEjercicio/{nombreEjercicio}")
+    @GetMapping("nombreEjercicio/{nombreEjercicio}")
     public List<Ejercicio> findEjerciciosPorNombre (@PathVariable String nombreEjercicio) {
-        return ejercicioRepository.findAllEjerciciosPorNombre(nombreEjercicio);
+        return ejercicioRepository.findAllByNombreEjercicio(nombreEjercicio);
     }
 }
