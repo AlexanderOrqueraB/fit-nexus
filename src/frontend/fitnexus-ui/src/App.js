@@ -23,8 +23,20 @@ class App extends Component {
                 <h2>Ejercicios</h2>
                 {ejercicios.map(ejercicio =>
                     <div key={ejercicio.id}>
-                        {ejercicio.repeticion} ({ejercicio.serie})
+                    <div>
+                        Ejercicio: {ejercicio.nombreEjercicio}
                     </div>
+                    <div>
+                        Repeticiones: {ejercicio.repeticion}
+                    </div>
+                    <div>
+                        Series: {ejercicio.serie}
+                    </div>
+                    <div>
+                        Peso: {ejercicio.peso}
+                    </div>
+                <h3> ------- </h3>
+                </div>
                 )}
                 </div>
           </header>

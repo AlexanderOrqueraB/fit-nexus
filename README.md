@@ -19,6 +19,12 @@ Que no hace ésta aplicación: no está enfocada a la nutrición ni asignación 
 **Client:** React
 **Server:** Spring
 
+## Arrancar aplicación
+Para aplicación completa (springboot + react)
+Ejecutando: ./gradlew bootRun + abrir http://localhost:8080/
+
+Para aplicación React
+Ejecutando: npm start + abrir http://localhost:3030/
 
 ## Autor
 
