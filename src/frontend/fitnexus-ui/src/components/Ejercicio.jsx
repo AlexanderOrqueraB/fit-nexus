@@ -1,4 +1,9 @@
 import React, { Component } from "react";
+import APIService from '../service/APIService'
+
+export default class EjercicioComponente extends Component {
+    constructor
+}
 
 class EjercicioLista extends Component {
     render() {

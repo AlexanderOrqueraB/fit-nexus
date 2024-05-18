@@ -6,39 +6,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-//class index extends Component {
-//    constructor(props) {
-//        super(props)
-//        this.state = {
-//            exercises: []
-//        }
-//    }
-//
-//    componentDidMount() {
-//        fetch("/ejercicio")
-//            .then(res => res.json())
-//            .then(
-//                (response) => {
-//                    this.setState({
-//                        exercises: response
-//                    });
-//                },
-//                (error) => {
-//                    alert(error);
-//                }
-//            )
-//    }
-//
-//    render() {
-//        return (
-//            <div>
-//                <h1>Lista de ejercicios</h1>
-//                <EjercicioLista exercises={this.state.exercises}/>
-//            </div>
-//        );
-//    }
-//}
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
