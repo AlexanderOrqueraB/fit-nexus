@@ -15,16 +15,14 @@ package aorquerab.fitnexus.model.users;
 //
 // - asesorNutricional: boolean
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -48,4 +46,7 @@ public class Entrenador {
     private String email;
 
     private Boolean asesorNutricional;
+
+    @OneToMany(mappedBy = "entrenador")
+    private ArrayList<Cliente> clientes;
 }

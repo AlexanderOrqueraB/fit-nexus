@@ -1,9 +1,6 @@
 package aorquerab.fitnexus.model.users;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,4 +35,8 @@ public class Cliente {
     private String email;
     private Integer mediaPasos;
     private String objetivo;
+
+    @ManyToOne
+    @JoinColumn(name = "entrenador_id", nullable = false)
+    private Entrenador entrenador;
 }
