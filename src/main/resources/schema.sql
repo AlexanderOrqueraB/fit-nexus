@@ -110,59 +110,52 @@ CREATE TABLE IF NOT EXISTS entrenador (
     version INT
 );
 
--- INTERMEDIATE TABLES
 
--- Tabla intermedia Cliente_PautaNutricional
-CREATE TABLE Cliente_PautaNutricional (
+-- INTERMEDIATE TABLES
+CREATE TABLE cliente_pauta_nutricional (
     cliente_id INT,
-    pautanutricional_id INT,
-    PRIMARY KEY(cliente_id, pautanutricional_id),
+    pauta_nutricional_id INT,
+    PRIMARY KEY(cliente_id, pauta_nutricional_id),
     CONSTRAINT fk_cliente
         FOREIGN KEY(cliente_id)
-        REFERENCES Cliente(id),
-    CONSTRAINT fk_pautanutricional
-        FOREIGN KEY(pautanutricional_id)
-        REFERENCES PautaNutricional(id)
+        REFERENCES cliente(id),
+    CONSTRAINT fk_pauta_nutricional
+        FOREIGN KEY(pauta_nutricional_id)
+        REFERENCES pauta_nutricional(id)
 );
 
-
-
--- Tabla intermedia PlanDeEntrenamiento_Rutina
-CREATE TABLE PlanDeEntrenamiento_Rutina (
-    plandeentrenamiento_id INT,
+CREATE TABLE plan_de_entrenamiento_rutina (
+    plan_de_entrenamiento_id INT,
     rutina_id INT,
-    PRIMARY KEY(plandeentrenamiento_id, rutina_id),
-    CONSTRAINT fk_plandeentrenamiento_rutina
-        FOREIGN KEY(plandeentrenamiento_id)
-        REFERENCES PlanDeEntrenamiento(id),
+    PRIMARY KEY(plan_de_entrenamiento_id, rutina_id),
+    CONSTRAINT fk_plan_de_entrenamiento_rutina
+        FOREIGN KEY(plan_de_entrenamientoo_id)
+        REFERENCES plan_de_entrenamiento(id),
     CONSTRAINT fk_rutina
         FOREIGN KEY(rutina_id)
-        REFERENCES Rutina(id)
+        REFERENCES rutina(id)
 );
 
-
--- Tabla intermedia Rutina_Ejercicio
-CREATE TABLE Rutina_Ejercicio (
+CREATE TABLE rutina_ejercicio (
     rutina_id INT,
     ejercicio_id INT,
     PRIMARY KEY(rutina_id, ejercicio_id),
     CONSTRAINT fk_rutina_ejercicio
         FOREIGN KEY(rutina_id)
-        REFERENCES Rutina(id),
+        REFERENCES rutina(id),
     CONSTRAINT fk_ejercicio
         FOREIGN KEY(ejercicio_id)
-        REFERENCES Ejercicio(id)
+        REFERENCES ejercicio(id)
 );
 
--- Tabla intermedia Cliente_Ejercicio
-CREATE TABLE Cliente_Ejercicio (
+CREATE TABLE cliente_ejercicio (
     cliente_id INT,
     ejercicio_id INT,
     PRIMARY KEY(cliente_id, ejercicio_id),
     CONSTRAINT fk_cliente_ejercicio
         FOREIGN KEY(cliente_id)
-        REFERENCES Cliente(id),
+        REFERENCES cliente(id),
     CONSTRAINT fk_ejercicio_cliente
         FOREIGN KEY(ejercicio_id)
-        REFERENCES Ejercicio(id)
+        REFERENCES ejercicio(id)
 );
