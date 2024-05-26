@@ -10,24 +10,16 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode
 @Entity
-@Table(name = "rutina")
-public class Rutina {
-
+@Table(name = "valoracion")
+public class Valoracion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nombreRutina;
-    private LocalDate fechaInicio;
-    private LocalDate fechaFinal;
-
-    private ArrayList<Ejercicio> ejercicios;
+    private String comentario;
 }
