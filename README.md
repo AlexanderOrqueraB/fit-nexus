@@ -12,6 +12,14 @@ Los entrenadores serán por tanto capaces de diseñar planes de entrenamiento, c
 
 Que no hace ésta aplicación: no está enfocada a la nutrición ni asignación de dietas específicas y, la comunicación entre entrenador y cliente no se hará a través de la aplicación.
 
+## Generar Open API Docs (Swagger yaml)
+
+Utiliza openapi-gradle-plugin para generar open API docs, configuracion en gradle.build
+bloque openApi {..}
+
+Pasos:
+1. Ejecuta el comando ```./gradlew clean build generateOpenApiDocs```
+2. Copia build/docs/openapi.json en swagger editor, revisa y comparte!
 
 
 ## Tech Stack

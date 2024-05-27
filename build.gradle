@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.2.4'
 	id 'io.spring.dependency-management' version '1.1.4'
 	id "com.github.node-gradle.node" version "3.2.1" //node plugin before 3.5.0
+	//id 'org.springdoc.openapi-gradle-plugin' version '1.6.0' // swagger generator
 }
 
 group = 'aorquerab'
@@ -49,6 +50,11 @@ dependencies {
 	//To use GENERATEDVALUE in primary keys
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+	//SWAGGER generation
+	//implementation 'org.springdoc:springdoc-openapi-starter-common:2.1.0'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+	//implementation 'io.swagger.core.v3:swagger-annotations:2.2.10'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 }
@@ -91,6 +97,21 @@ dependencies {
 //appNpmBuild.dependsOn appNpmInstall
 //copyToFrontend.dependsOn appNpmBuild
 //compileJava.dependsOn copyToFrontend
+
+// Configuration for org.springdoc.openapi-gradle-plugin
+//openApi {
+//	apiDocsUrl.set("http://localhost:8080/v3/api-docs")
+//	outputFileName.set("openapi.json")
+//	dependencies {
+//		implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+//	}
+//	outputDir.set(file("$buildDir/docs"))
+//	customBootRun {
+//		classpath.setFrom(sourceSets.test.runtimeClasspath)
+//		args.set(["--server.port=8080",
+//				  "--spring.profiles.active=default"])
+//	}
+//}
 
 tasks.named('test') {
 	useJUnitPlatform()
