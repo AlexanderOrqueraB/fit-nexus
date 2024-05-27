@@ -52,7 +52,12 @@ dependencies {
 
 	//SWAGGER generation
 	//implementation 'org.springdoc:springdoc-openapi-starter-common:2.1.0'
+
+	//THIS IS THE ONLY THING NEEDED FOR APPROACH 1
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+	//localhost:8080/api-docs to check the result
+	// or localhost:8080/swagger-ui/index.html
+
 	//implementation 'io.swagger.core.v3:swagger-annotations:2.2.10'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

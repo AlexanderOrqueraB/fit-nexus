@@ -29,3 +29,6 @@ spring:
     #port: 8080
     #error:
     #include-stacktrace: never
+springdoc:
+  api-docs:
+    path: /api-docs
