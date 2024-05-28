@@ -27,27 +27,13 @@ dependencies {
 	testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
 
 	//------------------SPRINGBOOT
-
-	//devtools
 	implementation 'org.springframework.boot:spring-boot-devtools:3.2.0'
 
-	//validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation:3.2.0'
 
 	//-----------------------------DATABASE RELATED
-
-	//Using H2 in MEMORY
-	//runtimeOnly 'com.h2database:h2:2.2.224'
-	//implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.2.0'
-
-	//POSTGRESQL + SB-DOCKER-COMPOSE + DBVISUALIZER
-	//Using SB DATA JDBC (to be able to extends ListCrudRepository)
 	runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
 	runtimeOnly 'org.postgresql:postgresql'
-	//implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.2.0'
-	//implementation 'org.springframework.boot:spring-boot-starter-data-jdbc:3.2.0'
-
-	//To use GENERATEDVALUE in primary keys
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 	//SWAGGER generation

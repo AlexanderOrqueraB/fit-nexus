@@ -1,16 +1,9 @@
 spring:
   application:
     name: fit-nexus
-
-#Add this stuff to run in H2
-#  h2:
-#    console:
-#      enabled: true
-  #To specify the name of the database in H2
-#  datasource:
-#    generate-unique-name: false
-#    name: h2database
-#Add this stuff to run in H2
+  jpa:
+    hibernate:
+      ddl-auto: none #none, update...
 
 #To connect directly to postgresql DB up and running in local machine
 #    datasource:

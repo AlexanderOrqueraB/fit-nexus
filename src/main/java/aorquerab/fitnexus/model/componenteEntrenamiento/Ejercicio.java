@@ -1,17 +1,12 @@
 package aorquerab.fitnexus.model.componenteEntrenamiento;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Version;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +17,7 @@ import org.springframework.data.annotation.Version;
 public class Ejercicio {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotEmpty(message = "Nombre no puede ser vacío y el tamaño debe ser mayor que 0!")
