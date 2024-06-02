@@ -14,6 +14,17 @@
 --DROP TABLE IF EXIST cliente_rutina CASCADE;
 --DROP TABLE IF EXIST cliente_plan_de_entrenamiento CASCADE;
 
+CREATE TABLE IF NOT EXISTS entrenador (
+    id SERIAL PRIMARY KEY,
+    fit_nexus_id uuid,
+    nombre VARCHAR (100) NOT NULL,
+    apellido VARCHAR (100) NOT NULL,
+    nombre_de_usuario VARCHAR (100) NOT NULL,
+    email VARCHAR (100) NOT NULL,
+    asesor_nutricional BOOLEAN,
+    version INT
+);
+
 CREATE TABLE IF NOT EXISTS ejercicio (
     id SERIAL PRIMARY KEY,
     nombre_ejercicio VARCHAR (100) NOT NULL,
@@ -67,20 +78,6 @@ CREATE TABLE IF NOT EXISTS rutina (
     version INT
 );
 
-CREATE TABLE IF NOT EXISTS valoracion (
-    id SERIAL PRIMARY KEY,
-    comentario VARCHAR (100) NOT NULL,
-    cliente_id INT,
-    plan_de_entrenamiento_id INT,
-    CONSTRAINT fk_cliente_valoracion
-        FOREIGN KEY(cliente_id)
-        REFERENCES cliente(id),
-    CONSTRAINT fk_plan_de_entrenamiento
-        FOREIGN KEY(plan_de_entrenamiento_id)
-        REFERENCES plan_de_entrenamiento(id),
-    version INT
-);
-
 CREATE TABLE IF NOT EXISTS cliente (
     id SERIAL PRIMARY KEY,
     fit_nexus_id uuid,
@@ -101,17 +98,19 @@ CREATE TABLE IF NOT EXISTS cliente (
     version INT
 );
 
-CREATE TABLE IF NOT EXISTS entrenador (
+CREATE TABLE IF NOT EXISTS valoracion (
     id SERIAL PRIMARY KEY,
-    fit_nexus_id uuid,
-    nombre VARCHAR (100) NOT NULL,
-    apellido VARCHAR (100) NOT NULL,
-    nombre_de_usuario VARCHAR (100) NOT NULL,
-    email VARCHAR (100) NOT NULL,
-    asesor_nutricional BOOLEAN,
+    comentario VARCHAR (100) NOT NULL,
+    cliente_id INT,
+    plan_de_entrenamiento_id INT,
+    CONSTRAINT fk_cliente_valoracion
+        FOREIGN KEY(cliente_id)
+        REFERENCES cliente(id),
+    CONSTRAINT fk_plan_de_entrenamiento
+        FOREIGN KEY(plan_de_entrenamiento_id)
+        REFERENCES plan_de_entrenamiento(id),
     version INT
 );
-
 
 -- INTERMEDIATE TABLES
 CREATE TABLE cliente_pauta_nutricional (

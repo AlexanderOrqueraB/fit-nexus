@@ -4,14 +4,13 @@ import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PautaNutricional;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
-import aorquerab.fitnexus.model.componenteEntrenamiento.Valoracion;
 import jakarta.persistence.*;
-import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -77,6 +76,6 @@ public class Cliente {
     )
     private ArrayList<Ejercicio> ejercicios;
 
-    @OneToMany(mappedBy = "cliente")
-    private ArrayList<Valoracion> valoraciones;
+//    @OneToMany(mappedBy = "cliente")
+//    private ArrayList<Valoracion> valoraciones;
 }
