@@ -1,5 +1,6 @@
 package aorquerab.fitnexus.model.componenteEntrenamiento;
 
+import aorquerab.fitnexus.model.users.Cliente;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,4 +24,8 @@ public class PlanDeEntrenamiento {
     private String nombrePlan;
     private LocalDate fechaInicio;
     private LocalDate fechaFinal;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
 }

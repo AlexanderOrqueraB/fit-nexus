@@ -1,6 +1,12 @@
 package aorquerab.fitnexus.model.users;
 
+import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
+import aorquerab.fitnexus.model.componenteEntrenamiento.PautaNutricional;
+import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
+import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
+import aorquerab.fitnexus.model.componenteEntrenamiento.Valoracion;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,4 +44,39 @@ public class Cliente {
     @ManyToOne
     @JoinColumn(name = "entrenador_id", nullable = false)
     private Entrenador entrenador;
+
+    @ManyToMany
+    @JoinTable(
+        name = "cliente_pauta_nutricional",
+        joinColumns = @JoinColumn(name = "cliente_id"),
+        inverseJoinColumns = @JoinColumn(name = "pauta_nutricional_id")
+    )
+    private ArrayList<PautaNutricional> pautaNutricional;
+
+    @ManyToMany
+    @JoinTable(
+        name = "cliente_plan_de_entrenamiento",
+        joinColumns = @JoinColumn(name = "cliente_id"),
+        inverseJoinColumns = @JoinColumn(name = "plan_de_entrenamiento_id")
+    )
+    private ArrayList<PlanDeEntrenamiento> planDeEntrenamiento;
+
+    @ManyToMany
+    @JoinTable(
+        name = "cliente_rutina",
+        joinColumns = @JoinColumn(name = "cliente_id"),
+        inverseJoinColumns = @JoinColumn(name = "rutina_id")
+    )
+    private ArrayList<Rutina> rutinas;
+
+    @ManyToMany
+    @JoinTable(
+        name = "cliente_ejercicio",
+        joinColumns = @JoinColumn(name = "cliente_id"),
+        inverseJoinColumns = @JoinColumn(name = "ejercicio_id")
+    )
+    private ArrayList<Ejercicio> ejercicios;
+
+    @OneToMany(mappedBy = "cliente")
+    private ArrayList<Valoracion> valoraciones;
 }

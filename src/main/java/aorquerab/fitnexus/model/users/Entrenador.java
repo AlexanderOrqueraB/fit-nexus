@@ -1,20 +1,6 @@
 package aorquerab.fitnexus.model.users;
 
-
-// - id: int
-//
-// - fitNexusId: UUID
-//
-// - nombre: String
-//
-// - apellido: String
-//
-// - nombreDeUsuario: String
-//
-// - email: String
-//
-// - asesorNutricional: boolean
-
+import aorquerab.fitnexus.model.componenteEntrenamiento.PautaNutricional;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -48,4 +34,7 @@ public class Entrenador {
 
     @OneToMany(mappedBy = "entrenador")
     private ArrayList<Cliente> clientes;
+
+    @OneToMany(mappedBy = "pauta_nutricional")
+    private ArrayList<PautaNutricional> pautasNutricionales;
 }
