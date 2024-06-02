@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,16 +20,29 @@ import java.util.ArrayList;
 public class Rutina {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String nombreRutina;
     private LocalDate fechaInicio;
     private LocalDate fechaFinal;
 
-    private ArrayList<Ejercicio> ejercicios;
+    @Version
+    private Integer version;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entrenador_id", nullable = false)
     private Entrenador entrenador;
+//
+//    @ManyToMany(mappedBy = "rutinas")
+//    private ArrayList<Rutina> rutinas;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rutina_ejercicio",
+            joinColumns = @JoinColumn(name = "rutina_id"),
+            inverseJoinColumns = @JoinColumn(name = "ejercicio_id")
+    )
+    private List<Ejercicio> ejercicios = new ArrayList<>();
+
 }

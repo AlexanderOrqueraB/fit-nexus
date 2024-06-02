@@ -18,7 +18,7 @@ import java.util.UUID;
 @Table(name = "cliente")
 public class Cliente {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private UUID fitNexusId;
@@ -36,6 +36,9 @@ public class Cliente {
     private String email;
     private Integer mediaPasos;
     private String objetivo;
+
+    @Version
+    private Integer version;
 
     @ManyToOne
     @JoinColumn(name = "entrenador_id", nullable = false)

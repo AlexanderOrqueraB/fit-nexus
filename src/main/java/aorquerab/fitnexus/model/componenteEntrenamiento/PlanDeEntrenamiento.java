@@ -20,12 +20,15 @@ import java.util.ArrayList;
 public class PlanDeEntrenamiento {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String nombrePlan;
     private LocalDate fechaInicio;
     private LocalDate fechaFinal;
+
+    @Version
+    private Integer version;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)

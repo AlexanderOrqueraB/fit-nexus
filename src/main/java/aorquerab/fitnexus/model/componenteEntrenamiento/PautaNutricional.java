@@ -1,12 +1,7 @@
 package aorquerab.fitnexus.model.componenteEntrenamiento;
 
 import aorquerab.fitnexus.model.users.Entrenador;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,7 +18,7 @@ import java.time.LocalDate;
 public class PautaNutricional {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private int proteina;
@@ -32,6 +27,9 @@ public class PautaNutricional {
     private int kcal;
     private LocalDate fechaInicio;
     private LocalDate fechaFinal;
+
+    @Version
+    private Integer version;
 
     @ManyToOne
     @JoinColumn(name = "entrenador_id", nullable = false)

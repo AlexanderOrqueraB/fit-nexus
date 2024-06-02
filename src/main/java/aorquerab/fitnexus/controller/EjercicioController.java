@@ -83,6 +83,7 @@ public class EjercicioController {
         ejercicioActualizar.setRepeticion(ejercicio.getRepeticion());
         ejercicioActualizar.setSerie(ejercicio.getSerie());
         ejercicioActualizar.setPeso(ejercicio.getPeso());
+        ejercicioActualizar.setVersion(ejercicio.getVersion());
         ejercicioRepository.save(ejercicioActualizar);
     }
 
