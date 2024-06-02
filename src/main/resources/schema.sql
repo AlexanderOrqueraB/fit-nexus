@@ -1,18 +1,18 @@
---DROP TABLE IF EXIST ejercicio CASCADE;
---DROP TABLE IF EXIST pauta_nutricional CASCADE;
---DROP TABLE IF EXIST plan_de_entrenamiento CASCADE;
---DROP TABLE IF EXIST rutina CASCADE;
---DROP TABLE IF EXIST valoracion CASCADE;
---DROP TABLE IF EXIST cliente CASCADE;
---DROP TABLE IF EXIST entrenador CASCADE;
+DROP TABLE IF EXISTS ejercicio CASCADE;
+DROP TABLE IF EXISTS pauta_nutricional CASCADE;
+DROP TABLE IF EXISTS plan_de_entrenamiento CASCADE;
+DROP TABLE IF EXISTS rutina CASCADE;
+DROP TABLE IF EXISTS valoracion CASCADE;
+DROP TABLE IF EXISTS cliente CASCADE;
+DROP TABLE IF EXISTS entrenador CASCADE;
 
----- INTERMEDIATE TABLES
---DROP TABLE IF EXIST cliente_pauta_nutricional CASCADE;
---DROP TABLE IF EXIST plan_de_entrenamiento_rutina CASCADE;
---DROP TABLE IF EXIST rutina_ejercicio CASCADE;
---DROP TABLE IF EXIST cliente_ejercicio CASCADE;
---DROP TABLE IF EXIST cliente_rutina CASCADE;
---DROP TABLE IF EXIST cliente_plan_de_entrenamiento CASCADE;
+-- INTERMEDIATE TABSLES
+DROP TABLE IF EXISTS cliente_pauta_nutricional CASCADE;
+DROP TABLE IF EXISTS plan_de_entrenamiento_rutina CASCADE;
+DROP TABLE IF EXISTS rutina_ejercicio CASCADE;
+DROP TABLE IF EXISTS cliente_ejercicio CASCADE;
+DROP TABLE IF EXISTS cliente_rutina CASCADE;
+DROP TABLE IF EXISTS cliente_plan_de_entrenamiento CASCADE;
 
 CREATE TABLE IF NOT EXISTS entrenador (
     id SERIAL PRIMARY KEY,
@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS valoracion (
 );
 
 -- INTERMEDIATE TABLES
-CREATE TABLE cliente_pauta_nutricional (
+CREATE TABLE IF NOT EXISTS cliente_pauta_nutricional (
     cliente_id INT,
     pauta_nutricional_id INT,
     PRIMARY KEY(cliente_id, pauta_nutricional_id),
@@ -125,7 +125,7 @@ CREATE TABLE cliente_pauta_nutricional (
         REFERENCES pauta_nutricional(id)
 );
 
-CREATE TABLE plan_de_entrenamiento_rutina (
+CREATE TABLE IF NOT EXISTS plan_de_entrenamiento_rutina (
     plan_de_entrenamiento_id INT,
     rutina_id INT,
     PRIMARY KEY(plan_de_entrenamiento_id, rutina_id),
@@ -137,7 +137,7 @@ CREATE TABLE plan_de_entrenamiento_rutina (
         REFERENCES rutina(id)
 );
 
-CREATE TABLE rutina_ejercicio (
+CREATE TABLE IF NOT EXISTS rutina_ejercicio (
     rutina_id INT,
     ejercicio_id INT,
     PRIMARY KEY(rutina_id, ejercicio_id),
@@ -149,7 +149,7 @@ CREATE TABLE rutina_ejercicio (
         REFERENCES ejercicio(id)
 );
 
-CREATE TABLE cliente_ejercicio (
+CREATE TABLE IF NOT EXISTS cliente_ejercicio (
     cliente_id INT,
     ejercicio_id INT,
     PRIMARY KEY(cliente_id, ejercicio_id),
@@ -161,7 +161,7 @@ CREATE TABLE cliente_ejercicio (
         REFERENCES ejercicio(id)
 );
 
-CREATE TABLE cliente_plan_de_entrenamiento (
+CREATE TABLE IF NOT EXISTS cliente_plan_de_entrenamiento (
      cliente_id INT,
      plan_de_entrenamiento_id INT,
      PRIMARY KEY(cliente_id, plan_de_entrenamiento_id),
@@ -173,7 +173,7 @@ CREATE TABLE cliente_plan_de_entrenamiento (
              REFERENCES plan_de_entrenamiento(id)
 );
 
-CREATE TABLE cliente_rutina (
+CREATE TABLE IF NOT EXISTS cliente_rutina (
     cliente_id INT,
     rutina_id INT,
     PRIMARY KEY(cliente_id, rutina_id),

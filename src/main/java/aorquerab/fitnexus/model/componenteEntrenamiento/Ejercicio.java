@@ -1,5 +1,6 @@
 package aorquerab.fitnexus.model.componenteEntrenamiento;
 
+import aorquerab.fitnexus.model.users.Entrenador;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
@@ -38,4 +39,8 @@ public class Ejercicio {
     //If using ExerciseRepository extends ListCrudRepository (if using JDBC)
     @Version
     private Integer version;
+
+    @ManyToOne
+    @JoinColumn(name = "entrenador_id", nullable = false)
+    private Entrenador entrenador;
 }

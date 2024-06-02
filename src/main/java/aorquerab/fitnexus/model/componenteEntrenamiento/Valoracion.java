@@ -1,5 +1,6 @@
 package aorquerab.fitnexus.model.componenteEntrenamiento;
 
+import aorquerab.fitnexus.model.users.Cliente;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,4 +20,20 @@ public class Valoracion {
     private Long id;
 
     private String comentario;
+
+    @ManyToOne
+    @JoinTable (
+        name = "valoracion_cliente",
+        joinColumns = @JoinColumn (name = "valoracion_id"),
+        inverseJoinColumns = @JoinColumn (name = "cliente_id")
+    )
+    private Cliente cliente;
+
+    @ManyToOne
+    @JoinTable (
+          name = "valoracion_plan_de_entrenamiento",
+          joinColumns = @JoinColumn(name="valoracion_id"),
+          inverseJoinColumns = @JoinColumn (name = "plan_de_entrenamiento_id")
+    )
+    private PlanDeEntrenamiento planDeEntrenamiento;
 }

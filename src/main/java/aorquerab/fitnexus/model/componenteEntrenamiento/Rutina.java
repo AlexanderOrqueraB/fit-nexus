@@ -1,5 +1,6 @@
 package aorquerab.fitnexus.model.componenteEntrenamiento;
 
+import aorquerab.fitnexus.model.users.Entrenador;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,4 +27,8 @@ public class Rutina {
     private LocalDate fechaFinal;
 
     private ArrayList<Ejercicio> ejercicios;
+
+    @ManyToOne
+    @JoinColumn(name = "entrenador_id", nullable = false)
+    private Entrenador entrenador;
 }

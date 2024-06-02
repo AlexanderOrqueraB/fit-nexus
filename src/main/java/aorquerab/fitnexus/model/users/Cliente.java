@@ -1,9 +1,6 @@
 package aorquerab.fitnexus.model.users;
 
-import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
-import aorquerab.fitnexus.model.componenteEntrenamiento.PautaNutricional;
-import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
-import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
+import aorquerab.fitnexus.model.componenteEntrenamiento.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -75,7 +72,4 @@ public class Cliente {
         inverseJoinColumns = @JoinColumn(name = "ejercicio_id")
     )
     private ArrayList<Ejercicio> ejercicios;
-
-//    @OneToMany(mappedBy = "cliente")
-//    private ArrayList<Valoracion> valoraciones;
 }
