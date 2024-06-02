@@ -3,7 +3,7 @@ spring:
     name: fit-nexus
   jpa:
     hibernate:
-      ddl-auto: none #none, update...
+      ddl-auto: update #none, update...
 
 #To connect directly to postgresql DB up and running in local machine
 #    datasource:
