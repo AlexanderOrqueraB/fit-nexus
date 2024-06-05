@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -40,5 +41,14 @@ public class PlanDeEntrenamiento {
 
     @ManyToMany (mappedBy = "planDeEntrenamiento")
     private ArrayList<Valoracion> valoraciones;
+
+    //planDeEntremaniento_ruitna
+    @ManyToMany
+    @JoinTable (
+            name = "plan_de_entrenamiento_rutina",
+            joinColumns = @JoinColumn(name= "plan_de_entrenamiento_id"),
+            inverseJoinColumns = @JoinColumn(name= "rutina_id")
+    )
+    private List<Rutina> rutinas = new ArrayList<>();
 
 }

@@ -1,6 +1,7 @@
 package aorquerab.fitnexus.model.componenteEntrenamiento;
 
 import aorquerab.fitnexus.model.users.Entrenador;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,9 +34,6 @@ public class Rutina {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entrenador_id", nullable = false)
     private Entrenador entrenador;
-//
-//    @ManyToMany(mappedBy = "rutinas")
-//    private ArrayList<Rutina> rutinas;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
@@ -45,4 +43,7 @@ public class Rutina {
     )
     private List<Ejercicio> ejercicios = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "rutinas", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore //To avoid infinite serialization
+    private List<PlanDeEntrenamiento> planDeEntrenamientos = new ArrayList<>();
 }
