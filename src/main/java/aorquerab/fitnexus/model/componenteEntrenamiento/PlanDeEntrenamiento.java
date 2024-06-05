@@ -42,7 +42,6 @@ public class PlanDeEntrenamiento {
     @ManyToMany (mappedBy = "planDeEntrenamiento")
     private ArrayList<Valoracion> valoraciones;
 
-    //planDeEntremaniento_ruitna
     @ManyToMany
     @JoinTable (
             name = "plan_de_entrenamiento_rutina",
