@@ -40,7 +40,7 @@ public class PlanDeEntrenamiento {
     private Entrenador entrenador;
 
     @ManyToMany (mappedBy = "planDeEntrenamiento")
-    private ArrayList<Valoracion> valoraciones;
+    private List<Valoracion> valoraciones = new ArrayList<>();
 
     @ManyToMany
     @JoinTable (

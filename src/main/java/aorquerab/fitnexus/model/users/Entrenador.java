@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -39,17 +40,17 @@ public class Entrenador {
     private Integer version;
 
     @OneToMany(mappedBy = "entrenador")
-    private ArrayList<Cliente> clientes;
+    private List<Cliente> clientes = new ArrayList<>();
 
     @OneToMany(mappedBy = "entrenador")
-    private ArrayList<PautaNutricional> pautasNutricionales;
+    private List<PautaNutricional> pautasNutricionales = new ArrayList<>();
 
     @OneToMany(mappedBy = "entrenador")
-    private ArrayList<PlanDeEntrenamiento> planesDeEntrenamiento;
+    private List<PlanDeEntrenamiento> planesDeEntrenamiento = new ArrayList<>();
 
     @OneToMany(mappedBy = "entrenador")
-    private ArrayList<Rutina> rutinas;
+    private List<Rutina> rutinas = new ArrayList<>();
 
     @OneToMany(mappedBy = "entrenador")
-    private ArrayList<Ejercicio> ejercicios;
+    private List<Ejercicio> ejercicios = new ArrayList<>();
 }

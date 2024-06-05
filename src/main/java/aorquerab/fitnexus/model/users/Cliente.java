@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -50,7 +51,7 @@ public class Cliente {
         joinColumns = @JoinColumn(name = "cliente_id"),
         inverseJoinColumns = @JoinColumn(name = "pauta_nutricional_id")
     )
-    private ArrayList<PautaNutricional> pautaNutricional;
+    private List<PautaNutricional> pautaNutricional= new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -58,7 +59,7 @@ public class Cliente {
         joinColumns = @JoinColumn(name = "cliente_id"),
         inverseJoinColumns = @JoinColumn(name = "plan_de_entrenamiento_id")
     )
-    private ArrayList<PlanDeEntrenamiento> planDeEntrenamiento;
+    private List<PlanDeEntrenamiento> planDeEntrenamiento = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -66,7 +67,7 @@ public class Cliente {
         joinColumns = @JoinColumn(name = "cliente_id"),
         inverseJoinColumns = @JoinColumn(name = "rutina_id")
     )
-    private ArrayList<Rutina> rutinas;
+    private List<Rutina> rutinas = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -74,5 +75,5 @@ public class Cliente {
         joinColumns = @JoinColumn(name = "cliente_id"),
         inverseJoinColumns = @JoinColumn(name = "ejercicio_id")
     )
-    private ArrayList<Ejercicio> ejercicios;
+    private List<Ejercicio> ejercicios = new ArrayList<>();
 }
