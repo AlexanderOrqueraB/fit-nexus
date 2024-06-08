@@ -4,8 +4,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update #none, update...
+    #to see in terminal SQL execution spring.jpa.show-sql=true
+#    show-sql : true
 
-#To connect directly to postgresql DB up and running in local machine
+    #To connect directly to postgresql DB up and running in local machine
 #    datasource:
 #      name: fitnexusdb
 #      url: jdbc:postgresql://localhost:5432/fitnexusdb
