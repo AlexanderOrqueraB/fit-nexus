@@ -39,18 +39,18 @@ public class Entrenador {
     @Version
     private Integer version;
 
-    @OneToMany(mappedBy = "entrenador")
+    @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Cliente> clientes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "entrenador")
+    @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PautaNutricional> pautasNutricionales = new ArrayList<>();
 
-    @OneToMany(mappedBy = "entrenador")
+    @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PlanDeEntrenamiento> planesDeEntrenamiento = new ArrayList<>();
 
-    @OneToMany(mappedBy = "entrenador")
+    @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Rutina> rutinas = new ArrayList<>();
 
-    @OneToMany(mappedBy = "entrenador")
+    @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Ejercicio> ejercicios = new ArrayList<>();
 }

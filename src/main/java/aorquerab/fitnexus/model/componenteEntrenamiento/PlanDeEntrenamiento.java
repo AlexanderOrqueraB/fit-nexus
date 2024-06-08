@@ -31,18 +31,18 @@ public class PlanDeEntrenamiento {
     @Version
     private Integer version;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entrenador_id", nullable = false)
     private Entrenador entrenador;
 
-    @ManyToMany (mappedBy = "planDeEntrenamiento")
+    @ManyToMany(mappedBy = "planDeEntrenamiento", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Valoracion> valoraciones = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable (
             name = "plan_de_entrenamiento_rutina",
             joinColumns = @JoinColumn(name= "plan_de_entrenamiento_id"),

@@ -31,7 +31,7 @@ public class PautaNutricional {
     @Version
     private Integer version;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entrenador_id", nullable = false)
     private Entrenador entrenador;
 }

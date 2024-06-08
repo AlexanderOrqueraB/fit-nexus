@@ -24,7 +24,7 @@ public class Valoracion {
     @Version
     private Integer version;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable (
         name = "valoracion_cliente",
         joinColumns = @JoinColumn (name = "valoracion_id"),
@@ -32,7 +32,7 @@ public class Valoracion {
     )
     private Cliente cliente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable (
           name = "valoracion_plan_de_entrenamiento",
           joinColumns = @JoinColumn(name="valoracion_id"),

@@ -41,11 +41,11 @@ public class Cliente {
     @Version
     private Integer version;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entrenador_id", nullable = false)
     private Entrenador entrenador;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
         name = "cliente_pauta_nutricional",
         joinColumns = @JoinColumn(name = "cliente_id"),
@@ -53,7 +53,7 @@ public class Cliente {
     )
     private List<PautaNutricional> pautaNutricional= new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
         name = "cliente_plan_de_entrenamiento",
         joinColumns = @JoinColumn(name = "cliente_id"),
@@ -61,7 +61,7 @@ public class Cliente {
     )
     private List<PlanDeEntrenamiento> planDeEntrenamiento = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
         name = "cliente_rutina",
         joinColumns = @JoinColumn(name = "cliente_id"),
@@ -69,7 +69,7 @@ public class Cliente {
     )
     private List<Rutina> rutinas = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
         name = "cliente_ejercicio",
         joinColumns = @JoinColumn(name = "cliente_id"),
