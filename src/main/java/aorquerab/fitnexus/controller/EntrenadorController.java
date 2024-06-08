@@ -32,6 +32,7 @@ public class EntrenadorController {
             @RequestBody Entrenador entrenador) {
         log.info("Ejecutando postEntrenador...");
         entrenadorRepository.save(entrenador);
+        //TODO: add log after post execution
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
