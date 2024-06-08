@@ -33,6 +33,7 @@ public class Rutina {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entrenador_id", nullable = false)
+    @JsonIgnore
     private Entrenador entrenador;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

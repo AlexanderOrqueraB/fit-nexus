@@ -1,6 +1,7 @@
 package aorquerab.fitnexus.model.users;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -67,6 +68,7 @@ public class Cliente {
         joinColumns = @JoinColumn(name = "cliente_id"),
         inverseJoinColumns = @JoinColumn(name = "rutina_id")
     )
+    @JsonIgnore
     private List<Rutina> rutinas = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -75,5 +77,6 @@ public class Cliente {
         joinColumns = @JoinColumn(name = "cliente_id"),
         inverseJoinColumns = @JoinColumn(name = "ejercicio_id")
     )
+    @JsonIgnore
     private List<Ejercicio> ejercicios = new ArrayList<>();
 }
