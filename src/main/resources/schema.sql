@@ -14,6 +14,12 @@ DROP TABLE IF EXISTS cliente_ejercicio CASCADE;
 DROP TABLE IF EXISTS cliente_rutina CASCADE;
 DROP TABLE IF EXISTS cliente_plan_de_entrenamiento CASCADE;
 
+DROP SEQUENCE IF EXISTS seq_log CASCADE;
+
+CREATE SEQUENCE seq_log
+    START WITH 1
+    INCREMENT BY 1;
+
 CREATE TABLE IF NOT EXISTS entrenador (
     id SERIAL PRIMARY KEY,
     fit_nexus_id uuid,

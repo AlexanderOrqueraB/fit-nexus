@@ -21,7 +21,8 @@ import java.util.List;
 public class Rutina {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_log_gen")
+    @SequenceGenerator(name = "seq_log_gen", sequenceName = "seq_log", allocationSize = 1)
     private Long id;
 
     private String nombreRutina;
