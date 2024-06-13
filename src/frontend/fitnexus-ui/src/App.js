@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import React, { Component } from "react";
 import './App.css';
+import { Button } from "./components_ui/ui/button"
+import { Loader2 } from "lucide-react"
 
 class App extends Component {
     state = {
@@ -19,6 +21,11 @@ class App extends Component {
         <div className="App">
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
+            <Button variant="outline">Button</Button>
+    <Button disabled>
+      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+      Please wait
+    </Button>
             <div className="App-intro">
                 <h2>Ejercicios</h2>
                 {ejercicios.map(ejercicio =>
