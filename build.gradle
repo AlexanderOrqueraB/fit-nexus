@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.2.4'
 	id 'io.spring.dependency-management' version '1.1.4'
 	id "com.github.node-gradle.node" version "3.2.1" //node plugin before 3.5.0
+	//id 'org.springdoc.openapi-gradle-plugin' version '1.8.0' // swagger generator
 }
 
 group = 'aorquerab'
@@ -26,28 +27,22 @@ dependencies {
 	testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
 
 	//------------------SPRINGBOOT
-
-	//devtools
 	implementation 'org.springframework.boot:spring-boot-devtools:3.2.0'
 
-	//validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation:3.2.0'
 
 	//-----------------------------DATABASE RELATED
-
-	//Using H2 in MEMORY
-	//runtimeOnly 'com.h2database:h2:2.2.224'
-	//implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.2.0'
-
-	//POSTGRESQL + SB-DOCKER-COMPOSE + DBVISUALIZER
-	//Using SB DATA JDBC (to be able to extends ListCrudRepository)
 	runtimeOnly 'org.springframework.boot:spring-boot-docker-compose'
 	runtimeOnly 'org.postgresql:postgresql'
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.2.0'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc:3.2.0'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-	//To use GENERATEDVALUE in primary keys
-	//implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	//TODO: Fix manual SWAGGER generation using ./gradlew generateOpenApiDocs
+	//implementation 'org.springdoc:springdoc-openapi-starter-common:2.1.0'
+	//implementation 'io.swagger.core.v3:swagger-annotations:2.2.10'
+
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+	//localhost:8080/api-docs RAW JSON
+	//localhost:8080/swagger-ui/index.html SWAGGER UI
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -56,41 +51,63 @@ dependencies {
 //TODO: Uncomment this out to trigger React build by executing: ./gradlew bootRun + open http://localhost:8080/
 //Node section to identify working directory for project , npm and node and its modules so that runtime will identify
 //these paths to verify required plugins/modules
-node {
-	download = false
-	//identify working directory in project
-	workDir = file("${project.projectDir}/src/frontend/fitnexus-ui/nodejs")
-	//NPM working directory
-	npmWorkDir = file("${project.projectDir}/src/frontend/fitnexus-ui/npm")
-	//node modules directory
-	nodeModulesDir = file("${project.projectDir}/src/frontend/fitnexus-ui")
-}
+//node {
+//	download = false
+//	//identify working directory in project
+//	workDir = file("${project.projectDir}/src/frontend/fitnexus-ui/nodejs")
+//	//NPM working directory
+//	npmWorkDir = file("${project.projectDir}/src/frontend/fitnexus-ui/npm")
+//	//node modules directory
+//	nodeModulesDir = file("${project.projectDir}/src/frontend/fitnexus-ui")
+//}
+//
+////Tasks to npm install and build , so that when we run spring boot app it will run these tasks and creates build
+//tasks.register('appNpmInstall', NpmTask) {
+//	description = "Read package.json and install all jars"
+//	workingDir = file("${project.projectDir}/src/frontend/fitnexus-ui")
+//	args = ["install"]
+//	//args =["install", " - debug"]
+//}
+//tasks.register('appNpmBuild', NpmTask) {
+//	description = "Builds application for your frontend"
+//	workingDir = file("${project.projectDir}/src/frontend/fitnexus-ui")
+//	args = ["run", "build"]
+//}
+//
+////task to copy created build from path (react app path inside spring boot ) to spring boot build path
+////so that it recognizes the files built
+//tasks.register('copyToFrontend', Copy) {
+//	from "C:\\Workspaces 2024\\fit-nexus\\src\\frontend\\fitnexus-ui\\build"
+//  into "C:\\Workspaces 2024\\fit-nexus\\build\\resources\\main"
+//} //TODO: Change routes by getting from gradle: projectDir etc
+//
+////Add sequence of tasks need to executed in gradle
+////appNpmInstall → appNpmBuild → copyToFrontend → compileJava
+//appNpmBuild.dependsOn appNpmInstall
+//copyToFrontend.dependsOn appNpmBuild
+//compileJava.dependsOn copyToFrontend
 
-//Tasks to npm install and build , so that when we run spring boot app it will run these tasks and creates build
-tasks.register('appNpmInstall', NpmTask) {
-	description = "Read package.json and install all jars"
-	workingDir = file("${project.projectDir}/src/frontend/fitnexus-ui")
-	args = ["install"]
-	//args =["install", " - debug"]
-}
-tasks.register('appNpmBuild', NpmTask) {
-	description = "Builds application for your frontend"
-	workingDir = file("${project.projectDir}/src/frontend/fitnexus-ui")
-	args = ["run", "build"]
-}
-
-//task to copy created build from path (react app path inside spring boot ) to spring boot build path
-//so that it recognizes the files built
-tasks.register('copyToFrontend', Copy) {
-	from "C:\\Workspaces 2024\\fit-nexus\\src\\frontend\\fitnexus-ui\\build"
-	into "C:\\Workspaces 2024\\fit-nexus\\build\\resources\\main\\static"
-} //TODO: Change routes by getting from gradle: projectDir etc
-
-//Add sequence of tasks need to executed in gradle
-//appNpmInstall → appNpmBuild → copyToFrontend → compileJava
-appNpmBuild.dependsOn appNpmInstall
-copyToFrontend.dependsOn appNpmBuild
-compileJava.dependsOn copyToFrontend
+// Configuration for org.springdoc.openapi-gradle-plugin
+//openApi {
+//	apiDocsUrl.set("http://localhost:8080/api-docs")
+//
+//	outputFileName.set("openapi.json")
+//	dependencies {
+//		implementation 'org.springdoc:springdoc-openapi-ui:1.8.0'
+//	}
+//	outputDir.set(file("$buildDir/docs"))
+//	customBootRun {
+//		classpath.setFrom(sourceSets.test.runtimeClasspath)
+//		args.set(["--server.port=8080",
+//				  "--spring.profiles.active=default"])
+//	}
+//}
+//
+//tasks {
+//	forkedSpringBootRun {
+//		doNotTrackState("See https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/102")
+//	}
+//}
 
 tasks.named('test') {
 	useJUnitPlatform()

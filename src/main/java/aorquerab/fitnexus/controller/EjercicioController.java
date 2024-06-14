@@ -49,7 +49,7 @@ public class EjercicioController {
 
     //GET by Id
     @GetMapping ("/{id}")
-    public Ejercicio getEjercicioById(@PathVariable Integer id) {
+    public Ejercicio getEjercicioById(@PathVariable Long id) {
         log.info("Ejecutando getEjercicioById...");
         Optional<Ejercicio> ejercicioById = ejercicioRepository.findById(id);
         if(ejercicioById.isEmpty()){
@@ -73,7 +73,7 @@ public class EjercicioController {
     //TODO: this should send a different http response?
     @PutMapping ("/actualizarEjercicio/{id}")
     public void actualizarEjercicio (
-            @PathVariable Integer id,
+            @PathVariable Long id,
             //TODO: Maybe this should not valid the request (what if you just want to change a field?)
             //TODO: Also you cannot change the identifier via request
             @Valid @RequestBody Ejercicio ejercicio) {
@@ -83,6 +83,7 @@ public class EjercicioController {
         ejercicioActualizar.setRepeticion(ejercicio.getRepeticion());
         ejercicioActualizar.setSerie(ejercicio.getSerie());
         ejercicioActualizar.setPeso(ejercicio.getPeso());
+        ejercicioActualizar.setVersion(ejercicio.getVersion());
         ejercicioRepository.save(ejercicioActualizar);
     }
 
@@ -90,7 +91,7 @@ public class EjercicioController {
     //TODO: this should send a different http response?
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping ("/borrarEjercicio/{id}")
-    public void borrarEjercicio (@PathVariable Integer id) {
+    public void borrarEjercicio (@PathVariable Long id) {
         log.info("Ejecutando borrarEjercicio...");
         Optional<Ejercicio> ejercicio = ejercicioRepository.findById(id);
         if(ejercicio.isEmpty()) {

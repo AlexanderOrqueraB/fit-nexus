@@ -1,18 +1,13 @@
 spring:
   application:
     name: fit-nexus
+  jpa:
+    hibernate:
+      ddl-auto: update #none, update...
+    #to see in terminal SQL execution spring.jpa.show-sql=true
+#    show-sql : true
 
-#Add this stuff to run in H2
-#  h2:
-#    console:
-#      enabled: true
-  #To specify the name of the database in H2
-#  datasource:
-#    generate-unique-name: false
-#    name: h2database
-#Add this stuff to run in H2
-
-#To connect directly to postgresql DB up and running in local machine
+    #To connect directly to postgresql DB up and running in local machine
 #    datasource:
 #      name: fitnexusdb
 #      url: jdbc:postgresql://localhost:5432/fitnexusdb
@@ -29,3 +24,6 @@ spring:
     #port: 8080
     #error:
     #include-stacktrace: never
+springdoc:
+  api-docs:
+    path: /api-docs
