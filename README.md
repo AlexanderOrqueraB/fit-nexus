@@ -35,7 +35,7 @@ Pasos:
 Para aplicación completa (springboot + react)
 Ejecutando: ./gradlew bootRun + abrir http://localhost:8080/
 
-Para aplicación React
+Para aplicación React (dentro de frontend/fitnexus-ui)
 Ejecutando: npm start + abrir http://localhost:3030/
 
 ## Autor
