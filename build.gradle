@@ -78,7 +78,7 @@ dependencies {
 ////so that it recognizes the files built
 //tasks.register('copyToFrontend', Copy) {
 //	from "C:\\Workspaces 2024\\fit-nexus\\src\\frontend\\fitnexus-ui\\build"
-//	into "C:\\Workspaces 2024\\fit-nexus\\build\\resources\\main\\static"
+//  into "C:\\Workspaces 2024\\fit-nexus\\build\\resources\\main"
 //} //TODO: Change routes by getting from gradle: projectDir etc
 //
 ////Add sequence of tasks need to executed in gradle
