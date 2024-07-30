@@ -1,7 +1,7 @@
 package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
-import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
+import aorquerab.fitnexus.model.exception.EntidadNotFoundException;
 import aorquerab.fitnexus.repository.EjercicioRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -48,13 +48,13 @@ public class EjercicioController {
     }
 
     //GET by Id
-    @GetMapping ("/{id}")
-    public Ejercicio getEjercicioById(@PathVariable Long id) {
+    @GetMapping ("/{idEjercicio}")
+    public Ejercicio getEjercicioById(@PathVariable Long idEjercicio) {
         log.info("Ejecutando getEjercicioById...");
-        Optional<Ejercicio> ejercicioById = ejercicioRepository.findById(id);
+        Optional<Ejercicio> ejercicioById = ejercicioRepository.findById(idEjercicio);
         if(ejercicioById.isEmpty()){
-            log.info("Ejercicio {} no encontrado en base de datos", id);
-            throw new EjercicioNotFoundException(HttpStatus.NOT_FOUND, "Ejercicio no encontrado en BD");
+            log.info("Ejercicio {} no encontrado en base de datos", idEjercicio);
+            throw new EntidadNotFoundException(HttpStatus.NOT_FOUND, "Ejercicio no encontrado en BD");
         }
         return ejercicioById.get();
     }
@@ -77,7 +77,7 @@ public class EjercicioController {
             //TODO: Maybe this should not valid the request (what if you just want to change a field?)
             //TODO: Also you cannot change the identifier via request
             @Valid @RequestBody Ejercicio ejercicio) {
-        log.info("Ejecutando actulizarEjercicio...");
+        log.info("Ejecutando actualizarEjercicio...");
         Ejercicio ejercicioActualizar = getEjercicioById(id);
         ejercicioActualizar.setNombreEjercicio(ejercicio.getNombreEjercicio());
         ejercicioActualizar.setRepeticion(ejercicio.getRepeticion());
@@ -96,7 +96,7 @@ public class EjercicioController {
         Optional<Ejercicio> ejercicio = ejercicioRepository.findById(id);
         if(ejercicio.isEmpty()) {
             log.info("Ejercicio {} no encontrado en base de datos", id);
-            throw new EjercicioNotFoundException(HttpStatus.NOT_FOUND, "Ejercicio no encontrado en BD");
+            throw new EntidadNotFoundException(HttpStatus.NOT_FOUND, "Ejercicio no encontrado en BD");
         }
         else ejercicioRepository.delete(ejercicio.get());
     }
