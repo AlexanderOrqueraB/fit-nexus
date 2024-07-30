@@ -1,7 +1,11 @@
 package aorquerab.fitnexus.model.users;
 
-import aorquerab.fitnexus.model.componenteEntrenamiento.*;
+import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
+import aorquerab.fitnexus.model.componenteEntrenamiento.PautaNutricional;
+import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
+import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,6 +50,7 @@ public class Cliente {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entrenador_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Entrenador entrenador;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -54,6 +59,7 @@ public class Cliente {
         joinColumns = @JoinColumn(name = "cliente_id"),
         inverseJoinColumns = @JoinColumn(name = "pauta_nutricional_id")
     )
+    @JsonIgnore
     private List<PautaNutricional> pautaNutricional= new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -62,6 +68,7 @@ public class Cliente {
         joinColumns = @JoinColumn(name = "cliente_id"),
         inverseJoinColumns = @JoinColumn(name = "plan_de_entrenamiento_id")
     )
+    @JsonIgnore
     private List<PlanDeEntrenamiento> planDeEntrenamiento = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
