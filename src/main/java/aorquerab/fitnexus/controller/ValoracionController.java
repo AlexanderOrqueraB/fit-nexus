@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static aorquerab.fitnexus.constants.Constants.ENDPOINT_ROOT;
+import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
 @RestController
-@RequestMapping({ENDPOINT_ROOT + "/valoracion"})
+@RequestMapping({FITNEXUS_BASE_URI + "/valoraciones"})
 @Slf4j
 public class ValoracionController {
     private final ValoracionRepository valoracionRepository;

@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static aorquerab.fitnexus.constants.Constants.ENDPOINT_ROOT;
+import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
 @RestController
-@RequestMapping({ENDPOINT_ROOT + "/cliente"})
+@RequestMapping({FITNEXUS_BASE_URI + "/clientes"})
 @Slf4j
 public class ClienteController {
     private final ClienteRepository clienteRepository;

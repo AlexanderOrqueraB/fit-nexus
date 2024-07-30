@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static aorquerab.fitnexus.constants.Constants.ENDPOINT_ROOT;
+import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
 @RestController
-@RequestMapping({ENDPOINT_ROOT + "/rutina"})
+@RequestMapping({FITNEXUS_BASE_URI + "/rutinas"})
 @Slf4j
 public class RutinaController {
     //TODO: Validate requestBody or pathVariable?
