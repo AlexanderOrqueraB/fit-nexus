@@ -68,7 +68,9 @@ public class EntrenadorController {
                         e.setEmail(entrenador.getEmail());
                         e.setAsesorNutricional(entrenador.getAsesorNutricional());
                         return entrenadorRepository.save(e);
-                }).orElseGet(()-> {return entrenadorRepository.save(entrenador);});
+                }).orElseGet(()-> {
+                    return entrenadorRepository.save(entrenador);
+                });
     }
 
     //    //PUT
