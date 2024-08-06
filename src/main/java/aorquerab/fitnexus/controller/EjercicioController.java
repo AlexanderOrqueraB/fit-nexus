@@ -1,7 +1,7 @@
 package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
-import aorquerab.fitnexus.model.exception.EntidadNotFoundException;
+import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
 import aorquerab.fitnexus.repository.EjercicioRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +54,7 @@ public class EjercicioController {
         Optional<Ejercicio> ejercicioById = ejercicioRepository.findById(idEjercicio);
         if(ejercicioById.isEmpty()){
             log.info("Ejercicio {} no encontrado en base de datos", idEjercicio);
-            throw new EntidadNotFoundException(HttpStatus.NOT_FOUND, "Ejercicio no encontrado en BD");
+            throw new EjercicioNotFoundException("Ejercicio no encontrado en BD: " + idEjercicio);
         }
         return ejercicioById.get();
     }
@@ -96,7 +96,7 @@ public class EjercicioController {
         Optional<Ejercicio> ejercicio = ejercicioRepository.findById(id);
         if(ejercicio.isEmpty()) {
             log.info("Ejercicio {} no encontrado en base de datos", id);
-            throw new EntidadNotFoundException(HttpStatus.NOT_FOUND, "Ejercicio no encontrado en BD");
+            //TODO: throw new EntidadNotFoundException(HttpStatus.NOT_FOUND, "Ejercicio no encontrado en BD");
         }
         else ejercicioRepository.delete(ejercicio.get());
     }
