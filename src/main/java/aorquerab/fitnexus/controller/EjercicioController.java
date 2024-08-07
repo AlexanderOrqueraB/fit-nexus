@@ -2,10 +2,12 @@ package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
 import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
+import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.repository.EjercicioRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,14 +51,14 @@ public class EjercicioController {
 
     //GET by Id
     @GetMapping ("/{idEjercicio}")
-    public Ejercicio getEjercicioById(@PathVariable Long idEjercicio) {
+    public ResponseEntity<Ejercicio> getEjercicioById(@PathVariable Long idEjercicio) {
         log.info("Ejecutando getEjercicioById...");
         Optional<Ejercicio> ejercicioById = ejercicioRepository.findById(idEjercicio);
         if(ejercicioById.isEmpty()){
             log.info("Ejercicio {} no encontrado en base de datos", idEjercicio);
             throw new EjercicioNotFoundException("Ejercicio no encontrado en BD: " + idEjercicio);
         }
-        return ejercicioById.get();
+        return ResponseEntity.ok(ejercicioById.get());
     }
 
     //POST
@@ -64,6 +66,9 @@ public class EjercicioController {
     public ResponseEntity<Ejercicio> postEjercicio(
             @Valid @RequestBody Ejercicio ejercicio) {
         log.info("Ejecutando postEjercicio...");
+        if(ejercicio == null) {
+            throw new InvalidRequestException("Peticion de ejercicio no valida");
+        }
         ejercicioRepository.save(ejercicio);
         return new ResponseEntity<> (HttpStatus.CREATED);
     }
