@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
@@ -31,25 +32,27 @@ public class EjercicioController {
     public ResponseEntity<String> getDummyController() {
         log.info("Ejecutando dummy GET ENDPOINT...");
         String body = "Dummy GET ejecutado correctamente!";
-        return new ResponseEntity<>(body,HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
     @PostMapping("/post")
     public ResponseEntity<String> postDummyController() {
         log.info("Ejecutando dummy POST ENDPOINT...");
         String body = "Dummy POST ejecutado correctamente!";
-        return new ResponseEntity<>(body,HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
-
-    //GET
     @GetMapping
-    public List<Ejercicio> getEjercicios() {
+    public ResponseEntity<List<Ejercicio>> getEjercicios() {
         log.info("Ejecutando getEjercicios...");
-        return ejercicioRepository.findAll();
+        List<Ejercicio> ejercicio = ejercicioRepository.findAll();
+        if(ejercicio.isEmpty()) {
+            log.info("Ejercicio/s no encontrado/s en base de datos");
+            throw new EjercicioNotFoundException("Ejercicio no encontrado en BD");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(ejercicio);
     }
 
-    //GET by Id
     @GetMapping ("/{idEjercicio}")
     public ResponseEntity<Ejercicio> getEjercicioById(@PathVariable Long idEjercicio) {
         log.info("Ejecutando getEjercicioById...");
@@ -58,19 +61,18 @@ public class EjercicioController {
             log.info("Ejercicio {} no encontrado en base de datos", idEjercicio);
             throw new EjercicioNotFoundException("Ejercicio no encontrado en BD: " + idEjercicio);
         }
-        return ResponseEntity.ok(ejercicioById.get());
+        return ResponseEntity.status(HttpStatus.OK).body(ejercicioById.get());
     }
 
-    //POST
     @PostMapping
-    public ResponseEntity<Ejercicio> postEjercicio(
+    public ResponseEntity<String> postEjercicio(
             @Valid @RequestBody Ejercicio ejercicio) {
         log.info("Ejecutando postEjercicio...");
         if(ejercicio == null) {
             throw new InvalidRequestException("Peticion de ejercicio no valida");
         }
         ejercicioRepository.save(ejercicio);
-        return new ResponseEntity<> (HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Ejercicio creado correctamente.");
     }
 
     //PUT
