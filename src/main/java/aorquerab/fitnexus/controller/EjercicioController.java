@@ -75,9 +75,7 @@ public class EjercicioController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Ejercicio creado correctamente.");
     }
 
-    //PUT
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    //TODO: this should send a different http response?
     @PutMapping ("/actualizarEjercicio/{id}")
     public void actualizarEjercicio (
             @PathVariable Long id,
@@ -94,8 +92,6 @@ public class EjercicioController {
         ejercicioRepository.save(ejercicioActualizar);
     }
 
-    //DELETE
-    //TODO: this should send a different http response?
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping ("/borrarEjercicio/{id}")
     public void borrarEjercicio (@PathVariable Long id) {
