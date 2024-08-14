@@ -7,13 +7,11 @@ import aorquerab.fitnexus.repository.EjercicioRepository;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
@@ -72,6 +70,7 @@ public class EjercicioController {
             throw new InvalidRequestException("Peticion de ejercicio no valida");
         }
         ejercicioRepository.save(ejercicio);
+        log.info("postEjercicio ejecutado.");
         return ResponseEntity.status(HttpStatus.CREATED).body("Ejercicio creado correctamente.");
     }
 
@@ -83,13 +82,14 @@ public class EjercicioController {
             //TODO: Also you cannot change the identifier via request
             @Valid @RequestBody Ejercicio ejercicio) {
         log.info("Ejecutando actualizarEjercicio...");
-        Ejercicio ejercicioActualizar = getEjercicioById(id);
-        ejercicioActualizar.setNombreEjercicio(ejercicio.getNombreEjercicio());
-        ejercicioActualizar.setRepeticion(ejercicio.getRepeticion());
-        ejercicioActualizar.setSerie(ejercicio.getSerie());
-        ejercicioActualizar.setPeso(ejercicio.getPeso());
-        ejercicioActualizar.setVersion(ejercicio.getVersion());
-        ejercicioRepository.save(ejercicioActualizar);
+        Ejercicio ejercicioActualizado = getEjercicioById(id).getBody();
+        ejercicioActualizado.setNombreEjercicio(ejercicio.getNombreEjercicio());
+        ejercicioActualizado.setRepeticion(ejercicio.getRepeticion());
+        ejercicioActualizado.setSerie(ejercicio.getSerie());
+        ejercicioActualizado.setPeso(ejercicio.getPeso());
+        ejercicioActualizado.setVersion(ejercicio.getVersion());
+        ejercicioRepository.save(ejercicioActualizado);
+        log.info("actualizarEjercicio ejecutado.");
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

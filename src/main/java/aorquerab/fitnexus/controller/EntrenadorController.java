@@ -1,5 +1,7 @@
 package aorquerab.fitnexus.controller;
 
+import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
+import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.users.Entrenador;
 import aorquerab.fitnexus.repository.EntrenadorRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -23,29 +25,37 @@ public class EntrenadorController {
     }
 
     @GetMapping
-    public List<Entrenador> getEntrenadores(){
+    public ResponseEntity<List<Entrenador>> getEntrenadores(){
         log.info("Ejecutando getEntrenadores...");
-        return entrenadorRepository.findAll();
+        List<Entrenador> entrenador = entrenadorRepository.findAll();
+        if(entrenador.isEmpty()) {
+            log.info("Entrenador/s no encontrado/s en base de datos");
+            throw new EntrenadorNotFoundException("Entrenador no encontrado en BD");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(entrenador);
     }
 
     @GetMapping ("/{idEntrenador}")
-    public Entrenador getEntrenadorById(@PathVariable Long idEntrenador) {
+    public ResponseEntity<Entrenador> getEntrenadorById(@PathVariable Long idEntrenador) {
         log.info("Ejecutando getEntrenadorById...");
         Optional<Entrenador> entrenadorById = entrenadorRepository.findById(idEntrenador);
         if(entrenadorById.isEmpty()) {
             log.info("Entrenador {} no encontrado en base de datos", idEntrenador);
-            //TODO: throw new EntidadNotFoundException(HttpStatus.NOT_FOUND, "Entrenador no encontrado en BD");
+            throw new EntrenadorNotFoundException("Ejercicio no encontrado en BD: " + idEntrenador);
         }
-        return entrenadorById.get();
+        return ResponseEntity.status(HttpStatus.OK).body(entrenadorById.get());
     }
 
     @PostMapping
-    public ResponseEntity<Entrenador> postEntrenador (
+    public ResponseEntity<String> postEntrenador (
             @RequestBody Entrenador entrenador) {
         log.info("Ejecutando postEntrenador...");
+        if(entrenador == null) {
+            throw new InvalidRequestException("Peticion de entrenador no valida");
+        }
         entrenadorRepository.save(entrenador);
-        //TODO: add log after post execution
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        log.info("postEntrenador ejecutado.");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Entrenador creado correctamente");
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
