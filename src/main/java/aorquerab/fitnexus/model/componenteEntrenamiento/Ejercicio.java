@@ -32,7 +32,7 @@ public class Ejercicio {
 
     private Integer peso;
 
-    private boolean cardioRealizado;
+    private Boolean cardioRealizado;
 
     @Version
     private Integer version;

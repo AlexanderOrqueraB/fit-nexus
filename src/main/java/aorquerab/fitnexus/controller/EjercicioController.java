@@ -1,9 +1,11 @@
 package aorquerab.fitnexus.controller;
 
+import aorquerab.fitnexus.model.DTOs.EjercicioDTO;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
 import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.repository.EjercicioRepository;
+import aorquerab.fitnexus.utils.EjercicioDTOMapper;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -41,14 +43,17 @@ public class EjercicioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Ejercicio>> getEjercicios() {
+    public ResponseEntity<List<EjercicioDTO>> getEjercicios() {
         log.info("Ejecutando getEjercicios...");
         List<Ejercicio> ejercicio = ejercicioRepository.findAll();
         if(ejercicio.isEmpty()) {
             log.info("Ejercicio/s no encontrado/s en base de datos");
             throw new EjercicioNotFoundException("Ejercicio no encontrado en BD");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(ejercicio);
+
+        List<EjercicioDTO> ejercicioDTO = EjercicioDTOMapper.mapperFromList(ejercicio);
+        return ResponseEntity.status(HttpStatus.OK).body(ejercicioDTO);
+
     }
 
     @GetMapping ("/{idEjercicio}")
