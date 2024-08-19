@@ -21,6 +21,7 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    //TODO: Refactor this, maybe we can handle the same exception not-found by using the same method
     @ExceptionHandler(EntrenadorNotFoundException.class)
     public ResponseEntity<String> handleEntrenadorNotFoundException (EntrenadorNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);

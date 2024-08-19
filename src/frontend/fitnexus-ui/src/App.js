@@ -36,6 +36,33 @@ import FooterComponent from './components/FooterComponent';
 //export default App;
 
 
+/*ANOTHER RANDOM EXAMPLE using useEffect and useState
+Build React Crud App with JSON Server | React Crud Operation with API using Axios | React-Router
+import React, { useState, useEffect } from "react";
+
+-----inside App ():
+
+const [user, setUser] = useState ([]);
+
+const fetchData = () => {
+    return axios.get("http.../whatever")
+    .then((response) => setUser(response.data));
+}
+
+useEffect( () => {
+    fetchData();
+}, [])
+
+---- inside return ():
+    <h1>TEST</h1>
+    <ul>
+        {user && user.length > 0 && user.map ( (userObj,index) => (
+        <li key = {userObj._id}> {userObj.email} </li>
+        ))}
+    </ul>
+*/
+
+
 const api = axios.create({
     baseURL: "http://localhost:8080/api/",
     headers: {
@@ -44,10 +71,10 @@ const api = axios.create({
 });
 
 function App() {
-  const get_id = useRef(null);
-  const get_nombreEjercicio = useRef(null);
+  const get_id = useRef([]);
+  const get_nombreEjercicio = useRef([]);
 
-  const [getResult, setGetResult] = useState(null);
+  const [getResult, setGetResult] = useState([]);
 
   const formatResponse = (res) => {
     return JSON.stringify(res, null, 2);
