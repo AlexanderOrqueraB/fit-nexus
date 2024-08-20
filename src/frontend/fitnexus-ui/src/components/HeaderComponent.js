@@ -13,7 +13,7 @@ class HeaderComponent extends Component {
             <div>
                 <header>
                     <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-                    <div><h1>FIT NEXUS</h1></div>
+                    <div><h1>FIT NEXUS Header</h1></div>
                     </nav>
                 </header>
             </div>
