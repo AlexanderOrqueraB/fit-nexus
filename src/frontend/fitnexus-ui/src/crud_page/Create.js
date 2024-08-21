@@ -21,18 +21,7 @@ function Create () {
     }
 
     return (
-    <form onSubmit={handleSubmit}>
-    <div>
-        <label htmlFor: "name"> Name: </label>
-        <input type="text" name ='name' className='form-control'
-        onChange = {e=>setInputData({...inputData, name: e.target.value})}/>
-    </div>
 
-    <div>
-        <label htmlFor: "email"> Email: </label>
-        <input type="email" name ='email' className='form-control'
-        onChange = {e=>setInputData({...inputData, email: e.target.value})}/>
-    </div>
     <button> SUBMIT </button>
     </form>
     )
