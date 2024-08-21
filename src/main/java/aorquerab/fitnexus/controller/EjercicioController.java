@@ -96,7 +96,7 @@ public class EjercicioController {
             @RequestBody EjercicioDTO ejercicioDTO) {
         log.info("Ejecutando actualizarEjercicio...");
         EjercicioDTO ejercicioActualizadoDTO = getEjercicioById(idEjercicio).getBody();
-                    Ejercicio aux = EjercicioDTOMapper.mapperFromEjercicio(ejercicioDTO);
+                    Ejercicio aux = EjercicioDTOMapper.mapperFromEjercicioDTO(ejercicioDTO);
         ejercicioActualizadoDTO.setNombreEjercicio(ejercicioDTO.getNombreEjercicio());
                     ejercicioActualizadoDTO.setNombreEjercicio(aux.getNombreEjercicio());
         ejercicioActualizadoDTO.setRepeticion(ejercicioDTO.getRepeticion());
@@ -121,7 +121,7 @@ public class EjercicioController {
 
         /*Opcion: */
 
-        Ejercicio ejercicioActualizado = EjercicioDTOMapper.mapperFromEjercicio(ejercicioActualizadoDTO);
+        Ejercicio ejercicioActualizado = EjercicioDTOMapper.mapperFromEjercicioDTO(ejercicioActualizadoDTO);
         ejercicioRepository.save(ejercicioActualizado);
         log.info("actualizarEjercicio ejecutado.");
     }

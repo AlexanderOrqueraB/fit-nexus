@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 public class EjercicioDTOMapper {
 
+    //TODO: Separate into 2 different clases: EjerciciofromEjercicioDTO and EjercicioDTOfromEjercicio for example
     //FROM Entity to DTO
     public static EjercicioDTO mapperFromEjercicio (Ejercicio ejercicio) {
 
@@ -44,7 +45,7 @@ public class EjercicioDTOMapper {
     }
 
     //FROM DTO to Entity
-    public static Ejercicio mapperFromEjercicio (EjercicioDTO ejercicioDTO) {
+    public static Ejercicio mapperFromEjercicioDTO(EjercicioDTO ejercicioDTO) {
 
         Ejercicio ejercicio = new Ejercicio();
         ejercicio.setNombreEjercicio(ejercicioDTO.getNombreEjercicio());
