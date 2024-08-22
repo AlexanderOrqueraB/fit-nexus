@@ -3,6 +3,13 @@ import React, { useRef, useState, useEffect } from "react"; //(2)
 import {BrowserRouter, Routes, Route, Switch} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 
+import { AlertCircle } from "lucide-react"
+
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "./components_ui/ui/alert"
 
 import { Button } from "./components_ui/ui/button"
 import {
@@ -18,6 +25,14 @@ import {
 
 import HeaderComponent from './components/HeaderComponent';
 import FooterComponent from './components/FooterComponent';
+
+import AlertDestructive from './components/AlertDestructive';
+
+import DialogModal from './components/DialogModal';
+
+import TableComponent from './components/TableComponent';
+
+import CustomForm from './components/CustomForm';
 
 //import {Home} from './crud_page/Home';
 //import {Create} from './crud_page/Create';
@@ -87,9 +102,20 @@ return (
         <Routes>
             <Route path="/login" element={<LoginPage/>}/>
             <Route path="/dashboard" element={<ExercisesPage/>}/>
+            <Route path="/edit-profile" element={<DialogModal />}/>
+            <Route path="/table" element={<TableComponent />}/>
+            <Route path="/form" element={<CustomForm />}/>
         </Routes>
 
         <FooterComponent />
+        <AlertDestructive />
+        <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>
+                1 Your session has expired. Please log in again.
+              </AlertDescription>
+            </Alert>
     </BrowserRouter>
 )
 
