@@ -12,21 +12,8 @@ import {
 } from "./components_ui/ui/alert"
 
 import { Button } from "./components_ui/ui/button"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from './components_ui/ui/navigation-menu'
 
 import HeaderComponent from './components/HeaderComponent';
-import FooterComponent from './components/FooterComponent';
-
-import AlertDestructive from './components/AlertDestructive';
 
 import DialogModal from './components/DialogModal';
 
@@ -36,6 +23,7 @@ import CustomForm from './components/CustomForm';
 
 import LoginForm from './components/LoginForm';
 import SignUpForm from './components/SignUpForm';
+import CustomNavigationMenu from './components/CustomNavigationMenu';
 
 //import {Home} from './crud_page/Home';
 //import {Create} from './crud_page/Create';
@@ -83,25 +71,7 @@ return (
 //        ))}
 //    </div>
     <BrowserRouter>
-        <HeaderComponent />
-
-        <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <NavigationMenuLink>Link</NavigationMenuLink>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Item two</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <NavigationMenuLink>Link2</NavigationMenuLink>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-
+        <CustomNavigationMenu /> 
         <Routes>
             <Route path="/login" element={<LoginForm/>}/>
             <Route path="/signup" element={<SignUpForm/>}/>
@@ -110,16 +80,6 @@ return (
             <Route path="/table" element={<TableComponent />}/>
             <Route path="/form" element={<CustomForm />}/>
         </Routes>
-
-        <FooterComponent />
-        <AlertDestructive />
-        <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>
-                1 Your session has expired. Please log in again.
-              </AlertDescription>
-            </Alert>
     </BrowserRouter>
 )
 

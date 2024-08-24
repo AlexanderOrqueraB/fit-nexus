@@ -1,5 +1,4 @@
 import {Link} from 'react-router-dom'
-
 import { Button } from "../components_ui/ui/button"
 import {
   Card,
@@ -15,9 +14,9 @@ export function LoginForm() {
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardTitle className="text-2xl">Iniciar sesión</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Introduce tu email para acceder a tu cuenta
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -27,30 +26,24 @@ export function LoginForm() {
             <Input
               id="email"
               type="email"
-              placeholder="m@example.com"
+              placeholder="mi.email@ejemplo.com"
               required
             />
           </div>
           <div className="grid gap-2">
             <div className="flex items-center">
-              <Label htmlFor="password">Password</Label>
-              <Link href="#" className="ml-auto inline-block text-sm underline">
-                Forgot your password?
-              </Link>
+              <Label htmlFor="password">Contraseña</Label>
             </div>
             <Input id="password" type="password" required />
           </div>
           <Button type="submit" className="w-full">
-            Login
-          </Button>
-          <Button variant="outline" className="w-full">
-            Login with Google
+          Iniciar sesión
           </Button>
         </div>
         <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account?{" "}
+          No tienes una cuenta?{" "}
           <Link to="http://localhost:3000/signup" className="underline">
-            Sign up
+            Regístrate
           </Link>
         </div>
       </CardContent>
