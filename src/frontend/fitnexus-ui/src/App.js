@@ -34,6 +34,9 @@ import TableComponent from './components/TableComponent';
 
 import CustomForm from './components/CustomForm';
 
+import LoginForm from './components/LoginForm';
+import SignUpForm from './components/SignUpForm';
+
 //import {Home} from './crud_page/Home';
 //import {Create} from './crud_page/Create';
 
@@ -100,7 +103,8 @@ return (
         </NavigationMenu>
 
         <Routes>
-            <Route path="/login" element={<LoginPage/>}/>
+            <Route path="/login" element={<LoginForm/>}/>
+            <Route path="/signup" element={<SignUpForm/>}/>
             <Route path="/dashboard" element={<ExercisesPage/>}/>
             <Route path="/edit-profile" element={<DialogModal />}/>
             <Route path="/table" element={<TableComponent />}/>
