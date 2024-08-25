@@ -46,6 +46,27 @@ class CustomNavigationMenu extends Component {
           </NavigationMenuContent>
         </NavigationMenuItem>
 
+        <h2>endpoints: </h2>
+        <Link to="http://localhost:3000/login" className="text-muted-foreground transition-colors hover:text-foreground">
+           /login
+        </Link>
+        <Link to="http://localhost:3000/signup" className="text-muted-foreground transition-colors hover:text-foreground">
+            /signup
+          </Link>
+          <Link to="http://localhost:3000/dashboard" className="text-muted-foreground transition-colors hover:text-foreground">
+            /dashboard
+          </Link>
+          <Link to="http://localhost:3000/edit-profile" className="text-muted-foreground transition-colors hover:text-foreground">
+          /edit-profile
+          </Link>
+          <Link to="http://localhost:3000/table" className="text-muted-foreground transition-colors hover:text-foreground">
+          /table
+          </Link>
+          <Link to="http://localhost:3000/form" className="text-muted-foreground transition-colors hover:text-foreground">
+          /form
+          </Link>
+
+
 
       </NavigationMenuList>
     </NavigationMenu>
