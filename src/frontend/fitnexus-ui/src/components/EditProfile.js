@@ -12,57 +12,60 @@ import {
 import { Input } from "../components_ui/ui/input"
 import { Label } from "../components_ui/ui/label"
 
-export function DialogModal() {
+export function EditProfile() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Editar perfil o crear ejercicio</Button>
+        <Button variant="outline">Editar perfil</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Editar perfil o crear ejercicio </DialogTitle>
+          <DialogTitle>Editar perfil</DialogTitle>
           <DialogDescription>
-            Haz cambios a tu perfil aquí. Haz click en Guardar cuando hayas terminado.
+            Haz cambios a tu perfil aquí.
+          </DialogDescription>
+          <DialogDescription>
+            Haz click en Guardar cuando hayas terminado.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
+            <Label htmlFor="nombre" className="text-right">
+              Nombre
             </Label>
             <Input
-              id="name"
-              defaultValue="Pedro Duarte"
+              id="nombre"
+              defaultValue="Alex"
               className="col-span-3"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
+            <Label htmlFor="apellido" className="text-right">
+              Apellido
             </Label>
             <Input
-              id="username"
-              defaultValue="@peduarte"
+              id="apellido"
+              defaultValue="Orquera"
               className="col-span-3"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Nombre ejercicio
+              <Label htmlFor="nombreDeUsuario" className="text-right">
+                Nombre de usuario
               </Label>
               <Input
-                id="name"
-                defaultValue="Press banca"
+                id="nombreDeUsuario"
+                defaultValue="aorquera"
                 className="col-span-3"
               />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Repeticiones
+              <Label htmlFor="email" className="text-right">
+                Email
               </Label>
               <Input
-                id="name"
-                defaultValue="5"
+                id="email"
+                defaultValue="aorquera@email.com"
                 className="col-span-3"
               />
           </div>
@@ -75,4 +78,4 @@ export function DialogModal() {
   )
 }
 
-export default DialogModal
+export default EditProfile

@@ -15,7 +15,8 @@ import { Button } from "./components_ui/ui/button"
 
 import HeaderComponent from './components/HeaderComponent';
 
-import DialogModal from './components/DialogModal';
+import EditProfile from './components/EditProfile';
+import CreateExercise from './components/CreateExercise';
 
 import TableComponent from './components/TableComponent';
 
@@ -27,9 +28,6 @@ import CustomNavigationMenu from './components/CustomNavigationMenu';
 
 //import {Home} from './crud_page/Home';
 //import {Create} from './crud_page/Create';
-
-import {ExercisesPage} from './pages/exercises-page';
-import {LoginPage} from './pages/login-page';
 
 function App () {
     const [data, setData] = useState([]); //useState to store data from server
@@ -75,9 +73,9 @@ return (
         <Routes>
             <Route path="/login" element={<LoginForm/>}/>
             <Route path="/signup" element={<SignUpForm/>}/>
-            <Route path="/dashboard" element={<ExercisesPage/>}/>
-            <Route path="/edit-profile" element={<DialogModal />}/>
-            <Route path="/table" element={<TableComponent />}/>
+            <Route path="/edit-profile" element={<EditProfile />}/>
+            <Route path="/create-exercise" element={<CreateExercise />}/>
+            <Route path="/ejercicios" element={<TableComponent />}/>
             <Route path="/form" element={<CustomForm />}/>
         </Routes>
     </BrowserRouter>

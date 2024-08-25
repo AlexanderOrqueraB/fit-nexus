@@ -11,21 +11,50 @@ import {
 export function TableComponent() {
   return (
   <Table>
-    <TableCaption>A list of your recent invoices.</TableCaption>
+    <TableCaption>Lista de ejercicios</TableCaption>
     <TableHeader>
       <TableRow>
-        <TableHead className="w-[100px]">Invoice</TableHead>
-        <TableHead>Status</TableHead>
-        <TableHead>Method</TableHead>
-        <TableHead className="text-right">Amount</TableHead>
+        <TableHead className="w-[200px]">Nombre de ejercicio</TableHead>
+        <TableHead className="w-[200px]">Repeticiones</TableHead>
+        <TableHead className="w-[200px]">Serie</TableHead>
+        <TableHead className="w-[200px]">Peso</TableHead>
+        <TableHead className="w-[200px]">Cardio realizado</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
       <TableRow>
-        <TableCell className="font-medium">INV001</TableCell>
-        <TableCell>Paid</TableCell>
-        <TableCell>Credit Card</TableCell>
-        <TableCell className="text-right">$250.00</TableCell>
+        <TableCell className="font-medium">Press banca</TableCell>
+        <TableCell className="w-[200px]">5</TableCell>
+        <TableCell className="w-[200px]">5</TableCell>
+        <TableCell className="w-[200px]">30</TableCell>
+        <TableCell className="w-[200px]">FALSE</TableCell>
+      </TableRow>
+    </TableBody>
+    <TableBody>
+      <TableRow>
+        <TableCell className="font-medium">Dominadas</TableCell>
+        <TableCell className="w-[200px]">5</TableCell>
+        <TableCell className="w-[200px]">5</TableCell>
+        <TableCell className="w-[200px]">30</TableCell>
+        <TableCell className="w-[200px]">FALSE</TableCell>
+      </TableRow>
+    </TableBody>
+    <TableBody>
+      <TableRow>
+        <TableCell className="font-medium">Peso muerto</TableCell>
+        <TableCell className="w-[200px]">5</TableCell>
+        <TableCell className="w-[200px]">5</TableCell>
+        <TableCell className="w-[200px]">30</TableCell>
+        <TableCell className="w-[200px]">FALSE</TableCell>
+      </TableRow>
+    </TableBody>
+    <TableBody>
+      <TableRow>
+        <TableCell className="font-medium">Cinta </TableCell>
+        <TableCell className="w-[200px]">1</TableCell>
+        <TableCell className="w-[200px]">1</TableCell>
+        <TableCell className="w-[200px]">45</TableCell>
+        <TableCell className="w-[200px]">TRUE</TableCell>
       </TableRow>
     </TableBody>
   </Table>
