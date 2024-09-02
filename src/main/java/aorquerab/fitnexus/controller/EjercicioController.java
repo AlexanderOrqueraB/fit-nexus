@@ -67,27 +67,28 @@ public class EjercicioController {
         return ResponseEntity.status(HttpStatus.OK).body(ejercicioDTO);
     }
 
-    /*@PostMapping(path = "/api/project/{projectId}/person")
-    public ProjectDTO addPerson(@PathVariable long projectId, @RequestBody @Valid PersonDTO personDTO) {
-        Project savedProject = projectRepository.findById(projectId).get();
-
-        savedProject.getPeople().add(new Person(personDTO.getName()));
-
-        Project updatedProject = projectRepository.save(savedProject);
-        return ProjectTransformer.transform(updatedProject);
-    }*/
-
     @PostMapping
     public ResponseEntity<String> postEjercicio(
-            @Valid @RequestBody Ejercicio ejercicio) {
+            @Valid @RequestBody EjercicioDTO ejercicioDTO) {
         log.info("Ejecutando postEjercicio...");
-        if(ejercicio == null) {
+        if(ejercicioDTO == null) {
             throw new InvalidRequestException("Peticion de ejercicio no valida");
         }
-        ejercicioRepository.save(ejercicio);
+        Ejercicio ejercicioActualizado = EjercicioDTOMapper.mapperFromEjercicioDTO(ejercicioDTO);
+        ejercicioRepository.save(ejercicioActualizado);
         log.info("postEjercicio ejecutado.");
         return ResponseEntity.status(HttpStatus.CREATED).body("Ejercicio creado correctamente.");
     }
+
+    /*@PostMapping(path = "/api/project/{projectId}/person")
+public ProjectDTO addPerson(@PathVariable long projectId, @RequestBody @Valid PersonDTO personDTO) {
+    Project savedProject = projectRepository.findById(projectId).get();
+
+    savedProject.getPeople().add(new Person(personDTO.getName()));
+
+    Project updatedProject = projectRepository.save(savedProject);
+    return ProjectTransformer.transform(updatedProject);
+}*/
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping ("/actualizarEjercicio/{idEjercicio}")
@@ -95,35 +96,14 @@ public class EjercicioController {
             @PathVariable Long idEjercicio,
             @RequestBody EjercicioDTO ejercicioDTO) {
         log.info("Ejecutando actualizarEjercicio...");
+        if(ejercicioDTO == null) {
+            throw new InvalidRequestException("Peticion de ejercicio no valida");
+        }
         EjercicioDTO ejercicioActualizadoDTO = getEjercicioById(idEjercicio).getBody();
-                    Ejercicio aux = EjercicioDTOMapper.mapperFromEjercicioDTO(ejercicioDTO);
-        ejercicioActualizadoDTO.setNombreEjercicio(ejercicioDTO.getNombreEjercicio());
-                    ejercicioActualizadoDTO.setNombreEjercicio(aux.getNombreEjercicio());
-        ejercicioActualizadoDTO.setRepeticion(ejercicioDTO.getRepeticion());
-        ejercicioActualizadoDTO.setSerie(ejercicioDTO.getSerie());
-        ejercicioActualizadoDTO.setPeso(ejercicioDTO.getPeso());
-        ejercicioActualizadoDTO.setCardioRealizado(ejercicioDTO.getCardioRealizado());
-
-        /*Opcion ENTRENADOR CONTROLLER
-        *         Entrenador entrenadorActualizado =  entrenadorRepository.findById(idEntrenador)
-                .map(e -> {
-                        e.setFitNexusId(entrenador.getFitNexusId());
-                        e.setNombre(entrenador.getNombre());
-                        e.setApellido(entrenador.getApellido());
-                        e.setNombreDeUsuario(e.getNombreDeUsuario());
-                        e.setEmail(entrenador.getEmail());
-                        e.setAsesorNutricional(entrenador.getAsesorNutricional());
-                        return entrenadorRepository.save(e);
-                }).orElseGet(()-> {
-                    return entrenadorRepository.save(entrenador);
-                });
-         */
-
-        /*Opcion: */
-
         Ejercicio ejercicioActualizado = EjercicioDTOMapper.mapperFromEjercicioDTO(ejercicioActualizadoDTO);
         ejercicioRepository.save(ejercicioActualizado);
         log.info("actualizarEjercicio ejecutado.");
+        //TODO: testear NullPointerExceptions con varios US variando al request
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -133,7 +113,7 @@ public class EjercicioController {
         Optional<Ejercicio> ejercicio = ejercicioRepository.findById(idEjercicio);
         if(ejercicio.isEmpty()) {
             log.info("Ejercicio {} no encontrado en base de datos", idEjercicio);
-            //TODO: throw new EntidadNotFoundException(HttpStatus.NOT_FOUND, "Ejercicio no encontrado en BD");
+            throw new EjercicioNotFoundException("Ejercicio no encontrado en BD: " + idEjercicio);
         }
         else ejercicioRepository.delete(ejercicio.get());
     }

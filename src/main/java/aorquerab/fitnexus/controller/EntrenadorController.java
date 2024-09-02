@@ -35,15 +35,36 @@ public class EntrenadorController {
         return ResponseEntity.status(HttpStatus.OK).body(entrenador);
     }
 
-    @GetMapping ("/{idEntrenador}")
-    public ResponseEntity<Entrenador> getEntrenadorById(@PathVariable Long idEntrenador) {
-        log.info("Ejecutando getEntrenadorById...");
-        Optional<Entrenador> entrenadorById = entrenadorRepository.findById(idEntrenador);
-        if(entrenadorById.isEmpty()) {
-            log.info("Entrenador {} no encontrado en base de datos", idEntrenador);
-            throw new EntrenadorNotFoundException("Ejercicio no encontrado en BD: " + idEntrenador);
+    //TODO: WIP and move them after complete, login and signup endpoints:
+
+    @PostMapping("/login")
+    public ResponseEntity<String> loginEntrenador (
+            @RequestBody Entrenador entrenador) {
+        log.info("Ejecutando postEntrenador...");
+        if(entrenador == null) {
+            throw new InvalidRequestException("Peticion de entrenador no valida");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(entrenadorById.get());
+        entrenadorRepository.save(entrenador);
+        log.info("postEntrenador ejecutado.");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Entrenador creado correctamente");
+    }
+
+    //TODO: POST ENTRENADOR  Tiene que haber 2 post
+    //TODO: 1. Al hacer signup con nombre, apellido, email y password
+
+
+    //TODO: 2, con asesorNutricional, fitNexusId es generado igual que nombreUsuario
+
+    @PostMapping("/signup")
+    public ResponseEntity<String> signupEntrenador (
+            @RequestBody Entrenador entrenador) {
+        log.info("Ejecutando postEntrenador...");
+        if(entrenador == null) {
+            throw new InvalidRequestException("Peticion de entrenador no valida");
+        }
+        entrenadorRepository.save(entrenador);
+        log.info("postEntrenador ejecutado.");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Entrenador creado correctamente");
     }
 
     @PostMapping
@@ -57,6 +78,18 @@ public class EntrenadorController {
         log.info("postEntrenador ejecutado.");
         return ResponseEntity.status(HttpStatus.CREATED).body("Entrenador creado correctamente");
     }
+
+    @GetMapping ("/{idEntrenador}")
+    public ResponseEntity<Entrenador> getEntrenadorById(@PathVariable Long idEntrenador) {
+        log.info("Ejecutando getEntrenadorById...");
+        Optional<Entrenador> entrenadorById = entrenadorRepository.findById(idEntrenador);
+        if(entrenadorById.isEmpty()) {
+            log.info("Entrenador {} no encontrado en base de datos", idEntrenador);
+            throw new EntrenadorNotFoundException("Ejercicio no encontrado en BD: " + idEntrenador);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(entrenadorById.get());
+    }
+
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{idEntrenador}")
