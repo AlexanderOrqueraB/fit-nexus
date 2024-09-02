@@ -138,6 +138,7 @@ public class EjercicioController {
         else ejercicioRepository.delete(ejercicio.get());
     }
 
+    //TODO endpoint to modify the weight of an specific exercise
     //CUSTOM REQUEST
     @GetMapping("/nombreEjercicio/{nombreEjercicio}")
     public List<Ejercicio> findEjerciciosPorNombre (@PathVariable String nombreEjercicio) {
