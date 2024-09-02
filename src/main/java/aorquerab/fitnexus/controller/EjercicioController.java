@@ -128,11 +128,11 @@ public class EjercicioController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping ("/borrarEjercicio/{idEjercicio}")
-    public void borrarEjercicio (@PathVariable Long id) {
+    public void borrarEjercicio (@PathVariable Long idEjercicio) {
         log.info("Ejecutando borrarEjercicio...");
-        Optional<Ejercicio> ejercicio = ejercicioRepository.findById(id);
+        Optional<Ejercicio> ejercicio = ejercicioRepository.findById(idEjercicio);
         if(ejercicio.isEmpty()) {
-            log.info("Ejercicio {} no encontrado en base de datos", id);
+            log.info("Ejercicio {} no encontrado en base de datos", idEjercicio);
             //TODO: throw new EntidadNotFoundException(HttpStatus.NOT_FOUND, "Ejercicio no encontrado en BD");
         }
         else ejercicioRepository.delete(ejercicio.get());
