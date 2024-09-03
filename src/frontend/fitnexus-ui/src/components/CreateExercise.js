@@ -13,7 +13,75 @@ import { Input } from "../components_ui/ui/input"
 import { Label } from "../components_ui/ui/label"
 
 export function CreateExercise() {
+
+    const [data, setData] = useState({ //useState to store data from server
+        nombreEjercicio: "",
+        repeticion: "",
+        serie:"",
+        peso: "",
+        cardioRealizado: ""
+    });
+
+    const handleChange = (e) => {
+        const value = e.target.value;
+        setData({
+            ...data,
+            [e.target.name]: value
+        });
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const userData = {
+            nombreEjercicio: data.nombreEjercicio,
+            repeticion: data.repeticion,
+            serie: data.serie,
+            peso: data.peso ,
+            cardioRealizado: data.cardioRealizado
+        };
+        axios.post("http://localhost:8080/api/ejercicios", userData).then((response) => {
+          console.log(response.status, response.data.token);
+        });
+      };
+
+
+//    const api = axios.create({
+//        baseURL: "http://localhost:8080/api/",
+//        headers: {
+//            "Content-type": "application/json"
+//        }
+//    });
+//
+//    const fetchData = () => {
+//        axios.get(baseURL)
+//            .then(response => {
+//                setData(response.data);
+//            })
+//            .catch(error => {
+//                console.log(error);
+//            });
+//    }
+//
+//    useEffect( () => {
+//        fetchData();
+//    }, []) //empty array ensures that the effect only runs once
+
   return (
+
+  //    <ul>
+  //        {user && user.length > 0 && user.map ( (userObj,index) => (
+  //        <li key = {userObj._id}> {userObj.email} </li>
+  //        <div key={ejercicio.id}>
+  //        <div>
+  //            Ejercicio: {ejercicio.nombreEjercicio}
+  //        </div>
+  //        ))}
+  //    </ul>
+  //    <div>
+  //        {data.map(item => (
+  //            <p key={item.id}> {item.title} </p>
+  //        ))}
+  //    </div>
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">Crear ejercicio</Button>

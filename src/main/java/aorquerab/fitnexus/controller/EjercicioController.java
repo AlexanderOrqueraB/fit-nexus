@@ -52,7 +52,6 @@ public class EjercicioController {
         }
         List<EjercicioDTO> ejercicioDTO = EjercicioDTOMapper.mapperFromList(ejercicio);
         return ResponseEntity.status(HttpStatus.OK).body(ejercicioDTO);
-
     }
 
     @GetMapping ("/{idEjercicio}")
