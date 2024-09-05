@@ -47,7 +47,7 @@ class CustomNavigationMenu extends Component {
         </NavigationMenuItem>
 
         <h4>endpoints: </h4>
-        <Link to="http://localhost:3000/login" className="text-muted-foreground transition-colors hover:text-foreground">
+        <Link to="/login" className="text-muted-foreground transition-colors hover:text-foreground">
            /login
         </Link>
         <Link to="http://localhost:3000/signup" className="text-muted-foreground transition-colors hover:text-foreground">
