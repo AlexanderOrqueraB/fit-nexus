@@ -68,16 +68,21 @@ export function CreateExercise() {
         cardioRealizado: ""
     });
 
-      const onSubmit = (e) => {
-        e.preventDefault();
+      const onSubmit = () => { //(e) => {
+        //e.preventDefault();
         const userData = {
-            nombreEjercicio: data.nombreEjercicio,
-            repeticion: data.repeticion,
-            serie: data.serie,
-            peso: data.peso ,
-            cardioRealizado: data.cardioRealizado
+//            nombreEjercicio: data.nombreEjercicio,
+//            repeticion: data.repeticion,
+//            serie: data.serie,
+//            peso: data.peso ,
+//            cardioRealizado: data.cardioRealizado
+            nombreEjercicio: "PB",
+            repeticion: "4",
+            serie: "4",
+            peso: "4" ,
+            cardioRealizado: "false"
         };
-        axios.post("http://localhost:8080/api/ejercicios", userData)
+        axios.post("http://localhost:8080/api/v1/ejercicios", userData)
         .then((response) => {
           console.log(response.status, response.data.token);
         }).catch(console.error("Axios post error"));
