@@ -53,12 +53,12 @@ export function CreateExercise() {
 
     // Handle changes on inputs
     const handleChange = (e) => {
-        const value = e.target.value;
+        const { name, value } = e.target;
         setData({
-            ...data,
-            [e.target.name]: value
+          ...data,
+          [name]: value,
         });
-    }
+      };
 
       const onSubmit = (e) => {
         e.preventDefault(); //prevent refresh on page
@@ -75,15 +75,14 @@ export function CreateExercise() {
 //            peso: "4" ,
 //            cardioRealizado: "false"
         };
-        console.log("data.nombreEjercicio: ", data.nombreEjercicio);
-        console.log("data: ", data);
-        console.log("userData: ", userData);
-
+        console.log("Enviando datos: ", userData);
 
         axios.post("http://localhost:8080/api/v1/ejercicios", userData)
         .then((response) => {
-          console.log(response.status, response.data.token);
-        }).catch(console.error("Axios post error"));
+          console.log("Respuesta del servidor: ", response.data);
+        }).catch((error) => {
+                  console.error("Error en la petición: ", error);
+                });
       };
 
   return (
@@ -122,7 +121,10 @@ export function CreateExercise() {
                 Nombre del ejercicio
               </Label>
               <Input
-                id="name"
+                id="nombreEjercicio"
+                name="nombreEjercicio"
+                value={data.nombreEjercicio}
+                onChange={handleChange}
                 defaultValue="Press banca"
                 className="col-span-3"
               />
@@ -133,6 +135,10 @@ export function CreateExercise() {
               </Label>
               <Input
                 id="repeticion"
+                name="repeticion"
+                type="number"
+                value={data.repeticion}
+                onChange={handleChange}
                 defaultValue="5"
                 className="col-span-3"
               />
@@ -143,8 +149,13 @@ export function CreateExercise() {
                 </Label>
                 <Input
                   id="serie"
+                  name="serie"
+                  type="number"
+                  value={data.serie}
+                  onChange={handleChange}
                   defaultValue="5"
                   className="col-span-3"
+
                 />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -153,17 +164,24 @@ export function CreateExercise() {
                 </Label>
                 <Input
                   id="peso"
+                  name="peso"
+                  type="number"
+                  value={data.peso}
+                  onChange={handleChange}
                   defaultValue="30"
                   className="col-span-3"
                 />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="cardioRealizado" className="text-right">
-                  Cardio (Si, no)
+                  Cardio (TRUE, FALSE)
                 </Label>
                 <Input
                   id="cardioRealizado"
-                  defaultValue="No"
+                  name="cardioRealizado"
+                  value={data.cardioRealizado}
+                  onChange={handleChange}
+                  defaultValue="false"
                   className="col-span-3"
                 />
             </div>
