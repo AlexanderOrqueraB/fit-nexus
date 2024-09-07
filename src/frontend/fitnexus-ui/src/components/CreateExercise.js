@@ -20,18 +20,6 @@ const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
 export function CreateExercise() {
 
-/*     
-
-    const handleChange = (e) => {
-        const value = e.target.value;
-        setData({
-            ...data,
-            [e.target.name]: value
-        });
-    }
-
-     */
-
 
 //    const api = axios.create({
 //        baseURL: "http://localhost:8080/api/",
@@ -54,11 +42,6 @@ export function CreateExercise() {
 //        fetchData();
 //    }, []) //empty array ensures that the effect only runs once
 
-      const printEFE = (e) => {
-        console.log('hola aAsfsdf');
-        
-      }
-
       useState ({});
       const [data, setData] = useState({ //useState to store data from server
         nombreEjercicio: "",
@@ -68,20 +51,35 @@ export function CreateExercise() {
         cardioRealizado: ""
     });
 
-      const onSubmit = () => { //(e) => {
-        //e.preventDefault();
+    // Handle changes on inputs
+    const handleChange = (e) => {
+        const value = e.target.value;
+        setData({
+            ...data,
+            [e.target.name]: value
+        });
+    }
+
+      const onSubmit = (e) => {
+        e.preventDefault(); //prevent refresh on page
         const userData = {
-//            nombreEjercicio: data.nombreEjercicio,
-//            repeticion: data.repeticion,
-//            serie: data.serie,
-//            peso: data.peso ,
-//            cardioRealizado: data.cardioRealizado
-            nombreEjercicio: "PB",
-            repeticion: "4",
-            serie: "4",
-            peso: "4" ,
-            cardioRealizado: "false"
+            nombreEjercicio: data.nombreEjercicio,
+            repeticion: data.repeticion,
+            serie: data.serie,
+            peso: data.peso ,
+            cardioRealizado: data.cardioRealizado
+
+//            nombreEjercicio: "PB",
+//            repeticion: "4",
+//            serie: "4",
+//            peso: "4" ,
+//            cardioRealizado: "false"
         };
+        console.log("data.nombreEjercicio: ", data.nombreEjercicio);
+        console.log("data: ", data);
+        console.log("userData: ", userData);
+
+
         axios.post("http://localhost:8080/api/v1/ejercicios", userData)
         .then((response) => {
           console.log(response.status, response.data.token);
