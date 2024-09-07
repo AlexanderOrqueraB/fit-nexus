@@ -56,7 +56,7 @@ class CustomNavigationMenu extends Component {
           <Link to="http://localhost:3000/edit-profile" className="text-muted-foreground transition-colors hover:text-foreground">
           /edit-profile
           </Link>
-          <Link to="http://localhost:3000/create-exercise" className="text-muted-foreground transition-colors hover:text-foreground">
+          <Link to="/create-exercise" className="text-muted-foreground transition-colors hover:text-foreground">
           /create-exercise
           </Link>
           <Link to="http://localhost:3000/ejercicios" className="text-muted-foreground transition-colors hover:text-foreground">
