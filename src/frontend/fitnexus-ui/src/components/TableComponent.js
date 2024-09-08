@@ -1,3 +1,6 @@
+import React, { useRef, useState, useEffect } from "react"; //(2)
+import axios from "axios";
+
 import {
   Table,
   TableBody,
@@ -7,8 +10,36 @@ import {
   TableHeader,
   TableRow,
 } from "../components_ui/ui/table"
+import { Button } from "../components_ui/ui/button";
 
 export function TableComponent() {
+
+  const handleClick = () => {
+    axios
+      .get("http://localhost:8080/api/v1/ejercicios")
+      //.delete(URL)
+      .then ((response) => {
+        console.log("Respuesta del servidor: ", response.data);
+      })
+      .catch((error) => {
+        console.log(error.message)
+      })
+  }
+  
+  //    const fetchData = () => {
+//        axios.get(baseURL)
+//            .then(response => {
+//                setData(response.data);
+//            })
+//            .catch(error => {
+//                console.log(error);
+//            });
+//    }
+//
+//    useEffect( () => {
+//        fetchData();
+//    }, []) //empty array ensures that the effect only runs once
+
   return (
   <Table>
     <TableCaption>Lista de ejercicios</TableCaption>
@@ -30,33 +61,7 @@ export function TableComponent() {
         <TableCell className="w-[200px]">FALSE</TableCell>
       </TableRow>
     </TableBody>
-    <TableBody>
-      <TableRow>
-        <TableCell className="font-medium">Dominadas</TableCell>
-        <TableCell className="w-[200px]">5</TableCell>
-        <TableCell className="w-[200px]">5</TableCell>
-        <TableCell className="w-[200px]">30</TableCell>
-        <TableCell className="w-[200px]">FALSE</TableCell>
-      </TableRow>
-    </TableBody>
-    <TableBody>
-      <TableRow>
-        <TableCell className="font-medium">Peso muerto</TableCell>
-        <TableCell className="w-[200px]">5</TableCell>
-        <TableCell className="w-[200px]">5</TableCell>
-        <TableCell className="w-[200px]">30</TableCell>
-        <TableCell className="w-[200px]">FALSE</TableCell>
-      </TableRow>
-    </TableBody>
-    <TableBody>
-      <TableRow>
-        <TableCell className="font-medium">Cinta </TableCell>
-        <TableCell className="w-[200px]">1</TableCell>
-        <TableCell className="w-[200px]">1</TableCell>
-        <TableCell className="w-[200px]">45</TableCell>
-        <TableCell className="w-[200px]">TRUE</TableCell>
-      </TableRow>
-    </TableBody>
+    <Button onClick={handleClick}>Click para obtener ejercicios</Button>
   </Table>
 )
 }

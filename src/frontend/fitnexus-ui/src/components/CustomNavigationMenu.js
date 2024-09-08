@@ -48,23 +48,23 @@ class CustomNavigationMenu extends Component {
 
         <h4>endpoints: </h4>
         <Link to="/login" className="text-muted-foreground transition-colors hover:text-foreground">
-           /login
+            /login
         </Link>
-        <Link to="http://localhost:3000/signup" className="text-muted-foreground transition-colors hover:text-foreground">
+        <Link to="/signup" className="text-muted-foreground transition-colors hover:text-foreground">
             /signup
-          </Link>
-          <Link to="http://localhost:3000/edit-profile" className="text-muted-foreground transition-colors hover:text-foreground">
-          /edit-profile
-          </Link>
-          <Link to="/create-exercise" className="text-muted-foreground transition-colors hover:text-foreground">
-          /create-exercise
-          </Link>
-          <Link to="http://localhost:3000/ejercicios" className="text-muted-foreground transition-colors hover:text-foreground">
-          /ejercicios
-          </Link>
-          <Link to="http://localhost:3000/form" className="text-muted-foreground transition-colors hover:text-foreground">
-          /form
-          </Link>
+        </Link>
+        <Link to="/edit-profile" className="text-muted-foreground transition-colors hover:text-foreground">
+            /edit-profile
+        </Link>
+        <Link to="/create-exercise" className="text-muted-foreground transition-colors hover:text-foreground">
+            /create-exercise
+        </Link>
+        <Link to="/ejercicios" className="text-muted-foreground transition-colors hover:text-foreground">
+            /ejercicios
+        </Link>
+        <Link to="/form" className="text-muted-foreground transition-colors hover:text-foreground">
+            /form
+        </Link>
 
 
 
