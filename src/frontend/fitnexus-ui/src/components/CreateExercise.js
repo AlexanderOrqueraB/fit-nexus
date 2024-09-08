@@ -15,6 +15,8 @@ import {
 } from "../components_ui/ui/dialog"
 import { Input } from "../components_ui/ui/input"
 import { Label } from "../components_ui/ui/label"
+import { useNavigate } from "react-router-dom";
+import { useToast } from "../components_ui/ui/use-toast";
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -61,6 +63,7 @@ export function CreateExercise() {
       console.log("Enviando datos: ", userData);
 
         axios.post("http://localhost:8080/api/v1/ejercicios", userData)
+        //.put(URL, userData)
         .then((response) => {
           console.log("Respuesta del servidor: ", response.data);
         })
@@ -68,9 +71,24 @@ export function CreateExercise() {
           console.error("Error en la petición: ", error);
         });
       };
+    
+      const navigate = useNavigate();
+      const handleClick = () => {
+        navigate('/ejercicios')
+      }
+
+      //const {toast} = useToast();
+      const toggle = () => {
+        const {toast} = useToast();
+        toast ({
+          title: "Scheduled: Catch up",
+          description: "Friday, February 10, 2023 at 5:57 PM",
+        })}
+      }
 
   return (
     <Dialog>
+      <Button onClick={handleClick} type="submit">Ver ejercicios</Button>
       <DialogTrigger asChild>
         <Button variant="outline">Crear ejercicio</Button>
       </DialogTrigger>
@@ -156,7 +174,8 @@ export function CreateExercise() {
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={onSubmit} type="submit">Guardar cambios</Button>
+            <Button onClick= {onSubmit} type="submit">Guardar cambios</Button>
+            <Button onClick={toggle}>Toggle test</Button>
           </DialogFooter>
       </DialogContent>
     </Dialog>
