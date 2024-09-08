@@ -28,19 +28,7 @@ export function CreateExercise() {
 //        }
 //    });
 //
-//    const fetchData = () => {
-//        axios.get(baseURL)
-//            .then(response => {
-//                setData(response.data);
-//            })
-//            .catch(error => {
-//                console.log(error);
-//            });
-//    }
-//
-//    useEffect( () => {
-//        fetchData();
-//    }, []) //empty array ensures that the effect only runs once
+
 
       useState ({});
       const [data, setData] = useState({ //useState to store data from server
@@ -60,47 +48,28 @@ export function CreateExercise() {
         });
       };
 
-      const onSubmit = (e) => {
-        e.preventDefault(); //prevent refresh on page
-        const userData = {
-            nombreEjercicio: data.nombreEjercicio,
-            repeticion: data.repeticion,
-            serie: data.serie,
-            peso: data.peso ,
-            cardioRealizado: data.cardioRealizado
-
-//            nombreEjercicio: "PB",
-//            repeticion: "4",
-//            serie: "4",
-//            peso: "4" ,
-//            cardioRealizado: "false"
+    const onSubmit = (e) => {
+      e.preventDefault(); //prevent refresh on page
+      const userData = {
+          nombreEjercicio: data.nombreEjercicio,
+          repeticion: data.repeticion,
+          serie: data.serie,
+          peso: data.peso ,
+          cardioRealizado: data.cardioRealizado
         };
-        console.log("Enviando datos: ", userData);
+
+      console.log("Enviando datos: ", userData);
 
         axios.post("http://localhost:8080/api/v1/ejercicios", userData)
         .then((response) => {
           console.log("Respuesta del servidor: ", response.data);
-        }).catch((error) => {
-                  console.error("Error en la petición: ", error);
-                });
+        })
+        .catch((error) => {
+          console.error("Error en la petición: ", error);
+        });
       };
 
   return (
-
-  //    <ul>
-  //        {user && user.length > 0 && user.map ( (userObj,index) => (
-  //        <li key = {userObj._id}> {userObj.email} </li>
-  //        <div key={ejercicio.id}>
-  //        <div>
-  //            Ejercicio: {ejercicio.nombreEjercicio}
-  //        </div>
-  //        ))}
-  //    </ul>
-  //    <div>
-  //        {data.map(item => (
-  //            <p key={item.id}> {item.title} </p>
-  //        ))}
-  //    </div>
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">Crear ejercicio</Button>
