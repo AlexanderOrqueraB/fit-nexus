@@ -12,6 +12,27 @@ import {
 } from "../components_ui/ui/table"
 import { Button } from "../components_ui/ui/button";
 
+const exercisesHardCoded = [
+  {
+    "nombreEjercicio": "Press banca 1",
+    "repeticion": 5,
+    "serie": 5,
+    "peso": 10,
+  },
+  {
+    "nombreEjercicio": "Press banca 2",
+    "repeticion": 10,
+    "serie": 10,
+    "peso": 10,
+  },
+  {
+    "nombreEjercicio": "Press banca 3",
+    "repeticion": 15,
+    "serie": 15,
+    "peso": 10,
+  },
+]
+
 export function ExerciseComponent() {
 
   useState ({});
@@ -30,7 +51,7 @@ export function ExerciseComponent() {
         console.log(error.message)
       })
   }
-  
+
    useEffect( () => {
     handleClick();
    }, []) //empty array ensures that the effect only runs once
@@ -42,43 +63,23 @@ export function ExerciseComponent() {
       <TableRow>
         <TableHead className="w-[200px]">Nombre de ejercicio</TableHead>
         <TableHead className="w-[200px]">Repeticiones</TableHead>
-        <TableHead className="w-[200px]">Serie</TableHead>
+        <TableHead className="w-[200px]">Series</TableHead>
         <TableHead className="w-[200px]">Peso</TableHead>
         <TableHead className="w-[200px]">Cardio realizado</TableHead>
       </TableRow>
     </TableHeader>
 
-    <TableBody>
-      <TableRow>
-        <TableCell className="font-medium">Press banca</TableCell>
-        <TableCell className="w-[200px]">5</TableCell>
-        <TableCell className="w-[200px]">5</TableCell>
-        <TableCell className="w-[200px]">30</TableCell>
-        <TableCell className="w-[200px]">FALSE</TableCell>
-      </TableRow>
-    </TableBody>
-
-    <TableBody>
-              {response.results.map((row, i) => (
-                <TableRow key={i}>
-                  {row.map((cell, j) => (
-                    <TableCell className="max-w-[220px]" key={j}>
-                      {cell}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-    </TableBody>
-
-    <TableBody>
-      <TableRow>
-        <TableCell className="font-medium">Press banca</TableCell>
-        <TableCell className="w-[200px]">5</TableCell>
-        <TableCell className="w-[200px]">5</TableCell>
-        <TableCell className="w-[200px]">30</TableCell>
-        <TableCell className="w-[200px]">FALSE</TableCell>
-      </TableRow>
-    </TableBody>
+     <TableBody>
+        {exercisesHardCoded.map((exercise) => (
+          <TableRow key={exercise.nombreEjercicio}>
+            <TableCell className="font-medium">{exercise.nombreEjercicio}</TableCell>
+            <TableCell className="w-[200px]">{exercise.repeticion}</TableCell>
+            <TableCell className="w-[200px]">{exercise.serie}</TableCell>
+            <TableCell className="w-[200px]">{exercise.peso}</TableCell>
+            <TableCell className="w-[200px]">truelol</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
 
     <Button onClick={handleClick}>Click para obtener ejercicios</Button>
   </Table>

@@ -79,13 +79,13 @@ export function CreateExercise() {
       }
 
       //const {toast} = useToast();
-      const toggle = () => {
-        const {toast} = useToast();
-        toast ({
-          title: "Scheduled: Catch up",
-          description: "Friday, February 10, 2023 at 5:57 PM",
-        })}
-      }
+//      const toggle = () => {
+//        const {toast} = useToast();
+//        toast ({
+//          title: "Scheduled: Catch up",
+//          description: "Friday, February 10, 2023 at 5:57 PM",
+//        })}
+
 
   return (
     <Dialog>
@@ -176,7 +176,6 @@ export function CreateExercise() {
           </div>
           <DialogFooter>
             <Button onClick= {onSubmit} type="submit">Guardar cambios</Button>
-            <Button onClick={toggle}>Toggle test</Button>
           </DialogFooter>
       </DialogContent>
     </Dialog>
