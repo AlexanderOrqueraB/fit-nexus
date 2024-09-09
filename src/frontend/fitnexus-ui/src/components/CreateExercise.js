@@ -17,29 +17,36 @@ import { Input } from "../components_ui/ui/input"
 import { Label } from "../components_ui/ui/label"
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../components_ui/ui/use-toast";
+import { Toaster } from "../components_ui/ui/toaster"
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
 export function CreateExercise() {
 
-
-//    const api = axios.create({
-//        baseURL: "http://localhost:8080/api/",
-//        headers: {
-//            "Content-type": "application/json"
-//        }
-//    });
-//
-
-
-      useState ({});
-      const [data, setData] = useState({ //useState to store data from server
-        nombreEjercicio: "",
-        repeticion: "",
-        serie:"",
-        peso: "",
-        cardioRealizado: ""
+useEffect(() => {
+    toast({
+      title: "Toast de prueba",
+      description: "Esto es una prueba para ver si el toast funciona.",
     });
+}, []);
+
+    const { toast } = useToast()
+
+    useState ({});
+    const [data, setData] = useState({ //useState to store data from server
+      nombreEjercicio: "",
+      repeticion: "",
+      serie:"",
+      peso: "",
+      cardioRealizado: ""
+      });
+
+      const confirmationToast = () => {
+        toast ({
+                  title: "Ejercicio guardado",
+                  description: "Correctamente",
+                })
+            }
 
     // Handle changes on inputs
     const handleChange = (e) => {
@@ -67,6 +74,10 @@ export function CreateExercise() {
         .then((response) => {
           console.log("Respuesta del servidor: ", response.data);
           console.log("Status: ", response.status);
+          if (response.status === 201) {
+            console.log("Mostrando Toast de Ejercicio Guardado...")
+            confirmationToast();
+          }
         })
         .catch((error) => {
           console.error("Error en la petición: ", error);
@@ -78,17 +89,9 @@ export function CreateExercise() {
         navigate('/ejercicios')
       }
 
-      //const {toast} = useToast();
-//      const toggle = () => {
-//        const {toast} = useToast();
-//        toast ({
-//          title: "Scheduled: Catch up",
-//          description: "Friday, February 10, 2023 at 5:57 PM",
-//        })}
-
-
   return (
     <Dialog>
+      <Button onClick={confirmationToast} type="submit">Ver toast</Button>
       <Button onClick={handleClick} type="submit">Ver ejercicios</Button>
       <DialogTrigger asChild>
         <Button variant="outline">Crear ejercicio</Button>
