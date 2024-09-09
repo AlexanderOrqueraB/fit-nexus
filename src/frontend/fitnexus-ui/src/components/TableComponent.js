@@ -12,33 +12,28 @@ import {
 } from "../components_ui/ui/table"
 import { Button } from "../components_ui/ui/button";
 
-export function TableComponent() {
+export function ExerciseComponent() {
+
+  useState ({});
+  const [data, setData] = useState({});
 
   const handleClick = () => {
     axios
       .get("http://localhost:8080/api/v1/ejercicios")
       //.delete(URL)
       .then ((response) => {
+        setData(response.data);
         console.log("Respuesta del servidor: ", response.data);
+        console.log("Status: ", response.status);
       })
       .catch((error) => {
         console.log(error.message)
       })
   }
   
-  //    const fetchData = () => {
-//        axios.get(baseURL)
-//            .then(response => {
-//                setData(response.data);
-//            })
-//            .catch(error => {
-//                console.log(error);
-//            });
-//    }
-//
-//    useEffect( () => {
-//        fetchData();
-//    }, []) //empty array ensures that the effect only runs once
+   useEffect( () => {
+    handleClick();
+   }, []) //empty array ensures that the effect only runs once
 
   return (
   <Table>
@@ -52,6 +47,7 @@ export function TableComponent() {
         <TableHead className="w-[200px]">Cardio realizado</TableHead>
       </TableRow>
     </TableHeader>
+
     <TableBody>
       <TableRow>
         <TableCell className="font-medium">Press banca</TableCell>
@@ -61,9 +57,32 @@ export function TableComponent() {
         <TableCell className="w-[200px]">FALSE</TableCell>
       </TableRow>
     </TableBody>
+
+    <TableBody>
+              {response.results.map((row, i) => (
+                <TableRow key={i}>
+                  {row.map((cell, j) => (
+                    <TableCell className="max-w-[220px]" key={j}>
+                      {cell}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+    </TableBody>
+
+    <TableBody>
+      <TableRow>
+        <TableCell className="font-medium">Press banca</TableCell>
+        <TableCell className="w-[200px]">5</TableCell>
+        <TableCell className="w-[200px]">5</TableCell>
+        <TableCell className="w-[200px]">30</TableCell>
+        <TableCell className="w-[200px]">FALSE</TableCell>
+      </TableRow>
+    </TableBody>
+
     <Button onClick={handleClick}>Click para obtener ejercicios</Button>
   </Table>
 )
 }
 
-export default TableComponent
+export default ExerciseComponent

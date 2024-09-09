@@ -66,6 +66,7 @@ export function CreateExercise() {
         //.put(URL, userData)
         .then((response) => {
           console.log("Respuesta del servidor: ", response.data);
+          console.log("Status: ", response.status);
         })
         .catch((error) => {
           console.error("Error en la petición: ", error);

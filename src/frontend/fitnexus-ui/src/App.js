@@ -18,7 +18,7 @@ import HeaderComponent from './components/HeaderComponent';
 import EditProfile from './components/EditProfile';
 import CreateExercise from './components/CreateExercise';
 
-import TableComponent from './components/TableComponent';
+import ExerciseComponent from './components/ExerciseComponent';
 
 import CustomForm from './components/CustomForm';
 
@@ -77,7 +77,7 @@ return (
             <Route path="/signup" element={<SignUpForm/>}/>
             <Route path="/edit-profile" element={<EditProfile />}/>
             <Route path="/create-exercise" element={<CreateExercise />}/>
-            <Route path="/ejercicios" element={<TableComponent />}/>
+            <Route path="/ejercicios" element={<ExerciseComponent />}/>
             <Route path="/form" element={<CustomForm />}/>
         </Routes>
     </BrowserRouter>
