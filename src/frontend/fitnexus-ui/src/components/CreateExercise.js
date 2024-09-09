@@ -17,20 +17,13 @@ import { Input } from "../components_ui/ui/input"
 import { Label } from "../components_ui/ui/label"
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../components_ui/ui/use-toast";
-import { Toaster } from "../components_ui/ui/toaster"
+import { ToastAction } from "../components_ui/ui/toast";
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
 export function CreateExercise() {
 
-useEffect(() => {
-    toast({
-      title: "Toast de prueba",
-      description: "Esto es una prueba para ver si el toast funciona.",
-    });
-}, []);
-
-    const { toast } = useToast()
+    
 
     useState ({});
     const [data, setData] = useState({ //useState to store data from server
@@ -41,9 +34,13 @@ useEffect(() => {
       cardioRealizado: ""
       });
 
+      const { toast } = useToast()
+      
       const confirmationToast = () => {
+        console.log("toast sdfsd")
+        const hola = "ff";
         toast ({
-                  title: "Ejercicio guardado",
+             title: "Ejercicio guardado",
                   description: "Correctamente",
                 })
             }
@@ -92,6 +89,20 @@ useEffect(() => {
   return (
     <Dialog>
       <Button onClick={confirmationToast} type="submit">Ver toast</Button>
+      <Button
+      variant="outline"
+      onClick={() => {
+        toast({
+          title: "Scheduled: Catch up ",
+          description: "Friday, February 10, 2023 at 5:57 PM",
+          action: (
+            <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
+          ),
+        })
+      }}
+    >
+      Add to calendarsdf
+    </Button>
       <Button onClick={handleClick} type="submit">Ver ejercicios</Button>
       <DialogTrigger asChild>
         <Button variant="outline">Crear ejercicio</Button>
@@ -184,5 +195,6 @@ useEffect(() => {
     </Dialog>
   )
 }
+
 
 export default CreateExercise
