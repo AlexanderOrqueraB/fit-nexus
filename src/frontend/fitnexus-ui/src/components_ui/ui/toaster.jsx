@@ -1,4 +1,4 @@
-import { useToast } from "src/components_ui/ui/use-toast"
+import { useToast } from "src/components_ui/hooks/use-toast"
 import {
   Toast,
   ToastClose,
