@@ -1,4 +1,3 @@
-import { waitFor } from "@testing-library/react";
 import axios from "axios";
 import { Button } from "../components_ui/ui/button"
 import React, { useRef, useState, useEffect } from "react"; //(2)
@@ -16,14 +15,11 @@ import {
 import { Input } from "../components_ui/ui/input"
 import { Label } from "../components_ui/ui/label"
 import { useNavigate } from "react-router-dom";
-import { useToast } from "../components_ui/ui/use-toast";
-import { ToastAction } from "../components_ui/ui/toast";
+import { Toaster, toast } from 'sonner'
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
 export function CreateExercise() {
-
-    
 
     useState ({});
     const [data, setData] = useState({ //useState to store data from server
@@ -34,16 +30,14 @@ export function CreateExercise() {
       cardioRealizado: ""
       });
 
-      const { toast } = useToast()
       
       const confirmationToast = () => {
-        console.log("toast sdfsd")
-        const hola = "ff";
-        toast ({
-             title: "Ejercicio guardado",
-                  description: "Correctamente",
-                })
-            }
+        toast.success('My first toast')
+      }
+
+      const errorToast = () => {
+        toast.error('My first toast')
+      }
 
     // Handle changes on inputs
     const handleChange = (e) => {
@@ -88,21 +82,9 @@ export function CreateExercise() {
 
   return (
     <Dialog>
-      <Button onClick={confirmationToast} type="submit">Ver toast</Button>
-      <Button
-      variant="outline"
-      onClick={() => {
-        toast({
-          title: "Scheduled: Catch up ",
-          description: "Friday, February 10, 2023 at 5:57 PM",
-          action: (
-            <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
-          ),
-        })
-      }}
-    >
-      Add to calendarsdf
-    </Button>
+      <Toaster expand={false} position="top-right" richColors closeButton  />
+      <Button onClick={confirmationToast} type="submit">Confirmation</Button>
+      <Button onClick={errorToast} type="submit">Error</Button>
       <Button onClick={handleClick} type="submit">Ver ejercicios</Button>
       <DialogTrigger asChild>
         <Button variant="outline">Crear ejercicio</Button>
