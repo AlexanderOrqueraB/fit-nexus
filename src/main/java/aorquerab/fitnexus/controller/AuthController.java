@@ -1,6 +1,7 @@
 package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.DTOs.LoginTemp;
+import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.repository.AuthRepository;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +33,15 @@ public class AuthController {
 
     @PostMapping ("/login")
     public ResponseEntity<String> postLogin (
-        @RequestBody LoginTemp loginTemp
-    )
-
-    //TODO: Make cheat login post with hardcoded validation
+        @RequestBody LoginTemp loginTemp) {
+        log.info("Ejecutando postLogin...");
+        if(loginTemp == null) {
+            throw new InvalidRequestException("Peticion de login no valida");
+        }
+        if ((loginTemp.getEmail().equals("admin")) && (loginTemp.getPassword().equals("admin"))) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("Eres el admin.");
+        }
+        else return ResponseEntity.status(HttpStatus.CREATED).body("No eres el admin");
+    }
 
 }
