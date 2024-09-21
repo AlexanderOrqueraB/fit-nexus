@@ -35,7 +35,7 @@ export function EditProfile() {
             </Label>
             <Input
               id="nombre"
-              defaultValue="Alex"
+              placeholder="Alex"
               className="col-span-3"
             />
           </div>
@@ -45,7 +45,7 @@ export function EditProfile() {
             </Label>
             <Input
               id="apellido"
-              defaultValue="Orquera"
+              placeholder="Orquera"
               className="col-span-3"
             />
           </div>
@@ -55,7 +55,7 @@ export function EditProfile() {
               </Label>
               <Input
                 id="nombreDeUsuario"
-                defaultValue="aorquera"
+                placeholder="aorquera"
                 className="col-span-3"
               />
           </div>
@@ -65,7 +65,7 @@ export function EditProfile() {
               </Label>
               <Input
                 id="email"
-                defaultValue="aorquera@email.com"
+                placeholder="aorquera@email.com"
                 className="col-span-3"
               />
           </div>

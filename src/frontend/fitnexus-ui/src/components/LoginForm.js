@@ -1,6 +1,9 @@
+import axios from "axios";
 import {Link} from 'react-router-dom'
 import { Button } from "../components_ui/ui/button"
 import dumbbell from "../images/db2.PNG"
+import React, { useRef, useState, useEffect } from "react"; //(2)
+
 import {
   Card,
   CardContent,
@@ -10,8 +13,58 @@ import {
 } from "../components_ui/ui/card"
 import { Input } from "../components_ui/ui/input"
 import { Label } from "../components_ui/ui/label"
+import { Toaster, toast } from 'sonner'
 
 export function LoginForm() {
+  
+  useState ({});
+  const [data, setData] = useState({ //useState to store data from server
+    email: "",
+    password: "",
+    });
+    
+    const confirmationToast = () => {
+      toast.success('My first toast')
+    }
+
+    const errorToast = () => {
+      toast.error('My first toast')
+    }
+
+  // Handle changes on inputs
+  const handleChange = (e) => {
+      const { name, value } = e.target;
+      setData({
+        ...data,
+        [name]: value,
+      });
+    };
+
+  const onSubmit = (e) => {
+    e.preventDefault(); //prevent refresh on page
+    const userData = {
+        email: data.email,
+        password: data.password
+      };
+
+    console.log("Datos de login: ", userData);
+
+      axios.post("http://localhost:8080/api/v1/login", userData)
+      .then((response) => {
+        console.log("Respuesta del servidor: ", response.data);
+        console.log("Status: ", response.status);
+        if (response.status === 200) {
+          console.log("Mostrando Toast de Login Okay...")
+          confirmationToast();
+        }
+      })
+      .catch((error) => {
+        console.error("Error en la petición: ", error);
+      });
+    };
+
+
+
   return (
   <div className="w-full lg:grid lg:min-h lg:grid-cols-2 xl:min-h-[800px]">
     <Card className="mx-auto max-w-sm">
@@ -27,7 +80,10 @@ export function LoginForm() {
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
+              name="email"
               type="email"
+              value={data.email}
+              onChange={handleChange}
               placeholder="mi.email@ejemplo.com"
               required
             />
@@ -36,10 +92,18 @@ export function LoginForm() {
             <div className="flex items-center">
               <Label htmlFor="password">Contraseña</Label>
             </div>
-            <Input id="password" type="password" required />
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              value={data.password}
+              onChange={handleChange}
+              placeholder="Introduce tu contraseña"
+              required
+            />          
           </div>
-          <Button type="submit" className="w-full">
-          Iniciar sesión
+          <Button onClick= {onSubmit} type="submit" className="w-full">
+              Iniciar sesión
           </Button>
         </div>
         <div className="mt-4 text-center text-sm">

@@ -29,7 +29,6 @@ export function CreateExercise() {
       peso: "",
       cardioRealizado: ""
       });
-
       
       const confirmationToast = () => {
         toast.success('My first toast')
@@ -58,7 +57,7 @@ export function CreateExercise() {
           cardioRealizado: data.cardioRealizado
         };
 
-      console.log("Enviando datos: ", userData);
+      console.log("Enviando los siguientes datos: ", userData);
 
         axios.post("http://localhost:8080/api/v1/ejercicios", userData)
         //.put(URL, userData)
@@ -109,7 +108,7 @@ export function CreateExercise() {
                 name="nombreEjercicio"
                 value={data.nombreEjercicio}
                 onChange={handleChange}
-                defaultValue="Press banca"
+                placeholder="Press banca"
                 className="col-span-3"
               />
             </div>
@@ -123,7 +122,7 @@ export function CreateExercise() {
                 type="number"
                 value={data.repeticion}
                 onChange={handleChange}
-                defaultValue="5"
+                placeholder="5"
                 className="col-span-3"
               />
             </div>
@@ -137,7 +136,7 @@ export function CreateExercise() {
                   type="number"
                   value={data.serie}
                   onChange={handleChange}
-                  defaultValue="5"
+                  placeholder="5"
                   className="col-span-3"
 
                 />
@@ -152,7 +151,7 @@ export function CreateExercise() {
                   type="number"
                   value={data.peso}
                   onChange={handleChange}
-                  defaultValue="30"
+                  placeholder="30"
                   className="col-span-3"
                 />
             </div>
@@ -165,7 +164,7 @@ export function CreateExercise() {
                   name="cardioRealizado"
                   value={data.cardioRealizado}
                   onChange={handleChange}
-                  defaultValue="false"
+                  placeholder="false"
                   className="col-span-3"
                 />
             </div>

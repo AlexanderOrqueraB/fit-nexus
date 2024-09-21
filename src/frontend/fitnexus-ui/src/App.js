@@ -71,8 +71,7 @@ return (
     <BrowserRouter>
         <CustomNavigationMenu /> 
         <Routes>
-            //TODO Añadir una ruta home
-            <Route path="/home" element={<CustomNavigationMenu />} />
+            <Route path="/" element={<LoginForm/>}/>
             <Route path="/login" element={<LoginForm/>}/>
             <Route path="/signup" element={<SignUpForm/>}/>
             <Route path="/edit-profile" element={<EditProfile />}/>
