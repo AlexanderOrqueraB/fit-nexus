@@ -3,14 +3,10 @@ package aorquerab.fitnexus.controller;
 import aorquerab.fitnexus.model.DTOs.LoginTemp;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.repository.AuthRepository;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
@@ -35,13 +31,17 @@ public class AuthController {
     public ResponseEntity<String> postLogin (
         @RequestBody LoginTemp loginTemp) {
         log.info("Ejecutando postLogin...");
+        log.info("LoginTemp: {}", loginTemp);
         if(loginTemp == null) {
             throw new InvalidRequestException("Peticion de login no valida");
         }
+        if (loginTemp.getEmail() == null || loginTemp.getPassword() == null) {
+            throw new InvalidRequestException("Email o contraseña no pueden ser nulos.");
+        } //TODO sustituir esto por un optional
         if ((loginTemp.getEmail().equals("admin")) && (loginTemp.getPassword().equals("admin"))) {
-            return ResponseEntity.status(HttpStatus.CREATED).body("Eres el admin.");
+            return ResponseEntity.status(HttpStatus.OK).body("Eres el admin.");
         }
-        else return ResponseEntity.status(HttpStatus.CREATED).body("No eres el admin");
+        else return ResponseEntity.status(HttpStatus.OK).body("No eres el admin");
     }
 
 }

@@ -40,6 +40,14 @@ export function LoginForm() {
       });
     };
 
+  const navigate = useNavigate();
+  const sendToAdminPage = () => {
+    navigate('/adminpage')
+  }
+  const sendToNormalPage = () => {
+    navigate('/normalpage')
+  }
+
   const onSubmit = (e) => {
     e.preventDefault(); //prevent refresh on page
     const userData = {
@@ -56,6 +64,12 @@ export function LoginForm() {
         if (response.status === 200) {
           console.log("Mostrando Toast de Login Okay...")
           confirmationToast();
+          if (response.data.email === "admin") {
+            sendToAdminPage();
+          }
+          else if (response.data.email === "noadmin") {
+            sendToNormalPage ();
+          }
         }
       })
       .catch((error) => {
