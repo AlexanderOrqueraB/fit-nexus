@@ -26,6 +26,9 @@ import LoginForm from './components/LoginForm';
 import SignUpForm from './components/SignUpForm';
 import CustomNavigationMenu from './components/CustomNavigationMenu';
 
+import AdminPageComponent from './components/AdminPageComponent';
+import NormalPageComponent from './components/NormalPageComponent';
+
 //import {Home} from './crud_page/Home';
 //import {Create} from './crud_page/Create';
 
@@ -77,6 +80,8 @@ return (
             <Route path="/edit-profile" element={<EditProfile />}/>
             <Route path="/create-exercise" element={<CreateExercise />}/>
             <Route path="/ejercicios" element={<ExerciseComponent />}/>
+            <Route path="/adminpage" element={<AdminPageComponent />}/>
+            <Route path="/normalpage" element={<NormalPageComponent />}/>
             <Route path="/form" element={<CustomForm />}/>
         </Routes>
     </BrowserRouter>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {Link} from 'react-router-dom'
+import { Link, useNavigate} from 'react-router-dom'
 import { Button } from "../components_ui/ui/button"
 import dumbbell from "../images/db2.PNG"
 import React, { useRef, useState, useEffect } from "react"; //(2)
@@ -61,14 +61,18 @@ export function LoginForm() {
       .then((response) => {
         console.log("Respuesta del servidor: ", response.data);
         console.log("Status: ", response.status);
+        //TODO: Modificar la respuesta del servidor (que devuelva ROLE por ej) 'role'
+        const userRole = response.data.role; // 'admin' o 'normal' por ejemplo
         if (response.status === 200) {
           console.log("Mostrando Toast de Login Okay...")
           confirmationToast();
-          if (response.data.email === "admin") {
+          if (userData.email === "admin") {
+            console.log("Redireccionando a pagina admin");
             sendToAdminPage();
           }
-          else if (response.data.email === "noadmin") {
+          else if (userData.email === "noadmin") {
             sendToNormalPage ();
+            console.log("Redireccionando a pagina admin");
           }
         }
       })
