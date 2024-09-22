@@ -11,7 +11,7 @@ import {
   NavigationMenuViewport,
 } from '../components_ui/ui/navigation-menu'
 
-class CustomNavigationMenu extends Component {
+class NavigationMenuAdmin extends Component {
   constructor(props) {
     super(props)
 
@@ -74,4 +74,4 @@ class CustomNavigationMenu extends Component {
   }
 }
 
-export default CustomNavigationMenu
+export default NavigationMenuAdmin

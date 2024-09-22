@@ -32,6 +32,7 @@ export function LoginForm() {
     }
 
   // Handle changes on inputs
+  //...data: make a duplicate of a previous state everytime the data change to avoid overwriting
   const handleChange = (e) => {
       const { name, value } = e.target;
       setData({

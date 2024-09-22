@@ -24,7 +24,7 @@ import CustomForm from './components/CustomForm';
 
 import LoginForm from './components/LoginForm';
 import SignUpForm from './components/SignUpForm';
-import CustomNavigationMenu from './components/CustomNavigationMenu';
+
 
 import AdminPageComponent from './components/AdminPageComponent';
 import NormalPageComponent from './components/NormalPageComponent';
@@ -72,7 +72,7 @@ return (
 //        ))}
 //    </div>
     <BrowserRouter>
-        <CustomNavigationMenu /> 
+        <br></br>
         <Routes>
             <Route path="/" element={<LoginForm/>}/>
             <Route path="/login" element={<LoginForm/>}/>
