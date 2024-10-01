@@ -1,5 +1,5 @@
-package aorquerab.fitnexus.model.security;
+package aorquerab.fitnexus.model.enumeration;
 
 public enum Role {
-    ADMIN,USER
+    ADMIN, USER
 }

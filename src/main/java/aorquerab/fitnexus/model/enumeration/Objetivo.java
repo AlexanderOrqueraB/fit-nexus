@@ -1,5 +1,5 @@
 package aorquerab.fitnexus.model.enumeration;
 
-public enum Role {
-    ADMIN,USER
+public enum Objetivo {
+    PERDER_GRASA, GANAR_MUSCULO
 }
