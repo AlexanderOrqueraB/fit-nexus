@@ -1,5 +1,7 @@
 package aorquerab.fitnexus.model.DTOs;
 
+import aorquerab.fitnexus.model.enumeration.Genero;
+import aorquerab.fitnexus.model.enumeration.Objetivo;
 import aorquerab.fitnexus.model.enumeration.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class EntrenadorDTO {
+public class ClienteDTO {
 
     //login
     private String nombre;
@@ -19,5 +21,9 @@ public class EntrenadorDTO {
     private String password;
     private Role role;
 
-    private Boolean asesorNutricional;
+    private Objetivo objetivo;
+    private Genero genero;
+    private Integer edad;
+    private Integer peso;
+    private Integer altura;
 }

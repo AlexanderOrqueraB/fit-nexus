@@ -27,13 +27,8 @@ CREATE TABLE IF NOT EXISTS entrenador (
     apellido VARCHAR (100) NOT NULL,
     email VARCHAR (100) NOT NULL,
     password VARCHAR (100) NOT NULL,
-    asesor_nutricional BOOLEAN,
     role VARCHAR (100) NOT NULL,
-    objetivo VARCHAR (100) NOT NULL,
-    genero VARCHAR (100) NOT NULL,
-    edad INT NOT NULL,
-    peso INT NOT NULL,
-    altura INT NOT NULL,
+    asesor_nutricional BOOLEAN,
     version INT
 );
 
@@ -95,14 +90,14 @@ CREATE TABLE IF NOT EXISTS cliente (
     fit_nexus_id uuid,
     nombre VARCHAR (100) NOT NULL,
     apellido VARCHAR (100) NOT NULL,
-    nombre_de_usuario VARCHAR (100) NOT NULL,
+    email VARCHAR (100) NOT NULL,
+    password VARCHAR (100) NOT NULL,
+    role VARCHAR (100) NOT NULL,
+    objetivo VARCHAR (100) NOT NULL,
+    genero VARCHAR (100) NOT NULL,
     edad INT NOT NULL,
     peso INT NOT NULL,
     altura INT NOT NULL,
-    genero BOOLEAN,
-    email VARCHAR (100) NOT NULL,
-    media_pasos INT NOT NULL,
-    objetivo VARCHAR (100) NOT NULL,
     entrenador_id INT,
     CONSTRAINT fk_entrenador
         FOREIGN KEY(entrenador_id)

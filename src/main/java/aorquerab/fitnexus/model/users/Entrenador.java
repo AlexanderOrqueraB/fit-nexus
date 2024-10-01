@@ -4,8 +4,6 @@ import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PautaNutricional;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
-import aorquerab.fitnexus.model.enumeration.Genero;
-import aorquerab.fitnexus.model.enumeration.Objetivo;
 import aorquerab.fitnexus.model.enumeration.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -43,18 +41,9 @@ public class Entrenador {
     private String email;
     @JsonIgnore
     private String password;
-    private Boolean asesorNutricional;
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    //DTO
-    @Enumerated(EnumType.STRING)
-    private Objetivo objetivo;
-    @Enumerated(EnumType.STRING)
-    private Genero genero;
-    private Integer edad;
-    private Integer peso;
-    private Integer altura;
+    private Boolean asesorNutricional;
 
     public void setPassword (String password) {
         this.password = PASSWORD_ENCODER.encode(password);
