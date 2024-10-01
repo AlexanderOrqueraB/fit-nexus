@@ -25,9 +25,15 @@ CREATE TABLE IF NOT EXISTS entrenador (
     fit_nexus_id uuid,
     nombre VARCHAR (100) NOT NULL,
     apellido VARCHAR (100) NOT NULL,
-    nombre_de_usuario VARCHAR (100) NOT NULL,
     email VARCHAR (100) NOT NULL,
+    password VARCHAR (100) NOT NULL,
     asesor_nutricional BOOLEAN,
+    role VARCHAR (100) NOT NULL,
+    objetivo VARCHAR (100) NOT NULL,
+    genero VARCHAR (100) NOT NULL,
+    edad INT NOT NULL,
+    peso INT NOT NULL,
+    altura INT NOT NULL,
     version INT
 );
 
