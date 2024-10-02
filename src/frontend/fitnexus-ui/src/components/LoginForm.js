@@ -62,23 +62,23 @@ export function LoginForm() {
       .then((response) => {
         console.log("Respuesta del servidor: ", response.data);
         console.log("Status: ", response.status);
-        //TODO: Modificar la respuesta del servidor (que devuelva ROLE por ej) 'role'
-        const userRole = response.data.role; // 'admin' o 'normal' por ejemplo
         if (response.status === 200) {
+          const userRole = response.data.role;
+          localStorage.setItem("userRole", userRole);
           console.log("Mostrando Toast de Login Okay...")
           confirmationToast();
-          if (userData.email === "admin") {
+          if (userRole === "ADMIN") {
             console.log("Redireccionando a pagina admin");
             sendToAdminPage();
           }
-          else if (userData.email === "noadmin") {
+          else if (userRole === "USER") {
             sendToNormalPage ();
             console.log("Redireccionando a pagina admin");
           }
         }
       })
       .catch((error) => {
-        console.error("Error en la petición: ", error);
+        console.error("Error en la autenticación: ", error);
       });
     };
 

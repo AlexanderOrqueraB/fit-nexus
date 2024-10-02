@@ -53,18 +53,18 @@ export function SignUpForm() {
             .then((response) => {
             console.log("Respuesta del servidor: ", response.data);
             console.log("Status: ", response.status);
-            if (response.status === 200) {
+            if (response.status === 201) {
                 console.log("Mostrando Toast de Login Okay...")
-                if (userData.email === "admin") {
+                if (userRole === "ADMIN") {
                     console.log("Redireccionando a pagina admin");
                 }
-                else if (userData.email === "noadmin") {
-                    console.log("Redireccionando a pagina admin");
+                else if (userRole === "USER") {
+                    console.log("Redireccionando a pagina no admin");
                 }
             }
         })
             .catch((error) => {
-            console.error("Error en la petición: ", error);
+            console.error("Error en el proceso de registro: ", error);
         });
     };
 

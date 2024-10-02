@@ -28,7 +28,8 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/index.html", "/notfound.html", "static/**").permitAll()
-                        .requestMatchers("http://localhost:8080/signup").permitAll()
+                        .requestMatchers("/api/v1/login").permitAll()
+                        .requestMatchers("/api/v1/signup").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form.loginPage("/").permitAll())
                 .userDetailsService(customUserDetailsService)
