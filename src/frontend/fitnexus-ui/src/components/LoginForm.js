@@ -127,8 +127,11 @@ export function LoginForm() {
         </div>
         <div className="mt-4 text-center text-sm">
           No tienes una cuenta?{" "}
-          <Link to="http://localhost:3000/signup" className="underline">
-            Regístrate
+          <Link to="http://localhost:8000/signup" className="underline">
+            Regístrate 3000
+          </Link>
+          <Link to="http://localhost:8080/signup" className="underline">
+          Regístrate 8080
           </Link>
         </div>
       </CardContent>

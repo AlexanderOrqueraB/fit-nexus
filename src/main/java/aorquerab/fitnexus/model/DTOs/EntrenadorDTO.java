@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EntrenadorDTO {
 
-    //login
+    //form registro
     private String nombre;
     private String apellido;
     private String email;

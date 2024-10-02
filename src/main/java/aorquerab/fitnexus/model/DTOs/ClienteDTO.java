@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ClienteDTO {
 
-    //login
+    //form registro
     private String nombre;
     private String apellido;
     private String email;

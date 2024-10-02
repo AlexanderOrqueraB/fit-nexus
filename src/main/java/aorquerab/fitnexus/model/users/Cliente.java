@@ -38,7 +38,7 @@ public class Cliente {
     @JsonIgnore
     private Integer version;
 
-    //DTO login
+    //DTO registro
     private String nombre;
     private String apellido;
     private String email;

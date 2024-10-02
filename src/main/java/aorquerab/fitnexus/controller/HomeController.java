@@ -29,5 +29,28 @@ public class HomeController {
         //@Controller returns a String and Spring understand that as a view page-> index.html
     }
 
+//    @GetMapping ("/auth")
+//    public ResponseEntity<String> getAuthentication () {
+//        log.info("Ejecutando getAuth...");
+//        String authentication = "Testeando GET /auth endpoint";
+//        return ResponseEntity.status(HttpStatus.OK).body(authentication);
+//    }
+
+//    @PostMapping ("/login")
+//    public ResponseEntity<String> postLogin (
+//        @RequestBody LoginTemp loginTemp) {
+//        log.info("Ejecutando postLogin...");
+//        log.info("LoginTemp: {}", loginTemp);
+//        if(loginTemp == null) {
+//            throw new InvalidRequestException("Peticion de login no valida");
+//        }
+//        if (loginTemp.getEmail() == null || loginTemp.getPassword() == null) {
+//            throw new InvalidRequestException("Email o contraseña no pueden ser nulos.");
+//        }
+//        if ((loginTemp.getEmail().equals("admin")) && (loginTemp.getPassword().equals("admin"))) {
+//            return ResponseEntity.status(HttpStatus.OK).body("Eres el admin.");
+//        }
+//        else return ResponseEntity.status(HttpStatus.OK).body("No eres el admin");
+//    }
 
 }

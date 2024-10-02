@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,10 +29,19 @@ public class EjercicioController {
         this.ejercicioRepository = ejercicioRepository;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/get")
     public ResponseEntity<String> getDummyController() {
         log.info("Ejecutando dummy GET ENDPOINT...");
         String body = "Dummy GET ejecutado correctamente!";
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/getadmin")
+    public ResponseEntity<String> getDummyAdminController() {
+        log.info("Ejecutando dummy GET ENDPOINT...");
+        String body = "Dummy GET ADMIN ejecutado correctamente!";
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
