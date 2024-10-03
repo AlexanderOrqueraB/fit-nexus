@@ -37,7 +37,7 @@ export function SignUpForm() {
 			role: data.role,
 		};
 
-		if (password !== confirmPassword) {
+		if (userData.password !== userData.confirmPassword) {
 			throw new Error('Las contraseñas no coinciden...');
 		}
 
@@ -50,9 +50,9 @@ export function SignUpForm() {
 				console.log('Status: ', response.status);
 				if (response.status === 201) {
 					console.log('Mostrando Toast de Login Okay...');
-					if (userRole === 'ADMIN') {
+					if (response.data.role === 'ADMIN') {
 						console.log('Redireccionando a pagina admin');
-					} else if (userRole === 'USER') {
+					} else if (response.data.role === 'USER') {
 						console.log('Redireccionando a pagina no admin');
 					}
 				}
