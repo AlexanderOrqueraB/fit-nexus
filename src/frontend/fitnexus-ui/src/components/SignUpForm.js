@@ -33,7 +33,6 @@ export function SignUpForm() {
 			apellido: data.apellido,
 			email: data.email,
 			password: data.password,
-			confirmPassword: data.confirmPassword,
 			role: data.role,
 		};
 
@@ -131,19 +130,22 @@ export function SignUpForm() {
 								required
 							/>
 						</div>
-						<select className="grid gap-2">
+						<div className="grid gap-2">
 							<Label htmlFor="role">Role</Label>
-							<Input
+							<select
 								id="role"
 								name="role"
-								type="text"
+								className="border rounded p-2"
 								value={data.role}
 								onChange={handleChange}
 								required
 							/>
-							<option value="ROLE_ADMIN"> Entrenador </option>
-							<option value="ROLE_USER"> Cliente </option>
-						</select>
+							<option value="" disabled>
+								Selecciona un rol
+							</option>
+							<option value="ADMIN"> Entrenador </option>
+							<option value="USER"> Cliente </option>
+						</div>
 						<Button onClick={onSubmit} type="submit" className="w-full">
 							Crear una cuenta
 						</Button>

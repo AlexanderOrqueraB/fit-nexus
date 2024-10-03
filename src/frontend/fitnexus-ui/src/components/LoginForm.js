@@ -65,6 +65,7 @@ export function LoginForm() {
         if (response.status === 200) {
           const userRole = response.data.role;
           localStorage.setItem("userRole", userRole);
+          console.log("Rol del usuario:", userRole);
           console.log("Mostrando Toast de Login Okay...")
           confirmationToast();
           if (userRole === "ADMIN") {

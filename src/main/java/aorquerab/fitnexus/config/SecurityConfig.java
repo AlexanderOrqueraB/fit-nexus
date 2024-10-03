@@ -26,8 +26,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .csrf(crsf->crsf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/index.html", "/notfound.html", "static/**").permitAll()
+                        .requestMatchers("/adminpage","/index.html", "/notfound.html", "static/**").permitAll()
+                        .requestMatchers("/").permitAll()
                         .requestMatchers("/api/v1/login").permitAll()
                         .requestMatchers("/api/v1/signup").permitAll()
                         .anyRequest().authenticated())

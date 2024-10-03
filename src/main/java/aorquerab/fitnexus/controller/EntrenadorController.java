@@ -110,7 +110,6 @@ public class EntrenadorController {
                         e.setFitNexusId(entrenador.getFitNexusId());
                         e.setNombre(entrenador.getNombre());
                         e.setApellido(entrenador.getApellido());
-                        e.setNombreDeUsuario(e.getNombreDeUsuario());
                         e.setEmail(entrenador.getEmail());
                         e.setAsesorNutricional(entrenador.getAsesorNutricional());
                         return entrenadorRepository.save(e);

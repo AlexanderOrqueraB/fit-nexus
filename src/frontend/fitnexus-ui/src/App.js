@@ -1,6 +1,6 @@
 import axios from "axios"; //(1)
 import React, { useRef, useState, useEffect } from "react"; //(2)
-import {BrowserRouter, Routes, Route, Switch} from 'react-router-dom'
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 
 import { AlertCircle } from "lucide-react"
@@ -34,7 +34,24 @@ import NormalPageComponent from './components/NormalPageComponent';
 
 function App () {
     const [data, setData] = useState([]); //useState to store data from server
+    const [userRole, setUserRole] = useState(null); // Almacenará el rol del usuario
 
+    useEffect(() => {
+        // Obtener el rol del usuario del localStorage al cargar el componente
+        const role = localStorage.getItem("userRole");
+        console.log("Rol al cargar el componente:", role);
+        setUserRole(role);
+
+        const handleStorageChange = () => {
+            const newRole = localStorage.getItem("userRole");
+            setUserRole(newRole);
+        };
+
+        window.addEventListener("storage", handleStorageChange);
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+        };
+    }, []);
 //    const api = axios.create({
 //        baseURL: "http://localhost:8080/api/",
 //        headers: {
@@ -75,13 +92,16 @@ return (
         <br></br>
         <Routes>
             <Route path="/" element={<LoginForm/>}/>
-            <Route path="/login" element={<LoginForm/>}/>
             <Route path="/signup" element={<SignUpForm/>}/>
             <Route path="/edit-profile" element={<EditProfile />}/>
             <Route path="/create-exercise" element={<CreateExercise />}/>
             <Route path="/ejercicios" element={<ExerciseComponent />}/>
-            <Route path="/adminpage" element={<AdminPageComponent />}/>
-            <Route path="/normalpage" element={<NormalPageComponent />}/>
+            <Route path="/adminpage"
+                element={userRole === "ADMIN" ? <AdminPageComponent /> : <Navigate to="/" />}
+            />
+            <Route path="/normalpage"
+                element={userRole === "USER" ? <NormalPageComponent /> : <Navigate to="/" />}
+            />
             <Route path="/form" element={<CustomForm />}/>
         </Routes>
     </BrowserRouter>
