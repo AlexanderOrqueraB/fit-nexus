@@ -23,7 +23,7 @@ class NavigationMenuUser extends Component {
       <NavigationMenu>
       <NavigationMenuList>
 
-          <Link to="http://localhost:8080/" className="text-muted-foreground transition-colors hover:text-foreground">
+          <Link to="http://localhost:3000/dashboard" className="text-muted-foreground transition-colors hover:text-foreground">
             FIT NEXUS
           </Link>
 

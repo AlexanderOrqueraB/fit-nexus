@@ -9,6 +9,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   NavigationMenuViewport,
+  navigationMenuTriggerStyle
 } from '../components_ui/ui/navigation-menu'
 
 class NavigationMenuAdmin extends Component {
@@ -22,51 +23,75 @@ class NavigationMenuAdmin extends Component {
     return (
       <NavigationMenu>
       <NavigationMenuList>
-
-          <Link to="http://localhost:8080/" className="text-muted-foreground transition-colors hover:text-foreground">
+          <Link to="http://localhost:3000/dashboard-admin" className="text-muted-foreground transition-colors hover:text-foreground">
             FIT NEXUS
           </Link>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger>LOGIN</NavigationMenuTrigger>
+          <Link to="http://localhost:3000/tbd" className="bg-opacity-70">
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              CLIENTES
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+
+      <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>ENTRENAMIENTOS</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <NavigationMenuLink>
-            <Link to="http://localhost:3000/login" className="underline">login posibles links</Link>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <Link to="http://localhost:3000/tbd">Planes de entrenamiento tbd</Link>
+            </NavigationMenuLink>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <Link to="http://localhost:3000/tbd">Rutinas tbd</Link>
+            </NavigationMenuLink>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <Link to="http://localhost:3000/ejercicios">Ver ejercicios</Link>
             </NavigationMenuLink>
           </NavigationMenuContent>
         </NavigationMenuItem>
-
+      </NavigationMenuList>
+    </NavigationMenu>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger>SIGN UP</NavigationMenuTrigger>
+          <Link to="http://localhost:3000/tbd" className="bg-opacity-70">
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              DIETA
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+
+      <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>WORKOUT BUILDER</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <NavigationMenuLink>
-              <Link to="http://localhost:3000/signup" className="underline">sing up posibles links</Link>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <Link to="http://localhost:3000/tbd">Planes de entrenamiento tbd</Link>
+            </NavigationMenuLink>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <Link to="http://localhost:3000/tbd">Rutinas tbd</Link>
+            </NavigationMenuLink>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <Link to="http://localhost:3000/create-exercise">Crear ejercicios</Link>
             </NavigationMenuLink>
           </NavigationMenuContent>
         </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
 
-        <h4>endpoints: </h4>
-        <Link to="/login" className="text-muted-foreground transition-colors hover:text-foreground">
-            /login
-        </Link>
-        <Link to="/signup" className="text-muted-foreground transition-colors hover:text-foreground">
-            /signup
-        </Link>
-        <Link to="/edit-profile" className="text-muted-foreground transition-colors hover:text-foreground">
-            /edit-profile
-        </Link>
-        <Link to="/create-exercise" className="text-muted-foreground transition-colors hover:text-foreground">
-            /create-exercise
-        </Link>
-        <Link to="/ejercicios" className="text-muted-foreground transition-colors hover:text-foreground">
-            /ejercicios
-        </Link>
+        <NavigationMenuItem>
+          <Link to="http://localhost:3000/edit-profile" className="bg-opacity-70">
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              AVATAR + AJUSTES (edit profile)
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+        
         <Link to="/form" className="text-muted-foreground transition-colors hover:text-foreground">
             /form
         </Link>
-
-
 
       </NavigationMenuList>
     </NavigationMenu>

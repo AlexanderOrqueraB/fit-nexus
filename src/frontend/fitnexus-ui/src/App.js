@@ -105,8 +105,8 @@ return (
             /> */}
             <Route path="/form" element={<CustomForm />}/>
             
-            <Route path="/normalpage" element={<NormalPageComponent />}/>
-            <Route path="/adminpage" element={<AdminPageComponent />}/>
+            <Route path="/dashboard" element={<NormalPageComponent />}/>
+            <Route path="/dashboard-admin" element={<AdminPageComponent />}/>
 
         </Routes>
     </BrowserRouter>

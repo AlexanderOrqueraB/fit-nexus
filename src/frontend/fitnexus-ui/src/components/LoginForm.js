@@ -43,10 +43,10 @@ export function LoginForm() {
 
   const navigate = useNavigate();
   const sendToAdminPage = () => {
-    navigate('/adminpage')
+    navigate('/dashboard-admin')
   }
   const sendToNormalPage = () => {
-    navigate('/normalpage')
+    navigate('/dashboard')
   }
 
   const onSubmit = (e) => {
