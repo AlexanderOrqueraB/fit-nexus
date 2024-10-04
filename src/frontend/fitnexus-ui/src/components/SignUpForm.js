@@ -110,9 +110,25 @@ export function SignUpForm() {
 								type="email"
 								value={data.email}
 								onChange={handleChange}
-								placeholder="pepito@pepitez.com"
+								placeholder="pepito@email.com"
 								required
 							/>
+						</div>
+						<div className="grid gap-2">
+            <Label htmlFor="role">Tipo de usuario</Label>
+								<Select name="role" onValueChange={(value) => setData({ ...data, role: value })}>
+									<SelectTrigger>
+										<SelectValue placeholder="Entrenador" />
+									</SelectTrigger>
+									<SelectContent>
+											<SelectItem  value="ADMIN" required>
+												Entrenador
+											</SelectItem>
+											<SelectItem  value="USER" required>
+                        Cliente
+                      </SelectItem>
+									</SelectContent>
+								</Select>
 						</div>
 						<div className="grid gap-2">
 							<Label htmlFor="password">Contraseña</Label>
@@ -122,7 +138,6 @@ export function SignUpForm() {
 								type="password"
 								value={data.password}
 								onChange={handleChange}
-								placeholder="Introduce tu contraseña"
 								required
 							/>
 						</div>
@@ -134,25 +149,8 @@ export function SignUpForm() {
 								type="password"
 								value={data.confirmPassword}
 								onChange={handleChange}
-								placeholder="Confirma tu contraseña"
 								required
 							/>
-						</div>
-						<div className="grid gap-2">
-								<Select>
-									<SelectTrigger className="w-[280px]">
-										<SelectValue placeholder="Select a timezone" />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectGroup>
-										<SelectLabel>Tipo de usuario</SelectLabel>
-											<SelectItem name="role" value="ADMIN" onValueChange= {handleChange} required>
-												Entrenador
-											</SelectItem>
-											<SelectItem name="role" value="USER">Cliente</SelectItem>
-										</SelectGroup>
-									</SelectContent>
-									</Select>
 						</div>
 						<Button onClick={onSubmit} type="submit" className="w-full">
 							Crear una cuenta
@@ -160,11 +158,14 @@ export function SignUpForm() {
 					</div>
 					<div className="mt-4 text-center text-sm">
 						Tienes ya una cuenta?{' '}
-						<Link to="http://localhost:3000/login" className="underline">
-							Iniciar sesión 3000
-						</Link>
 						<Link to="http://localhost:8080/login" className="underline">
 							Iniciar sesión 8080
+						</Link>
+					</div>
+          <div className="mt-4 text-center text-sm">
+						FRONT REDIR: {' '}
+						<Link to="http://localhost:3000/" className="underline">
+							Iniciar sesión
 						</Link>
 					</div>
 				</div>

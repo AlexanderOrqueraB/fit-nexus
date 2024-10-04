@@ -133,19 +133,34 @@ export function LoginForm() {
           <Button onClick= {onSubmit} type="submit" className="w-full">
               Iniciar sesión
           </Button>
+          <div className="mt-4 text-center text-sm">
+          SOY ADMIN: {" "}
+          <Link to="http://localhost:3000/adminpage" className="underline">
+            IR
+          </Link>
+        </div>
+          <div className="mt-4 text-center text-sm">
+          SOY USER: {" "}
+          <Link to="http://localhost:3000/normalpage" className="underline">
+            IR
+          </Link>
+        </div>
         </div>
         <div className="mt-4 text-center text-sm">
           No tienes una cuenta?{" "}
-          <Link to="http://localhost:8000/signup" className="underline">
-            Regístrate 3000
-          </Link>
           <Link to="http://localhost:8080/signup" className="underline">
           Regístrate 8080
           </Link>
         </div>
+        <div className="mt-4 text-center text-sm">
+          FRONT REDIR: {" "}
+          <Link to="http://localhost:3000/signup" className="underline">
+            Regístrate
+          </Link>
+        </div>
       </CardContent>
     </Card>
-    <div className="hidden bg-muted lg:block">
+    <div className="relative flex-1 hidden lg:flex items-center justify-center bg-muted">
         <img
           src={dumbbell}
           alt="dumbbell"

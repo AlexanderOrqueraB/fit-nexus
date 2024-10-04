@@ -97,13 +97,17 @@ return (
             <Route path="/edit-profile" element={<EditProfile />}/>
             <Route path="/create-exercise" element={<CreateExercise />}/>
             <Route path="/ejercicios" element={<ExerciseComponent />}/>
-            <Route path="/adminpage"
+            {/*<Route path="/adminpage"
                 element={userRole === "ADMIN" ? <AdminPageComponent /> : <Navigate to="/" />}
             />
             <Route path="/normalpage"
                 element={userRole === "USER" ? <NormalPageComponent /> : <Navigate to="/" />}
-            />
+            /> */}
             <Route path="/form" element={<CustomForm />}/>
+            
+            <Route path="/normalpage" element={<NormalPageComponent />}/>
+            <Route path="/adminpage" element={<AdminPageComponent />}/>
+
         </Routes>
     </BrowserRouter>
 )
