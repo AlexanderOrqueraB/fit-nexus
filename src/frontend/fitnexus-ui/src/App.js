@@ -38,6 +38,7 @@ function App () {
 
     useEffect(() => {
         // Obtener el rol del usuario del localStorage al cargar el componente
+        localStorage.removeItem("userRole");
         const role = localStorage.getItem("userRole");
         console.log("Rol al cargar el componente:", role);
         setUserRole(role);

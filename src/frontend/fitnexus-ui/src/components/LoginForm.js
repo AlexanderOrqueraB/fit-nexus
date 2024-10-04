@@ -66,11 +66,15 @@ export function LoginForm() {
       .then((response) => {
         console.log("Respuesta del servidor: ", response.data);
         console.log("Status: ", response.status);
+        if((response.status === 401)){
+          //TODO: toast de error
+        }
         if (response.status === 200) {
           const userRole = response.data.role;
           localStorage.setItem("userRole", userRole);
           console.log("Rol del usuario:", userRole);
           console.log("Mostrando Toast de Login Okay...")
+          //TODO: Toast de confirmacion
           confirmationToast();
           if (userRole === "ADMIN") {
             console.log("Redireccionando a pagina admin");

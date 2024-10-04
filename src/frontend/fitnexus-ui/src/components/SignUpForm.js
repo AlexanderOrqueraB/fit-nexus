@@ -5,6 +5,15 @@ import { Button } from '../components_ui/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components_ui/ui/card';
 import { Input } from '../components_ui/ui/input';
 import { Label } from '../components_ui/ui/label';
+import {
+Select,
+SelectContent,
+SelectGroup,
+SelectItem,
+SelectLabel,
+SelectTrigger,
+SelectValue,
+} from "../components_ui/ui/select"
 
 export function SignUpForm() {
 	useState({});
@@ -35,7 +44,7 @@ export function SignUpForm() {
 			role: data.role,
 		};
 
-		if (userData.password !== userData.confirmPassword) {
+		if (userData.password !== data.confirmPassword) {
 			throw new Error('Las contraseñas no coinciden...');
 		}
 
@@ -130,20 +139,20 @@ export function SignUpForm() {
 							/>
 						</div>
 						<div className="grid gap-2">
-							<Label htmlFor="role">Role</Label>
-							<select
-								id="role"
-								name="role"
-								className="border rounded p-2"
-								value={data.role}
-								onChange={handleChange}
-								required
-							/>
-							<option value="" disabled>
-								Selecciona un rol
-							</option>
-							<option value="ADMIN"> Entrenador </option>
-							<option value="USER"> Cliente </option>
+								<Select>
+									<SelectTrigger className="w-[280px]">
+										<SelectValue placeholder="Select a timezone" />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectGroup>
+										<SelectLabel>Tipo de usuario</SelectLabel>
+											<SelectItem name="role" value="ADMIN" onValueChange= {handleChange} required>
+												Entrenador
+											</SelectItem>
+											<SelectItem name="role" value="USER">Cliente</SelectItem>
+										</SelectGroup>
+									</SelectContent>
+									</Select>
 						</div>
 						<Button onClick={onSubmit} type="submit" className="w-full">
 							Crear una cuenta
