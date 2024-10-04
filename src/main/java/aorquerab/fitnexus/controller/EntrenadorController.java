@@ -35,38 +35,6 @@ public class EntrenadorController {
         return ResponseEntity.status(HttpStatus.OK).body(entrenador);
     }
 
-    //TODO: WIP and move them after complete, login and signup endpoints:
-
-    @PostMapping("/login")
-    public ResponseEntity<String> loginEntrenador (
-            @RequestBody Entrenador entrenador) {
-        log.info("Ejecutando postEntrenador...");
-        if(entrenador == null) {
-            throw new InvalidRequestException("Peticion de entrenador no valida");
-        }
-        entrenadorRepository.save(entrenador);
-        log.info("postEntrenador ejecutado.");
-        return ResponseEntity.status(HttpStatus.CREATED).body("Entrenador creado correctamente");
-    }
-
-    //TODO: POST ENTRENADOR  Tiene que haber 2 post
-    //TODO: 1. Al hacer signup con nombre, apellido, email y password
-
-
-    //TODO: 2, con asesorNutricional, fitNexusId es generado igual que nombreUsuario
-
-    @PostMapping("/signup")
-    public ResponseEntity<String> signupEntrenador (
-            @RequestBody Entrenador entrenador) {
-        log.info("Ejecutando postEntrenador...");
-        if(entrenador == null) {
-            throw new InvalidRequestException("Peticion de entrenador no valida");
-        }
-        entrenadorRepository.save(entrenador);
-        log.info("postEntrenador ejecutado.");
-        return ResponseEntity.status(HttpStatus.CREATED).body("Entrenador creado correctamente");
-    }
-
     @PostMapping
     public ResponseEntity<String> postEntrenador (
             @RequestBody Entrenador entrenador) {

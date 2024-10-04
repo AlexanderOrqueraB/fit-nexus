@@ -9,7 +9,6 @@ import { Label } from '../components_ui/ui/label';
 export function SignUpForm() {
 	useState({});
 	const [data, setData] = useState({
-		//useState to store data from server
 		nombre: '',
 		apellido: '',
 		email: '',
@@ -40,7 +39,7 @@ export function SignUpForm() {
 			throw new Error('Las contraseñas no coinciden...');
 		}
 
-		console.log('Datos de login: ', userData);
+		console.log('Datos de signup: ', userData);
 
 		axios
 			.post('http://localhost:8080/api/v1/signup', userData)

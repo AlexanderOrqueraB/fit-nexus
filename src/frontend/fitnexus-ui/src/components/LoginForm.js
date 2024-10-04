@@ -18,7 +18,7 @@ import { Toaster, toast } from 'sonner'
 export function LoginForm() {
   
   useState ({});
-  const [data, setData] = useState({ //useState to store data from server
+  const [data, setData] = useState({
     email: "",
     password: "",
     });
@@ -55,6 +55,10 @@ export function LoginForm() {
         email: data.email,
         password: data.password
       };
+
+    if (!userData.email || !userData.password) {
+      throw new Error('Por favor introduce ambos campos...');
+    }
 
     console.log("Datos de login: ", userData);
 
