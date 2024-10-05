@@ -54,14 +54,20 @@ public class EjercicioController {
 
     @GetMapping
     public ResponseEntity<List<EjercicioDTO>> getEjercicios() {
-        log.info("Ejecutando getEjercicios...");
-        List<Ejercicio> ejercicio = ejercicioRepository.findAll();
-        if(ejercicio.isEmpty()) {
-            log.info("Ejercicio/s no encontrado/s en base de datos");
-            throw new EjercicioNotFoundException("Ejercicio no encontrado en BD");
+        try {
+            log.info("Ejecutando getEjercicios...");
+            List<Ejercicio> ejercicio = ejercicioRepository.findAll();
+            if(ejercicio.isEmpty()) {
+                log.info("Ejercicio/s no encontrado/s en base de datos");
+                throw new EjercicioNotFoundException("Ejercicio no encontrado en BD");
+            }
+            List<EjercicioDTO> ejercicioDTO = EjercicioDTOMapper.mapperFromList(ejercicio);
+            return ResponseEntity.status(HttpStatus.OK).body(ejercicioDTO);
+        } catch (Exception e) {
+            log.info("Excepcion getExercises: ", e.getMessage());
+            return null;
         }
-        List<EjercicioDTO> ejercicioDTO = EjercicioDTOMapper.mapperFromList(ejercicio);
-        return ResponseEntity.status(HttpStatus.OK).body(ejercicioDTO);
+
     }
 
     @GetMapping ("/{idEjercicio}")

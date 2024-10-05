@@ -4,6 +4,7 @@ import aorquerab.fitnexus.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,7 +33,14 @@ public class SecurityConfig {
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/api/v1/login").permitAll()
                         .requestMatchers("/api/v1/signup").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/api-docs").permitAll()
+
+                        //.requestMatchers("/api/v1/ejercicios").permitAll() FUNSIONA
+                        //.requestMatchers("/api/v1/ejercicios").authenticated()
+                        .requestMatchers("/api/v1/ejercicios").hasRole("USER")
+                        .anyRequest().authenticated()
+                )
+                .httpBasic(Customizer.withDefaults()) //Valido para aceptar las request desde Postman sin redir a loginPage
                 .formLogin(form -> form.loginPage("/").permitAll())
                 .userDetailsService(customUserDetailsService)
                 .build();

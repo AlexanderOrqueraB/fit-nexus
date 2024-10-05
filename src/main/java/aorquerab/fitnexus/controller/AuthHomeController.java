@@ -106,6 +106,8 @@ public class AuthHomeController {
         }
     }
 
+    //TODO: Create endpoint GET to get the role/auth of the current user
+
     @PostMapping("/api/v1/login")
     public ResponseEntity<Map<String, Object>> postLogin(
             @RequestBody LoginDTO loginDTO) {
@@ -123,7 +125,9 @@ public class AuthHomeController {
 
             String userRole = "";
             if (userDetails instanceof CustomUserDetails) {
+                log.info("Obteniendo rol: {}", ((CustomUserDetails) userDetails).getRole());
                 Role role = ((CustomUserDetails) userDetails).getRole();
+                log.info("userRole= {}", role.name());
                 userRole = role.name();
             }
             Map<String, Object> response = new HashMap<>();
