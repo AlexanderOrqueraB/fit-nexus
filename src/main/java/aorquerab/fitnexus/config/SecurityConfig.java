@@ -3,6 +3,7 @@ package aorquerab.fitnexus.config;
 import aorquerab.fitnexus.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -35,9 +36,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/signup").permitAll()
                         .requestMatchers("/api-docs").permitAll()
 
-                        //.requestMatchers("/api/v1/ejercicios").permitAll() FUNSIONA
-                        //.requestMatchers("/api/v1/ejercicios").authenticated()
-                        .requestMatchers("/api/v1/ejercicios").hasRole("USER")
+                        //ROLE ACCESS CONTROL
+                        .requestMatchers(HttpMethod.GET,"/api/v1/ejercicios").hasAnyRole("ADMIN","USER")
+                        .requestMatchers(HttpMethod.POST,"/api/v1/ejercicios").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults()) //Valido para aceptar las request desde Postman sin redir a loginPage
