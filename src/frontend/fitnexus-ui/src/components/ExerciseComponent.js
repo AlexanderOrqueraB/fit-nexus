@@ -81,6 +81,18 @@ export function ExerciseComponent() {
         ))}
       </TableBody>
 
+      <TableBody>
+        {exercisesHardCoded.map((data) => (
+          <TableRow key={data.nombreEjercicio}>
+            <TableCell className="font-medium">{data.nombreEjercicio}</TableCell>
+            <TableCell className="w-[200px]">{data.repeticion}</TableCell>
+            <TableCell className="w-[200px]">{data.serie}</TableCell>
+            <TableCell className="w-[200px]">{data.peso}</TableCell>
+            <TableCell className="w-[200px]">truelol</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+
     <Button onClick={handleClick}>Click para obtener ejercicios</Button>
   </Table>
 )
