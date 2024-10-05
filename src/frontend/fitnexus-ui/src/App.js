@@ -28,6 +28,7 @@ import SignUpForm from './components/SignUpForm';
 
 import AdminPageComponent from './components/AdminPageComponent';
 import NormalPageComponent from './components/NormalPageComponent';
+import TestDashboardList from "./components/TestDashboardList";
 
 //import {Home} from './crud_page/Home';
 //import {Create} from './crud_page/Create';
@@ -97,6 +98,8 @@ return (
             <Route path="/edit-profile" element={<EditProfile />}/>
             <Route path="/create-exercise" element={<CreateExercise />}/>
             <Route path="/ejercicios" element={<ExerciseComponent />}/>
+            <Route path="/testdashboardlist" element={<TestDashboardList />}/>
+
             {/*<Route path="/adminpage"
                 element={userRole === "ADMIN" ? <AdminPageComponent /> : <Navigate to="/" />}
             />

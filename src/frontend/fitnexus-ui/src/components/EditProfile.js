@@ -11,9 +11,11 @@ import {
 } from "../components_ui/ui/dialog"
 import { Input } from "../components_ui/ui/input"
 import { Label } from "../components_ui/ui/label"
+import TestDashboard from "./TestDashboard"
 
 export function EditProfile() {
   return (
+    <div>
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">Editar perfil</Button>
@@ -75,6 +77,8 @@ export function EditProfile() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+    <TestDashboard></TestDashboard>
+    </div>
   )
 }
 

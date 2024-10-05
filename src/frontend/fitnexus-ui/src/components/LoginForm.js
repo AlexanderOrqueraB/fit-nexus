@@ -135,13 +135,13 @@ export function LoginForm() {
           </Button>
           <div className="mt-4 text-center text-sm">
           SOY ADMIN: {" "}
-          <Link to="http://localhost:3000/adminpage" className="underline">
+          <Link to="http://localhost:3000/dashboard-admin" className="underline">
             IR
           </Link>
         </div>
           <div className="mt-4 text-center text-sm">
           SOY USER: {" "}
-          <Link to="http://localhost:3000/normalpage" className="underline">
+          <Link to="http://localhost:3000/dashboard" className="underline">
             IR
           </Link>
         </div>

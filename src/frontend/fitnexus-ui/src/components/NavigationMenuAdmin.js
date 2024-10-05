@@ -27,40 +27,50 @@ class NavigationMenuAdmin extends Component {
             FIT NEXUS
           </Link>
 
-        <NavigationMenuItem>
-          <Link to="http://localhost:3000/tbd" className="bg-opacity-70">
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              CLIENTES
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>CLIENTES</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                <Link to="http://localhost:3000/tbd">Ver clientes</Link>
+              </NavigationMenuLink>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
 
       <NavigationMenu>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>ENTRENAMIENTOS</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              <Link to="http://localhost:3000/tbd">Planes de entrenamiento tbd</Link>
-            </NavigationMenuLink>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              <Link to="http://localhost:3000/tbd">Rutinas tbd</Link>
-            </NavigationMenuLink>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              <Link to="http://localhost:3000/ejercicios">Ver ejercicios</Link>
-            </NavigationMenuLink>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>ENTRENAMIENTOS</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                <Link to="http://localhost:3000/tbd">Planes de entrenamiento tbd</Link>
+              </NavigationMenuLink>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                <Link to="http://localhost:3000/tbd">Rutinas tbd</Link>
+              </NavigationMenuLink>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                <Link to="http://localhost:3000/ejercicios">Ver ejercicios</Link>
+              </NavigationMenuLink>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
 
-        <NavigationMenuItem>
-          <Link to="http://localhost:3000/tbd" className="bg-opacity-70">
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              DIETA
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>DIETA</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                <Link to="http://localhost:3000/tbd">Crear dieta</Link>
+              </NavigationMenuLink>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
 
       <NavigationMenu>
       <NavigationMenuList>
@@ -81,13 +91,18 @@ class NavigationMenuAdmin extends Component {
       </NavigationMenuList>
     </NavigationMenu>
 
+    <NavigationMenu>
+      <NavigationMenuList>
         <NavigationMenuItem>
-          <Link to="http://localhost:3000/edit-profile" className="bg-opacity-70">
+          <NavigationMenuTrigger>Avatar + Ajustes</NavigationMenuTrigger>
+          <NavigationMenuContent>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              AVATAR + AJUSTES (edit profile)
+              <Link to="http://localhost:3000/edit-profile">Editar perfil</Link>
             </NavigationMenuLink>
-          </Link>
+          </NavigationMenuContent>
         </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
         
         <Link to="/form" className="text-muted-foreground transition-colors hover:text-foreground">
             /form

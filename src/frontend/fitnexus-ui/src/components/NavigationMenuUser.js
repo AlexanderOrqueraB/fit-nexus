@@ -9,6 +9,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   NavigationMenuViewport,
+  navigationMenuTriggerStyle
 } from '../components_ui/ui/navigation-menu'
 
 class NavigationMenuUser extends Component {
@@ -22,30 +23,54 @@ class NavigationMenuUser extends Component {
     return (
       <NavigationMenu>
       <NavigationMenuList>
-
           <Link to="http://localhost:3000/dashboard" className="text-muted-foreground transition-colors hover:text-foreground">
             FIT NEXUS
           </Link>
 
+    <NavigationMenu>
+      <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>LOGIN</NavigationMenuTrigger>
+          <NavigationMenuTrigger>ENTRENAMIENTOS</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <NavigationMenuLink>
-            <Link to="http://localhost:3000/login" className="underline">login posibles links</Link>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <Link to="http://localhost:3000/tbd">Planes de entrenamiento tbd</Link>
+            </NavigationMenuLink>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <Link to="http://localhost:3000/tbd">Rutinas tbd</Link>
+            </NavigationMenuLink>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <Link to="http://localhost:3000/ejercicios">Ver ejercicios</Link>
             </NavigationMenuLink>
           </NavigationMenuContent>
         </NavigationMenuItem>
-
-
+      </NavigationMenuList>
+    </NavigationMenu>
+        
+    <NavigationMenu>
+      <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>SIGN UP</NavigationMenuTrigger>
+          <NavigationMenuTrigger>DIETA</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <NavigationMenuLink>
-              <Link to="http://localhost:3000/signup" className="underline">sing up posibles links</Link>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <Link to="http://localhost:3000/tbd">Ver dieta (GET)</Link>
             </NavigationMenuLink>
           </NavigationMenuContent>
         </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
 
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Avatar + Ajustes</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <Link to="http://localhost:3000/edit-profile">Editar perfil</Link>
+            </NavigationMenuLink>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
 
       </NavigationMenuList>
     </NavigationMenu>
