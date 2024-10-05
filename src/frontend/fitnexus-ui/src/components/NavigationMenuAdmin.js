@@ -52,7 +52,10 @@ class NavigationMenuAdmin extends Component {
                 <Link to="http://localhost:3000/tbd">Rutinas tbd</Link>
               </NavigationMenuLink>
               <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                <Link to="http://localhost:3000/ejercicios">Ver ejercicios</Link>
+                <Link to="http://localhost:3000/ejercicios">Ver ejercicios React</Link>
+              </NavigationMenuLink>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                <Link to="http://localhost:8080/ejercicios">Ver ejercicios Spring</Link>
               </NavigationMenuLink>
             </NavigationMenuContent>
           </NavigationMenuItem>
@@ -84,7 +87,10 @@ class NavigationMenuAdmin extends Component {
               <Link to="http://localhost:3000/tbd">Rutinas tbd</Link>
             </NavigationMenuLink>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              <Link to="http://localhost:3000/create-exercise">Crear ejercicios</Link>
+              <Link to="http://localhost:3000/create-exercise">Crear ejercicios React</Link>
+            </NavigationMenuLink>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <Link to="http://localhost:8080/create-exercise">Crear ejercicios Spring</Link>
             </NavigationMenuLink>
           </NavigationMenuContent>
         </NavigationMenuItem>
