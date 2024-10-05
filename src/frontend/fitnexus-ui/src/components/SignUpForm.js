@@ -159,7 +159,7 @@ export function SignUpForm() {
 					</div>
 					<div className="mt-4 text-center text-sm">
 						Tienes ya una cuenta?{' '}
-						<Link to="http://localhost:8080/login" className="underline">
+						<Link to="http://localhost:8080/" className="underline">
 							Iniciar sesión 8080
 						</Link>
 					</div>
