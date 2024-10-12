@@ -13,7 +13,6 @@ import {
 
 import { Button } from "./components_ui/ui/button"
 
-import HeaderComponent from './components/HeaderComponent';
 
 import EditProfile from './components/EditProfile';
 import CreateExercise from './components/CreateExercise';
