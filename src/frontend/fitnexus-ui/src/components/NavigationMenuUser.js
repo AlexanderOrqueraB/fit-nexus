@@ -72,6 +72,9 @@ class NavigationMenuUser extends Component {
       </NavigationMenuList>
     </NavigationMenu>
 
+  <Link to="/logout" className="text-muted-foreground transition-colors hover:text-foreground">
+  /logout
+  </Link>
       </NavigationMenuList>
     </NavigationMenu>
     )

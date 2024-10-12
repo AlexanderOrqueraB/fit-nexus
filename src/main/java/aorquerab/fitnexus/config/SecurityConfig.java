@@ -32,17 +32,33 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/adminpage","/index.html", "/notfound.html", "static/**").permitAll()
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/logout").permitAll()
                         .requestMatchers("/api/v1/login").permitAll()
                         .requestMatchers("/api/v1/signup").permitAll()
                         .requestMatchers("/api-docs").permitAll()
 
-                        //ROLE ACCESS CONTROL
-                        .requestMatchers(HttpMethod.GET,"/api/v1/ejercicios").hasAnyRole("ADMIN","USER")
-                        .requestMatchers(HttpMethod.POST,"/api/v1/ejercicios").hasRole("ADMIN")
+                        //ROLE ACCESS CONTROL Spring Controllers
+                        .requestMatchers(HttpMethod.GET,"/api/v1/ejercicios").hasAnyRole("ADMIN","USER") //OK from postman
+                        .requestMatchers(HttpMethod.POST,"/api/v1/ejercicios").hasRole("ADMIN") //OK from user
+                        //ROLE ACCESS CONTROL React pages
+                        .requestMatchers("/create-exercise").hasRole("ADMIN")
+
+                        //.requestMatchers("/api/v1/ejercicios").permitAll() FUNSIONA
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults()) //Valido para aceptar las request desde Postman sin redir a loginPage
+                .httpBasic(Customizer.withDefaults())
                 .formLogin(form -> form.loginPage("/").permitAll())
+
+                //TODO 1: issue: can not get or Post from React-> return always a html page: index.html and no logs in spring from get
+                // or post endpoints controllers
+                //TODO 2: TEST LOgout
+                // TEST 1. no hace logout, me deja volver al dashboard
+                .logout(logout -> logout.logoutUrl("/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID"))
+                //TEST 2
+                // .logout(logout -> logout.logoutSuccessUrl("/").permitAll())
+                //.logout()
+
+                //TODO 3: allow new components load also from 8080, for the moment all in 3000
                 .userDetailsService(customUserDetailsService)
                 .build();
     }

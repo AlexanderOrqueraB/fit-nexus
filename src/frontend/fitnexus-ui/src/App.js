@@ -23,6 +23,7 @@ import ExerciseComponent from './components/ExerciseComponent';
 import CustomForm from './components/CustomForm';
 
 import LoginForm from './components/LoginForm';
+import LogoutForm from './components/LogoutForm';
 import SignUpForm from './components/SignUpForm';
 
 
@@ -94,18 +95,13 @@ return (
         <br></br>
         <Routes>
             <Route path="/" element={<LoginForm/>}/>
+            <Route path="/logout" element={<LogoutForm/>}/>
             <Route path="/signup" element={<SignUpForm/>}/>
             <Route path="/edit-profile" element={<EditProfile />}/>
             <Route path="/create-exercise" element={<CreateExercise />}/>
             <Route path="/ejercicios" element={<ExerciseComponent />}/>
             <Route path="/testdashboardlist" element={<TestDashboardList />}/>
 
-            {/*<Route path="/adminpage"
-                element={userRole === "ADMIN" ? <AdminPageComponent /> : <Navigate to="/" />}
-            />
-            <Route path="/normalpage"
-                element={userRole === "USER" ? <NormalPageComponent /> : <Navigate to="/" />}
-            /> */}
             <Route path="/form" element={<CustomForm />}/>
             
             <Route path="/dashboard" element={<NormalPageComponent />}/>

@@ -92,6 +92,7 @@ public class AuthHomeController {
                 return ResponseEntity.status(HttpStatus.CREATED).body("Cliente registrado correctamente.");
             } else if ("ADMIN".equalsIgnoreCase(String.valueOf(signupDTO.getRole()))) {
                 Entrenador entrenadorActualizado = UsuarioAuthDTOMapper.entrenadorMapperFromSignupDTO(signupDTO);
+                log.info("Datos del cliente a guardar: {}", entrenadorActualizado);
                 entrenadorRepository.save(entrenadorActualizado);
                 log.info("postSignup Entrenador ejecutado.");
                 return ResponseEntity.status(HttpStatus.CREATED).body("Entrenador registrado correctamente.");

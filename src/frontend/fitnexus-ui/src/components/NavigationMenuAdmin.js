@@ -113,6 +113,9 @@ class NavigationMenuAdmin extends Component {
         <Link to="/form" className="text-muted-foreground transition-colors hover:text-foreground">
             /form
         </Link>
+  <Link to="/logout" className="text-muted-foreground transition-colors hover:text-foreground">
+  /logout
+  </Link>
 
       </NavigationMenuList>
     </NavigationMenu>
