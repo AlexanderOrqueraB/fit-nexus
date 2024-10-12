@@ -135,13 +135,14 @@ const Header = ({ isAdmin }) => {
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
-							<DropdownMenuLabel>My Account</DropdownMenuLabel>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem>Settings</DropdownMenuItem>
-							<DropdownMenuItem>Support</DropdownMenuItem>
+							<DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem onClick= {()=>navigate('/logout')}>
-              Logout
+                                Ajustes
+                            </DropdownMenuItem>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem onClick= {()=>navigate('/edit-profile')}>
+                                    Cerrar sesión
                             </DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
