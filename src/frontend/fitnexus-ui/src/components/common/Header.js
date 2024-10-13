@@ -79,7 +79,7 @@ const Header = ({ isAdmin }) => {
 									Plan nutricional
 								</Link>
                                 {isAdmin ? (
-                                    <Link to="http://localhost:3000/TBD"
+                                    <Link to="http://localhost:3000/clients"
 									className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
 								>
 									<Users2 className="h-5 w-5" />
@@ -111,18 +111,18 @@ const Header = ({ isAdmin }) => {
 						<BreadcrumbList>
 							<BreadcrumbItem>
 								<BreadcrumbLink asChild>
-									<Link href="#">Dashboard</Link>
+									<Link href="#">Cambiar</Link>
 								</BreadcrumbLink>
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
 								<BreadcrumbLink asChild>
-									<Link href="#">Products</Link>
+									<Link href="#">a</Link>
 								</BreadcrumbLink>
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
-								<BreadcrumbPage>All Products</BreadcrumbPage>
+								<BreadcrumbPage>dinámico</BreadcrumbPage>
 							</BreadcrumbItem>
 						</BreadcrumbList>
 					</Breadcrumb>
@@ -137,11 +137,11 @@ const Header = ({ isAdmin }) => {
 						<DropdownMenuContent align="end">
 							<DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem onClick= {()=>navigate('/logout')}>
+							<DropdownMenuItem onClick= {()=>navigate('/edit-profile')}>
                                 Ajustes
                             </DropdownMenuItem>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem onClick= {()=>navigate('/edit-profile')}>
+							<DropdownMenuItem onClick= {()=>navigate('/logout')}>
                                     Cerrar sesión
                             </DropdownMenuItem>
 						</DropdownMenuContent>

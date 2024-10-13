@@ -1,32 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
 import {
-	CircleUserRound,
 	File,
-	Home,
-	LineChart,
 	ListFilter,
 	MoreHorizontal,
-	Package,
-	Package2,
-	PanelLeft,
-	PlusCircle,
-  Search,
-	Settings,
-	ShoppingCart,
-	Users2,
+	PlusCircle
 } from 'lucide-react';
-
-import dumbbell from "../images/db2.PNG"
-
 import { Badge } from '../components_ui/ui/badge';
-import {
-	Breadcrumb,
-	BreadcrumbItem,
-	BreadcrumbLink,
-	BreadcrumbList,
-	BreadcrumbPage,
-	BreadcrumbSeparator,
-} from '../components_ui/ui/breadcrumb';
 import { Button } from '../components_ui/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components_ui/ui/card';
 import {
@@ -36,16 +14,13 @@ import {
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
-	DropdownMenuTrigger,
+	DropdownMenuTrigger
 } from '../components_ui/ui/dropdown-menu';
-import { Input } from '../components_ui/ui/input';
-import { Sheet, SheetContent, SheetTrigger } from '../components_ui/ui/sheet';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components_ui/ui/tabs';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../components_ui/ui/tooltip';
-import { TooltipProvider } from '../components_ui/ui/tooltip';
-import  SideBar  from './common/SideBar';
-import  Header  from './common/Header';
+import Header from './common/Header';
+import SideBar from './common/SideBar';
+
 
 export function TestDashboardList() {
 	return (

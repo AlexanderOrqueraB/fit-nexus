@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class ClienteDTO {
-
+//TODO: Create DTO for GET cliente response (no password no role etc...)
     //form registro
     private String nombre;
     private String apellido;

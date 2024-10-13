@@ -10,6 +10,7 @@ import {
     Salad,
     ShoppingCart,
     Users2,
+	Wallet,
     Wrench
 } from 'lucide-react';
 import React from 'react';
@@ -82,7 +83,7 @@ const SideBar = ({ isAdmin }) => {
 					<TooltipProvider>
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Link to="http://localhost:3000/TBD"
+								<Link to="http://localhost:3000/clients"
 									className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
 								>
 									<Users2 className="h-5 w-5" />

@@ -29,6 +29,8 @@ import SignUpForm from './components/SignUpForm';
 import AdminPageComponent from './components/AdminPageComponent';
 import NormalPageComponent from './components/NormalPageComponent';
 import TestDashboardList from "./components/TestDashboardList";
+import ClientsList from "./components/ClientsList";
+import ClientsList2 from "./components/ClientsList";
 
 //import {Home} from './crud_page/Home';
 //import {Create} from './crud_page/Create';
@@ -100,6 +102,7 @@ return (
             <Route path="/create-exercise" element={<CreateExercise />}/>
             <Route path="/ejercicios" element={<ExerciseComponent />}/>
             <Route path="/testdashboardlist" element={<TestDashboardList />}/>
+            <Route path="/clients" element={<ClientsList />}/>
 
             <Route path="/form" element={<CustomForm />}/>
             

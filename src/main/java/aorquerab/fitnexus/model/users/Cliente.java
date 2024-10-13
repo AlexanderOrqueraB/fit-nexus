@@ -28,7 +28,7 @@ import java.util.UUID;
 public class Cliente {
 
     public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
-
+    //TODO: añadir timestamp de fecha de creacion de usuario (para clienteslist)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_log_gen")
     @SequenceGenerator(name = "seq_log_gen", sequenceName = "seq_log", allocationSize = 1)

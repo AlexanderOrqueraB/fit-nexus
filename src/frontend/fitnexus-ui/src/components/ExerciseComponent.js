@@ -11,27 +11,9 @@ import {
   TableRow,
 } from "../components_ui/ui/table"
 import { Button } from "../components_ui/ui/button";
+import {EXERCISES} from "../constants/hardcodedModels"
 
-const exercisesHardCoded = [
-  {
-    "nombreEjercicio": "Press banca 1",
-    "repeticion": 5,
-    "serie": 5,
-    "peso": 10,
-  },
-  {
-    "nombreEjercicio": "Press banca 2",
-    "repeticion": 10,
-    "serie": 10,
-    "peso": 10,
-  },
-  {
-    "nombreEjercicio": "Press banca 3",
-    "repeticion": 15,
-    "serie": 15,
-    "peso": 10,
-  },
-]
+
 
 export function ExerciseComponent() {
 
@@ -65,30 +47,30 @@ export function ExerciseComponent() {
         <TableHead className="w-[200px]">Repeticiones</TableHead>
         <TableHead className="w-[200px]">Series</TableHead>
         <TableHead className="w-[200px]">Peso</TableHead>
-        <TableHead className="w-[200px]">Cardio realizado</TableHead>
+        <TableHead className="w-[200px]">Ejercicio de cardio</TableHead>
       </TableRow>
     </TableHeader>
 
      <TableBody>
-        {exercisesHardCoded.map((exercise) => (
+        {EXERCISES.map((exercise) => (
           <TableRow key={exercise.nombreEjercicio}>
             <TableCell className="font-medium">{exercise.nombreEjercicio}</TableCell>
             <TableCell className="w-[200px]">{exercise.repeticion}</TableCell>
             <TableCell className="w-[200px]">{exercise.serie}</TableCell>
             <TableCell className="w-[200px]">{exercise.peso}</TableCell>
-            <TableCell className="w-[200px]">truelol</TableCell>
+            <TableCell className="w-[200px]">{exercise.cardio}</TableCell>
           </TableRow>
         ))}
       </TableBody>
 
       <TableBody>
-        {exercisesHardCoded.map((data) => (
+        {EXERCISES.map((data) => (
           <TableRow key={data.nombreEjercicio}>
             <TableCell className="font-medium">{data.nombreEjercicio}</TableCell>
             <TableCell className="w-[200px]">{data.repeticion}</TableCell>
             <TableCell className="w-[200px]">{data.serie}</TableCell>
             <TableCell className="w-[200px]">{data.peso}</TableCell>
-            <TableCell className="w-[200px]">truelol</TableCell>
+            <TableCell className="w-[200px]">{data.cardio}</TableCell>
           </TableRow>
         ))}
       </TableBody>
