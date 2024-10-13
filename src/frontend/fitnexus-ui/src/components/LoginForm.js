@@ -14,6 +14,7 @@ import {
 import { Input } from "../components_ui/ui/input"
 import { Label } from "../components_ui/ui/label"
 import { Toaster, toast } from 'sonner'
+import {FITNEXUS_URL} from "../constants/env";
 
 export function LoginForm() {
   
@@ -135,13 +136,13 @@ export function LoginForm() {
           </Button>
           <div className="mt-4 text-center text-sm">
           SOY ADMIN: {" "}
-          <Link to="http://localhost:3000/dashboard-admin" className="underline">
+          <Link to={FITNEXUS_URL + "/dashboard-admin"} className="underline">
             IR
           </Link>
         </div>
           <div className="mt-4 text-center text-sm">
           SOY USER: {" "}
-          <Link to="http://localhost:3000/dashboard" className="underline">
+          <Link to={FITNEXUS_URL + "/dashboard"} className="underline">
             IR
           </Link>
         </div>
@@ -154,7 +155,7 @@ export function LoginForm() {
         </div>
         <div className="mt-4 text-center text-sm">
           FRONT REDIR: {" "}
-          <Link to="http://localhost:3000/signup" className="underline">
+          <Link to={FITNEXUS_URL + "/signup"} className="underline">
             Regístrate
           </Link>
         </div>

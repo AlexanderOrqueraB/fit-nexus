@@ -15,6 +15,7 @@ SelectLabel,
 SelectTrigger,
 SelectValue,
 } from "../components_ui/ui/select"
+import {FITNEXUS_URL} from "../constants/env";
 
 export function SignUpForm() {
 	useState({});
@@ -165,7 +166,7 @@ export function SignUpForm() {
 					</div>
           <div className="mt-4 text-center text-sm">
 						FRONT REDIR: {' '}
-						<Link to="http://localhost:3000/" className="underline">
+						<Link to={FITNEXUS_URL + "/"} className="underline">
 							Iniciar sesión
 
 						</Link>

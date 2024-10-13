@@ -40,8 +40,7 @@ import {
     DropdownMenuTrigger
 } from '../../components_ui/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '../../components_ui/ui/sheet';
-
-
+import {FITNEXUS_URL} from "../../constants/env";
 
 const Header = ({ isAdmin }) => {
     const navigate = useNavigate();
@@ -56,30 +55,30 @@ const Header = ({ isAdmin }) => {
 						</SheetTrigger>
 						<SheetContent side="left" className="sm:max-w-xs">
 							<nav className="grid gap-6 text-lg font-medium">
-								<Link to="http://localhost:3000/TBD"
+								<Link to={FITNEXUS_URL + "/tbd"}
 									className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
 								>
 									<Dumbbell className="h-5 w-5 transition-all group-hover:scale-110" />
 									<span className="sr-only">Fit Nexus</span>
 								</Link>
-								<Link to="http://localhost:3000/TBD"
+								<Link to={FITNEXUS_URL + "/tbd"}
 									className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
 								>
 									<Home className="h-5 w-5" />
 									Dashboard TBD
 								</Link>
-								<Link to="http://localhost:3000/ejercicios"
+								<Link to={FITNEXUS_URL + "/ejercicios"}
 									className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
 								>
 									<BicepsFlexed className="h-5 w-5" />
 									Entrenamientos
 								</Link>
-								<Link to="http://localhost:3000/TBD" className="flex items-center gap-4 px-2.5 text-foreground">
+								<Link to={FITNEXUS_URL + "/tbd"} className="flex items-center gap-4 px-2.5 text-foreground">
 									<Drumstick className="h-5 w-5" />
 									Plan nutricional
 								</Link>
                                 {isAdmin ? (
-                                    <Link to="http://localhost:3000/clients"
+                                    <Link to={FITNEXUS_URL + "/clients"}
 									className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
 								>
 									<Users2 className="h-5 w-5" />
@@ -88,7 +87,7 @@ const Header = ({ isAdmin }) => {
                                 ): (null)}
 
                                 {isAdmin ? (
-                                    <Link to="http://localhost:3000/create-exercise"
+                                    <Link to={FITNEXUS_URL + "/create-exercise"}
 									className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
 								>
 									<BrickWall className="h-5 w-5" />
@@ -96,7 +95,7 @@ const Header = ({ isAdmin }) => {
 								</Link>
                                 ): (null)}
 								
-								<Link to="http://localhost:3000/edit-profile"
+								<Link to={FITNEXUS_URL + "/edit-profile"}
 									className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
 								>
 									<LineChart className="h-5 w-5" />
@@ -148,9 +147,7 @@ const Header = ({ isAdmin }) => {
 					</DropdownMenu>
           </div>
 				</header>
-
     ); 
-    
 };
 
 export default Header;

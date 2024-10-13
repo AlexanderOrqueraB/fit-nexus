@@ -10,6 +10,7 @@ import {
 
 import NavigationMenuAdmin from './NavigationMenuAdmin';
 import TestDashboardList from "./TestDashboardList";
+import {FITNEXUS_URL} from "../constants/env";
 
 export function AdminPageComponent() {
   return (
@@ -17,7 +18,7 @@ export function AdminPageComponent() {
     <NavigationMenuAdmin /> 
     <div className="mt-4 text-center text-sm">
           Test List Dasboard: {" "}
-          <Link to="http://localhost:3000/testdashboardlist" className="underline">
+          <Link to={FITNEXUS_URL + "/testdashboardlist"} className="underline">
             IR
           </Link>
         </div>
