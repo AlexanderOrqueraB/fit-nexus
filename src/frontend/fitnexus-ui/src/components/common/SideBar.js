@@ -16,7 +16,7 @@ import {
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../components_ui/ui/tooltip';
-import {FITNEXUS_URL} from "../../constants/env";
+import {FITNEXUS_URL, PAUTA, ENTRENAMIENTOS} from "../../constants/env";
 
 const SideBar = ({ isAdmin }) => {
 	return (
@@ -61,10 +61,10 @@ const SideBar = ({ isAdmin }) => {
 								className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
 							>
 								<BicepsFlexed className="h-5 w-5" />
-								<span className="sr-only">Entrenamientos</span>
+								<span className="sr-only">{ENTRENAMIENTOS}</span>
 							</Link>
 						</TooltipTrigger>
-						<TooltipContent side="right">Entrenamientos</TooltipContent>
+						<TooltipContent side="right">{ENTRENAMIENTOS}</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
                 <TooltipProvider>
@@ -74,10 +74,10 @@ const SideBar = ({ isAdmin }) => {
 								className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
 							>
 								<Drumstick className="h-5 w-5" />
-								<span className="sr-only">Plan nutricional</span>
+								<span className="sr-only">{PAUTA}</span>
 							</Link>
 						</TooltipTrigger>
-						<TooltipContent side="right">Plan nutricional</TooltipContent>
+						<TooltipContent side="right">{PAUTA}</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
 				{isAdmin ? (

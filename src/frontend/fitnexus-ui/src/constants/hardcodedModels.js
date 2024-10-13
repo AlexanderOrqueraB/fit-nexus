@@ -46,3 +46,124 @@ export const USUARIOS = [
         "clienteDesde": "2023-07-12 10:42 AM"
     }
 ]
+
+export const RUTINAS = [
+    {
+      "id": 0,
+      "nombreRutina": "string",
+      "fechaInicio": "2024-10-13",
+      "fechaFinal": "2024-10-13",
+      "version": 0,
+      "ejercicios": [
+        {
+          "id": 0,
+          "nombreEjercicio": "string",
+          "repeticion": 0,
+          "serie": 0,
+          "peso": 0,
+          "cardioRealizado": true,
+          "version": 0
+        }
+      ]
+    }
+  ]
+
+  export const PLAN = [
+    {
+      "id": 0,
+      "nombrePlan": "string",
+      "fechaInicio": "2024-10-13",
+      "fechaFinal": "2024-10-13",
+      "version": 0,
+      "rutinas": [
+        {
+          "id": 0,
+          "nombreRutina": "string",
+          "fechaInicio": "2024-10-13",
+          "fechaFinal": "2024-10-13",
+          "version": 0,
+          "ejercicios": [
+            {
+              "id": 0,
+              "nombreEjercicio": "string",
+              "repeticion": 0,
+              "serie": 0,
+              "peso": 0,
+              "cardioRealizado": true,
+              "version": 0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+
+  export const NUTRI = [
+    {
+      "id": 0,
+      "proteina": 0,
+      "hidratoDeCarbono": 0,
+      "grasa": 0,
+      "kcal": 0,
+      "fechaInicio": "2024-10-13",
+      "fechaFinal": "2024-10-13",
+      "version": 0
+    }
+  ]
+
+  export const VALORACION = [
+    {
+      "id": 0,
+      "comentario": "string",
+      "version": 0,
+      "cliente": {
+        "id": 0,
+        "fitNexusId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "nombre": "string",
+        "apellido": "string",
+        "email": "string",
+        "role": "ADMIN",
+        "objetivo": "PERDER_GRASA",
+        "genero": "HOMBRE",
+        "edad": 0,
+        "peso": 0,
+        "altura": 0,
+        "entrenador": {
+          "id": 0,
+          "fitNexusId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "nombre": "string",
+          "apellido": "string",
+          "email": "string",
+          "role": "ADMIN",
+          "asesorNutricional": true
+        }
+      },
+      "planDeEntrenamiento": {
+        "id": 0,
+        "nombrePlan": "string",
+        "fechaInicio": "2024-10-13",
+        "fechaFinal": "2024-10-13",
+        "version": 0,
+        "rutinas": [
+          {
+            "id": 0,
+            "nombreRutina": "string",
+            "fechaInicio": "2024-10-13",
+            "fechaFinal": "2024-10-13",
+            "version": 0,
+            "ejercicios": [
+              {
+                "id": 0,
+                "nombreEjercicio": "string",
+                "repeticion": 0,
+                "serie": 0,
+                "peso": 0,
+                "cardioRealizado": true,
+                "version": 0
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
