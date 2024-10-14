@@ -8,12 +8,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
 public class ClienteDTO {
-//TODO: Create DTO for GET cliente response (no password no role etc...)
+
     //form registro
     private String nombre;
     private String apellido;
@@ -26,4 +28,5 @@ public class ClienteDTO {
     private Integer edad;
     private Integer peso;
     private Integer altura;
+    private LocalDate clienteDesde;
 }

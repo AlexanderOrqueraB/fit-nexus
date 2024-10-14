@@ -32,9 +32,10 @@ public class Ejercicio {
 
     private Integer peso;
 
-    private Boolean cardioRealizado;
+    private Boolean cardio;
 
     @Version
+    @JsonIgnore
     private Integer version;
 
     @ManyToOne(fetch = FetchType.LAZY)

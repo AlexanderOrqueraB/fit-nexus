@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS ejercicio (
     repeticion INT NOT NULL,
     serie INT NOT NULL,
     peso INT NOT NULL,
-    cardio_realizado BOOLEAN,
+    cardio BOOLEAN,
     entrenador_id INT,
     CONSTRAINT fk_entrenador_ejercicio
     FOREIGN KEY(entrenador_id)
@@ -98,6 +98,7 @@ CREATE TABLE IF NOT EXISTS cliente (
     edad INT,
     peso INT,
     altura INT,
+    cliente_desde DATE,
     entrenador_id INT,
     CONSTRAINT fk_entrenador
         FOREIGN KEY(entrenador_id)

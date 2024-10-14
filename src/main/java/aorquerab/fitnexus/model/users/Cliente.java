@@ -14,6 +14,7 @@ import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +29,7 @@ import java.util.UUID;
 public class Cliente {
 
     public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
-    //TODO: añadir timestamp de fecha de creacion de usuario (para clienteslist)
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_log_gen")
     @SequenceGenerator(name = "seq_log_gen", sequenceName = "seq_log", allocationSize = 1)
@@ -55,6 +56,7 @@ public class Cliente {
     private Integer edad;
     private Integer peso;
     private Integer altura;
+    private LocalDate clienteDesde;
 
     public void setPassword (String password) {
         this.password = PASSWORD_ENCODER.encode(password);

@@ -19,7 +19,7 @@ public class EjercicioDTOMapper {
         ejercicioDTO.setRepeticion(ejercicio.getRepeticion());
         ejercicioDTO.setSerie(ejercicio.getSerie());
         ejercicioDTO.setPeso(ejercicio.getPeso());
-        ejercicioDTO.setCardioRealizado(ejercicio.getCardioRealizado());
+        ejercicioDTO.setCardio(ejercicio.getCardio());
 
         return ejercicioDTO;
     }
@@ -30,7 +30,7 @@ public class EjercicioDTOMapper {
                         .repeticion(ejercicio.get().getRepeticion())
                         .serie(ejercicio.get().getSerie())
                         .peso(ejercicio.get().getPeso())
-                        .cardioRealizado(ejercicio.get().getCardioRealizado())
+                        .cardio(ejercicio.get().getCardio())
                             .build();
     }
 
@@ -52,7 +52,7 @@ public class EjercicioDTOMapper {
         ejercicio.setRepeticion(ejercicioDTO.getRepeticion());
         ejercicio.setSerie(ejercicioDTO.getSerie());
         ejercicio.setPeso(ejercicioDTO.getPeso());
-        ejercicio.setCardioRealizado(ejercicioDTO.getCardioRealizado());
+        ejercicio.setCardio(ejercicioDTO.getCardio());
 
         return ejercicio;
     }

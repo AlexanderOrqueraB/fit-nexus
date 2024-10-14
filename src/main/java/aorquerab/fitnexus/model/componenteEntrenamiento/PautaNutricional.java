@@ -31,6 +31,7 @@ public class PautaNutricional {
     private LocalDate fechaFinal;
 
     @Version
+    @JsonIgnore
     private Integer version;
 
     @ManyToOne(fetch = FetchType.LAZY)

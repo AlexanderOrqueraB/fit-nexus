@@ -75,7 +75,7 @@ const Header = ({ isAdmin }) => {
 								</Link>
 								<Link to={FITNEXUS_URL + "/tbd"} className="flex items-center gap-4 px-2.5 text-foreground">
 									<Drumstick className="h-5 w-5" />
-									Plan nutricional
+									Pauta nutricional
 								</Link>
                                 {isAdmin ? (
                                     <Link to={FITNEXUS_URL + "/clients"}

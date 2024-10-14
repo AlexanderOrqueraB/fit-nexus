@@ -1,6 +1,7 @@
 package aorquerab.fitnexus.model.componenteEntrenamiento;
 
 import aorquerab.fitnexus.model.users.Cliente;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class Valoracion {
     private String comentario;
 
     @Version
+    @JsonIgnore
     private Integer version;
 
     @ManyToOne(fetch = FetchType.LAZY)
