@@ -23,7 +23,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components_ui/ui/tabs';
 import Header from './common/Header';
 import SideBar from './common/SideBar';
-import {USUARIOS} from "../constants/hardcodedModels"
+import {CLIENTES} from "../constants/hardcodedModelDtos"
+import {FITNEXUS_URL} from "../constants/env";
 
 
 export function ClientsList() {
@@ -33,7 +34,7 @@ export function ClientsList() {
   
 	const handleClick = () => {
 	  axios
-		.get("http://localhost:8080/api/v1/clientes")
+		.get(FITNEXUS_URL + "/api/v1/ejercicios")
 		//.delete(URL)
 		.then ((response) => {
 		  setData(response.data);
@@ -120,7 +121,7 @@ export function ClientsList() {
 										</TableHeader>
 
 										<TableBody>
-										{USUARIOS.map((data) => (
+										{CLIENTES.map((data) => (
 											<TableRow key={data.nombre}>
 												<TableCell className="font-medium">{data.nombre}</TableCell>
 												<TableCell className="font-medium">{data.apellido}</TableCell>
@@ -154,38 +155,6 @@ export function ClientsList() {
 												</TableCell>
 											</TableRow>
 											))}
-											<TableRow>
-												<TableCell className="font-medium">Nombre</TableCell>
-												<TableCell className="font-medium">Apellido</TableCell>
-												<TableCell className="font-medium">Email</TableCell>
-												<TableCell>
-													<Badge variant="outline">Ganar músculo</Badge>
-												</TableCell>
-												<TableCell>
-													<Badge variant="secondary">Género</Badge>
-												</TableCell>
-												<TableCell className="hidden md:table-cell">Edad</TableCell>
-												<TableCell className="hidden md:table-cell">Peso</TableCell>
-												<TableCell className="hidden md:table-cell">Altura</TableCell>
-												<TableCell className="hidden md:table-cell">
-													Cliente desde
-												</TableCell>
-												<TableCell>
-													<DropdownMenu>
-														<DropdownMenuTrigger asChild>
-															<Button aria-haspopup="true" size="icon" variant="ghost">
-																<MoreHorizontal className="h-4 w-4" />
-																<span className="sr-only">Toggle menu</span>
-															</Button>
-														</DropdownMenuTrigger>
-														<DropdownMenuContent align="end">
-															<DropdownMenuLabel>Acciones</DropdownMenuLabel>
-															<DropdownMenuItem>Editar</DropdownMenuItem>
-															<DropdownMenuItem>Eliminar</DropdownMenuItem>
-														</DropdownMenuContent>
-													</DropdownMenu>
-												</TableCell>
-											</TableRow>
 										</TableBody>
 									</Table>
 								</CardContent>

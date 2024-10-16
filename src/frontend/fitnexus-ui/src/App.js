@@ -1,7 +1,7 @@
 import axios from "axios"; //(1)
 import React, { useRef, useState, useEffect } from "react"; //(2)
 import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 import { AlertCircle } from "lucide-react"
 
@@ -30,6 +30,7 @@ import AdminPageComponent from './components/AdminPageComponent';
 import NormalPageComponent from './components/NormalPageComponent';
 import TestDashboardList from "./components/TestDashboardList";
 import ClientsList from "./components/ClientsList";
+import ExercisesList from "./components/ExercisesList";
 import ClientsList2 from "./components/ClientsList";
 
 //import {Home} from './crud_page/Home';
@@ -100,7 +101,7 @@ return (
             <Route path="/signup" element={<SignUpForm/>}/>
             <Route path="/edit-profile" element={<EditProfile />}/>
             <Route path="/create-exercise" element={<CreateExercise />}/>
-            <Route path="/ejercicios" element={<ExerciseComponent />}/>
+            <Route path="/ejercicios" element={<ExercisesList />}/>
             <Route path="/testdashboardlist" element={<TestDashboardList />}/>
             <Route path="/clients" element={<ClientsList />}/>
 

@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "../components_ui/ui/table"
 import { Button } from "../components_ui/ui/button";
-import {EXERCISES} from "../constants/hardcodedModels"
+import {EXERCISES} from "../constants/hardcodedModelDtos"
 
 
 

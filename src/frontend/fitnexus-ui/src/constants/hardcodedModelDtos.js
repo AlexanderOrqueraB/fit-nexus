@@ -65,7 +65,7 @@ export const RUTINAS = [
 
   export const PLAN = [
     {
-      "nombrePlan": "string",
+      "nombrePlan": "Definicion verano",
       "fechaInicio": "2024-10-13",
       "fechaFinal": "2024-10-13",
       "rutinas": [
