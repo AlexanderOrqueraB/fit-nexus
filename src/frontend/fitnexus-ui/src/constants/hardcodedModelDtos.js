@@ -52,14 +52,14 @@ export const RUTINAS = [
     "nombreRutina": "Torso Fuerza",
     "fechaInicio": "2024-10-13",
     "fechaFinal": "2024-12-13",
-      "ejercicios": [
-          {
-              "nombreEjercicio": "Torso fuerza",
-          },
-          {
-              "nombreEjercicio": "Torso fuerza",
-          }
-      ]
+    "ejercicios": [
+        {
+            "nombreEjercicio": "Dominadas supinas",
+        },
+        {
+            "nombreEjercicio": "Hip Thrust",
+        }
+    ]
   }
 ]
 
@@ -67,27 +67,27 @@ export const RUTINAS = [
     {
       "nombrePlan": "Definicion verano",
       "fechaInicio": "2024-10-13",
-      "fechaFinal": "2024-10-13",
+      "fechaFinal": "2025-12-13",
       "rutinas": [
           {
               "nombreRutina": "Torso fuerza",
               "ejercicios": [
                   {
-                      "nombreEjercicio": "Torso fuerza",
+                      "nombreEjercicio": "Press Banca",
                   },
                   {
-                      "nombreEjercicio": "Torso fuerza",
+                      "nombreEjercicio": "Dominadas",
                   }
               ]
           },
           {
-              "nombreRutina": "Torso fuerza",
+              "nombreRutina": "Torso pierna",
               "ejercicios": [
                   {
-                      "nombreEjercicio": "Torso fuerza",
+                      "nombreEjercicio": "Sentadillas",
                   },
                   {
-                      "nombreEjercicio": "Torso fuerza",
+                      "nombreEjercicio": "Peso muerto",
                   }
               ]
           }

@@ -36,7 +36,7 @@ Para aplicación completa, springboot + react
 Pasos:
 1. Desplázate a la ruta: \fit-nexus
 2. Ejecuta ./gradlew clean bootRun
-2. Abre http://localhost:8080/
+3. Abre http://localhost:8080/
 
 Para aplicación React (dentro de frontend/fitnexus-ui)
 Pasos:
