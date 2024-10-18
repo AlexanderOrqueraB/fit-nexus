@@ -5,6 +5,7 @@ import aorquerab.fitnexus.model.componenteEntrenamiento.PautaNutricional;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.exception.PautaNutriNotFoundException;
 import aorquerab.fitnexus.repository.PautaNutricionalRepository;
+import aorquerab.fitnexus.service.PlanNutricionalService;
 import aorquerab.fitnexus.utils.PautaNutriDTOMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,9 +21,11 @@ import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 @Slf4j
 public class NutriController {
     private final PautaNutricionalRepository pautaNutricionalRepository;
+    private final PlanNutricionalService planNutricionalService;
 
-    public NutriController(PautaNutricionalRepository pautaNutricionalRepository) {
+    public NutriController(PautaNutricionalRepository pautaNutricionalRepository, PlanNutricionalService planNutricionalService) {
         this.pautaNutricionalRepository = pautaNutricionalRepository;
+        this.planNutricionalService = planNutricionalService;
     }
 
     @GetMapping
@@ -53,5 +56,13 @@ public class NutriController {
         log.info("postPautasNutri ejecutado.");
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Pauta nutricional creado correctamente.");
+    }
+
+    //TODO Create Diet harrisBenedict Service + getkcalymacros from UserData
+    @GetMapping
+    public ResponseEntity<List<PautaNutricionalDTO>> getPautafromUserData() {
+        log.info("Ejecutando getPautafromUserData...");
+        return planNutricionalService.algo();
+
     }
 }
