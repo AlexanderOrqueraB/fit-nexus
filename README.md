@@ -18,7 +18,7 @@ Utiliza openapi-gradle-plugin para generar open API docs, configuracion en build
 bloque openApi {}
 
 Pasos:
-1. Ejecuta el comando ```./gradlew clean build generateOpenApiDocs``` (con la parte de construcción de React comentada)
+1. Ejecuta el comando ```./gradlew clean build generateOpenApiDocs``` (con la parte de construcción de React comentada y Docker desktop runnin)
 2. Copia build/docs/fit-nexus.json en swagger editor, revisa y comparte!
 
 ## Consultar Open API Docs (Swagger) tras iniciar la aplicación:
@@ -32,11 +32,12 @@ Pasos:
 **Server:** Spring
 
 ## Arrancar aplicación
-Para aplicación completa, springboot + react
+Para aplicación completa (backend: Springboot + frontend: React)
 Pasos:
 1. Desplázate a la ruta: \fit-nexus
-2. Ejecuta ./gradlew clean bootRun
-3. Abre http://localhost:8080/
+2. Utiliza docker desktop para que compose.yml levante un contenedor con la BD
+3. Ejecuta ./gradlew clean bootRun
+4. Abre http://localhost:8080/
 
 Para aplicación React (dentro de frontend/fitnexus-ui)
 Pasos:

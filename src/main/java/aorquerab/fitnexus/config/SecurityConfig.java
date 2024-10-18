@@ -14,13 +14,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
-
     public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
@@ -38,13 +39,20 @@ public class SecurityConfig {
                         .requestMatchers("/api-docs").permitAll()
 
                         //ROLE ACCESS CONTROL Spring Controllers
-                        .requestMatchers(HttpMethod.GET,"/api/v1/ejercicios").hasAnyRole("ADMIN","USER") //OK from postman
-                        .requestMatchers(HttpMethod.POST,"/api/v1/ejercicios").hasRole("ADMIN") //OK from user
+                        .requestMatchers(HttpMethod.GET,FITNEXUS_BASE_URI + "/ejercicios").hasAnyRole("ADMIN","USER") //OK from postman
+                        .requestMatchers(HttpMethod.POST,FITNEXUS_BASE_URI + "/ejercicios").hasRole("ADMIN") //OK from user
+
+                        //TODO: START Change auth permissions (testing purpose for the moment) +
+                        // change .anyRequest().permitAll() to .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.GET, FITNEXUS_BASE_URI + "/nutri-pautas").permitAll()
+                        .requestMatchers(HttpMethod.GET, FITNEXUS_BASE_URI + "/nutri-pautas").permitAll()
+                        //TODO: END
+
                         //ROLE ACCESS CONTROL React pages
                         .requestMatchers("/create-exercise").hasRole("ADMIN")
 
                         //.requestMatchers("/api/v1/ejercicios").permitAll() FUNSIONA
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(form -> form.loginPage("/").permitAll())

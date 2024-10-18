@@ -102,7 +102,7 @@ export const RUTINAS = [
       "grasa": 0,
       "kcal": 0,
       "fechaInicio": "2024-10-13",
-      "fechaFinal": "2024-10-13",
+      "fechaFinal": "2024-10-13"
     }
   ]
 

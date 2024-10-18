@@ -13,7 +13,6 @@ public class EjercicioDTOMapper {
     //TODO: Separate into 2 different clases: EjerciciofromEjercicioDTO and EjercicioDTOfromEjercicio for example
     //FROM Entity to DTO
     public static EjercicioDTO mapperFromEjercicio (Ejercicio ejercicio) {
-
         EjercicioDTO ejercicioDTO = new EjercicioDTO();
         ejercicioDTO.setNombreEjercicio(ejercicio.getNombreEjercicio());
         ejercicioDTO.setRepeticion(ejercicio.getRepeticion());
@@ -34,11 +33,11 @@ public class EjercicioDTOMapper {
                             .build();
     }
 
-    public static List<EjercicioDTO> mapperFromList (List<Ejercicio> ejercicio) {
-        if(ejercicio.isEmpty())
+    public static List<EjercicioDTO> mapperFromList (List<Ejercicio> ejercicios) {
+        if(ejercicios.isEmpty())
             return Collections.emptyList();
         else {
-            return  ejercicio.stream()
+            return  ejercicios.stream()
                     .map(EjercicioDTOMapper::mapperFromEjercicio)
                     .collect(Collectors.toList());
         }
@@ -46,7 +45,6 @@ public class EjercicioDTOMapper {
 
     //FROM DTO to Entity
     public static Ejercicio mapperFromEjercicioDTO(EjercicioDTO ejercicioDTO) {
-
         Ejercicio ejercicio = new Ejercicio();
         ejercicio.setNombreEjercicio(ejercicioDTO.getNombreEjercicio());
         ejercicio.setRepeticion(ejercicioDTO.getRepeticion());

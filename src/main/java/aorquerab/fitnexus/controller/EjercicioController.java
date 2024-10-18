@@ -56,13 +56,13 @@ public class EjercicioController {
     public ResponseEntity<List<EjercicioDTO>> getEjercicios() {
         try {
             log.info("Ejecutando getEjercicios...");
-            List<Ejercicio> ejercicio = ejercicioRepository.findAll();
-            if(ejercicio.isEmpty()) {
+            List<Ejercicio> ejercicios = ejercicioRepository.findAll();
+            if(ejercicios.isEmpty()) {
                 log.info("Ejercicio/s no encontrado/s en base de datos");
                 throw new EjercicioNotFoundException("Ejercicio no encontrado en BD");
             }
-            List<EjercicioDTO> ejercicioDTO = EjercicioDTOMapper.mapperFromList(ejercicio);
-            return ResponseEntity.status(HttpStatus.OK).body(ejercicioDTO);
+            List<EjercicioDTO> ejercicioDTOs = EjercicioDTOMapper.mapperFromList(ejercicios);
+            return ResponseEntity.status(HttpStatus.OK).body(ejercicioDTOs);
         } catch (Exception e) {
             log.info("Excepcion getExercises: ", e.getMessage());
             return null;
@@ -133,7 +133,7 @@ public ProjectDTO addPerson(@PathVariable long projectId, @RequestBody @Valid Pe
         else ejercicioRepository.delete(ejercicio.get());
     }
 
-    //TODO endpoint to modify the weight of an specific exercise
+    //TODO endpoint to modify the weight of an specific exercise (POST)
     //CUSTOM REQUEST
     @GetMapping("/nombreEjercicio/{nombreEjercicio}")
     public List<Ejercicio> findEjerciciosPorNombre (@PathVariable String nombreEjercicio) {
