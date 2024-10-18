@@ -60,9 +60,11 @@ public class NutriController {
 
     //TODO Create Diet harrisBenedict Service + getkcalymacros from UserData
     @GetMapping
-    public ResponseEntity<List<PautaNutricionalDTO>> getPautafromUserData() {
+    public ResponseEntity<List<PautaNutricionalDTO>> getPautaNutricionalfromUserData(
+            @PathVariable String clientId
+    ) {
         log.info("Ejecutando getPautafromUserData...");
-        return planNutricionalService.algo();
+        return planNutricionalService.getPautaNutricional(clientId);
 
     }
 }
