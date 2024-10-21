@@ -1,18 +1,20 @@
 package aorquerab.fitnexus.service;
 
+import aorquerab.fitnexus.model.DTOs.ClienteDTO;
 import aorquerab.fitnexus.model.DTOs.PautaNutricionalDTO;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PautaNutricional;
-import aorquerab.fitnexus.model.enumeration.Genero;
+import aorquerab.fitnexus.model.enumerator.Genero;
+import aorquerab.fitnexus.model.enumerator.Objetivo;
 import aorquerab.fitnexus.model.exception.PautaNutriNotFoundException;
+import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.repository.ClienteRepository;
 import aorquerab.fitnexus.repository.PautaNutricionalRepository;
-import aorquerab.fitnexus.utils.PautaNutriDTOMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -25,10 +27,6 @@ public class PlanNutricionalService {
         this.pautaNutricionalRepository = pautaNutricionalRepository;
         this.clienteRepository = clienteRepository;
     }
-    //TODO Definir atributo asociado al dia: diaEntreno diaDescanso
-    // para el calculo de las kcal de ese dia
-
-    //TODO Utilizar de alguna forma objetivo (superavit o deficit calorico)
 
     //TODO Create Diet harrisBenedict Service + getkcalymacros from UserData
     /* Input: Datos del cliente: {
@@ -42,36 +40,42 @@ public class PlanNutricionalService {
         "altura": 175,
         "clienteDesde": "2023-07-12"
         }
-
-       Input: objetivo + (peso,altura,edad,genero)
-       + frecuenciaEjercicioSemanal
-
         output:
     {
-        "diaEntreno" : [
-            "kcal" : 1912,
-            "proteina": 0,
-            "hidratoDeCarbono": 0,
-            "grasa": 0,
-        ],
-        "diaDescanso" : [
-            "kcal" : 1912,
-            "proteina": 0,
-            "hidratoDeCarbono": 0,
-            "grasa": 0,
-        ]
+      "proteina": 0,
+      "hidratoDeCarbono": 0,
+      "grasa": 0,
+      "kcal": 0,
+      "fechaInicio": "2024-10-13",
+      "fechaFinal": "2024-10-13"
+    }
     * */
 
-    public ResponseEntity<List<PautaNutricionalDTO>> getPautaNutricional(String clientId) {
+    public ResponseEntity <PautaNutricionalDTO> getPautaNutricional(ClienteDTO clienteDTO) {
         try {
             log.info("Ejecutando getPautasNutri...");
-            List<PautaNutricional> pautas = pautaNutricionalRepository.findAll();
-            if (pautas.isEmpty()) {
-                log.info("Pauta/s nutricional/es no encontrada/s en base de datos");
-                throw new PautaNutriNotFoundException("Pauta nutricional no encontrada en BD");
+            Optional<Cliente> cliente = clienteRepository.findByEmail(clienteDTO.getEmail());
+            int obtenerKcalDiariasPorObjetivo = 0;
+            if (cliente.isPresent()) {
+                double tasaMetabolismoBasalCliente =
+                        calcularTasaMetabolismoBasal(clienteDTO.getPeso(), clienteDTO.getAltura(), clienteDTO.getEdad(), clienteDTO.getGenero());
+
+                int kCalDiariasMantenimientoCliente =
+                        obtenerKcalDiariasParaMantenimiento(clienteDTO.getFrecuenciaEjercicioSemanal().getFactorActividad(), tasaMetabolismoBasalCliente);
+
+                obtenerKcalDiariasPorObjetivo = obtenerKcalDiariasPorObjetivo(clienteDTO.getObjetivo(), kCalDiariasMantenimientoCliente);
             }
-            List<PautaNutricionalDTO> pautaDTOs = PautaNutriDTOMapper.mapperFromList(pautas);
-            return ResponseEntity.status(HttpStatus.OK).body(pautaDTOs);
+            //TODO: generar en base a las kcal finales: PROTEINA, HC, GRASA=> no, habrá distribuciones segun PERDER GRASA (30,30,40) o
+            // GANAR MUSCULO (30,20,50), o fijamos esto en el json siempre? tipo: ganar grasa SIEMPRE 30,40,30 Y MANDAMOS EL JSON CON ESO Y LAS KCAL
+            PautaNutricional pautaNutricional = new PautaNutricional();
+            pautaNutricionalRepository.save(pautaNutricional);
+            //pautaNutricionalRepository.save(PautaNutricionalDTO.builder().kcal(obtenerKcalDiariasPorObjetivo));
+            PautaNutricionalDTO pautaNutricionalDTO = new PautaNutricionalDTO();
+
+            log.info("Pauta nutricional creada en base de datos");
+
+
+            return ResponseEntity.status(HttpStatus.OK).body(pautaNutricionalDTO);
         } catch (Exception e) {
             log.info("Excepcion getPlanesNutri: ", e.getMessage());
             throw new PautaNutriNotFoundException("Pauta nutricional no encontrada en BD");
@@ -94,41 +98,22 @@ public class PlanNutricionalService {
         return tasaMetabolismoBasal;
     }
 
-    //TODO: Añadir a entidad, schema, json de cliente: frecuencia de ejercicio semanal
-    //INPUT: frecuencia de ejercicio SEMANAL (poco o ningun, 1-3, 3-5, 6-7, 2 veces al día
-    public double obtenerFactorDeActividad (int frecuenciaEjercicio) { //TODO: puede que sea int/boolean/?
-        double factorActividad;
-        switch (frecuenciaEjercicio) {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            default:
-                System.out.println("Factor incorrecto");
-
-        }
-        return factorActividad = 0.0;
-    }
-    /*Factor corrector de la actividad:
-        Poco o ningún ejercicio(0-1 días a la semana): 1,2
-        Ejercicio ligero (2 días a la semana): 1,375
-        Ejercicio moderado (3-5 días a la semana): 1,55
-        Ejercicio fuerte (6-7 días a la semana): 1,725
-        Ejercicio muy fuerte (dos veces al día, entrenamientos muy duros): 1,9
-    */
-
-
     //Ingesta diaria de calorías recomendada según el principio de Harris-Benedict
-
-
     //(dependiendo del ejercicio que realicemos semanalmente)
-    public int obtenerKcaloriasDiariasNecesarias (double factorDeActividad, double tasaMetabolismoBasal) {
-        int kCalDiariasNecesarias;
+    public int obtenerKcalDiariasParaMantenimiento(double factorDeActividad, double tasaMetabolismoBasal) {
+        int kCalDiariasMantenimiento;
         //Con el metabolismo calculado sólo debemos multiplicar por el factor corrector de la actividad
-        kCalDiariasNecesarias = (((int) factorDeActividad) * (int) tasaMetabolismoBasal);
-        return kCalDiariasNecesarias;
+        kCalDiariasMantenimiento = (((int) factorDeActividad) * (int) tasaMetabolismoBasal);
+        return kCalDiariasMantenimiento;
+    }
+
+    public int obtenerKcalDiariasPorObjetivo(Objetivo objetivo, int kcalMantenimiento) {
+        int obtenerKcalDiariasPorObjetivo;
+        if (objetivo.equals((Objetivo.GANAR_MUSCULO))) {
+            obtenerKcalDiariasPorObjetivo = kcalMantenimiento + objetivo.getKcalExtra();
+        }
+        else obtenerKcalDiariasPorObjetivo = kcalMantenimiento - objetivo.getKcalExtra();
+        return  obtenerKcalDiariasPorObjetivo;
     }
 
 }

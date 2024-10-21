@@ -2,7 +2,7 @@ package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.DTOs.LoginDTO;
 import aorquerab.fitnexus.model.DTOs.SignupDTO;
-import aorquerab.fitnexus.model.enumeration.Role;
+import aorquerab.fitnexus.model.enumerator.Role;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;

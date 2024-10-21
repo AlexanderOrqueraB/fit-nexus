@@ -4,9 +4,10 @@ import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PautaNutricional;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
-import aorquerab.fitnexus.model.enumeration.Genero;
-import aorquerab.fitnexus.model.enumeration.Objetivo;
-import aorquerab.fitnexus.model.enumeration.Role;
+import aorquerab.fitnexus.model.enumerator.FrecuenciaEjercicioSemanal;
+import aorquerab.fitnexus.model.enumerator.Genero;
+import aorquerab.fitnexus.model.enumerator.Objetivo;
+import aorquerab.fitnexus.model.enumerator.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -53,6 +54,8 @@ public class Cliente {
     private Objetivo objetivo;
     @Enumerated(EnumType.STRING)
     private Genero genero;
+    @Enumerated(EnumType.STRING)
+    private FrecuenciaEjercicioSemanal frecuenciaEjercicioSemanal;
     private Integer edad;
     private Integer peso;
     private Integer altura;

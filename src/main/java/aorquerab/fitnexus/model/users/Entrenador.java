@@ -4,7 +4,7 @@ import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PautaNutricional;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
-import aorquerab.fitnexus.model.enumeration.Role;
+import aorquerab.fitnexus.model.enumerator.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

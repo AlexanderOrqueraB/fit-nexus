@@ -1,6 +1,6 @@
 package aorquerab.fitnexus.security;
 
-import aorquerab.fitnexus.model.enumeration.Role;
+import aorquerab.fitnexus.model.enumerator.Role;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
 import lombok.Getter;

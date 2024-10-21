@@ -47,6 +47,27 @@ export const CLIENTES = [
     }
 ]
 
+export const CLIENTE_INFOEXTRA = [
+    {
+        "email": "luke@skywalker.com",
+        "objetivo": "PERDER GRASA",
+        "genero": "HOMBRE",
+        "frecuenciaEjercicioSemanal": "POCO_NADA",
+        "edad": 25,
+        "peso": 80,
+        "altura": 175
+    },
+    {
+        "email": "leia@skywalker.com",
+        "objetivo": "PERDER GRASA",
+        "genero": "MUJER",
+        "frecuenciaEjercicioSemanal": "FUERTE",
+        "edad": 25,
+        "peso": 80,
+        "altura": 175,
+    }
+]
+
 export const RUTINAS = [
   {
     "nombreRutina": "Torso Fuerza",

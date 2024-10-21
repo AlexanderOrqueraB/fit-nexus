@@ -1,6 +1,6 @@
 package aorquerab.fitnexus.model.DTOs;
 
-import aorquerab.fitnexus.model.enumeration.Role;
+import aorquerab.fitnexus.model.enumerator.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

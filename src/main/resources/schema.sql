@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS cliente (
     role VARCHAR (100) NOT NULL,
     objetivo VARCHAR (100),
     genero VARCHAR (100),
+    frecuenciaEjercicioSemanal VARCHAR (100),
     edad INT,
     peso INT,
     altura INT,
