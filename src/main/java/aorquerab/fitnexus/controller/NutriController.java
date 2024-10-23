@@ -59,12 +59,23 @@ public class NutriController {
     }
 
     //TODO Create Diet harrisBenedict Service + getkcalymacros from UserData
-    @GetMapping
-    public ResponseEntity<List<PautaNutricionalDTO>> getPautaNutricionalfromUserData(
-            @PathVariable String clientId
+    // get (%proteina, %hc, %grasas, kcal)
+    @GetMapping("/{emailId}")
+    public ResponseEntity<PautaNutricionalDTO> getPautaNutricionalPercentageFromUserData(
+            @PathVariable String emailId
     ) {
         log.info("Ejecutando getPautafromUserData...");
-        return planNutricionalService.getPautaNutricional(clientId);
-
+        return planNutricionalService.getPautaNutricionalPercentage(emailId);
     }
+
+    //TODO Create Diet harrisBenedict Service + getkcalymacros from UserData
+    // get (gramos (proteina,hc,grasas) +kcal)
+//    @GetMapping
+//    public ResponseEntity<List<PautaNutricionalDTO>> getPautaNutricionalGramsFromUserData(
+//            @PathVariable String clientId
+//    ) {
+//        log.info("Ejecutando getPautafromUserData...");
+//        return planNutricionalService.getPautaNutricionalGrams(clientId);
+//
+//    }
 }
