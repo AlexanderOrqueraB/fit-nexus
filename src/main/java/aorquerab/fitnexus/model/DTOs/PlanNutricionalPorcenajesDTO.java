@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 @Builder
-public class PautaNutricionalDTO {
+public class PlanNutricionalPorcenajesDTO {
 
     private int proteina;
     private int hidratoDeCarbono;

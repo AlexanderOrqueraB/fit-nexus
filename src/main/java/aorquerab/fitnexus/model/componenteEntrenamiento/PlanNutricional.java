@@ -16,7 +16,8 @@ import java.time.LocalDate;
 @Data
 @Entity
 @EqualsAndHashCode
-public class PautaNutricional {
+@Table(name = "plan_nutricional")
+public class PlanNutricional {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_log_gen")

@@ -1,7 +1,7 @@
 package aorquerab.fitnexus.model.users;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
-import aorquerab.fitnexus.model.componenteEntrenamiento.PautaNutricional;
+import aorquerab.fitnexus.model.componenteEntrenamiento.PlanNutricional;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import aorquerab.fitnexus.model.enumerator.Role;
@@ -55,7 +55,7 @@ public class Entrenador {
 
     @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<PautaNutricional> pautasNutricionales = new ArrayList<>();
+    private List<PlanNutricional> pautasNutricionales = new ArrayList<>();
 
     @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore

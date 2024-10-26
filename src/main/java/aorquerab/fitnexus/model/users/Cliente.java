@@ -1,7 +1,7 @@
 package aorquerab.fitnexus.model.users;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
-import aorquerab.fitnexus.model.componenteEntrenamiento.PautaNutricional;
+import aorquerab.fitnexus.model.componenteEntrenamiento.PlanNutricional;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import aorquerab.fitnexus.model.enumerator.FrecuenciaEjercicioSemanal;
@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -77,7 +78,7 @@ public class Cliente {
         inverseJoinColumns = @JoinColumn(name = "pauta_nutricional_id")
     )
     @JsonIgnore
-    private List<PautaNutricional> pautaNutricional= new ArrayList<>();
+    private List<PlanNutricional> planNutricional = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(

@@ -44,8 +44,8 @@ public class SecurityConfig {
 
                         //TODO: START Change auth permissions (testing purpose for the moment) +
                         // change .anyRequest().permitAll() to .anyRequest().authenticated()
-                        .requestMatchers(HttpMethod.GET, FITNEXUS_BASE_URI + "/nutri-pautas").permitAll()
-                        .requestMatchers(HttpMethod.GET, FITNEXUS_BASE_URI + "/nutri-pautas").permitAll()
+                        .requestMatchers(HttpMethod.GET, FITNEXUS_BASE_URI + "/plan-nutri/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, FITNEXUS_BASE_URI + "/plan-nutri/**").permitAll()
                         //TODO: END
 
                         //ROLE ACCESS CONTROL React pages

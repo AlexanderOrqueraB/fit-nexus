@@ -4,7 +4,6 @@ import aorquerab.fitnexus.model.DTOs.ClienteDTO;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.repository.ClienteRepository;
-import aorquerab.fitnexus.utils.ClienteDTOMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,11 +29,6 @@ public class ClienteController {
         return clienteRepository.findAll();
     }
 
-    //TODO: Un post con los datos iniciales (el del signup?)
-    // y otro post con los datos de edad peso objetivo... (usar un DTO especifico y
-    // crear un mapper especifico o un mapper que mappee solo lo necesario y no lo que no se le pase
-    // como parametro
-    // USAR @Valid para evitar que haya nulos en el DTO!!!!
     @PostMapping
     public ResponseEntity<Cliente> postCliente (
             @RequestBody ClienteDTO clienteDTO) {
@@ -43,7 +37,14 @@ public class ClienteController {
         if(clienteDTO == null) {
             throw new InvalidRequestException("Peticion de cliente no valida");
         }
-        Cliente clienteCreado = ClienteDTOMapper.mapperFromClienteDTO(clienteDTO);
+        Cliente clienteCreado = Cliente.builder()
+                .objetivo(clienteDTO.getObjetivo())
+                .genero(clienteDTO.getGenero())
+                .frecuenciaEjercicioSemanal(clienteDTO.getFrecuenciaEjercicioSemanal())
+                .edad(clienteDTO.getEdad())
+                .peso(clienteDTO.getPeso())
+                .altura(clienteDTO.getAltura())
+                .build();
         log.info("cliente creado tras el mappeo:" + clienteCreado);
         clienteRepository.save(clienteCreado);
         return new ResponseEntity<>(HttpStatus.CREATED);

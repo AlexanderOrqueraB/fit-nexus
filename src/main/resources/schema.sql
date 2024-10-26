@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS ejercicio CASCADE;
-DROP TABLE IF EXISTS pauta_nutricional CASCADE;
+DROP TABLE IF EXISTS plan_nutricional CASCADE;
 DROP TABLE IF EXISTS plan_de_entrenamiento CASCADE;
 DROP TABLE IF EXISTS rutina CASCADE;
 DROP TABLE IF EXISTS valoracion CASCADE;
@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS cliente CASCADE;
 DROP TABLE IF EXISTS entrenador CASCADE;
 
 -- INTERMEDIATE TABLES
-DROP TABLE IF EXISTS cliente_pauta_nutricional CASCADE;
+DROP TABLE IF EXISTS cliente_plan_nutricional CASCADE;
 DROP TABLE IF EXISTS plan_de_entrenamiento_rutina CASCADE;
 DROP TABLE IF EXISTS rutina_ejercicio CASCADE;
 DROP TABLE IF EXISTS cliente_ejercicio CASCADE;
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS ejercicio (
     version INT
 );
 
-CREATE TABLE IF NOT EXISTS pauta_nutricional (
+CREATE TABLE IF NOT EXISTS plan_nutricional (
     id SERIAL PRIMARY KEY,
     proteina INT NOT NULL,
     hidrato_de_carbono INT NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS pauta_nutricional (
     fecha_inicio DATE,
     fecha_final DATE,
     entrenador_id INT,
-    CONSTRAINT fk_entrenador_pauta_nutricional
+    CONSTRAINT fk_entrenador_plan_nutricional
         FOREIGN KEY(entrenador_id)
         REFERENCES entrenador(id),
     version INT
@@ -122,16 +122,16 @@ CREATE TABLE IF NOT EXISTS valoracion (
 );
 
 -- INTERMEDIATE TABLES
-CREATE TABLE IF NOT EXISTS cliente_pauta_nutricional (
+CREATE TABLE IF NOT EXISTS cliente_plan_nutricional (
     cliente_id INT,
-    pauta_nutricional_id INT,
-    PRIMARY KEY(cliente_id, pauta_nutricional_id),
+    plan_nutricional_id INT,
+    PRIMARY KEY(cliente_id, plan_nutricional_id),
     CONSTRAINT fk_cliente
         FOREIGN KEY(cliente_id)
         REFERENCES cliente(id),
-    CONSTRAINT fk_pauta_nutricional
-        FOREIGN KEY(pauta_nutricional_id)
-        REFERENCES pauta_nutricional(id)
+    CONSTRAINT fk_plan_nutricional
+        FOREIGN KEY(plan_nutricional_id)
+        REFERENCES plan_nutricional(id)
 );
 
 CREATE TABLE IF NOT EXISTS plan_de_entrenamiento_rutina (

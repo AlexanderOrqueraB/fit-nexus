@@ -16,7 +16,7 @@ import {
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../components_ui/ui/tooltip';
-import {FITNEXUS_URL, PAUTA, ENTRENAMIENTOS} from "../../constants/env";
+import {FITNEXUS_URL, PLAN_NUTRI, ENTRENAMIENTOS} from "../../constants/env";
 
 const SideBar = ({ isAdmin }) => {
 	return (
@@ -74,10 +74,10 @@ const SideBar = ({ isAdmin }) => {
 								className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
 							>
 								<Drumstick className="h-5 w-5" />
-								<span className="sr-only">{PAUTA}</span>
+								<span className="sr-only">{PLAN_NUTRI}</span>
 							</Link>
 						</TooltipTrigger>
-						<TooltipContent side="right">{PAUTA}</TooltipContent>
+						<TooltipContent side="right">{PLAN_NUTRI}</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
 				{isAdmin ? (

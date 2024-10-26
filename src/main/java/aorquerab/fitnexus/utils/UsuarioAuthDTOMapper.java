@@ -5,6 +5,8 @@ import aorquerab.fitnexus.model.DTOs.SignupDTO;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
 
+import java.time.LocalDate;
+
 public class UsuarioAuthDTOMapper {
 
     //FROM Entity to DTO
@@ -51,6 +53,10 @@ public class UsuarioAuthDTOMapper {
         cliente.setEmail(signupDTO.getEmail());
         cliente.setPassword(signupDTO.getPassword());
         cliente.setRole(signupDTO.getRole());
+        cliente.setClienteDesde(LocalDate.of(
+                LocalDate.now().getYear(),
+                LocalDate.now().getMonth(),
+                LocalDate.now().getDayOfYear()));
         return cliente;
     }
 
