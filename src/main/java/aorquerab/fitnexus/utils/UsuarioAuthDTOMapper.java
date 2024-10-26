@@ -53,10 +53,7 @@ public class UsuarioAuthDTOMapper {
         cliente.setEmail(signupDTO.getEmail());
         cliente.setPassword(signupDTO.getPassword());
         cliente.setRole(signupDTO.getRole());
-        cliente.setClienteDesde(LocalDate.of(
-                LocalDate.now().getYear(),
-                LocalDate.now().getMonth(),
-                LocalDate.now().getDayOfYear()));
+        cliente.setClienteDesde(LocalDate.now());
         return cliente;
     }
 

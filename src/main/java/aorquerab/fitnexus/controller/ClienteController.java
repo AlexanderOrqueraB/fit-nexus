@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
@@ -29,25 +30,28 @@ public class ClienteController {
         return clienteRepository.findAll();
     }
 
-    @PostMapping
-    public ResponseEntity<Cliente> postCliente (
+    @PostMapping("/{clienteId}")
+    public ResponseEntity<String> postCliente (
+            @PathVariable Long clienteId,
             @RequestBody ClienteDTO clienteDTO) {
         log.info("Ejecutando postCliente...");
         log.info("clienteDTO:" + clienteDTO);
         if(clienteDTO == null) {
             throw new InvalidRequestException("Peticion de cliente no valida");
         }
-        Cliente clienteCreado = Cliente.builder()
-                .objetivo(clienteDTO.getObjetivo())
-                .genero(clienteDTO.getGenero())
-                .frecuenciaEjercicioSemanal(clienteDTO.getFrecuenciaEjercicioSemanal())
-                .edad(clienteDTO.getEdad())
-                .peso(clienteDTO.getPeso())
-                .altura(clienteDTO.getAltura())
-                .build();
-        log.info("cliente creado tras el mappeo:" + clienteCreado);
-        clienteRepository.save(clienteCreado);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Optional<Cliente> cliente = clienteRepository.findById(clienteId);
+        log.info("cliente a actualizar:" + cliente);
+        cliente.ifPresent(cl -> {
+            cl.setObjetivo(clienteDTO.getObjetivo());
+            cl.setGenero(clienteDTO.getGenero());
+            cl.setFrecuenciaEjercicioSemanal(clienteDTO.getFrecuenciaEjercicioSemanal());
+            cl.setEdad(clienteDTO.getEdad());
+            cl.setPeso(clienteDTO.getPeso());
+            cl.setAltura(clienteDTO.getAltura());
+        });
+        log.info("cliente creado tras el mappeo:" + cliente);
+        cliente.ifPresent(clienteRepository::save);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Cliente creado correctamente");
     }
 
     //    //PUT

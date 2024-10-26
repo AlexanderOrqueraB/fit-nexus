@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
@@ -46,6 +47,11 @@ public class NutriController {
     // hace un POST en un boton(CrearPlan) con los datos clienteDTO del cliente concreto y su Email
     // El resultado es un 201 plan creado (o por porcentajes o por macros)
 
+    @GetMapping
+    public List<PlanNutricional> obtenerPlanes(){
+        log.info("Ejecutando obtenerPlanes...");
+        return planNutricionalRepository.findAll();
+    }
 
     //TODO: Testear en postman
     @GetMapping("/porcentajes/{planNutriId}")
@@ -122,7 +128,7 @@ public class NutriController {
             if(clienteEmailId == null)
                 throw new InvalidRequestException("Peticion de creacion de plan nutricional en porcentajes no valida");
             else {
-                log.info("Cliente id enviado en la peticion...");
+                log.info("Cliente id enviado en la peticion..." + clienteEmailId);
                 Optional<Cliente> cliente = clienteRepository.findByEmail(clienteEmailId);
                 log.info("cliente:" + cliente.get());
                 int kcalDiariasPorObjetivo = 0;
