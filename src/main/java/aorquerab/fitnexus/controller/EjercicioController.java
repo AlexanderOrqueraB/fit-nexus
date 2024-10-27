@@ -64,7 +64,7 @@ public class EjercicioController {
             List<EjercicioDTO> ejercicioDTOs = EjercicioDTOMapper.mapperFromList(ejercicios);
             return ResponseEntity.status(HttpStatus.OK).body(ejercicioDTOs);
         } catch (Exception e) {
-            log.info("Excepcion getExercises: ", e.getMessage());
+            log.info("Excepcion getExercises: " + e.getMessage());
             return null;
         }
 

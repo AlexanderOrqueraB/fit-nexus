@@ -30,6 +30,12 @@ public class ClienteController {
         return clienteRepository.findAll();
     }
 
+    @GetMapping("/{clienteEmailId}")
+    public Optional<Cliente> obtenerClientePorId(@PathVariable String clienteEmailId){
+        log.info("Ejecutando getClientes...");
+        return clienteRepository.findByEmail(clienteEmailId);
+    }
+
     @PostMapping("/{clienteId}")
     public ResponseEntity<String> postCliente (
             @PathVariable Long clienteId,
