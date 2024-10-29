@@ -1,8 +1,8 @@
 package aorquerab.fitnexus.model.users;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
-import aorquerab.fitnexus.model.componenteEntrenamiento.PlanNutricional;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
+import aorquerab.fitnexus.model.componenteEntrenamiento.PlanNutricional;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import aorquerab.fitnexus.model.enumerator.FrecuenciaEjercicioSemanal;
 import aorquerab.fitnexus.model.enumerator.Genero;
@@ -24,7 +24,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@ToString(exclude = "password")
+@ToString(exclude = {"password", "entrenador"})
 @EqualsAndHashCode
 @Entity
 @Table(name = "cliente")

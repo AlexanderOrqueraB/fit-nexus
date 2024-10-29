@@ -1,16 +1,18 @@
 package aorquerab.fitnexus.utils;
 
-import aorquerab.fitnexus.model.DTOs.EjercicioDTO;
+import aorquerab.fitnexus.model.dtos.EjercicioDTO;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
+import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class EjercicioDTOMapper {
 
-    //TODO: Separate into 2 different clases: EjerciciofromEjercicioDTO and EjercicioDTOfromEjercicio for example
     //FROM Entity to DTO
     public static EjercicioDTO mapperFromEjercicio (Ejercicio ejercicio) {
         EjercicioDTO ejercicioDTO = new EjercicioDTO();
@@ -24,13 +26,18 @@ public class EjercicioDTOMapper {
     }
 
     public static EjercicioDTO mapperFromEjercicio (Optional <Ejercicio> ejercicio) {
-        return  EjercicioDTO.builder()
-                        .nombreEjercicio(ejercicio.get().getNombreEjercicio())
-                        .repeticion(ejercicio.get().getRepeticion())
-                        .serie(ejercicio.get().getSerie())
-                        .peso(ejercicio.get().getPeso())
-                        .cardio(ejercicio.get().getCardio())
-                            .build();
+        if (ejercicio.isPresent()) {
+            return EjercicioDTO.builder()
+                    .nombreEjercicio(ejercicio.get().getNombreEjercicio())
+                    .repeticion(ejercicio.get().getRepeticion())
+                    .serie(ejercicio.get().getSerie())
+                    .peso(ejercicio.get().getPeso())
+                    .cardio(ejercicio.get().getCardio())
+                    .build();
+        } else {
+            log.info ("Mapeo de Ejercicio a ejercicioDTO fallido!!!!");
+            throw new EjercicioNotFoundException("Ejercicio no encontrado en BD");
+        }
     }
 
     public static List<EjercicioDTO> mapperFromList (List<Ejercicio> ejercicios) {

@@ -1,4 +1,4 @@
-package aorquerab.fitnexus.model.DTOs.minimized;
+package aorquerab.fitnexus.model.dtos.minimized;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

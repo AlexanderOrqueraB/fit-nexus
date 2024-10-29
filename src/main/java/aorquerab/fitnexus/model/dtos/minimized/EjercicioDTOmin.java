@@ -1,4 +1,4 @@
-package aorquerab.fitnexus.model.DTOs;
+package aorquerab.fitnexus.model.dtos.minimized;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class EjercicioDTO {
+public class EjercicioDTOmin {
 
     private String nombreEjercicio;
-    private Integer repeticion;
-    private Integer serie;
-    private Integer peso;
-    private Boolean cardio;
-
 }

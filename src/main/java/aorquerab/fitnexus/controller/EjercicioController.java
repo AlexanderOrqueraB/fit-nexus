@@ -1,6 +1,6 @@
 package aorquerab.fitnexus.controller;
 
-import aorquerab.fitnexus.model.DTOs.EjercicioDTO;
+import aorquerab.fitnexus.model.dtos.EjercicioDTO;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
 import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;

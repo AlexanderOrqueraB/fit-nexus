@@ -1,5 +1,6 @@
 package aorquerab.fitnexus.controller;
 
+import aorquerab.fitnexus.model.dtos.SignupDTO;
 import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.users.Entrenador;
@@ -25,8 +26,8 @@ public class EntrenadorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Entrenador>> getEntrenadores(){
-        log.info("Ejecutando getEntrenadores...");
+    public ResponseEntity<List<Entrenador>> obtenerEntrenadores(){
+        log.info("Ejecutando obtenerEntrenadores...");
         List<Entrenador> entrenador = entrenadorRepository.findAll();
         if(entrenador.isEmpty()) {
             log.info("Entrenador/s no encontrado/s en base de datos");
@@ -35,29 +36,43 @@ public class EntrenadorController {
         return ResponseEntity.status(HttpStatus.OK).body(entrenador);
     }
 
-    @PostMapping
-    public ResponseEntity<String> postEntrenador (
-            @RequestBody Entrenador entrenador) {
-        log.info("Ejecutando postEntrenador...");
-        if(entrenador == null) {
+    @GetMapping("/{entrenadorEmailId}")
+    public Optional<Entrenador> obtenerEntrenadorPorEmailId (@PathVariable String entrenadorEmailId) {
+        log.info("Ejecutando obtenerEntrenadorPorEmailId con este emailId: " + entrenadorEmailId);
+        return entrenadorRepository.findByEmail(entrenadorEmailId);
+    }
+
+    @GetMapping("/fitnexus-id/{entrenadorEmailId}")
+    public String obtenerFitNexusIdDeEntrenador (@PathVariable String entrenadorEmailId) {
+        log.info("Ejecutando obtenerFitNexusIdDeEntrenador con este emailId: " + entrenadorEmailId);
+        Optional<Entrenador> entrenador = entrenadorRepository.findByEmail(entrenadorEmailId);
+        if (entrenador.isPresent()) {
+            return entrenador.get().getFitNexusId().toString();
+        } else {
+            log.info("FitnexusID de entrenador no encontrado con el email:" + entrenadorEmailId);
+            throw new InvalidRequestException("FitnexusID de entrenador no encontrado con el email:"
+                    + entrenadorEmailId);
+        }
+    }
+
+    @PostMapping("/{entrenadorId}")
+    public ResponseEntity<String> crearEntrenador (
+            @PathVariable Long entrenadorId,
+            @RequestBody SignupDTO signupDTO) {
+        log.info("Ejecutando crearEntrenador con este entrenadorId: " + entrenadorId);
+        log.info("Ejecutando crearEntrenador con el campo asesorNutricional: " + signupDTO);
+        if(signupDTO == null) {
             throw new InvalidRequestException("Peticion de entrenador no valida");
         }
-        entrenadorRepository.save(entrenador);
-        log.info("postEntrenador ejecutado.");
+        Optional<Entrenador> entrenador = entrenadorRepository.findById(entrenadorId);
+        log.info("Entrenador a actualizar:" + entrenador);
+        entrenador.ifPresent(entr -> {
+            entr.setAsesorNutricional(signupDTO.getAsesorNutricional());
+        });
+        log.info("Entrenador creado tras el mappeo:" + entrenador);
+        entrenador.ifPresent(entrenadorRepository::save);
         return ResponseEntity.status(HttpStatus.CREATED).body("Entrenador creado correctamente");
     }
-
-    @GetMapping ("/{idEntrenador}")
-    public ResponseEntity<Entrenador> getEntrenadorById(@PathVariable Long idEntrenador) {
-        log.info("Ejecutando getEntrenadorById...");
-        Optional<Entrenador> entrenadorById = entrenadorRepository.findById(idEntrenador);
-        if(entrenadorById.isEmpty()) {
-            log.info("Entrenador {} no encontrado en base de datos", idEntrenador);
-            throw new EntrenadorNotFoundException("Ejercicio no encontrado en BD: " + idEntrenador);
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(entrenadorById.get());
-    }
-
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{idEntrenador}")

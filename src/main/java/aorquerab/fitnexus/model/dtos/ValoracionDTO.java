@@ -1,6 +1,6 @@
-package aorquerab.fitnexus.model.DTOs;
+package aorquerab.fitnexus.model.dtos;
 
-import aorquerab.fitnexus.model.DTOs.minimized.PlanDeEntrenamientoDTOmin;
+import aorquerab.fitnexus.model.dtos.minimized.PlanDeEntrenamientoDTOmin;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

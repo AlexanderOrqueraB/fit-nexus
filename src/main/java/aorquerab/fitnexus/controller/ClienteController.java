@@ -1,8 +1,10 @@
 package aorquerab.fitnexus.controller;
 
-import aorquerab.fitnexus.model.DTOs.ClienteDTO;
+import aorquerab.fitnexus.model.dtos.ClienteDtoRequest;
+import aorquerab.fitnexus.model.dtos.minimized.ClienteDTO;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.users.Cliente;
+import aorquerab.fitnexus.model.users.Entrenador;
 import aorquerab.fitnexus.repository.ClienteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
@@ -25,44 +28,63 @@ public class ClienteController {
     }
 
     @GetMapping
-    public List<Cliente> getClientes(){
-        log.info("Ejecutando getClientes...");
+    public List<Cliente> obtenerClientes(){
+        log.info("Ejecutando obtenerClientes...");
         return clienteRepository.findAll();
     }
 
+    @GetMapping("/clientes-dto")
+    public List<ClienteDTO> obtenerClientesYentrenadoresDTO(){
+        log.info("Ejecutando obtenerClientesYentrenadoresDTO...");
+        return clienteRepository.findAll().stream().map(cliente -> {
+            ClienteDTO.Entrenador entrenadorDTO = null;
+            if (cliente.getEntrenador() != null) {
+                Entrenador entrenador = cliente.getEntrenador();
+                entrenadorDTO = ClienteDTO.Entrenador.builder()
+                        .email(entrenador.getEmail())
+                        .asesorNutricional(entrenador.getAsesorNutricional())
+                        .build();
+            }
+            return ClienteDTO.builder()
+                    .objetivo(cliente.getObjetivo())
+                    .genero(cliente.getGenero())
+                    .frecuenciaEjercicioSemanal(cliente.getFrecuenciaEjercicioSemanal())
+                    .edad(cliente.getEdad())
+                    .peso(cliente.getPeso())
+                    .altura(cliente.getAltura())
+                    .entrenador(entrenadorDTO)
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
     @GetMapping("/{clienteEmailId}")
-    public Optional<Cliente> obtenerClientePorId(@PathVariable String clienteEmailId){
-        log.info("Ejecutando getClientes...");
+    public Optional<Cliente> obtenerClientePorEmailId(@PathVariable String clienteEmailId){
+        log.info("Ejecutando obtenerClientePorEmailId con este emailId: " + clienteEmailId);
         return clienteRepository.findByEmail(clienteEmailId);
     }
 
     @PostMapping("/{clienteId}")
-    public ResponseEntity<String> postCliente (
+    public ResponseEntity<String> crearCliente(
             @PathVariable Long clienteId,
-            @RequestBody ClienteDTO clienteDTO) {
-        log.info("Ejecutando postCliente...");
-        log.info("clienteDTO:" + clienteDTO);
-        if(clienteDTO == null) {
+            @RequestBody ClienteDtoRequest clienteDTORequest) {
+        log.info("Ejecutando crearCliente con este clienteId: " + clienteId);
+        log.info("ClienteDTORequest: " + clienteDTORequest);
+        if(clienteDTORequest == null) {
             throw new InvalidRequestException("Peticion de cliente no valida");
         }
         Optional<Cliente> cliente = clienteRepository.findById(clienteId);
-        log.info("cliente a actualizar:" + cliente);
+        log.info("Cliente a actualizar: " + cliente);
         cliente.ifPresent(cl -> {
-            cl.setObjetivo(clienteDTO.getObjetivo());
-            cl.setGenero(clienteDTO.getGenero());
-            cl.setFrecuenciaEjercicioSemanal(clienteDTO.getFrecuenciaEjercicioSemanal());
-            cl.setEdad(clienteDTO.getEdad());
-            cl.setPeso(clienteDTO.getPeso());
-            cl.setAltura(clienteDTO.getAltura());
+            cl.setObjetivo(clienteDTORequest.getObjetivo());
+            cl.setGenero(clienteDTORequest.getGenero());
+            cl.setFrecuenciaEjercicioSemanal(clienteDTORequest.getFrecuenciaEjercicioSemanal());
+            cl.setEdad(clienteDTORequest.getEdad());
+            cl.setPeso(clienteDTORequest.getPeso());
+            cl.setAltura(clienteDTORequest.getAltura());
         });
-        log.info("cliente creado tras el mappeo:" + cliente);
+        log.info("Cliente creado tras el mappeo:" + cliente);
         cliente.ifPresent(clienteRepository::save);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Cliente creado correctamente");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Cliente con datos extra creados correctamente");
     }
 
-    //    //PUT
-//    @PutMapping
-//    //DELETE
-//    @DeleteMapping
-//    //CUSTOM
 }

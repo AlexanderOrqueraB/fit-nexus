@@ -1,4 +1,4 @@
-package aorquerab.fitnexus.model.DTOs;
+package aorquerab.fitnexus.model.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

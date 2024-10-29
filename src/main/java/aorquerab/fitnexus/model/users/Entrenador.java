@@ -1,8 +1,8 @@
 package aorquerab.fitnexus.model.users;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
-import aorquerab.fitnexus.model.componenteEntrenamiento.PlanNutricional;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
+import aorquerab.fitnexus.model.componenteEntrenamiento.PlanNutricional;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import aorquerab.fitnexus.model.enumerator.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;

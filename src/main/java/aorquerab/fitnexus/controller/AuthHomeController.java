@@ -1,7 +1,8 @@
 package aorquerab.fitnexus.controller;
 
-import aorquerab.fitnexus.model.DTOs.LoginDTO;
-import aorquerab.fitnexus.model.DTOs.SignupDTO;
+import aorquerab.fitnexus.model.dtos.LoginDTO;
+import aorquerab.fitnexus.model.dtos.SignupDTO;
+import aorquerab.fitnexus.model.dtos.minimized.SignupDTOResponse;
 import aorquerab.fitnexus.model.enumerator.Role;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.users.Cliente;
@@ -18,12 +19,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -74,40 +72,65 @@ public class AuthHomeController {
 //    }
 
     @PostMapping("/api/v1/signup")
-    public ResponseEntity<String> postSignup(
+    public ResponseEntity<SignupDTOResponse> postSignup(
         @RequestBody SignupDTO signupDTO) {
         log.info("Ejecutando postSignup...");
         log.info("Signup data: {}", signupDTO);
-
-        if(signupDTO == null) {
-            throw new InvalidRequestException("Peticion de registro no válida");
-        }
         log.info("Rol recibido: {}", signupDTO.getRole());
+        ResponseEntity<SignupDTOResponse> responseEntity = null;
+
         try {
-            if("USER".equalsIgnoreCase(String.valueOf(signupDTO.getRole()))) {
-                Cliente clienteActualizado = UsuarioAuthDTOMapper.clienteMapperFromSignupDTO(signupDTO);
+            if ("USER".equalsIgnoreCase(String.valueOf(signupDTO.getRole()))) {
+                UUID entrenadorFitNexusId = signupDTO.getEntrenador().getFitNexusId();
+                Optional<Entrenador> entrenador = entrenadorRepository.findByFitNexusId(entrenadorFitNexusId);
+                Cliente clienteActualizado = UsuarioAuthDTOMapper.clienteMapperFromSignupDTO(signupDTO, entrenador.get());
                 log.info("Datos del cliente a guardar: {}", clienteActualizado);
                 clienteRepository.save(clienteActualizado);
-                log.info("postSignup Cliente ejecutado.");
-                return ResponseEntity.status(HttpStatus.CREATED).body("Cliente registrado correctamente.");
+                log.info("postSignup Cliente ejecutado y registrado correctamente.");
+                SignupDTOResponse responsePayload = SignupDTOResponse.builder()
+                        .email(clienteActualizado.getEmail())
+                        .clienteDesde(clienteActualizado.getClienteDesde())
+                        .build();
+                responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(responsePayload);
             } else if ("ADMIN".equalsIgnoreCase(String.valueOf(signupDTO.getRole()))) {
-                Entrenador entrenadorActualizado = UsuarioAuthDTOMapper.entrenadorMapperFromSignupDTO(signupDTO);
-                log.info("Datos del cliente a guardar: {}", entrenadorActualizado);
+                String fitNexusId = generateFitNexusId();
+                Entrenador entrenadorActualizado = UsuarioAuthDTOMapper.entrenadorMapperFromSignupDTO(signupDTO, fitNexusId);
+                log.info("Datos del entrenador a guardar: {}", entrenadorActualizado);
                 entrenadorRepository.save(entrenadorActualizado);
-                log.info("postSignup Entrenador ejecutado.");
-                return ResponseEntity.status(HttpStatus.CREATED).body("Entrenador registrado correctamente.");
-            } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Tipo de usuario no válido");
+                log.info("postSignup Entrenador ejecutado y registrado correctamente.");
+                SignupDTOResponse responsePayload = SignupDTOResponse.builder()
+                        .email(entrenadorActualizado.getEmail())
+                        .fitNexusId(fitNexusId).build();
+                responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(responsePayload);
             }
-
         } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Error al registrar el usuario: " + e.getMessage());
+            log.info("Error al registrar al usuario" + e.getMessage());
+            throw new InvalidRequestException("Usuario no registrado en base de datos");
         }
+        return responseEntity;
     }
 
-    //TODO: Create endpoint GET to get the role/auth of the current user
+    private String generateFitNexusId() {
+        UUID fitNexusId = UUID.randomUUID();
+        return fitNexusId.toString();
+    }
+
+    @GetMapping("/api/v1/roles/{userEmailId}")
+    @ResponseBody
+    public Optional<Role> obtenerRolePorEmailId (@PathVariable String userEmailId){
+        log.info("Ejecutando obtenerRolePorEmailId con este emailId: " + userEmailId);
+        Optional<Cliente> clienteByEmailId = clienteRepository.findByEmail(userEmailId);
+        if(clienteByEmailId.isPresent()) {
+            return Optional.of(clienteByEmailId.get().getRole());
+        }
+
+        Optional<Entrenador> entrenadorByEmailId = entrenadorRepository.findByEmail(userEmailId);
+        if (entrenadorByEmailId.isPresent()) {
+            return Optional.of(entrenadorByEmailId.get().getRole());
+        }
+        log.info("Email no encontrado en base de datos");
+        return Optional.empty();
+    }
 
     @PostMapping("/api/v1/login")
     public ResponseEntity<Map<String, Object>> postLogin(

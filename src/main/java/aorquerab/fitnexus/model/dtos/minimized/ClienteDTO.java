@@ -1,4 +1,4 @@
-package aorquerab.fitnexus.model.DTOs;
+package aorquerab.fitnexus.model.dtos.minimized;
 
 import aorquerab.fitnexus.model.enumerator.FrecuenciaEjercicioSemanal;
 import aorquerab.fitnexus.model.enumerator.Genero;
@@ -20,4 +20,12 @@ public class ClienteDTO {
     private Integer edad;
     private Integer peso;
     private Integer altura;
+    private Entrenador entrenador;
+
+    @Data
+    @Builder
+    public static class Entrenador {
+        private String email;
+        private Boolean asesorNutricional;
+    }
 }

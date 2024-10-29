@@ -1,7 +1,7 @@
 package aorquerab.fitnexus.controller;
 
-import aorquerab.fitnexus.model.DTOs.PlanNutricionalMacrosDTO;
-import aorquerab.fitnexus.model.DTOs.PlanNutricionalPorcenajesDTO;
+import aorquerab.fitnexus.model.dtos.PlanNutricionalMacrosDTO;
+import aorquerab.fitnexus.model.dtos.PlanNutricionalPorcenajesDTO;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanNutricional;
 import aorquerab.fitnexus.model.enumerator.Genero;
 import aorquerab.fitnexus.model.enumerator.Objetivo;
@@ -137,52 +137,47 @@ public class NutriController {
                 log.info("Email id enviado en la peticion: " + email);
 
                 Optional<Cliente> cliente = clienteRepository.findByEmail(email);
-                log.info("cliente: " + cliente.get());
+                cliente.ifPresent(value -> log.info("cliente: " + value));
+
                 int kcalDiariasPorObjetivo = 0;
                 PlanNutricionalPorcenajesDTO planNutricionalPorcenajesDTO;
 
-                if (cliente.isPresent()) {
-                    log.info("Cliente encontrado buscando por email: " + cliente.get());
-                    double tasaMetabolismoBasalCliente =
-                            calcularTasaMetabolismoBasal(
-                                    cliente.get().getPeso(),
-                                    cliente.get().getAltura(),
-                                    cliente.get().getEdad(),
-                                    cliente.get().getGenero());
+                log.info("Cliente encontrado buscando por email: " + cliente.get());
+                double tasaMetabolismoBasalCliente =
+                        calcularTasaMetabolismoBasal(
+                                cliente.get().getPeso(),
+                                cliente.get().getAltura(),
+                                cliente.get().getEdad(),
+                                cliente.get().getGenero());
 
-                    int kCalDiariasMantenimientoCliente =
-                            obtenerKcalDiariasParaMantenimiento(
-                                    cliente.get().getFrecuenciaEjercicioSemanal().getFactorActividad(), tasaMetabolismoBasalCliente);
+                int kCalDiariasMantenimientoCliente =
+                        obtenerKcalDiariasParaMantenimiento(
+                                cliente.get().getFrecuenciaEjercicioSemanal().getFactorActividad(), tasaMetabolismoBasalCliente);
 
-                    kcalDiariasPorObjetivo = obtenerKcalDiariasPorObjetivo(cliente.get().getObjetivo(), kCalDiariasMantenimientoCliente);
+                kcalDiariasPorObjetivo = obtenerKcalDiariasPorObjetivo(cliente.get().getObjetivo(), kCalDiariasMantenimientoCliente);
 
-                    PlanNutricionalPorcenajesDTO.PlanNutricionalPorcenajesDTOBuilder planNutricionalDTOBuilder = PlanNutricionalPorcenajesDTO
-                            .builder()
-                            .kcal(kcalDiariasPorObjetivo);
+                PlanNutricionalPorcenajesDTO.PlanNutricionalPorcenajesDTOBuilder planNutricionalDTOBuilder = PlanNutricionalPorcenajesDTO
+                        .builder()
+                        .kcal(kcalDiariasPorObjetivo);
 
-                    //Duracion del plan en función del objetivo
-                    if (cliente.get().getObjetivo().equals(Objetivo.GANAR_MUSCULO)) {
-                        planNutricionalDTOBuilder.proteina(30).hidratoDeCarbono(50).grasa(20)
-                                .fechaInicio(LocalDate.now()).fechaFinal(LocalDate.now().plusWeeks(6));
-                    } else if (cliente.get().getObjetivo().equals(Objetivo.PERDER_GRASA)) {
-                        planNutricionalDTOBuilder.proteina(30).hidratoDeCarbono(30).grasa(40)
-                                .fechaInicio(LocalDate.now()).fechaFinal(LocalDate.now().plusWeeks(4));
-                    }
-                    planNutricionalPorcenajesDTO = planNutricionalDTOBuilder.build();
-                    log.info("Plan nutricional DTO creado usando patron builder: " + planNutricionalPorcenajesDTO);
-                    PlanNutricional planNutricional = mapperFromPlanNutriDTO(planNutricionalPorcenajesDTO);
-                    log.info("Plan nutricional creada tras el mapeo: " + planNutricional);
-                    planNutricionalRepository.save(planNutricional);
-                    log.info("Plan nutricional con porcentajes de macronutrientes creada en base de datos");
+                //Duracion del plan en función del objetivo
+                if (cliente.get().getObjetivo().equals(Objetivo.GANAR_MUSCULO)) {
+                    planNutricionalDTOBuilder.proteina(30).hidratoDeCarbono(50).grasa(20)
+                            .fechaInicio(LocalDate.now()).fechaFinal(LocalDate.now().plusWeeks(6));
+                } else if (cliente.get().getObjetivo().equals(Objetivo.PERDER_GRASA)) {
+                    planNutricionalDTOBuilder.proteina(30).hidratoDeCarbono(30).grasa(40)
+                            .fechaInicio(LocalDate.now()).fechaFinal(LocalDate.now().plusWeeks(4));
                 }
-                else {
-                    log.info("Cliente NO encontrado buscando por email...");
-                    throw new PlanNutricionalNotFoundException("Plan nutricional no encontrada en BD");
-                }
+                planNutricionalPorcenajesDTO = planNutricionalDTOBuilder.build();
+                log.info("Plan nutricional DTO creado usando patron builder: " + planNutricionalPorcenajesDTO);
+                PlanNutricional planNutricional = mapperFromPlanNutriDTO(planNutricionalPorcenajesDTO);
+                log.info("Plan nutricional creada tras el mapeo: " + planNutricional);
+                planNutricionalRepository.save(planNutricional);
+                log.info("Plan nutricional con porcentajes de macronutrientes creada en base de datos");
             }
             return ResponseEntity.status(HttpStatus.CREATED).body("Plan nutricional en porcentajes creada correctamente.");
         } catch (Exception e) {
-            log.info("Excepcion crearPlanNutriEnPorcentajes:" + e.getMessage());
+            log.info("Excepcion crearPlanNutriEnPorcentajes: " + e.getMessage());
             throw new PlanNutricionalNotFoundException("Plan nutricional no encontrado en BD");
         }
     }
@@ -206,7 +201,8 @@ public class NutriController {
 
             log.info("macros en gramos: (proteina/hc/grasas): " + proteinaGramos+" gramos de proteina" + " / "
                     + hidratosGramos+" gramos de hc" + " / " + grasasGramos+" gramos de grasa");
-            PlanNutricionalMacrosDTO planNutricionalMacrosDTO = PlanNutricionalMacrosDTO.builder()
+
+            return PlanNutricionalMacrosDTO.builder()
                     .proteina(proteinaGramos)
                     .hidratoDeCarbono(hidratosGramos)
                     .grasa(grasasGramos)
@@ -214,8 +210,6 @@ public class NutriController {
                     .fechaInicio(planNutricional.get().getFechaInicio())
                     .fechaFinal(planNutricional.get().getFechaFinal())
                     .build();
-
-            return planNutricionalMacrosDTO;
         }
         else return null;
     }
@@ -227,10 +221,12 @@ public class NutriController {
         log.info("Ejecutando calculo de tasa de metabolismo basal.");
         if (genero.equals(Genero.MUJER)) {
             tasaMetabolismoBasal = (10 * peso) + (6.25 * altura) - (5 * edad) - 161;
+            log.info("Tasa de metabolismo basal para mujer en base a input: " + tasaMetabolismoBasal);
             //TMB (kcal) = (10 x peso en kg) + (6,25 × altura en cm) - (5 × edad en años) - 161
         }
         else {
             tasaMetabolismoBasal = (10 * peso) + (6.25 * altura) - (5 * edad) + 5;
+            log.info("Tasa de metabolismo basal para hombre en base a input: " + tasaMetabolismoBasal);
             //TMB (kcal) = (10 x peso en kg) + (6,25 × altura en cm) - (5 × edad en años) + 5
         }
         return tasaMetabolismoBasal;
@@ -242,7 +238,9 @@ public class NutriController {
         log.info("Ejecutando calculo de kcal diarias para mantenimiento.");
         int kCalDiariasMantenimiento;
         //Con el metabolismo calculado sólo debemos multiplicar por el factor corrector de la actividad
-        kCalDiariasMantenimiento = (((int) factorDeActividad) * (int) tasaMetabolismoBasal);
+        kCalDiariasMantenimiento = ((int) (factorDeActividad * tasaMetabolismoBasal));
+        log.info("kCalDiariasMantenimiento= " +"factor de actividad:" +factorDeActividad + " * " + " tasa de metabolismo basal:"
+                + tasaMetabolismoBasal + " = " + kCalDiariasMantenimiento + " kcalDiariasMantenimiento" );
         return kCalDiariasMantenimiento;
     }
 
@@ -251,8 +249,12 @@ public class NutriController {
         log.info("Obteniendo kcal diarias en base al objetivo");
         if (objetivo.equals((Objetivo.GANAR_MUSCULO))) {
             obtenerKcalDiariasPorObjetivo = kcalMantenimiento + objetivo.getKcalExtra();
+            log.info("Kcal diarias por objetivo = kcalMantenimiento:" + kcalMantenimiento
+                    + " + kcalExtra para ganar musculo: " + obtenerKcalDiariasPorObjetivo);
         }
         else obtenerKcalDiariasPorObjetivo = kcalMantenimiento - objetivo.getKcalExtra();
+        log.info("Kcal diarias por objetivo = kcalMantenimiento:" +kcalMantenimiento
+                + " - kcalExtra para perder grasa: " + obtenerKcalDiariasPorObjetivo);
         return  obtenerKcalDiariasPorObjetivo;
     }
 
