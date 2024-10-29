@@ -71,7 +71,7 @@ public class EntrenadorController {
         });
         log.info("Entrenador creado tras el mappeo:" + entrenador);
         entrenador.ifPresent(entrenadorRepository::save);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Entrenador creado correctamente");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Entrenador actualizado con campo asesorNutricional");
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

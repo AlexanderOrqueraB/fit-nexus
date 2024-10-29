@@ -121,7 +121,6 @@ public class NutriController {
         }
     }
 
-    //TODO: TESTEAR CON DATOS REALES y probar con calculadora externa
     @PostMapping
     public ResponseEntity <String> crearPlanNutriEnPorcentajes(@RequestBody String clienteEmailId) {
         log.info("Ejecutando crearPlanNutriEnPorcentajes...");
