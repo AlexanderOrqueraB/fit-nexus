@@ -56,6 +56,9 @@ public class NutriController {
         return planNutricionalRepository.findAll();
     }
 
+    //TODO: obtener el contenido de la tabla cliente_plan_nutricional con el id de cliente y el id del plan
+    // para un posible GET que dado un plan (id o nombre) devuelva a qué cliente está asociado
+
     @GetMapping("/porcentajes/{planNutriId}")
     public ResponseEntity <PlanNutricionalPorcenajesDTO> obtenerPlanNutriEnPorcentajes (@PathVariable Long planNutriId) {
         PlanNutricionalPorcenajesDTO planNutricionalPorcenajesDTO;
