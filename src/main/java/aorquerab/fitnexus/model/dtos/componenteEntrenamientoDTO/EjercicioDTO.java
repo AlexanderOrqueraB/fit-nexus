@@ -1,4 +1,4 @@
-package aorquerab.fitnexus.model.dtos;
+package aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,5 +16,4 @@ public class EjercicioDTO {
     private Integer serie;
     private Integer peso;
     private Boolean cardio;
-
 }

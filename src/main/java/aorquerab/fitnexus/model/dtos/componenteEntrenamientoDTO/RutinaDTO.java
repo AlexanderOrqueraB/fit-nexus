@@ -1,12 +1,10 @@
-package aorquerab.fitnexus.model.dtos;
+package aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO;
 
-import aorquerab.fitnexus.model.dtos.minimized.EjercicioDTOmin;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -16,8 +14,12 @@ import java.util.List;
 public class RutinaDTO {
 
     private String nombreRutina;
-    private LocalDate fechaInicio;
-    private LocalDate fechaFinal;
-    List<EjercicioDTOmin> ejercicios;
+    private List<EjercicioDTO> ejercicios;
+
+    @Data
+    @Builder
+    public static class EjercicioDTO {
+        private String nombreEjercicio;
+    }
 
 }

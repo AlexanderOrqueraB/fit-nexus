@@ -11,9 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
@@ -28,41 +28,59 @@ public class ClienteController {
     }
 
     @GetMapping
-    public List<Cliente> obtenerClientes(){
+    public ResponseEntity<List<Cliente>> obtenerClientes(){
         log.info("Ejecutando obtenerClientes...");
-        return clienteRepository.findAll();
+        try {
+            List<Cliente> clientesList = clienteRepository.findAll();
+            return ResponseEntity.status(HttpStatus.OK).body(clientesList);
+        } catch (Exception e) {
+            log.warn("Error al obtener lista de clientes", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
     }
 
     //TODO: Crear un GetMapping que devuelva el cliente, entrenador y su plan nutricional (todo: añadir nombre de plan a entidad y dto)
 
     @GetMapping("/clientes-dto")
-    public List<ClienteDTO> obtenerClientesYentrenadoresDTO(){
+    public ResponseEntity<List<ClienteDTO>> obtenerClientesYentrenadoresDTO(){
         log.info("Ejecutando obtenerClientesYentrenadoresDTO...");
-        return clienteRepository.findAll().stream().map(cliente -> {
-            ClienteDTO.Entrenador entrenadorDTO = null;
-            if (cliente.getEntrenador() != null) {
-                Entrenador entrenador = cliente.getEntrenador();
-                entrenadorDTO = ClienteDTO.Entrenador.builder()
-                        .email(entrenador.getEmail())
-                        .asesorNutricional(entrenador.getAsesorNutricional())
+        try {
+            List<ClienteDTO> clienteDTOList = clienteRepository.findAll().stream().map(cliente -> {
+                ClienteDTO.Entrenador entrenadorDTO = null;
+                if (cliente.getEntrenador() != null) {
+                    Entrenador entrenador = cliente.getEntrenador();
+                    entrenadorDTO = ClienteDTO.Entrenador.builder()
+                            .email(entrenador.getEmail())
+                            .asesorNutricional(entrenador.getAsesorNutricional())
+                            .build();
+                }
+                return ClienteDTO.builder()
+                        .objetivo(cliente.getObjetivo())
+                        .genero(cliente.getGenero())
+                        .frecuenciaEjercicioSemanal(cliente.getFrecuenciaEjercicioSemanal())
+                        .edad(cliente.getEdad())
+                        .peso(cliente.getPeso())
+                        .altura(cliente.getAltura())
+                        .entrenador(entrenadorDTO)
                         .build();
-            }
-            return ClienteDTO.builder()
-                    .objetivo(cliente.getObjetivo())
-                    .genero(cliente.getGenero())
-                    .frecuenciaEjercicioSemanal(cliente.getFrecuenciaEjercicioSemanal())
-                    .edad(cliente.getEdad())
-                    .peso(cliente.getPeso())
-                    .altura(cliente.getAltura())
-                    .entrenador(entrenadorDTO)
-                    .build();
-        }).collect(Collectors.toList());
+            }).toList();
+            return ResponseEntity.status(HttpStatus.OK).body(clienteDTOList);
+        } catch (Exception e) {
+            log.error("Error al obtener lista de clientes y entrenadores", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
     }
 
     @GetMapping("/{clienteEmailId}")
-    public Optional<Cliente> obtenerClientePorEmailId(@PathVariable String clienteEmailId){
+    public ResponseEntity<Optional<Cliente>> obtenerClientePorEmailId(@PathVariable String clienteEmailId){
         log.info("Ejecutando obtenerClientePorEmailId con este emailId: " + clienteEmailId);
-        return clienteRepository.findByEmail(clienteEmailId);
+        try {
+            Optional<Cliente> clienteByEmail = clienteRepository.findByEmail(clienteEmailId);
+            return ResponseEntity.status(HttpStatus.OK).body(clienteByEmail);
+        } catch (Exception e) {
+            log.warn("Error al obtener cliente por emailId", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Optional.empty());
+        }
     }
 
     @PostMapping("/{clienteId}")
