@@ -27,13 +27,15 @@ public class EjercicioController {
         this.ejercicioRepository = ejercicioRepository;
     }
 
+    //TODO: Testear con postman
     @GetMapping
     public List<Ejercicio> obtenerEjercicios(){
         log.info("Ejecutando obtenerEjercicios...");
         return ejercicioRepository.findAll();
     }
 
-    @GetMapping("ejercicios-dto")
+    //TODO: Testear con postman
+    @GetMapping("/ejercicios-dto")
     public ResponseEntity<List<EjercicioDTO>> obtenerEjerciciosDTO() {
         log.info("Ejecutando obtenerEjerciciosDTO...");
         try {
@@ -52,6 +54,7 @@ public class EjercicioController {
         }
     }
 
+    //TODO: Testear con postman
     @GetMapping ("/{idEjercicio}")
     public ResponseEntity<EjercicioDTO> obtenerEjercicioPorId(@PathVariable Long idEjercicio) {
         log.info("Ejecutando obtenerEjercicioPorId con el id: " + idEjercicio);
@@ -65,6 +68,24 @@ public class EjercicioController {
         return ResponseEntity.status(HttpStatus.OK).body(ejercicioDTO);
     }
 
+    //TODO: Testear con postman
+    @GetMapping ("/ejercicio/{nombreEjercicio}")
+    public ResponseEntity<List<EjercicioDTO>> obtenerEjerciciosPorNombre(@PathVariable String nombreEjercicio) {
+        log.info("Ejecutando obtenerEjercicioPorNombre con el id: " + nombreEjercicio);
+        List<Ejercicio> ejerciciosList = ejercicioRepository.findAllByNombreEjercicio(nombreEjercicio);
+        if (ejerciciosList.isEmpty()) {
+            log.warn("Ejercicio no encontrado en base de datos: {}", nombreEjercicio);
+            throw new EjercicioNotFoundException("Ejercicio no encontrado en BD: " + nombreEjercicio);
+        }
+
+        List<EjercicioDTO> ejercicioDTOList = ejerciciosList.stream()
+                        .map(EjercicioDTOMapper::mapperFromEjercicio)
+                        .toList();
+
+        return ResponseEntity.status(HttpStatus.OK).body(ejercicioDTOList);
+    }
+
+    //TODO: Testear con postman
     @PostMapping
     public ResponseEntity<String> crearEjercicio(@RequestBody EjercicioDTO ejercicioDTO) {
         log.info("Ejecutando crearEjercicio con este ejercicioDTO: " + ejercicioDTO);
