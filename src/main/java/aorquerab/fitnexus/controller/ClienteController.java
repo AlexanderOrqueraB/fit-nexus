@@ -67,7 +67,7 @@ public class ClienteController {
             return ResponseEntity.status(HttpStatus.OK).body(clienteDTOList);
         } catch (Exception e) {
             log.error("Error al obtener lista de clientes y entrenadores", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
     }
 
