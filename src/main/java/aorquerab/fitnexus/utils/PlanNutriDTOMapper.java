@@ -1,7 +1,7 @@
 package aorquerab.fitnexus.utils;
 
-import aorquerab.fitnexus.model.dtos.PlanNutricionalPorcenajesDTO;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanNutricional;
+import aorquerab.fitnexus.model.dtos.PlanNutricionalPorcenajesDTO;
 
 import java.util.Collections;
 import java.util.List;

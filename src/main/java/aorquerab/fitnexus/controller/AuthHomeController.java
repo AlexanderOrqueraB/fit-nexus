@@ -27,7 +27,7 @@ import java.util.*;
 @Slf4j
 public class AuthHomeController {
 
-    /* Este método redirige todas las rutas que no son recursos estáticos a index.html
+    /** Este método redirige todas las rutas que no son recursos estáticos a index.html
      * El controlador interceptará cualquier ruta que no contenga un punto (.) ->Ej: /login
      * y redirigirá a index.html. Luego, React Router manejará el enrutamiento del lado del cliente.
      */

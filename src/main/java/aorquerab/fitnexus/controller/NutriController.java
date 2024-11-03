@@ -1,8 +1,8 @@
 package aorquerab.fitnexus.controller;
 
+import aorquerab.fitnexus.model.componenteEntrenamiento.PlanNutricional;
 import aorquerab.fitnexus.model.dtos.PlanNutricionalMacrosDTO;
 import aorquerab.fitnexus.model.dtos.PlanNutricionalPorcenajesDTO;
-import aorquerab.fitnexus.model.componenteEntrenamiento.PlanNutricional;
 import aorquerab.fitnexus.model.enumerator.Genero;
 import aorquerab.fitnexus.model.enumerator.Objetivo;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
@@ -141,7 +141,6 @@ public class NutriController {
                 Optional<Cliente> cliente = clienteRepository.findByEmail(email);
                 cliente.ifPresent(value -> log.info("cliente: " + value));
 
-                int kcalDiariasPorObjetivo = 0;
                 PlanNutricionalPorcenajesDTO planNutricionalPorcenajesDTO;
 
                 log.info("Cliente encontrado buscando por email: " + cliente.get());
@@ -156,7 +155,7 @@ public class NutriController {
                         obtenerKcalDiariasParaMantenimiento(
                                 cliente.get().getFrecuenciaEjercicioSemanal().getFactorActividad(), tasaMetabolismoBasalCliente);
 
-                kcalDiariasPorObjetivo = obtenerKcalDiariasPorObjetivo(cliente.get().getObjetivo(), kCalDiariasMantenimientoCliente);
+                int kcalDiariasPorObjetivo = obtenerKcalDiariasPorObjetivo(cliente.get().getObjetivo(), kCalDiariasMantenimientoCliente);
 
                 PlanNutricionalPorcenajesDTO.PlanNutricionalPorcenajesDTOBuilder planNutricionalDTOBuilder = PlanNutricionalPorcenajesDTO
                         .builder()

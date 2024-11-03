@@ -27,7 +27,7 @@ public class RutinaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Rutina>> obtenerRutinas () {
+    public ResponseEntity<List<Rutina>> obtenerRutinas() {
         log.info("Ejecutando obtenerRutinas...");
         try {
             List<Rutina> rutinasList = rutinaRepository.findAll();
@@ -51,7 +51,7 @@ public class RutinaController {
                                             .build())
                                     .collect(Collectors.toList()))
                             .build())
-                        .collect(Collectors.toList());
+                    .collect(Collectors.toList());
             return ResponseEntity.status(HttpStatus.OK).body(rutinaDTOList);
         } catch (Exception e) {
             log.warn("Error al obtener lista de rutinasDTO", e);

@@ -1,7 +1,7 @@
 package aorquerab.fitnexus.utils;
 
-import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.EjercicioDTO;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
+import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.EjercicioDTO;
 import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
