@@ -1,7 +1,7 @@
 package aorquerab.fitnexus.utils;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
-import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.EjercicioDTO;
+import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.EjercicioDtoRequest;
 import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,20 +14,20 @@ import java.util.stream.Collectors;
 public class EjercicioDTOMapper {
 
     //FROM Entity to DTO
-    public static EjercicioDTO mapperFromEjercicio (Ejercicio ejercicio) {
-        EjercicioDTO ejercicioDTO = new EjercicioDTO();
-        ejercicioDTO.setNombreEjercicio(ejercicio.getNombreEjercicio());
-        ejercicioDTO.setRepeticion(ejercicio.getRepeticion());
-        ejercicioDTO.setSerie(ejercicio.getSerie());
-        ejercicioDTO.setPeso(ejercicio.getPeso());
-        ejercicioDTO.setCardio(ejercicio.getCardio());
+    public static EjercicioDtoRequest mapperFromEjercicio (Ejercicio ejercicio) {
+        EjercicioDtoRequest ejercicioDtoRequest = new EjercicioDtoRequest();
+        ejercicioDtoRequest.setNombreEjercicio(ejercicio.getNombreEjercicio());
+        ejercicioDtoRequest.setRepeticion(ejercicio.getRepeticion());
+        ejercicioDtoRequest.setSerie(ejercicio.getSerie());
+        ejercicioDtoRequest.setPeso(ejercicio.getPeso());
+        ejercicioDtoRequest.setCardio(ejercicio.getCardio());
 
-        return ejercicioDTO;
+        return ejercicioDtoRequest;
     }
 
-    public static EjercicioDTO mapperFromEjercicio (Optional <Ejercicio> ejercicio) {
+    public static EjercicioDtoRequest mapperFromEjercicio (Optional <Ejercicio> ejercicio) {
         if (ejercicio.isPresent()) {
-            return EjercicioDTO.builder()
+            return EjercicioDtoRequest.builder()
                     .nombreEjercicio(ejercicio.get().getNombreEjercicio())
                     .repeticion(ejercicio.get().getRepeticion())
                     .serie(ejercicio.get().getSerie())
@@ -40,7 +40,7 @@ public class EjercicioDTOMapper {
         }
     }
 
-    public static List<EjercicioDTO> mapperFromList (List<Ejercicio> ejercicios) {
+    public static List<EjercicioDtoRequest> mapperFromList (List<Ejercicio> ejercicios) {
         if(ejercicios.isEmpty())
             return Collections.emptyList();
         else {
@@ -51,13 +51,13 @@ public class EjercicioDTOMapper {
     }
 
     //FROM DTO to Entity
-    public static Ejercicio mapperFromEjercicioDTO(EjercicioDTO ejercicioDTO) {
+    public static Ejercicio mapperFromEjercicioDTO(EjercicioDtoRequest ejercicioDtoRequest) {
         Ejercicio ejercicio = new Ejercicio();
-        ejercicio.setNombreEjercicio(ejercicioDTO.getNombreEjercicio());
-        ejercicio.setRepeticion(ejercicioDTO.getRepeticion());
-        ejercicio.setSerie(ejercicioDTO.getSerie());
-        ejercicio.setPeso(ejercicioDTO.getPeso());
-        ejercicio.setCardio(ejercicioDTO.getCardio());
+        ejercicio.setNombreEjercicio(ejercicioDtoRequest.getNombreEjercicio());
+        ejercicio.setRepeticion(ejercicioDtoRequest.getRepeticion());
+        ejercicio.setSerie(ejercicioDtoRequest.getSerie());
+        ejercicio.setPeso(ejercicioDtoRequest.getPeso());
+        ejercicio.setCardio(ejercicioDtoRequest.getCardio());
 
         return ejercicio;
     }

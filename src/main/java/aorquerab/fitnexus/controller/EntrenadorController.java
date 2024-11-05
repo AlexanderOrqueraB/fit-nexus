@@ -42,6 +42,8 @@ public class EntrenadorController {
         return entrenadorRepository.findByEmail(entrenadorEmailId);
     }
 
+    //TODO Obtener entrenador por otro Atributo (FUTURE REFACTOR)
+
     @GetMapping("/fitnexus-id/{entrenadorEmailId}")
     public String obtenerFitNexusIdDeEntrenador (@PathVariable String entrenadorEmailId) {
         log.info("Ejecutando obtenerFitNexusIdDeEntrenador con este emailId: " + entrenadorEmailId);
@@ -101,9 +103,4 @@ public class EntrenadorController {
                 });
     }
 
-    //    //PUT
-//    @PutMapping
-//    //DELETE
-//    @DeleteMapping
-//    //CUSTOM
 }

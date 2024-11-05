@@ -83,6 +83,8 @@ public class ClienteController {
         }
     }
 
+    //TODO Obtener cliente por otro Atributo (FUTURE REFACTOR)
+
     @PostMapping("/{clienteId}")
     public ResponseEntity<String> crearCliente(
             @PathVariable Long clienteId,

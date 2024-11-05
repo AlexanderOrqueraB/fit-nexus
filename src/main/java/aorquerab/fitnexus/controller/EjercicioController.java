@@ -1,7 +1,7 @@
 package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
-import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.EjercicioDTO;
+import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.EjercicioDtoRequest;
 import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.repository.EjercicioRepository;
@@ -42,18 +42,18 @@ public class EjercicioController {
 
     //TODO: Testear con postman
     @GetMapping("/ejercicios-dto")
-    public ResponseEntity<List<EjercicioDTO>> obtenerEjerciciosDTO() {
+    public ResponseEntity<List<EjercicioDtoRequest>> obtenerEjerciciosDTO() {
         log.info("Ejecutando obtenerEjerciciosDTO...");
         try {
-            List<EjercicioDTO> ejercicioDTOList = ejercicioRepository.findAll().stream()
-                    .map(ejercicio -> EjercicioDTO.builder()
+            List<EjercicioDtoRequest> ejercicioDtoRequestList = ejercicioRepository.findAll().stream()
+                    .map(ejercicio -> EjercicioDtoRequest.builder()
                             .nombreEjercicio(ejercicio.getNombreEjercicio())
                             .repeticion(ejercicio.getRepeticion())
                             .serie(ejercicio.getSerie())
                             .peso(ejercicio.getPeso())
                             .cardio(ejercicio.getCardio())
                             .build()).toList();
-            return ResponseEntity.status(HttpStatus.OK).body(ejercicioDTOList);
+            return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoRequestList);
         } catch (Exception e) {
             log.warn("Error al obtener ejerciciosDTO: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
@@ -62,52 +62,50 @@ public class EjercicioController {
 
     //TODO: Testear con postman
     @GetMapping ("/{idEjercicio}")
-    public ResponseEntity<EjercicioDTO> obtenerEjercicioPorId(@PathVariable Long idEjercicio) {
+    public ResponseEntity<EjercicioDtoRequest> obtenerEjercicioPorId(@PathVariable Long idEjercicio) {
         log.info("Ejecutando obtenerEjercicioPorId con el id: " + idEjercicio);
-        EjercicioDTO ejercicioDTO = ejercicioRepository.findById(idEjercicio)
+        EjercicioDtoRequest ejercicioDtoRequest = ejercicioRepository.findById(idEjercicio)
                         .map(EjercicioDTOMapper::mapperFromEjercicio)
                                 .orElseThrow( ()-> {
                                     log.warn("Ejercicio no encontrado en base de datos: " + idEjercicio);
                                     return new EjercicioNotFoundException("Ejercicio no encontrado en BD: "
                                             + idEjercicio);
                                 });
-        return ResponseEntity.status(HttpStatus.OK).body(ejercicioDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoRequest);
     }
 
     //TODO: Testear con postman
     @GetMapping ("/ejercicio/{nombreEjercicio}")
-    public ResponseEntity<List<EjercicioDTO>> obtenerEjerciciosPorNombre(@PathVariable String nombreEjercicio) {
+    public ResponseEntity<List<EjercicioDtoRequest>> obtenerEjerciciosPorNombre(@PathVariable String nombreEjercicio) {
         log.info("Ejecutando obtenerEjercicioPorNombre con el id: " + nombreEjercicio);
         List<Ejercicio> ejerciciosList = ejercicioRepository.findAllByNombreEjercicio(nombreEjercicio);
         if (ejerciciosList.isEmpty()) {
             log.warn("Ejercicio no encontrado en base de datos: {}", nombreEjercicio);
             throw new EjercicioNotFoundException("Ejercicio no encontrado en BD: " + nombreEjercicio);
         }
-
-        List<EjercicioDTO> ejercicioDTOList = ejerciciosList.stream()
+        List<EjercicioDtoRequest> ejercicioDtoRequestList = ejerciciosList.stream()
                         .map(EjercicioDTOMapper::mapperFromEjercicio)
                         .toList();
-
-        return ResponseEntity.status(HttpStatus.OK).body(ejercicioDTOList);
+        return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoRequestList);
     }
 
     //TODO: Testear con postman
     @PostMapping
-    public ResponseEntity<String> crearEjercicio(@RequestBody EjercicioDTO ejercicioDTO) {
-        log.info("Ejecutando crearEjercicio con este ejercicioDTO: " + ejercicioDTO);
-        if(ejercicioDTO == null) {
+    public ResponseEntity<String> crearEjercicio(@RequestBody EjercicioDtoRequest ejercicioDtoRequest) {
+        log.info("Ejecutando crearEjercicio con este ejercicioDTO: " + ejercicioDtoRequest);
+        if(ejercicioDtoRequest == null) {
             throw new InvalidRequestException("Peticion de ejercicio no valida");
         }
-        Ejercicio ejercicioActualizado = Ejercicio.builder()
-                .nombreEjercicio(ejercicioDTO.getNombreEjercicio())
-                .repeticion(ejercicioDTO.getRepeticion())
-                .serie(ejercicioDTO.getSerie())
-                .peso(ejercicioDTO.getPeso())
-                .cardio(ejercicioDTO.getCardio())
+        Ejercicio ejercicioCreado = Ejercicio.builder()
+                .nombreEjercicio(ejercicioDtoRequest.getNombreEjercicio())
+                .repeticion(ejercicioDtoRequest.getRepeticion())
+                .serie(ejercicioDtoRequest.getSerie())
+                .peso(ejercicioDtoRequest.getPeso())
+                .cardio(ejercicioDtoRequest.getCardio())
                 .build();
 
-        ejercicioRepository.save(ejercicioActualizado);
-        log.info("crearEjercicio ejecutado.");
+        ejercicioRepository.save(ejercicioCreado);
+        log.info("crearEjercicio ejecutado con: " + ejercicioCreado);
         return ResponseEntity.status(HttpStatus.CREATED).body("Ejercicio creado correctamente en BD");
     }
 

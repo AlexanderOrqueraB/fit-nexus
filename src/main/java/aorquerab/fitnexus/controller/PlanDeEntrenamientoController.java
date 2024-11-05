@@ -28,16 +28,11 @@ public class PlanDeEntrenamientoController {
     }
 
     @PostMapping
-    public ResponseEntity<PlanDeEntrenamiento> postPlan (
+    public ResponseEntity<PlanDeEntrenamiento> crearPlan (
             @RequestBody PlanDeEntrenamiento planDeEntrenamiento) {
         log.info("Ejecutando postPlanes...");
         planDeEntrenamientoRepository.save(planDeEntrenamiento);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    //    //PUT
-//    @PutMapping
-//    //DELETE
-//    @DeleteMapping
-//    //CUSTOM
 }
