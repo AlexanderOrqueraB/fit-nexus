@@ -32,6 +32,14 @@ import Header from './common/Header';
 import SideBar from './common/SideBar';
 import { Toaster, toast } from 'sonner'
 
+export interface ExercisesListProps {
+	nombreEjercicio: string;
+	repeticion: number;
+	serie: number;
+	peso: number;
+	cardioRealizado: boolean;
+}
+
 export function ExercisesList() {
 	useState({});
 	const [data, setData] = useState({});
