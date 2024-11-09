@@ -109,4 +109,22 @@ public class EjercicioController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Ejercicio creado correctamente en BD");
     }
 
+    //TODO: WIP + Testear con postman
+    @PutMapping
+    public ResponseEntity<EjercicioDtoRequest> actualizarEjercicio (
+            @PathVariable Long idEjercicio,
+            @RequestBody EjercicioDtoRequest ejercicioDtoRequest) {
+        ResponseEntity<EjercicioDtoRequest> ejercicioDtoRequestById = obtenerEjercicioPorId(idEjercicio);
+        EjercicioDtoRequest body = ejercicioDtoRequestById.getBody();
+
+        //Buscas el ejercicio por ID de la base de datos a editar
+        //Cambiar los valores del ejercicio por los valores del ejercicioDtoRequest:
+        // nombreEjercicio, repeticion, serie, peso y cardio
+
+        //Mapeas el nuevo ejercicio de BD actualizado con un ejercicioDtoActualizado que vas a devolver
+
+        return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoActualizado);
+    }
+
+
 }
