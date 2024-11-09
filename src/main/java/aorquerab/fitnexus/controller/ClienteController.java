@@ -109,4 +109,9 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Cliente con datos extra creados correctamente");
     }
 
+    //TODO: PUT, DELETE by Id (Check if neccesary)
+
+    //TODO: DELETE all (In case entrenador want to delete their account, maybe this one could be delete the reference
+    // for the previous entrenador, just in case cliente want to keep using FIT NEXUS with another entrenador
+
 }

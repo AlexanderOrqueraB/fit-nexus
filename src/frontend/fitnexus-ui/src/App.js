@@ -57,13 +57,6 @@ function App () {
             window.removeEventListener("storage", handleStorageChange);
         };
     }, []);
-//    const api = axios.create({
-//        baseURL: "http://localhost:8080/api/",
-//        headers: {
-//            "Content-type": "application/json"
-//        }
-//    });
-//
 //    const fetchData = () => {
 //        axios.get(baseURL)
 //            .then(response => {
