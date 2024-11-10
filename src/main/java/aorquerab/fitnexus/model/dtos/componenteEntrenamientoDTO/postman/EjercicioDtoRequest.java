@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EjercicioDtoRequest {
 
-    //TODO: El ejercicio existe como tal, no tiene relación con el cliente (ni en BBDD)
-    // quizas sin con el entrenador que lo ha creado (un entrenador no puede usar
-    // ejercicios de otro entrenador)
+    //TODO: Cualquier entrenador puede crear ejercicios que otro entrenador puede usar,
+    // se guardan en BBDD accesibles para todos los entrenadores
 
     private String nombreEjercicio;
     private Integer repeticion;
@@ -28,6 +27,16 @@ public class EjercicioDtoRequest {
         "serie": 5,
         "peso": 10,
         "cardio": false
+    }
+    """;
+
+    String planRequestPUT = """
+    {
+        "nombreEjercicio": "Press banca",
+        "repeticion": null,
+        "serie": null,
+        "peso": 10,
+        "cardio": null
     }
     """;
 }

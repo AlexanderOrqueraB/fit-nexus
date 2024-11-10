@@ -2,6 +2,7 @@ package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.dtos.LoginDTO;
 import aorquerab.fitnexus.model.dtos.SignupDTO;
+import aorquerab.fitnexus.model.dtos.auth.ChangeLoginDTO;
 import aorquerab.fitnexus.model.dtos.minimized.SignupDTOResponse;
 import aorquerab.fitnexus.model.enumerator.Role;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
@@ -165,5 +166,11 @@ public class AuthHomeController {
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(Collections.singletonMap("message", "Credenciales inválidas: " + e.getMessage()));
         }
+    }
+
+    //TODO: How to do a put using Spring Security, do I need to use CustomUserDetails and so on?
+    @PutMapping("/api/v1/login/{userId}")
+    public ResponseEntity<Object> actualizarLogin (@PathVariable Long id, @RequestBody ChangeLoginDTO changeLoginDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(new Object());
     }
 }
