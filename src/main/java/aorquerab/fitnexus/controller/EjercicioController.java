@@ -152,4 +152,7 @@ public class EjercicioController {
 
         return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoActualizado);
     }
+
+    //TODO: DELETE controller
+    // para eliminar un ejercicio
 }
