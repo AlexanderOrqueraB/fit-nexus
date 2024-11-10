@@ -121,27 +121,25 @@ public class RutinaController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Rutina creada correctamente en BD");
     }
 
-    //TODO: No puedes crear una rutina en base a RutinaDTO, ahi hay una lista de ejercicios
-    // tienes que poder crear una rutina con un nombreRutina, fecha inicio, fecha fin
-    // y posteriormente añadir ejercicios a una rutina concreta
 
-    //TODO: De la misma forma tienes que poder asignar un PLAN X a distintos usuarios
-    // usando rutinas existentes
+    //TODO: POST Controller
+    // Para añadirEjercicio a una rutina concreta por idEjercicio o nombreEjercicio
+    // ejercicios ya existentes en base de datos
+    // puede ser util, sacar a un servicio la logica de obtenerEjercicioPorId para usarlo aqui tambien
 
-    //TODO EJ: rutinaTorso tiene (press banca (id=1, nombre=pb) y dominadas (id=2, nombre= dom)
-    // a su vez rutinaTorso tiene (id=3, nombreRutina= rutinaTorso)
-    // y habrá un planNavidad que contenga (rutinaTorso y rutinaPierna(id(5)),
-    // aparte de (id=4, nombrePlan= planNavidad)
+    //TODO: POST Controller
+    // Para añadirEjercicios EN UNA LISTA DE EJERCICIOS
 
-    //TODO: de esta forma puedes crear nuevos planVerano con rutinaPierna(id(5)) + rutinaTorso(id(4))
-    // o planPrimavera con rutinaPierna(id(5)) + rutinaTorso(id(4)) + rutinaCrossfit(id(7))
+    //TODO: DELETE Controller
+    // para eliminar una lista de ejercicios
 
-    //TODO: añadir ejemplos con small JSONs o incluso preparar las peticiones en POSTMAN :)
+    //TODO: PUT Controller
+    // para modificar datos de una rutina (nombre o fechas)
 
+    //TODO: DELETE controller
+    // para eliminar un ejercicio de una rutina
 
-    //TODO: Testear con postman
-    @PostMapping
-    public ResponseEntity<String> añadirEjercicio {}
-    //TODO: Debería estar en ejercicioController?
+    //TODO: DELETE controller
+    // Para borrar una rutina
 
 }

@@ -35,4 +35,43 @@ public class PlanDeEntrenamientoController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    //TODO: GET Controller
+    // para obtener lista de planes
+    //TODO: GET Controller
+    // para obtener lista de planesDTO
+    //TODO: GET Controller
+    // para obtener plan por id
+    //TODO: GET Controller
+    // para obtener plan por nombreDePlan
+
+    //TODO: POST Controller
+    // para crear un plan
+    //TODO: POST Controller
+    // para añadir una rutina a un plan por idRutina o nombreRutina
+    //TODO: POST Controller
+    // para añadir una lista de rutinas
+
+    //TODO: DELETE Controller
+    // para eliminar una lista de rutinas
+
+    //TODO: PUT Controller
+    // para modificar datos de un plan (nombre o fechas o ??)
+
+    //TODO: DELETE controller
+    // para eliminar una rutina de un plan
+
+    //TODO: DELETE controller
+    // Para borrar un plan
+
+
+
+    //TODO: POST controller
+    // Para asignar un plan a un cliente concreto
+
+    //TODO: DELETE controller
+    // Para eliminar la asignacion de un plan a un cliente concreto
+
+    //TODO: GET Controller
+    // Obtener los clientes asignados a un plan concreto
+
 }
