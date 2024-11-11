@@ -153,6 +153,19 @@ public class EjercicioController {
         return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoActualizado);
     }
 
-    //TODO: DELETE controller
-    // para eliminar un ejercicio
+    //TODO: Testear con postman
+    @DeleteMapping
+    public ResponseEntity<String> eliminarEjercicio (@PathVariable Long idEjercicio) {
+        log.info("Ejecutando eliminarEjercicio con el id: " + idEjercicio);
+        Ejercicio ejerciciobyId = ejercicioRepository.findById(idEjercicio)
+                .orElseThrow(()-> {
+                    log.warn("Ejercicio no encontrado en base de datos: " + idEjercicio);
+                    return new ResponseStatusException( HttpStatus.NOT_FOUND,
+                            "Ejercicio no encontrado con el id: " + idEjercicio);
+                });
+        log.info("Ejercicio a eliminar: " + ejerciciobyId);
+        ejercicioRepository.delete(ejerciciobyId);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Ejercicio borrado correctamente");
+    }
 }
