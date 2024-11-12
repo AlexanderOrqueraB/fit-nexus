@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface EntrenadorRepository extends JpaRepository <Entrenador,Long> {
+
     Optional<Entrenador> findByEmail (String email);
     Optional<Entrenador> findByFitNexusId (UUID fitNexusId);
 

@@ -2,14 +2,15 @@ package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.RutinaDTO;
+import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.EjerciciosListDTO;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.RutinaDtoRequest;
 import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.exception.RutinaNotFoundException;
 import aorquerab.fitnexus.model.users.Entrenador;
+import aorquerab.fitnexus.repository.EjercicioRepository;
 import aorquerab.fitnexus.repository.EntrenadorRepository;
 import aorquerab.fitnexus.repository.RutinaRepository;
-import aorquerab.fitnexus.utils.RutinaDTOMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +29,12 @@ import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 public class RutinaController {
     private final RutinaRepository rutinaRepository;
     private final EntrenadorRepository entrenadorRepository;
+    private final EjercicioRepository ejercicioRepository;
 
-    public RutinaController(RutinaRepository rutinaRepository, EntrenadorRepository entrenadorRepository) {
+    public RutinaController(RutinaRepository rutinaRepository, EntrenadorRepository entrenadorRepository, EjercicioRepository ejercicioRepository) {
         this.rutinaRepository = rutinaRepository;
         this.entrenadorRepository = entrenadorRepository;
+        this.ejercicioRepository = ejercicioRepository;
     }
 
     @GetMapping
@@ -71,13 +74,21 @@ public class RutinaController {
     @GetMapping ("/{idRutina}")
     public ResponseEntity<RutinaDTO> obtenerRutinaPorId (@PathVariable Long idRutina) {
         log.info("Ejecutando obtenerRutinaPorId con el id: " + idRutina);
-        RutinaDTO rutinaDTO = rutinaRepository.findById(idRutina)
-                .map(RutinaDTOMapper::mapperFromRutina) //TODO: Pending mapper
-                .orElseThrow( ()-> {
+        Rutina rutina = rutinaRepository.findById(idRutina)
+                .orElseThrow(() -> {
                     log.warn("Rutina no encontrada en base de datos: " + idRutina);
                     return new RutinaNotFoundException("Rutina no encontrada en BD: "
                             + idRutina);
                 });
+        RutinaDTO.EjercicioDTO a = null;
+        RutinaDTO rutinaDTO = RutinaDTO.builder()
+                .nombreRutina(rutina.getNombreRutina())
+                .ejercicios(rutina.getEjercicios().stream()
+                        .map(ejercicio -> RutinaDTO.EjercicioDTO.builder()
+                                .nombreEjercicio(ejercicio.getNombreEjercicio())
+                                .build())
+                            .collect(Collectors.toList()))
+                    .build();
         return ResponseEntity.status(HttpStatus.OK).body(rutinaDTO);
     }
 
@@ -91,8 +102,15 @@ public class RutinaController {
             throw new RutinaNotFoundException("Rutina no encontrada en BD: " + nombreRutina);
         }
         List<RutinaDTO> rutinaDTOList = rutinasList.stream()
-                .map(RutinaDTOMapper::mapperFromRutina)
-                .toList();//TODO: Pending mapper
+                .map(rutina -> RutinaDTO.builder()
+                        .nombreRutina(rutina.getNombreRutina())
+                        .ejercicios(rutina.getEjercicios().stream()
+                                .map(ejercicio -> RutinaDTO.EjercicioDTO.builder()
+                                        .nombreEjercicio(ejercicio.getNombreEjercicio())
+                                        .build())
+                                .collect(Collectors.toList()))
+                        .build())
+                .toList();
         return ResponseEntity.status(HttpStatus.OK).body(rutinaDTOList);
     }
 
@@ -100,13 +118,11 @@ public class RutinaController {
     @PostMapping
     public ResponseEntity<String> crearRutina(@RequestBody RutinaDtoRequest rutinaDtoRequest) {
         log.info("Ejecutando crearRutina con este rutinaDtoRequest: " + rutinaDtoRequest);
-        if(rutinaDtoRequest == null) {
+        if(rutinaDtoRequest == null)
             throw new InvalidRequestException("Peticion de rutina no valida");
-        }
-
         String entrenadorEmail = rutinaDtoRequest.getEntrenador().getEmail();
         Optional <Entrenador> entrenadorFromRepository = entrenadorRepository.findByEmail(entrenadorEmail);
-        Rutina rutinaCreada = null;
+        Rutina rutinaCreada;
         if (entrenadorFromRepository.isPresent()) {
             rutinaCreada = Rutina.builder()
                     .nombreRutina(rutinaDtoRequest.getNombreRutina())
@@ -121,14 +137,23 @@ public class RutinaController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Rutina creada correctamente en BD");
     }
 
+    //TODO: POST Controller
+    // Para añadirEjercicios EN UNA LISTA DE EJERCICIOS a una rutina
+    @PostMapping
+    public ResponseEntity<String> addEjerciciosEnLista (@RequestBody EjerciciosListDTO ejerciciosListDTO) {
+        log.info("Ejecutando addEjerciciosEnLista con esta lista de ejerciciosDTO: " + ejerciciosListDTO);
+
+        //Tengo una lista de ejercicios con solo el nombre List<EjercicioDTO> ejercicios y un nombreRutina;
+        //Creo una rutina de BD que contenga los ejercicios de la lista y NADA MAS?
+
+    }
 
     //TODO: POST Controller
     // Para añadirEjercicio a una rutina concreta por idEjercicio o nombreEjercicio
     // ejercicios ya existentes en base de datos
     // puede ser util, sacar a un servicio la logica de obtenerEjercicioPorId para usarlo aqui tambien
 
-    //TODO: POST Controller
-    // Para añadirEjercicios EN UNA LISTA DE EJERCICIOS
+
 
     //TODO: DELETE Controller
     // para eliminar una lista de ejercicios
