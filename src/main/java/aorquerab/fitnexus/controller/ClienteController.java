@@ -66,14 +66,14 @@ public class ClienteController {
             }).toList();
             return ResponseEntity.status(HttpStatus.OK).body(clienteDTOList);
         } catch (Exception e) {
-            log.error("Error al obtener lista de clientes y entrenadores", e);
+            log.warn("Error al obtener lista de clientes y entrenadores", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
     }
 
     @GetMapping("/{clienteEmailId}")
     public ResponseEntity<Optional<Cliente>> obtenerClientePorEmailId(@PathVariable String clienteEmailId){
-        log.info("Ejecutando obtenerClientePorEmailId con este emailId: " + clienteEmailId);
+        log.info("Ejecutando obtenerClientePorEmailId con este emailId: {}", clienteEmailId);
         try {
             Optional<Cliente> clienteByEmail = clienteRepository.findByEmail(clienteEmailId);
             return ResponseEntity.status(HttpStatus.OK).body(clienteByEmail);
@@ -89,13 +89,13 @@ public class ClienteController {
     public ResponseEntity<String> crearCliente(
             @PathVariable Long clienteId,
             @RequestBody ClienteDtoRequest clienteDTORequest) {
-        log.info("Ejecutando crearCliente con este clienteId: " + clienteId);
-        log.info("ClienteDTORequest: " + clienteDTORequest);
+        log.info("Ejecutando crearCliente con este clienteId: {}", clienteId);
+        log.info("ClienteDTORequest: {}", clienteDTORequest);
         if(clienteDTORequest == null) {
             throw new InvalidRequestException("Peticion de cliente no valida");
         }
         Optional<Cliente> cliente = clienteRepository.findById(clienteId);
-        log.info("Cliente a actualizar: " + cliente);
+        log.info("Cliente a actualizar: {}", cliente);
         cliente.ifPresent(cl -> {
             cl.setObjetivo(clienteDTORequest.getObjetivo());
             cl.setGenero(clienteDTORequest.getGenero());
@@ -104,7 +104,7 @@ public class ClienteController {
             cl.setPeso(clienteDTORequest.getPeso());
             cl.setAltura(clienteDTORequest.getAltura());
         });
-        log.info("Cliente creado tras el mappeo:" + cliente);
+        log.info("Cliente creado tras el mappeo: {}", cliente);
         cliente.ifPresent(clienteRepository::save);
         return ResponseEntity.status(HttpStatus.CREATED).body("Cliente con datos extra creados correctamente");
     }

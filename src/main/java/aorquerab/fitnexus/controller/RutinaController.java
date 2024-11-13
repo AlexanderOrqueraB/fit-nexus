@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -74,10 +75,10 @@ public class RutinaController {
     //TODO: Testear con postman
     @GetMapping ("/{idRutina}")
     public ResponseEntity<RutinaDTO> obtenerRutinaPorId (@PathVariable Long idRutina) {
-        log.info("Ejecutando obtenerRutinaPorId con el id: " + idRutina);
+        log.info("Ejecutando obtenerRutinaPorId con el id: {}", idRutina);
         Rutina rutina = rutinaRepository.findById(idRutina)
                 .orElseThrow(() -> {
-                    log.warn("Rutina no encontrada en base de datos: " + idRutina);
+                    log.warn("Rutina no encontrada en base de datos: {} ", idRutina);
                     return new RutinaNotFoundException("Rutina no encontrada en BD: "
                             + idRutina);
                 });
@@ -95,11 +96,11 @@ public class RutinaController {
     //TODO: Testear con postman
     @GetMapping ("/rutina/{nombreRutina}")
     public ResponseEntity<List<RutinaDTO>> obtenerRutinasPorNombre (@PathVariable String nombreRutina) {
-        log.info("Ejecutando obtenerRutinasPorNombre con el id: " + nombreRutina);
+        log.info("Ejecutando obtenerRutinasPorNombre con el id: {}" ,nombreRutina);
         List <Rutina> rutinasList = rutinaRepository.findAllByNombreRutina(nombreRutina);
         if (rutinasList.isEmpty()) {
             log.warn("Rutina no encontrada en base de datos: {}", nombreRutina);
-            throw new RutinaNotFoundException("Rutina no encontrada en BD: " + nombreRutina);
+            throw new RutinaNotFoundException("Rutina no encontrada en BD: {}" + nombreRutina);
         }
         List<RutinaDTO> rutinaDTOList = rutinasList.stream()
                 .map(rutina -> RutinaDTO.builder()
@@ -117,7 +118,7 @@ public class RutinaController {
     //TODO: Testear con postman
     @PostMapping
     public ResponseEntity<String> crearRutina(@RequestBody RutinaDtoRequest rutinaDtoRequest) {
-        log.info("Ejecutando crearRutina con este rutinaDtoRequest: " + rutinaDtoRequest);
+        log.info("Ejecutando crearRutina con este rutinaDtoRequest: {}", rutinaDtoRequest);
         if(rutinaDtoRequest == null)
             throw new InvalidRequestException("Peticion de rutina no valida");
         String entrenadorEmail = rutinaDtoRequest.getEntrenador().getEmail();
@@ -147,7 +148,7 @@ public class RutinaController {
     public ResponseEntity<String> addEjerciciosEnLista (
             @PathVariable String nombreRutina,
             @RequestBody EjerciciosListDTO ejerciciosListDTO) {
-        log.info("Ejecutando addEjerciciosEnLista con esta lista de ejerciciosDTO: " + ejerciciosListDTO);
+        log.info("Ejecutando addEjerciciosEnLista con esta lista de ejerciciosDTO: {}", ejerciciosListDTO);
         List<EjerciciosListDTO.EjercicioDTO> ejerciciosDTO = ejerciciosListDTO.getEjercicios();
         List<Ejercicio> ejercicios = EjerciciosListDTO.builder().build();
         Rutina rutina = Rutina.builder()
@@ -160,8 +161,29 @@ public class RutinaController {
     }
 
 
-    //TODO: DELETE Controller
-    // para eliminar una lista de ejercicios
+    //TODO: Testear con postman
+    // DELETE Controller para eliminar una lista de ejercicios
+    @DeleteMapping
+    public ResponseEntity<String> eliminarListaDeEjerciciosFromRutina (List<String> listaEjerciciosPorNombre, String nombreRutina) {
+        String ejemplo = """
+            [
+                "Press banca",
+                "Sentadilla",
+                "Peso muerto",
+                "Dominadas"
+            ]
+                """;
+        log.info("Ejecutando eliminarListaDeEjerciciosFromRutina con esta lista de ejercicios: {}" , listaEjerciciosPorNombre);
+        if (listaEjerciciosPorNombre.isEmpty())
+            throw new InvalidRequestException("Error en la lista de ejercicios enviada");
+        else {
+            Rutina rutinaPorNombre = rutinaRepository.findByNombreRutina(nombreRutina);
+            rutinaRepository.deleteByNombreEjercicioIn(listaEjerciciosPorNombre);
+            //REVIEW
+            rutinaRepository.deleteAllById(listaEjerciciosPorNombre, rutinaPorNombre);
+            return ResponseEntity.status(HttpStatus.OK).body("Lista de ejercicios borrada correctamente");
+        }
+    }
 
     //TODO: PUT Controller
     // para modificar datos de una rutina (nombre o fechas)

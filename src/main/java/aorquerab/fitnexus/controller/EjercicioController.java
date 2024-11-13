@@ -64,11 +64,11 @@ public class EjercicioController {
     //TODO: Testear con postman, check exception and compare with put endpoint
     @GetMapping ("/{idEjercicio}")
     public ResponseEntity<EjercicioDtoRequest> obtenerEjercicioPorId(@PathVariable Long idEjercicio) {
-        log.info("Ejecutando obtenerEjercicioPorId con el id: " + idEjercicio);
+        log.info("Ejecutando obtenerEjercicioPorId con el id: {}",  idEjercicio);
         EjercicioDtoRequest ejercicioDtoRequest = ejercicioRepository.findById(idEjercicio)
                         .map(EjercicioDTOMapper::mapperFromEjercicio)
                                 .orElseThrow( ()-> {
-                                    log.warn("Ejercicio no encontrado en base de datos: " + idEjercicio);
+                                    log.warn("Ejercicio no encontrado en base de datos: {}",  idEjercicio);
                                     return new EjercicioNotFoundException("Ejercicio no encontrado en BD: "
                                             + idEjercicio);
                                 });
@@ -78,7 +78,7 @@ public class EjercicioController {
     //TODO: Testear con postman
     @GetMapping ("/ejercicio/{nombreEjercicio}")
     public ResponseEntity<List<EjercicioDtoRequest>> obtenerEjerciciosPorNombre(@PathVariable String nombreEjercicio) {
-        log.info("Ejecutando obtenerEjercicioPorNombre con el id: " + nombreEjercicio);
+        log.info("Ejecutando obtenerEjercicioPorNombre con el id: {}", nombreEjercicio);
         List<Ejercicio> ejerciciosList = ejercicioRepository.findAllByNombreEjercicio(nombreEjercicio);
         if (ejerciciosList.isEmpty()) {
             log.warn("Ejercicio no encontrado en base de datos: {}", nombreEjercicio);
@@ -93,7 +93,7 @@ public class EjercicioController {
     //TODO: Testear con postman
     @PostMapping
     public ResponseEntity<String> crearEjercicio(@RequestBody EjercicioDtoRequest ejercicioDtoRequest) {
-        log.info("Ejecutando crearEjercicio con este ejercicioDTO: " + ejercicioDtoRequest);
+        log.info("Ejecutando crearEjercicio con este ejercicioDTO: {}", ejercicioDtoRequest);
         if(ejercicioDtoRequest == null) {
             throw new InvalidRequestException("Peticion de ejercicio no valida");
         }
@@ -106,7 +106,7 @@ public class EjercicioController {
                 .build();
 
         ejercicioRepository.save(ejercicioCreado);
-        log.info("crearEjercicio ejecutado con: " + ejercicioCreado);
+        log.info("crearEjercicio ejecutado con: {}", ejercicioCreado);
         return ResponseEntity.status(HttpStatus.CREATED).body("Ejercicio creado correctamente en BD");
     }
 
@@ -115,10 +115,10 @@ public class EjercicioController {
     public ResponseEntity<EjercicioDtoRequest> actualizarEjercicio (
             @PathVariable Long idEjercicio,
             @RequestBody EjercicioDtoRequest ejercicioDtoRequest) {
-        log.info("Ejecutando actualizarEjercicio con la request: " + ejercicioDtoRequest);
+        log.info("Ejecutando actualizarEjercicio con la request: {}", ejercicioDtoRequest);
         Ejercicio ejercicioById = ejercicioRepository.findById(idEjercicio)
                 .orElseThrow(()-> {
-                    log.warn("Ejercicio no encontrado en base de datos: " + idEjercicio);
+                    log.warn("Ejercicio no encontrado en base de datos: {}", idEjercicio);
                     return new ResponseStatusException( HttpStatus.NOT_FOUND,
                                     "Ejercicio no encontrado con el id: " + idEjercicio);
                 });
@@ -140,7 +140,7 @@ public class EjercicioController {
             ejercicioById.setCardio(ejercicioDtoRequest.getCardio());
 
         Ejercicio ejercicioActualizado = ejercicioRepository.save(ejercicioById);
-        log.info("Ejercicio actualizado: " + ejercicioActualizado);
+        log.info("Ejercicio actualizado: {}", ejercicioActualizado);
 
         EjercicioDtoRequest ejercicioDtoActualizado = EjercicioDtoRequest.builder()
                 .nombreEjercicio(ejercicioActualizado.getNombreEjercicio())
@@ -156,14 +156,14 @@ public class EjercicioController {
     //TODO: Testear con postman
     @DeleteMapping
     public ResponseEntity<String> eliminarEjercicio (@PathVariable Long idEjercicio) {
-        log.info("Ejecutando eliminarEjercicio con el id: " + idEjercicio);
+        log.info("Ejecutando eliminarEjercicio con el id: {}", idEjercicio);
         Ejercicio ejerciciobyId = ejercicioRepository.findById(idEjercicio)
                 .orElseThrow(()-> {
-                    log.warn("Ejercicio no encontrado en base de datos: " + idEjercicio);
+                    log.warn("Ejercicio no encontrado en base de datos: {}", idEjercicio);
                     return new ResponseStatusException( HttpStatus.NOT_FOUND,
                             "Ejercicio no encontrado con el id: " + idEjercicio);
                 });
-        log.info("Ejercicio a eliminar: " + ejerciciobyId);
+        log.info("Ejercicio a eliminar: {}", ejerciciobyId);
         ejercicioRepository.delete(ejerciciobyId);
 
         return ResponseEntity.status(HttpStatus.OK).body("Ejercicio borrado correctamente");

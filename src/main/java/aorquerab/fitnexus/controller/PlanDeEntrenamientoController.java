@@ -53,14 +53,14 @@ public class PlanDeEntrenamientoController {
                                 PlanEntrenamientoDtoResponse.Entrenador entrenadorDTO = null;
                                 if (planes.getEntrenador() != null) {
                                     Entrenador entrenador = planes.getEntrenador();
-                                    log.info("Entrenador asociado al plan: " + entrenador);
+                                    log.info("Entrenador asociado al plan: {}", entrenador);
                                     entrenadorDTO = PlanEntrenamientoDtoResponse.Entrenador.builder()
                                             .email(entrenador.getEmail())
                                             .build();
                                 }
                                 if (planes.getCliente() != null) {
                                     Cliente cliente = planes.getCliente();
-                                    log.info("Cliente asociado al plan: " + cliente);
+                                    log.info("Cliente asociado al plan: {}", cliente);
                                     clienteDTO = PlanEntrenamientoDtoResponse.Cliente.builder()
                                             .email(cliente.getEmail())
                                             .build();
@@ -83,13 +83,13 @@ public class PlanDeEntrenamientoController {
     @PostMapping
     public ResponseEntity<String> crearPlanEntrenamiento (
             @RequestBody PlanEntrenamientoDtoCrearRequest planEntrenamientoDto) {
-        log.info("Ejecutando crearPlanEntrenamiento con el DTO: " + planEntrenamientoDto);
+        log.info("Ejecutando crearPlanEntrenamiento con el DTO: {}", planEntrenamientoDto);
         if(planEntrenamientoDto == null)
             throw new InvalidRequestException("Peticion para plan de entrenamiento no valida");
         String entrenadorEmail = planEntrenamientoDto.getEntrenador().getEmail();
         Entrenador entrenador = planDeEntrenamientoRepository.findByEmail(entrenadorEmail)
                 .orElseThrow(() -> {
-                    log.warn("Entrenador no encontrado por el email: " + entrenadorEmail);
+                    log.warn("Entrenador no encontrado por el email: {}", entrenadorEmail);
                     return new EntrenadorNotFoundException("Entrenador no encontrado con el email: " + entrenadorEmail);
                 });
         PlanEntrenamientoDtoCrearRequest.Entrenador entrenadorDTO = PlanEntrenamientoDtoCrearRequest.Entrenador.builder()

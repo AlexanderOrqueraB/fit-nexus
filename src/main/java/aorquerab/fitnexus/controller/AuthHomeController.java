@@ -75,8 +75,7 @@ public class AuthHomeController {
     @PostMapping("/api/v1/signup")
     public ResponseEntity<SignupDTOResponse> postSignup(
         @RequestBody SignupDTO signupDTO) {
-        log.info("Ejecutando postSignup...");
-        log.info("Signup data: {}", signupDTO);
+        log.info("Ejecutando postSignup con estos datos: {}", signupDTO);
         log.info("Rol recibido: {}", signupDTO.getRole());
         ResponseEntity<SignupDTOResponse> responseEntity = null;
 
@@ -105,7 +104,7 @@ public class AuthHomeController {
                 responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(responsePayload);
             }
         } catch (Exception e) {
-            log.info("Error al registrar al usuario" + e.getMessage());
+            log.info("Error al registrar al usuario: {}", e.getMessage());
             throw new InvalidRequestException("Usuario no registrado en base de datos");
         }
         return responseEntity;
@@ -119,7 +118,7 @@ public class AuthHomeController {
     @GetMapping("/api/v1/roles/{userEmailId}")
     @ResponseBody
     public Optional<Role> obtenerRolePorEmailId (@PathVariable String userEmailId){
-        log.info("Ejecutando obtenerRolePorEmailId con este emailId: " + userEmailId);
+        log.info("Ejecutando obtenerRolePorEmailId con este emailId: {} ", userEmailId);
         Optional<Cliente> clienteByEmailId = clienteRepository.findByEmail(userEmailId);
         if(clienteByEmailId.isPresent()) {
             return Optional.of(clienteByEmailId.get().getRole());
@@ -136,8 +135,7 @@ public class AuthHomeController {
     @PostMapping("/api/v1/login")
     public ResponseEntity<Map<String, Object>> postLogin(
             @RequestBody LoginDTO loginDTO) {
-        log.info("Ejecutando postLogin...");
-        log.info("Login data: {}", loginDTO);
+        log.info("Ejecutando postLogin con los datos: {}", loginDTO);
 
         if(loginDTO == null) {
             throw new InvalidRequestException("Peticion de inicio de sesión no valida");
