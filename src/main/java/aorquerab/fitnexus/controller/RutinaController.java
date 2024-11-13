@@ -162,9 +162,12 @@ public class RutinaController {
 
 
     //TODO: Testear con postman
+    // opcion con JPQL
     // DELETE Controller para eliminar una lista de ejercicios
     @DeleteMapping
-    public ResponseEntity<String> eliminarListaDeEjerciciosFromRutina (List<String> listaEjerciciosPorNombre, String nombreRutina) {
+    public ResponseEntity<String> eliminarListaDeEjerciciosFromRutinaWithJPQL (
+            @RequestBody List<String> listaEjerciciosPorNombre,
+            @PathVariable String nombreRutina) {
         String ejemplo = """
             [
                 "Press banca",
@@ -174,15 +177,47 @@ public class RutinaController {
             ]
                 """;
         log.info("Ejecutando eliminarListaDeEjerciciosFromRutina con esta lista de ejercicios: {}" , listaEjerciciosPorNombre);
-        if (listaEjerciciosPorNombre.isEmpty())
+        if (listaEjerciciosPorNombre == null == listaEjerciciosPorNombre.isEmpty())
             throw new InvalidRequestException("Error en la lista de ejercicios enviada");
         else {
-            Rutina rutinaPorNombre = rutinaRepository.findByNombreRutina(nombreRutina);
-            rutinaRepository.deleteByNombreEjercicioIn(listaEjerciciosPorNombre);
-            //REVIEW
-            rutinaRepository.deleteAllById(listaEjerciciosPorNombre, rutinaPorNombre);
+            rutinaRepository.deleteEjerciciosByNombreIn(nombreRutina, listaEjerciciosPorNombre);
             return ResponseEntity.status(HttpStatus.OK).body("Lista de ejercicios borrada correctamente");
         }
+    }
+
+    //TODO: Testear con postman
+    // opcion sin JPQL
+    // DELETE Controller para eliminar una lista de ejercicios
+    @DeleteMapping("/{nombreRutina}")
+    public ResponseEntity<String> eliminarListaDeEjerciciosFromRutinaWithoutJPQL(
+            @RequestBody List<String> listaEjerciciosPorNombre,
+            @PathVariable String nombreRutina) {
+
+        log.info("Ejecutando eliminarListaDeEjerciciosFromRutina con esta lista de ejercicios: {}", listaEjerciciosPorNombre);
+
+        // Validación: si la lista de ejercicios está vacía, lanzar excepción
+        if (listaEjerciciosPorNombre == null || listaEjerciciosPorNombre.isEmpty()) {
+            throw new InvalidRequestException("Error en la lista de ejercicios enviada");
+        }
+
+        // Obtener la rutina por nombre
+        Rutina rutina = rutinaRepository.findByNombreRutina(nombreRutina);
+        if (rutina == null) {
+            throw new InvalidRequestException("Rutina no encontrada");
+        }
+
+        // Obtener la lista de ejercicios de la rutina
+        List<Ejercicio> ejerciciosDeRutina = rutina.getEjercicios();
+
+        // Eliminar los ejercicios de la lista que están en la lista de nombres
+        ejerciciosDeRutina.removeIf(ejercicio -> listaEjerciciosPorNombre.contains(ejercicio.getNombreEjercicio()));
+
+        // Guardar la rutina actualizada (sin los ejercicios eliminados)
+        rutina.setEjercicios(ejerciciosDeRutina);
+        rutinaRepository.save(rutina);
+
+        // Respuesta de éxito
+        return ResponseEntity.status(HttpStatus.OK).body("Lista de ejercicios borrada correctamente");
     }
 
     //TODO: PUT Controller
