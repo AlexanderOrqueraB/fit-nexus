@@ -1,5 +1,6 @@
 package aorquerab.fitnexus.controller;
 
+import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.RutinaDTO;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.EjerciciosListDTO;
@@ -80,7 +81,6 @@ public class RutinaController {
                     return new RutinaNotFoundException("Rutina no encontrada en BD: "
                             + idRutina);
                 });
-        RutinaDTO.EjercicioDTO a = null;
         RutinaDTO rutinaDTO = RutinaDTO.builder()
                 .nombreRutina(rutina.getNombreRutina())
                 .ejercicios(rutina.getEjercicios().stream()
@@ -138,21 +138,26 @@ public class RutinaController {
     }
 
     //TODO: POST Controller
+    // Añadir ejercicios existentes
+    // (en una lista con muchos o 1 ejercicio, enviando idEjercicio o nombreEjercicio)
+    // a una rutina existente (necesitaremos el nombre de la rutina)
     // Para añadirEjercicios EN UNA LISTA DE EJERCICIOS a una rutina
-    @PostMapping
-    public ResponseEntity<String> addEjerciciosEnLista (@RequestBody EjerciciosListDTO ejerciciosListDTO) {
+    // puede ser util, sacar a un servicio la logica de obtenerEjercicioPorId para usarlo aqui tambien
+    @PostMapping("/{nombreRutina}")
+    public ResponseEntity<String> addEjerciciosEnLista (
+            @PathVariable String nombreRutina,
+            @RequestBody EjerciciosListDTO ejerciciosListDTO) {
         log.info("Ejecutando addEjerciciosEnLista con esta lista de ejerciciosDTO: " + ejerciciosListDTO);
-
+        List<EjerciciosListDTO.EjercicioDTO> ejerciciosDTO = ejerciciosListDTO.getEjercicios();
+        List<Ejercicio> ejercicios = EjerciciosListDTO.builder().build();
+        Rutina rutina = Rutina.builder()
+                .ejercicios(ejercicios)
+                .build();
+        //TODO REVIEW
         //Tengo una lista de ejercicios con solo el nombre List<EjercicioDTO> ejercicios y un nombreRutina;
         //Creo una rutina de BD que contenga los ejercicios de la lista y NADA MAS?
 
     }
-
-    //TODO: POST Controller
-    // Para añadirEjercicio a una rutina concreta por idEjercicio o nombreEjercicio
-    // ejercicios ya existentes en base de datos
-    // puede ser util, sacar a un servicio la logica de obtenerEjercicioPorId para usarlo aqui tambien
-
 
 
     //TODO: DELETE Controller

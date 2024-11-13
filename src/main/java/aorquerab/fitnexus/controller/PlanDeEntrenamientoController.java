@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
@@ -88,11 +87,19 @@ public class PlanDeEntrenamientoController {
         if(planEntrenamientoDto == null)
             throw new InvalidRequestException("Peticion para plan de entrenamiento no valida");
         String entrenadorEmail = planEntrenamientoDto.getEntrenador().getEmail();
-        planDeEntrenamientoRepository.findByEmail(entrenadorEmail)
-                .orElseThrow(()-> {
+        Entrenador entrenador = planDeEntrenamientoRepository.findByEmail(entrenadorEmail)
+                .orElseThrow(() -> {
                     log.warn("Entrenador no encontrado por el email: " + entrenadorEmail);
                     return new EntrenadorNotFoundException("Entrenador no encontrado con el email: " + entrenadorEmail);
                 });
+        PlanEntrenamientoDtoCrearRequest.Entrenador entrenadorDTO = PlanEntrenamientoDtoCrearRequest.Entrenador.builder()
+                .email(entrenador.getEmail())
+                .build();
+        //TODO REVIEW
+        PlanDeEntrenamiento planDeEntrenamiento = PlanDeEntrenamiento.builder()
+                .nombrePlan(planEntrenamientoDto.getNombrePlan())
+                .entrenador(entrenador)
+                .build();
 
 
         planDeEntrenamientoRepository.save(planDeEntrenamiento);

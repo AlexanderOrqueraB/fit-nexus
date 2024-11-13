@@ -13,7 +13,6 @@ import java.util.List;
 @Builder
 public class EjerciciosListDTO {
 
-    private String nombreRutina;
     private List<EjercicioDTO> ejercicios;
 
     @Data
