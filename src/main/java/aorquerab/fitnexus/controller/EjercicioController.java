@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
@@ -56,11 +57,11 @@ public class EjercicioController {
             return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoRequestList);
         } catch (Exception e) {
             log.warn("Error al obtener ejerciciosDTO: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
     }
 
-    //TODO: Testear con postman
+    //TODO: Testear con postman, check exception and compare with put endpoint
     @GetMapping ("/{idEjercicio}")
     public ResponseEntity<EjercicioDtoRequest> obtenerEjercicioPorId(@PathVariable Long idEjercicio) {
         log.info("Ejecutando obtenerEjercicioPorId con el id: " + idEjercicio);
@@ -109,22 +110,62 @@ public class EjercicioController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Ejercicio creado correctamente en BD");
     }
 
-    //TODO: WIP + Testear con postman
-    @PutMapping
+    //TODO: Testear con postman and check exception
+    @PutMapping("/{idEjercicio}")
     public ResponseEntity<EjercicioDtoRequest> actualizarEjercicio (
             @PathVariable Long idEjercicio,
             @RequestBody EjercicioDtoRequest ejercicioDtoRequest) {
-        ResponseEntity<EjercicioDtoRequest> ejercicioDtoRequestById = obtenerEjercicioPorId(idEjercicio);
-        EjercicioDtoRequest body = ejercicioDtoRequestById.getBody();
+        log.info("Ejecutando actualizarEjercicio con la request: " + ejercicioDtoRequest);
+        Ejercicio ejercicioById = ejercicioRepository.findById(idEjercicio)
+                .orElseThrow(()-> {
+                    log.warn("Ejercicio no encontrado en base de datos: " + idEjercicio);
+                    return new ResponseStatusException( HttpStatus.NOT_FOUND,
+                                    "Ejercicio no encontrado con el id: " + idEjercicio);
+                });
 
-        //Buscas el ejercicio por ID de la base de datos a editar
-        //Cambiar los valores del ejercicio por los valores del ejercicioDtoRequest:
-        // nombreEjercicio, repeticion, serie, peso y cardio
+        //Actualizas solo los campos enviados (distintos de null)
+        if(ejercicioDtoRequest.getNombreEjercicio() != null)
+            ejercicioById.setNombreEjercicio(ejercicioDtoRequest.getNombreEjercicio());
 
-        //Mapeas el nuevo ejercicio de BD actualizado con un ejercicioDtoActualizado que vas a devolver
+        if(ejercicioDtoRequest.getRepeticion() != null)
+            ejercicioById.setRepeticion(ejercicioDtoRequest.getRepeticion());
+
+        if(ejercicioDtoRequest.getSerie() != null)
+            ejercicioById.setSerie(ejercicioDtoRequest.getSerie());
+
+        if(ejercicioDtoRequest.getPeso() != null)
+            ejercicioById.setPeso(ejercicioDtoRequest.getPeso());
+
+        if (ejercicioDtoRequest.getCardio() != null)
+            ejercicioById.setCardio(ejercicioDtoRequest.getCardio());
+
+        Ejercicio ejercicioActualizado = ejercicioRepository.save(ejercicioById);
+        log.info("Ejercicio actualizado: " + ejercicioActualizado);
+
+        EjercicioDtoRequest ejercicioDtoActualizado = EjercicioDtoRequest.builder()
+                .nombreEjercicio(ejercicioActualizado.getNombreEjercicio())
+                .repeticion(ejercicioActualizado.getRepeticion())
+                .serie(ejercicioActualizado.getSerie())
+                .peso(ejercicioActualizado.getPeso())
+                .cardio(ejercicioActualizado.getCardio())
+                    .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoActualizado);
     }
 
+    //TODO: Testear con postman
+    @DeleteMapping
+    public ResponseEntity<String> eliminarEjercicio (@PathVariable Long idEjercicio) {
+        log.info("Ejecutando eliminarEjercicio con el id: " + idEjercicio);
+        Ejercicio ejerciciobyId = ejercicioRepository.findById(idEjercicio)
+                .orElseThrow(()-> {
+                    log.warn("Ejercicio no encontrado en base de datos: " + idEjercicio);
+                    return new ResponseStatusException( HttpStatus.NOT_FOUND,
+                            "Ejercicio no encontrado con el id: " + idEjercicio);
+                });
+        log.info("Ejercicio a eliminar: " + ejerciciobyId);
+        ejercicioRepository.delete(ejerciciobyId);
 
+        return ResponseEntity.status(HttpStatus.OK).body("Ejercicio borrado correctamente");
+    }
 }

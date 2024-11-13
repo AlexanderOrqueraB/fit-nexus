@@ -1,5 +1,6 @@
 package aorquerab.fitnexus.controller;
 
+import aorquerab.fitnexus.model.dtos.EntrenadorDTORequest;
 import aorquerab.fitnexus.model.dtos.SignupDTO;
 import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
@@ -44,29 +45,29 @@ public class EntrenadorController {
 
     //TODO Obtener entrenador por otro Atributo (FUTURE REFACTOR)
 
-    @GetMapping("/fitnexus-id/{entrenadorEmailId}")
-    public String obtenerFitNexusIdDeEntrenador (@PathVariable String entrenadorEmailId) {
-        log.info("Ejecutando obtenerFitNexusIdDeEntrenador con este emailId: " + entrenadorEmailId);
-        Optional<Entrenador> entrenador = entrenadorRepository.findByEmail(entrenadorEmailId);
+    @GetMapping("/fitnexus-id/{idEntrenadorEmail}")
+    public String obtenerFitNexusIdDeEntrenador (@PathVariable String idEntrenadorEmail) {
+        log.info("Ejecutando obtenerFitNexusIdDeEntrenador con este emailId: " + idEntrenadorEmail);
+        Optional<Entrenador> entrenador = entrenadorRepository.findByEmail(idEntrenadorEmail);
         if (entrenador.isPresent()) {
             return entrenador.get().getFitNexusId().toString();
         } else {
-            log.info("FitnexusID de entrenador no encontrado con el email:" + entrenadorEmailId);
+            log.info("FitnexusID de entrenador no encontrado con el email:" + idEntrenadorEmail);
             throw new InvalidRequestException("FitnexusID de entrenador no encontrado con el email:"
-                    + entrenadorEmailId);
+                    + idEntrenadorEmail);
         }
     }
 
-    @PostMapping("/{entrenadorId}")
+    @PostMapping("/{idEntrenador}")
     public ResponseEntity<String> crearEntrenador (
-            @PathVariable Long entrenadorId,
+            @PathVariable Long idEntrenador,
             @RequestBody SignupDTO signupDTO) {
-        log.info("Ejecutando crearEntrenador con este entrenadorId: " + entrenadorId);
+        log.info("Ejecutando crearEntrenador con este idEntrenador: " + idEntrenador);
         log.info("Ejecutando crearEntrenador con el campo asesorNutricional: " + signupDTO);
         if(signupDTO == null) {
             throw new InvalidRequestException("Peticion de entrenador no valida");
         }
-        Optional<Entrenador> entrenador = entrenadorRepository.findById(entrenadorId);
+        Optional<Entrenador> entrenador = entrenadorRepository.findById(idEntrenador);
         log.info("Entrenador a actualizar:" + entrenador);
         entrenador.ifPresent(entr -> {
             entr.setAsesorNutricional(signupDTO.getAsesorNutricional());
@@ -76,31 +77,36 @@ public class EntrenadorController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Entrenador actualizado con campo asesorNutricional");
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    //TODO: Testear con postman and check exception
     @PutMapping("/{idEntrenador}")
-    public void actualizarEntrenador (
-            @RequestBody Entrenador entrenador,
-            @PathVariable Long idEntrenador) {
-        log.info("Ejecutando actualizarEntrenador...");
-        //TODO TEST
-        //TODO: Maybe this should not valid the request (what if you just want to change a field?)
-        //TODO: Also you cannot change the identifier via request
-        //todo: what if any field is null? it get smashed by the new one?
-
-        //TODO: esto no solo modifica no? si no existe, lo crea,
-        // es como un POST con un GET previo
-
-        Entrenador entrenadorActualizado =  entrenadorRepository.findById(idEntrenador)
-                .map(e -> {
-                        e.setFitNexusId(entrenador.getFitNexusId());
-                        e.setNombre(entrenador.getNombre());
-                        e.setApellido(entrenador.getApellido());
-                        e.setEmail(entrenador.getEmail());
-                        e.setAsesorNutricional(entrenador.getAsesorNutricional());
-                        return entrenadorRepository.save(e);
-                }).orElseGet(()-> {
-                    return entrenadorRepository.save(entrenador);
+    public ResponseEntity<EntrenadorDTORequest> actualizarEntrenador (
+            @PathVariable Long idEntrenador,
+            @RequestBody EntrenadorDTORequest entrenadorDTORequest) {
+        log.info("Ejecutando actualizarEntrenador con la request: " + entrenadorDTORequest);
+        Entrenador entrenadorById = entrenadorRepository.findById(idEntrenador)
+                .orElseGet(() -> {
+                    log.warn("Entrenador no encontrado en base de datos: " + idEntrenador);
+                    throw  new EntrenadorNotFoundException("Entrenador no encontrado en base de datos");
                 });
-    }
 
+        if(entrenadorDTORequest.getNombre() != null)
+            entrenadorById.setNombre(entrenadorDTORequest.getNombre());
+
+        if(entrenadorDTORequest.getApellido() != null)
+            entrenadorById.setApellido(entrenadorDTORequest.getApellido());
+
+        if(entrenadorDTORequest.getAsesorNutricional() != null)
+            entrenadorById.setAsesorNutricional(entrenadorDTORequest.getAsesorNutricional());
+
+        Entrenador entrenadorActualizado = entrenadorRepository.save(entrenadorById);
+        log.info("Entrenador actualizado: " + entrenadorActualizado);
+
+        EntrenadorDTORequest entrenadorActualizadoDto = EntrenadorDTORequest.builder()
+                .nombre(entrenadorActualizado.getNombre())
+                .apellido(entrenadorActualizado.getApellido())
+                .asesorNutricional(entrenadorActualizado.getAsesorNutricional())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(entrenadorActualizadoDto);
+    }
 }
