@@ -110,7 +110,7 @@ public class NutriController {
                         throw new InvalidRequestException("El plan nutricional no ha sido creado aun");
                     }
                     else {
-                        planNutricionalMacrosDTO = calcularMacrosEnGramos(planNutricional);
+                        planNutricionalMacrosDTO = calcularMacrosEnGramos(planNutricional.get());
                         log.info("Plan nutricional en macros tras el calculo: {}", planNutricionalMacrosDTO);
                         if (planNutricionalMacrosDTO == null) throw new InvalidRequestException("Peticion de plan nutricional en macros no valida");
                             else log.info("El plan nutricional en macros existente en BD, macrosDTO creado");
@@ -138,34 +138,37 @@ public class NutriController {
                 String email = emailFromPayload.get("email");
                 log.info("Email id enviado en la peticion: " + email);
 
-                Optional<Cliente> cliente = clienteRepository.findByEmail(email);
-                cliente.ifPresent(value -> log.info("cliente: " + value));
+                Cliente cliente = clienteRepository.findByEmail(email)
+                        .orElseThrow(()-> {
+                            log.warn("Cliente no encontrado con el email: {}", email);
+                            return new InvalidRequestException("Cliente no encontrado con el email:" + email);
+                        });
+                log.info("cliente: {} encontrado con el email: {} ", cliente, email);
 
                 PlanNutricionalPorcenajesDTO planNutricionalPorcenajesDTO;
 
-                log.info("Cliente encontrado buscando por email: {}", cliente.get());
                 double tasaMetabolismoBasalCliente =
                         calcularTasaMetabolismoBasal(
-                                cliente.get().getPeso(),
-                                cliente.get().getAltura(),
-                                cliente.get().getEdad(),
-                                cliente.get().getGenero());
+                                cliente.getPeso(),
+                                cliente.getAltura(),
+                                cliente.getEdad(),
+                                cliente.getGenero());
 
                 int kCalDiariasMantenimientoCliente =
                         obtenerKcalDiariasParaMantenimiento(
-                                cliente.get().getFrecuenciaEjercicioSemanal().getFactorActividad(), tasaMetabolismoBasalCliente);
+                                cliente.getFrecuenciaEjercicioSemanal().getFactorActividad(), tasaMetabolismoBasalCliente);
 
-                int kcalDiariasPorObjetivo = obtenerKcalDiariasPorObjetivo(cliente.get().getObjetivo(), kCalDiariasMantenimientoCliente);
+                int kcalDiariasPorObjetivo = obtenerKcalDiariasPorObjetivo(cliente.getObjetivo(), kCalDiariasMantenimientoCliente);
 
                 PlanNutricionalPorcenajesDTO.PlanNutricionalPorcenajesDTOBuilder planNutricionalDTOBuilder = PlanNutricionalPorcenajesDTO
                         .builder()
                         .kcal(kcalDiariasPorObjetivo);
 
                 //Duracion del plan en función del objetivo
-                if (cliente.get().getObjetivo().equals(Objetivo.GANAR_MUSCULO)) {
+                if (cliente.getObjetivo().equals(Objetivo.GANAR_MUSCULO)) {
                     planNutricionalDTOBuilder.proteina(30).hidratoDeCarbono(50).grasa(20)
                             .fechaInicio(LocalDate.now()).fechaFinal(LocalDate.now().plusWeeks(6));
-                } else if (cliente.get().getObjetivo().equals(Objetivo.PERDER_GRASA)) {
+                } else if (cliente.getObjetivo().equals(Objetivo.PERDER_GRASA)) {
                     planNutricionalDTOBuilder.proteina(30).hidratoDeCarbono(30).grasa(40)
                             .fechaInicio(LocalDate.now()).fechaFinal(LocalDate.now().plusWeeks(4));
                 }
@@ -183,15 +186,15 @@ public class NutriController {
         }
     }
 
-    public PlanNutricionalMacrosDTO calcularMacrosEnGramos (Optional<PlanNutricional> planNutricional) {
-        if (planNutricional.isPresent()) {
-            int kcal = planNutricional.get().getKcal();
+    public PlanNutricionalMacrosDTO calcularMacrosEnGramos (PlanNutricional planNutricional) {
+        if (planNutricional != null) {
+            int kcal = planNutricional.getKcal();
             log.info("kcal recibidas desde planNutricional en calcularMacrosEnGramos: {} kcal", kcal);
 
             // Calcular el porcentaje de cada macronutriente en kcal
-            int proteinaKcal = kcal * planNutricional.get().getProteina() / 100;
-            int hidratosKcal = kcal * planNutricional.get().getHidratoDeCarbono() / 100;
-            int grasasKcal = kcal * planNutricional.get().getGrasa() / 100;
+            int proteinaKcal = kcal * planNutricional.getProteina() / 100;
+            int hidratosKcal = kcal * planNutricional.getHidratoDeCarbono() / 100;
+            int grasasKcal = kcal * planNutricional.getGrasa() / 100;
             log.info("macros en kcal: (proteina/hc/grasas): {} kcal de proteina, {} kcal de hc {} y kcal de grasa"
                     , proteinaKcal, hidratosKcal, grasasKcal);
 
@@ -207,9 +210,9 @@ public class NutriController {
                     .proteina(proteinaGramos)
                     .hidratoDeCarbono(hidratosGramos)
                     .grasa(grasasGramos)
-                    .kcal(planNutricional.get().getKcal())
-                    .fechaInicio(planNutricional.get().getFechaInicio())
-                    .fechaFinal(planNutricional.get().getFechaFinal())
+                    .kcal(planNutricional.getKcal())
+                    .fechaInicio(planNutricional.getFechaInicio())
+                    .fechaFinal(planNutricional.getFechaFinal())
                     .build();
         }
         else return null;

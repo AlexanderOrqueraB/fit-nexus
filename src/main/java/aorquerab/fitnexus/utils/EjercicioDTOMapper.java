@@ -25,14 +25,14 @@ public class EjercicioDTOMapper {
         return ejercicioDtoRequest;
     }
 
-    public static EjercicioDtoRequest mapperFromEjercicio (Optional <Ejercicio> ejercicio) {
-        if (ejercicio.isPresent()) {
+    public static EjercicioDtoRequest mapperFromEjercicio (Ejercicio ejercicio) {
+        if (ejercicio != null) {
             return EjercicioDtoRequest.builder()
-                    .nombreEjercicio(ejercicio.get().getNombreEjercicio())
-                    .repeticion(ejercicio.get().getRepeticion())
-                    .serie(ejercicio.get().getSerie())
-                    .peso(ejercicio.get().getPeso())
-                    .cardio(ejercicio.get().getCardio())
+                    .nombreEjercicio(ejercicio.getNombreEjercicio())
+                    .repeticion(ejercicio.getRepeticion())
+                    .serie(ejercicio.getSerie())
+                    .peso(ejercicio.getPeso())
+                    .cardio(ejercicio.getCardio())
                     .build();
         } else {
             log.info ("Mapeo de Ejercicio a ejercicioDTO fallido!!!!");

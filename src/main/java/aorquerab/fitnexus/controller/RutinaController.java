@@ -16,8 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -177,7 +175,7 @@ public class RutinaController {
             ]
                 """;
         log.info("Ejecutando eliminarListaDeEjerciciosFromRutina con esta lista de ejercicios: {}" , listaEjerciciosPorNombre);
-        if (listaEjerciciosPorNombre == null == listaEjerciciosPorNombre.isEmpty())
+        if (listaEjerciciosPorNombre == null || listaEjerciciosPorNombre.isEmpty())
             throw new InvalidRequestException("Error en la lista de ejercicios enviada");
         else {
             rutinaRepository.deleteEjerciciosByNombreIn(nombreRutina, listaEjerciciosPorNombre);

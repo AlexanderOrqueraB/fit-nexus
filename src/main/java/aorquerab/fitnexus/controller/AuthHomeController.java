@@ -82,8 +82,13 @@ public class AuthHomeController {
         try {
             if ("USER".equalsIgnoreCase(String.valueOf(signupDTO.getRole()))) {
                 UUID entrenadorFitNexusId = signupDTO.getEntrenador().getFitNexusId();
-                Optional<Entrenador> entrenador = entrenadorRepository.findByFitNexusId(entrenadorFitNexusId);
-                Cliente clienteActualizado = UsuarioAuthDTOMapper.clienteMapperFromSignupDTO(signupDTO, entrenador.get());
+                Entrenador entrenador = entrenadorRepository.findByFitNexusId(entrenadorFitNexusId)
+                        .orElseThrow(()-> {
+                            log.warn("Entrenador no encontrado con el FitNexusId: {}", entrenadorFitNexusId);
+                            return new InvalidRequestException("Entrenador no encontrado con el FitNexusId: " +
+                                    entrenadorFitNexusId.toString());
+                        });
+                Cliente clienteActualizado = UsuarioAuthDTOMapper.clienteMapperFromSignupDTO(signupDTO, entrenador);
                 log.info("Datos del cliente a guardar: {}", clienteActualizado);
                 clienteRepository.save(clienteActualizado);
                 log.info("postSignup Cliente ejecutado y registrado correctamente.");

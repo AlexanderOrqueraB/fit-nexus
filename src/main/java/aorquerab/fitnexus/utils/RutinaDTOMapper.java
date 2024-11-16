@@ -2,13 +2,9 @@ package aorquerab.fitnexus.utils;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
-import aorquerab.fitnexus.model.dtos.SignupDTO;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.RutinaDTO;
-import aorquerab.fitnexus.model.users.Entrenador;
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 public class RutinaDTOMapper {

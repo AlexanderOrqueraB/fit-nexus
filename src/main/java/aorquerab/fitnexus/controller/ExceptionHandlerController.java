@@ -18,7 +18,7 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler(EjercicioNotFoundException.class)
     public ResponseEntity<String> handleEjercicioNotFoundException (EjercicioNotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
     //TODO: Refactor this, maybe we can handle the same exception not-found by using the same method
