@@ -107,4 +107,38 @@ Table plan_de_entrenamiento_rutina {
 }
 
 // Intermediate table: rutina_ejercicio
+Table rutina_ejercicio {
+    rutina_id int [ref: > rutina.id]
+    ejercicio_id int [ref: > ejercicio.id]
+    indexes {
+        (rutina_id, ejercicio_id) [pk]
+    }
+}
 
+// Intermediate table: cliente_ejercicio
+Table cliente_ejercicio {
+    cliente_id int [ref: > cliente.id]
+    ejercicio_id int [ref: > ejercicio.id]
+    indexes {
+        (cliente_id, ejercicio_id) [pk]
+    }
+}
+
+// Intermediate table: cliente_plan_de_entrenamiento
+Table cliente_plan_de_entrenamiento {
+    cliente_id int [ref: > cliente.id]
+    plan_de_entrenamiento_id int [ref: > plan_de_entrenamiento.id]
+    indexes {
+        (cliente_id, plan_de_entrenamiento_id) [pk]
+    }
+}
+
+// Intermediate table: cliente_rutina
+Table cliente_rutina {
+    cliente_id int [ref: > cliente.id]
+    rutina_id int [ref: > rutina.id]
+    indexes {
+        (cliente_id, rutina_id) [pk]
+    }
+
+}
