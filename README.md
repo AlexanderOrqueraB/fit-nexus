@@ -26,6 +26,10 @@ Pasos:
 - localhost:8080/api-docs (Raw JSON)
 - localhost:8080/swagger-ui/index.html (Swagger UI)
 
+## Visualizar Modelo de Datos (Database Markup Language definition)
+
+- Utiliza el archivo database_X.Y.Z.dbml y pega su contenido en: https://dbdiagram.io/d
+
 ## Tech Stack
 
 **Client:** React

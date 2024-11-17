@@ -1,0 +1,110 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+// Table: entrenador
+Table entrenador {
+    id SERIAL [pk]
+    fit_nexus_id uuid
+    nombre varchar(100) [not null]
+    apellido varchar(100) [not null]
+    email varchar(100) [not null]
+    password varchar(100) [not null]
+    role varchar(100) [not null]
+    asesor_nutricional boolean
+    version int
+}
+
+// Table: ejercicio
+Table ejercicio {
+    id SERIAL [pk]
+    nombre_ejercicio varchar(100) [not null]
+    repeticion int [not null]
+    serie int [not null]
+    peso int [not null]
+    cardio boolean
+    entrenador_id int [ref: > entrenador.id]
+    version int
+}
+
+// Table: plan_nutricional
+Table plan_nutricional {
+    id SERIAL [pk]
+    proteina int [not null]
+    hidrato_de_carbono int [not null]
+    grasa int [not null]
+    kcal int [not null]
+    fecha_inicio date
+    fecha_final date
+    entrenador_id int [ref: > entrenador.id]
+    version int
+}
+
+// Table: plan_de_entrenamiento
+Table plan_de_entrenamiento {
+    id SERIAL [pk]
+    nombre_plan varchar(100) [not null]
+    fecha_inicio date
+    fecha_final date
+    entrenador_id int [ref: > entrenador.id]
+    version int
+}
+
+// Table: rutina
+Table rutina {
+    id SERIAL [pk]
+    nombre_rutina varchar(100) [not null]
+    fecha_inicio date
+    fecha_final date
+    entrenador_id int [ref: > entrenador.id]
+    version int
+}
+
+// Table: cliente
+Table cliente {
+    id SERIAL [pk]
+    fit_nexus_id uuid
+    nombre varchar(100) [not null]
+    apellido varchar(100) [not null]
+    email varchar(100) [not null]
+    password varchar(100) [not null]
+    role varchar(100) [not null]
+    objetivo varchar(100)
+    genero varchar(100)
+    frecuenciaEjercicioSemanal varchar(100)
+    edad int
+    peso int
+    altura int
+    cliente_desde date
+    entrenador_id int [ref: > entrenador.id]
+    version int
+}
+
+// Table: valoracion
+Table valoracion {
+    id SERIAL [pk]
+    comentario varchar(100) [not null]
+    cliente_id int [ref: > cliente.id]
+    plan_de_entrenamiento_id int [ref: > plan_de_entrenamiento.id]
+    version int
+}
+
+// Intermediate table: cliente_plan_nutricional
+Table cliente_plan_nutricional {
+    cliente_id int [ref: > cliente.id]
+    plan_nutricional_id int [ref: > plan_nutricional.id]
+    indexes {
+        (cliente_id, plan_nutricional_id) [pk]
+    }
+}
+
+// Intermediate table: plan_de_entrenamiento_rutina
+Table plan_de_entrenamiento_rutina {
+    plan_de_entrenamiento_id int [ref: > plan_de_entrenamiento.id]
+    rutina_id int [ref: > rutina.id]
+    indexes {
+        (plan_de_entrenamiento_id, rutina_id) [pk]
+    }
+}
+
+// Intermediate table: rutina_ejercicio
+
