@@ -25,13 +25,9 @@ import LoginForm from './components/LoginForm';
 import LogoutForm from './components/LogoutForm';
 import SignUpForm from './components/SignUpForm';
 
-
-import AdminPageComponent from './components/AdminPageComponent';
-import NormalPageComponent from './components/NormalPageComponent';
-import TestDashboardList from "./components/TestDashboardList";
+import HomePage from "./components/HomePage";
 import ClientsList from "./components/ClientsList";
 import ExercisesList from "./components/ExercisesList";
-import ClientsList2 from "./components/ClientsList";
 
 //import {Home} from './crud_page/Home';
 //import {Create} from './crud_page/Create';
@@ -95,13 +91,11 @@ return (
             <Route path="/edit-profile" element={<EditProfile />}/>
             <Route path="/create-exercise" element={<CreateExercise />}/>
             <Route path="/ejercicios" element={<ExercisesList />}/>
-            <Route path="/testdashboardlist" element={<TestDashboardList />}/>
             <Route path="/clients" element={<ClientsList />}/>
 
             <Route path="/form" element={<CustomForm />}/>
             
-            <Route path="/dashboard" element={<NormalPageComponent />}/>
-            <Route path="/dashboard-admin" element={<AdminPageComponent />}/>
+            <Route path="/dashboard" element={<HomePage />}/>
 
         </Routes>
     </BrowserRouter>

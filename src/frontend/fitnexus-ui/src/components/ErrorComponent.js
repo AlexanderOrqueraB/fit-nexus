@@ -6,12 +6,10 @@ import {
   AlertTitle,
 } from "../components_ui/ui/alert"
 
-import NavigationMenuUser from './NavigationMenuUser';
 
-export function NormalPageComponent() {
+export function ErrorComponent() {
   return (
     <div>
-    <NavigationMenuUser /> 
     <Alert variant="destructive">
       <AlertCircle className="h-4 w-4" />
       <AlertTitle>Error</AlertTitle>
@@ -23,4 +21,4 @@ export function NormalPageComponent() {
   )
 }
 
-export default NormalPageComponent
+export default ErrorComponent

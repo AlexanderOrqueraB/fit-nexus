@@ -2,6 +2,7 @@ import axios from 'axios';
 import { ListFilter, MoreHorizontal, UserCheck } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Button } from '../components_ui/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components_ui/ui/card';
 import {
@@ -145,11 +146,14 @@ export function ExercisesList() {
 		//handleClickEjercicioPost();
 	}, []); //empty array ensures that the effect only runs once
 
+	const location = useLocation(); //location tiene info sobre la ubi actual (URL + state)
+	const isAdmin = location.state?.isAdminProp || false; 
+
 	return (
 		<div className="flex min-h-screen w-full flex-col bg-muted/40">
-			<SideBar isAdmin={true}></SideBar>
+			<SideBar isAdmin={isAdmin}></SideBar>
 			<div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-				<Header isAdmin={true}></Header>
+				<Header isAdmin={isAdmin}></Header>
 				<main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
 					<div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
 						<Tabs defaultValue="plan">

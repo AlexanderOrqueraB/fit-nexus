@@ -43,13 +43,7 @@ export function LoginForm() {
     };
 
   const navigate = useNavigate();
-  const sendToAdminPage = () => {
-    navigate('/dashboard-admin')
-  }
-  const sendToNormalPage = () => {
-    navigate('/dashboard')
-  }
-
+ 
   const onSubmit = (e) => {
     e.preventDefault(); //prevent refresh on page
     const userData = {
@@ -77,13 +71,14 @@ export function LoginForm() {
           console.log("Mostrando Toast de Login Okay...")
           //TODO: Toast de confirmacion
           confirmationToast();
+
           if (userRole === "ADMIN") {
             console.log("Redireccionando a pagina admin");
-            sendToAdminPage();
+            navigate('/dashboard', { state: { isAdminProp: userRole === "ADMIN" } });
           }
           else if (userRole === "USER") {
-            sendToNormalPage ();
             console.log("Redireccionando a pagina admin");
+            navigate('/dashboard', { state: { isAdminProp: false } });
           }
         }
       })
@@ -91,7 +86,6 @@ export function LoginForm() {
         console.error("Error en la autenticación: ", error);
       });
     };
-
 
 
   return (
@@ -136,13 +130,13 @@ export function LoginForm() {
           </Button>
           <div className="mt-4 text-center text-sm">
           SOY ADMIN: {" "}
-          <Link to={FITNEXUS_URL + "/dashboard-admin"} className="underline">
+          <Link to={FITNEXUS_URL + "/dashboard"} state= {{ isAdminProp : true}} className="underline">
             IR
           </Link>
         </div>
           <div className="mt-4 text-center text-sm">
           SOY USER: {" "}
-          <Link to={FITNEXUS_URL + "/dashboard"} className="underline">
+          <Link to={FITNEXUS_URL + "/dashboard"} state= {{ isAdminProp : false}} className="underline">
             IR
           </Link>
         </div>
