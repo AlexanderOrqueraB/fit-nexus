@@ -1,16 +1,14 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import axios from "axios";
 import {
-	File,
 	ListFilter,
 	MoreHorizontal,
-	PlusCircle,
 	UserCheck
 } from 'lucide-react';
-import { Badge } from '../components_ui/ui/badge';
-import { Button } from '../components_ui/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components_ui/ui/card';
+import { Badge } from '../../components_ui/ui/badge';
+import { Button } from '../../components_ui/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components_ui/ui/card';
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -19,11 +17,11 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
-} from '../components_ui/ui/dropdown-menu';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components_ui/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components_ui/ui/tabs';
-import Header from './common/Header';
-import SideBar from './common/SideBar';
+} from '../../components_ui/ui/dropdown-menu';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
+import Header from '../common-components/Header';
+import SideBar from '../common-components/SideBar';
 import {CLIENTES} from "../constants/hardcodedModelDtos"
 import {FITNEXUS_URL} from "../constants/env";
 
@@ -53,7 +51,7 @@ export function ClientsList() {
 
 	const location = useLocation(); //location tiene info sobre la ubi actual (URL + state)
 	const isAdmin = location.state?.isAdminProp || false; 
-
+	
 	return (
 		<div className="flex min-h-screen w-full flex-col bg-muted/40">
 			<SideBar isAdmin = {isAdmin}></SideBar>

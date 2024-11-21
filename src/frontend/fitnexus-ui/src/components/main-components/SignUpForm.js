@@ -1,20 +1,17 @@
-import { Link, useNavigate } from 'react-router-dom';
-import React, { useRef, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { Button } from '../components_ui/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components_ui/ui/card';
-import { Input } from '../components_ui/ui/input';
-import { Label } from '../components_ui/ui/label';
-import { ProgressCustom } from "../components/Progress"
+import { Button } from '../../components_ui/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components_ui/ui/card';
+import { Input } from '../../components_ui/ui/input';
+import { Label } from '../../components_ui/ui/label';
 import {
 Select,
 SelectContent,
-SelectGroup,
 SelectItem,
-SelectLabel,
 SelectTrigger,
 SelectValue,
-} from "../components_ui/ui/select"
+} from "../../components_ui/ui/select"
 import {FITNEXUS_URL} from "../constants/env";
 
 export function SignUpForm() {

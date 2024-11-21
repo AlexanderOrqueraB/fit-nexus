@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Link, useNavigate} from 'react-router-dom'
-import { Button } from "../components_ui/ui/button"
-import dumbbell from "../images/db2.PNG"
-import React, { useRef, useState, useEffect } from "react"; //(2)
+import { Button } from "../../components_ui/ui/button"
+import dumbbell from "../../images/db2.PNG"
+import React, { useState } from "react"; //(2)
 
 import {
   Card,
@@ -10,10 +10,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../components_ui/ui/card"
-import { Input } from "../components_ui/ui/input"
-import { Label } from "../components_ui/ui/label"
-import { Toaster, toast } from 'sonner'
+} from "../../components_ui/ui/card"
+import { Input } from "../../components_ui/ui/input"
+import { Label } from "../../components_ui/ui/label"
+import { toast } from 'sonner'
 import {FITNEXUS_URL} from "../constants/env";
 
 export function LoginForm() {

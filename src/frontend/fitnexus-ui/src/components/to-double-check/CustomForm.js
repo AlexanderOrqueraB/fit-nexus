@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { Button } from "../components_ui/ui/button"
+import { Button } from "../../components_ui/ui/button"
 import {
   Form,
   FormControl,
@@ -13,8 +13,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../components_ui/ui/form"
-import { Textarea } from "../components_ui/ui/textarea"
+} from "../../components_ui/ui/form"
+import { Textarea } from "../../components_ui/ui/textarea"
 
 
     const FormSchema = z.object({

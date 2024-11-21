@@ -1,19 +1,12 @@
-import axios from "axios";
-import { Link, useNavigate} from 'react-router-dom'
-import { Button } from "../components_ui/ui/button"
-import dumbbell from "../images/db2.PNG"
-import React, { useRef, useState, useEffect } from "react"; //(2)
+import { Link} from 'react-router-dom'
+import React from "react"; //(2)
 
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../components_ui/ui/card"
-import { Input } from "../components_ui/ui/input"
-import { Label } from "../components_ui/ui/label"
-import { Toaster, toast } from 'sonner'
+} from "../../components_ui/ui/card"
 
 export function LogoutForm() {
   return (

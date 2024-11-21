@@ -1,4 +1,4 @@
-import { Button } from "../components_ui/ui/button"
+import { Button } from "../../components_ui/ui/button"
 
 import {
   Dialog,
@@ -8,10 +8,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../components_ui/ui/dialog"
-import { Input } from "../components_ui/ui/input"
-import { Label } from "../components_ui/ui/label"
-import TestDashboard from "./TestDashboard"
+} from "../../components_ui/ui/dialog"
+import { Input } from "../../components_ui/ui/input"
+import { Label } from "../../components_ui/ui/label"
+import Settings from "./Settings"
 
 export function EditProfile() {
   return (
@@ -77,7 +77,7 @@ export function EditProfile() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-    <TestDashboard></TestDashboard>
+    <Settings></Settings>
     </div>
   )
 }

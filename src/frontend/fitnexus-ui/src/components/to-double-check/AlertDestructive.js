@@ -4,21 +4,18 @@ import {
   Alert,
   AlertDescription,
   AlertTitle,
-} from "../components_ui/ui/alert"
+} from "../../components_ui/ui/alert"
 
-
-export function ErrorComponent() {
+export function AlertDestructive() {
   return (
-    <div>
     <Alert variant="destructive">
       <AlertCircle className="h-4 w-4" />
       <AlertTitle>Error</AlertTitle>
       <AlertDescription>
-        Normal page component
+        Your session has expired. Please log in again 2.
       </AlertDescription>
     </Alert>
-    </div>
   )
 }
 
-export default ErrorComponent
+export default AlertDestructive

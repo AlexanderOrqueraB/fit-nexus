@@ -9,8 +9,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../components_ui/ui/table"
-import { Button } from "../components_ui/ui/button";
+} from "../../components_ui/ui/table"
+import { Button } from "../../components_ui/ui/button";
 import {EXERCISES} from "../constants/hardcodedModelDtos"
 
 

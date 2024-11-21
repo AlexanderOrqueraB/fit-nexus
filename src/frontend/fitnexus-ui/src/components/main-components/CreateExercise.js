@@ -1,8 +1,6 @@
 import axios from "axios";
-import { Button } from "../components_ui/ui/button"
-import React, { useRef, useState, useEffect } from "react"; //(2)
-import apiClient from "../api/http-common"
-
+import { Button } from "../../components_ui/ui/button"
+import React, { useRef, useState } from "react"; 
 import {
   Dialog,
   DialogContent,
@@ -11,9 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../components_ui/ui/dialog"
-import { Input } from "../components_ui/ui/input"
-import { Label } from "../components_ui/ui/label"
+} from "../../components_ui/ui/dialog"
+import { Input } from "../../components_ui/ui/input"
+import { Label } from "../../components_ui/ui/label"
 import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from 'sonner'
 
@@ -60,7 +58,8 @@ export function CreateExercise() {
     //TODO: Examples, not tested yet
     async function getAllData () {
         try {
-            const res = await apiClient.get("/tutorials");
+            const res = await axios.get("/test");
+            //apiClient.get("/tutorials");
 
             const result = {
                 status: res.status + "-" + res.statusText,
@@ -79,7 +78,8 @@ export function CreateExercise() {
 
         if (id) {
             try {
-                const res = await apiClient.get(`/tutorials/${id}`);
+                const res = await axios.get("/test");
+                //apiClient.get(`/tutorials/${id}`);
 
                 const result = {
                     data: res.data,
@@ -102,11 +102,12 @@ export function CreateExercise() {
         if (title) {
             try {
                 // const res = await instance.get(`/tutorials?title=${title}`);
-                const res = await apiClient.get("/tutorials", {
-                    params: {
-                        title: title,
-                    },
-                });
+                const res = await axios.get("/test");
+                //apiClient.get("/tutorials", {
+                  //  params: {
+                      //  title: title,
+                   // },
+               // });
 
                 const result = {
                     status: res.status + "-" + res.statusText,

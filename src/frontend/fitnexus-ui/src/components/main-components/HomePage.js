@@ -5,9 +5,9 @@ import {
 	MoreHorizontal,
 	PlusCircle
 } from 'lucide-react';
-import { Badge } from '../components_ui/ui/badge';
-import { Button } from '../components_ui/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components_ui/ui/card';
+import { Badge } from '../../components_ui/ui/badge';
+import { Button } from '../../components_ui/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components_ui/ui/card';
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -16,11 +16,11 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
-} from '../components_ui/ui/dropdown-menu';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components_ui/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components_ui/ui/tabs';
-import Header from './common/Header';
-import SideBar from './common/SideBar';
+} from '../../components_ui/ui/dropdown-menu';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
+import Header from '../common-components/Header';
+import SideBar from '../common-components/SideBar';
 
 
 export function HomePage() {

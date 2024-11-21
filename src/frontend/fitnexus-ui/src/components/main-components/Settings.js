@@ -1,7 +1,7 @@
 import { Link, useNavigate} from 'react-router-dom'
 import { CircleUser, Menu, Package2, Search } from "lucide-react"
 
-import { Button } from "../components_ui/ui/button"
+import { Button } from "../../components_ui/ui/button"
 import {
   Card,
   CardContent,
@@ -9,8 +9,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../components_ui/ui/card"
-import { Checkbox } from "../components_ui/ui/checkbox"
+} from "../../components_ui/ui/card"
+import { Checkbox } from "../../components_ui/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,14 +18,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../components_ui/ui/dropdown-menu"
-import { Input } from "../components_ui/ui/input"
-import { Sheet, SheetContent, SheetTrigger } from "../components_ui/ui/sheet"
+} from "../../components_ui/ui/dropdown-menu"
+import { Input } from "../../components_ui/ui/input"
+import { Sheet, SheetContent, SheetTrigger } from "../../components_ui/ui/sheet"
 
 export const description =
   "A settings page. The settings page has a sidebar navigation and a main content area. The main content area has a form to update the store name and a form to update the plugins directory. The sidebar navigation has links to general, security, integrations, support, organizations, and advanced settings."
 
-export function TestDashboard() {
+export function Settings() {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -217,4 +217,4 @@ export function TestDashboard() {
   )
 }
 
-export default TestDashboard
+export default Settings

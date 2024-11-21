@@ -5,18 +5,13 @@ import {
     Dumbbell,
     Home,
     LineChart,
-    Package,
-    Package2,
-    Salad,
     ShoppingCart,
-    Users2,
-	Wallet,
-    Wrench
+    Users2
 } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../components_ui/ui/tooltip';
-import {FITNEXUS_URL, PLAN_NUTRI, ENTRENAMIENTOS} from "../../constants/env";
+import {FITNEXUS_URL, PLAN_NUTRI, ENTRENAMIENTOS} from "../constants/env";
 
 const SideBar = ({ isAdmin }) => {
 

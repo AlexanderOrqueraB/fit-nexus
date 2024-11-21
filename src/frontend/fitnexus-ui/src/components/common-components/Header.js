@@ -2,23 +2,12 @@ import {
     BicepsFlexed,
     BrickWall,
     CircleUserRound,
-
     Drumstick,
-
     Dumbbell,
-
     Home,
     LineChart,
-
-
-    Package,
-    Package2,
     PanelLeft,
-
-
-
-    ShoppingCart,
-    Users2
+	Users2
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -32,7 +21,6 @@ import {
 import { Button } from '../../components_ui/ui/button';
 import {
     DropdownMenu,
-
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
@@ -40,7 +28,7 @@ import {
     DropdownMenuTrigger
 } from '../../components_ui/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '../../components_ui/ui/sheet';
-import {FITNEXUS_URL} from "../../constants/env";
+import {FITNEXUS_URL} from "../constants/env";
 
 const Header = ({ isAdmin }) => {
     const navigate = useNavigate();

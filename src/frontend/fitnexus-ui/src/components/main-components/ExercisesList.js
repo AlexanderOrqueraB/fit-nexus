@@ -3,8 +3,8 @@ import { ListFilter, MoreHorizontal, UserCheck } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { Button } from '../components_ui/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components_ui/ui/card';
+import { Button } from '../../components_ui/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components_ui/ui/card';
 import {
 	Dialog,
 	DialogContent,
@@ -13,7 +13,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from '../components_ui/ui/dialog';
+} from '../../components_ui/ui/dialog';
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -22,16 +22,16 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from '../components_ui/ui/dropdown-menu';
-import { Input } from '../components_ui/ui/input';
-import { Label } from '../components_ui/ui/label';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components_ui/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components_ui/ui/tabs';
+} from '../../components_ui/ui/dropdown-menu';
+import { Input } from '../../components_ui/ui/input';
+import { Label } from '../../components_ui/ui/label';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
 import { FITNEXUS_URL } from '../constants/env';
 import { EXERCISES, PLAN, RUTINAS } from '../constants/hardcodedModelDtos';
-import Header from './common/Header';
-import SideBar from './common/SideBar';
-import { Toaster, toast } from 'sonner'
+import Header from '../common-components/Header';
+import SideBar from '../common-components/SideBar';
+import { toast } from 'sonner'
 
 export interface ExercisesListProps {
 	nombreEjercicio: string;

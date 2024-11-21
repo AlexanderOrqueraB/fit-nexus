@@ -1,36 +1,20 @@
-import axios from "axios"; //(1)
-import React, { useRef, useState, useEffect } from "react"; //(2)
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
-import {Link, useNavigate} from 'react-router-dom'
+import React, { useState, useEffect } from "react"; 
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
-import { AlertCircle } from "lucide-react"
+import EditProfile from './components/main-components/EditProfile';
+import CreateExercise from './components/main-components/CreateExercise';
 
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "./components_ui/ui/alert"
+import CustomForm from './components/to-double-check/CustomForm';
 
-import { Button } from "./components_ui/ui/button"
+import LoginForm from './components/main-components/LoginForm';
+import LogoutForm from './components/main-components/LogoutForm';
+import SignUpForm from './components/main-components/SignUpForm';
 
+import HomePage from "./components/main-components/HomePage";
+import ClientsList from "./components/main-components/ClientsList";
+import ExercisesList from "./components/main-components/ExercisesList";
+import NutritionList from "./components/main-components/NutritionList";
 
-import EditProfile from './components/EditProfile';
-import CreateExercise from './components/CreateExercise';
-
-import ExerciseComponent from './components/ExerciseComponent';
-
-import CustomForm from './components/CustomForm';
-
-import LoginForm from './components/LoginForm';
-import LogoutForm from './components/LogoutForm';
-import SignUpForm from './components/SignUpForm';
-
-import HomePage from "./components/HomePage";
-import ClientsList from "./components/ClientsList";
-import ExercisesList from "./components/ExercisesList";
-
-//import {Home} from './crud_page/Home';
-//import {Create} from './crud_page/Create';
 
 function App () {
     const [data, setData] = useState([]); //useState to store data from server
@@ -68,20 +52,7 @@ function App () {
 //    }, []) //empty array ensures that the effect only runs once
 
 return (
-//    <ul>
-//        {user && user.length > 0 && user.map ( (userObj,index) => (
-//        <li key = {userObj._id}> {userObj.email} </li>
-//        <div key={ejercicio.id}>
-//        <div>
-//            Ejercicio: {ejercicio.nombreEjercicio}
-//        </div>
-//        ))}
-//    </ul>
-//    <div>
-//        {data.map(item => (
-//            <p key={item.id}> {item.title} </p>
-//        ))}
-//    </div>
+
     <BrowserRouter>
         <br></br>
         <Routes>
@@ -92,6 +63,7 @@ return (
             <Route path="/create-exercise" element={<CreateExercise />}/>
             <Route path="/ejercicios" element={<ExercisesList />}/>
             <Route path="/clients" element={<ClientsList />}/>
+            <Route path="/nutri" element={<NutritionList />}/>
 
             <Route path="/form" element={<CustomForm />}/>
             
