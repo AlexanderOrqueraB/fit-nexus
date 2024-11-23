@@ -1,7 +1,6 @@
-import React, { useContext, useLocation } from "react";
-import { Navigate } from "react-router-dom";
-import { Us } from "./components/main-components/UserContext";
-
+import React, { useContext } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { UserContext } from "./UserContext";
 
 const ProtectedRoute = ({ children, roleRequired }) => {
   const { user } = useContext(UserContext);
@@ -9,7 +8,7 @@ const ProtectedRoute = ({ children, roleRequired }) => {
 
   if (!user) {
     // Redirigir al login si no está autenticado
-    return <Navigate to="/" />; 
+    return <Navigate to="/" state={{ from: location }} />; 
   }
 
   if (roleRequired && user.role !== roleRequired) {

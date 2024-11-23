@@ -25,7 +25,7 @@ import SideBar from '../common-components/SideBar';
 
 export function HomePage() {
 	const location = useLocation(); //location tiene info sobre la ubi actual (URL + state)
-	const isAdmin = location.state?.isAdminProp || false; 
+	const isAdmin = location.state?.isAdmin || false; 
 	// si vamos a usar mas props:
 	// const { isAdminProp, anotherProp } = location.state || { isAdminProp: false, anotherProp: defaultValue };
 

@@ -4,7 +4,7 @@ import { Button } from "../../components_ui/ui/button"
 import dumbbell from "../../images/db2.PNG"
 import React, { useContext, useState } from "react"; 
 
-import { UserContext } from "./components/main-components/UserContext";
+import { UserContext } from "./UserContext";
 
 
 import {
@@ -56,7 +56,6 @@ export function LoginForm() {
 
     if (!userData.email || !userData.password) {
       errorToast('Por favor introduce ambos campos...');
-      throw new Error('Por favor introduce ambos campos...');
     }
 
     console.log("Datos de login: ", userData);
