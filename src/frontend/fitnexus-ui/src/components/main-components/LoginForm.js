@@ -1,8 +1,11 @@
 import axios from "axios";
-import { Link, useNavigate} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button } from "../../components_ui/ui/button"
 import dumbbell from "../../images/db2.PNG"
-import React, { useState } from "react"; //(2)
+import React, { useContext, useState } from "react"; 
+
+import { UserContext } from "./components/main-components/UserContext";
+
 
 import {
   Card,
@@ -17,8 +20,10 @@ import { toast } from 'sonner'
 import {FITNEXUS_URL} from "../constants/env";
 
 export function LoginForm() {
+
+  const { setUser } = useContext(UserContext);
+  const navigate = useNavigate();
   
-  useState ({});
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -28,8 +33,8 @@ export function LoginForm() {
       toast.success('My first toast')
     }
 
-    const errorToast = () => {
-      toast.error('My first toast')
+    const errorToast = ({message}) => {
+      toast.error(message)
     }
 
   // Handle changes on inputs
@@ -41,8 +46,6 @@ export function LoginForm() {
         [name]: value,
       });
     };
-
-  const navigate = useNavigate();
  
   const onSubmit = (e) => {
     e.preventDefault(); //prevent refresh on page
@@ -52,6 +55,7 @@ export function LoginForm() {
       };
 
     if (!userData.email || !userData.password) {
+      errorToast('Por favor introduce ambos campos...');
       throw new Error('Por favor introduce ambos campos...');
     }
 
@@ -61,22 +65,29 @@ export function LoginForm() {
       .then((response) => {
         console.log("Respuesta del servidor: ", response.data);
         console.log("Status: ", response.status);
+        
+        const { token, role } = response.data;
+        
+        //Guardamos token y rol en el contexto
+        setUser({ token, role });
+        //Guardamos token y rol 
+        localStorage.setItem("authToken", token); //check if needed
+        localStorage.setItem("userRole", role);
+
         if((response.status === 401)){
-          //TODO: toast de error
+          errorToast ('Error 401, (change message error)')
         }
         if (response.status === 200) {
-          const userRole = response.data.role;
-          localStorage.setItem("userRole", userRole);
-          console.log("Rol del usuario:", userRole);
+          console.log("Rol del usuario:", role);
           console.log("Mostrando Toast de Login Okay...")
           //TODO: Toast de confirmacion
           confirmationToast();
 
-          if (userRole === "ADMIN") {
+          if (role === "ADMIN") {
             console.log("Redireccionando a pagina admin");
-            navigate('/dashboard', { state: { isAdminProp: userRole === "ADMIN" } });
+            navigate('/dashboard', { state: { isAdminProp: true } });
           }
-          else if (userRole === "USER") {
+          else if (role === "USER") {
             console.log("Redireccionando a pagina admin");
             navigate('/dashboard', { state: { isAdminProp: false } });
           }
@@ -84,6 +95,7 @@ export function LoginForm() {
       })
       .catch((error) => {
         console.error("Error en la autenticación: ", error);
+        errorToast('Error en la autenticacion');
       });
     };
 
