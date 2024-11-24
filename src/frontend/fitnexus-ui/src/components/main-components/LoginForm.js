@@ -6,6 +6,7 @@ import React, { useContext, useState } from "react";
 
 import { UserContext } from "./UserContext";
 
+
 import {
   Card,
   CardContent,
@@ -55,6 +56,7 @@ export function LoginForm() {
 
     if (!userData.email || !userData.password) {
       errorToast('Por favor introduce ambos campos...');
+      throw new Error('Por favor introduce ambos campos...');
     }
 
     console.log("Datos de login: ", userData);
@@ -143,12 +145,15 @@ export function LoginForm() {
           <Link to={FITNEXUS_URL + "/dashboard"} state= {{ isAdminProp : true}} className="underline">
             IR
           </Link>
-          <div className="mt-4 text-center text-sm">
-          Unauthorized: {" "}
+        </div>
+
+        <div className="mt-4 text-center text-sm">
+          SOY Unauthorized: {" "}
           <Link to={FITNEXUS_URL + "/unauthorized"} state= {{ isAdminProp : true}} className="underline">
             IR
           </Link>
         </div>
+
           <div className="mt-4 text-center text-sm">
           SOY USER: {" "}
           <Link to={FITNEXUS_URL + "/dashboard"} state= {{ isAdminProp : false}} className="underline">
