@@ -21,9 +21,8 @@ import UnauthorizedPage from "./components/main-components/UnauthorizedPage";
 function App () {
 
 return (
-    <UserProvider>
+    /*<UserProvider>*/
         <BrowserRouter>
-            <br></br>
             <Routes>
                 {/* Rutas públicas */}
                 <Route path="/" element={<LoginForm/>}/>
@@ -33,44 +32,44 @@ return (
 
                 {/* Rutas protegidas comunes */}
                 <Route path="/dashboard" element={
-                    <ProtectedRoute>
+                    /*<ProtectedRoute>*/
                         <HomePage />
-                    </ProtectedRoute>
+                    /*</ProtectedRoute>*/
                 }/>
 
                 <Route path="/edit-profile" element={
-                    <ProtectedRoute>
+                    /*<ProtectedRoute>*/
                         <EditProfile />
-                    </ProtectedRoute>
+                    /*</ProtectedRoute>*/
                 }/>
 
                 <Route path="/create-exercise" element={
-                    <ProtectedRoute roleRequired="ADMIN">
+                    /*<ProtectedRoute roleRequired="ADMIN">*/
                         <CreateExercise />
-                    </ProtectedRoute>
+                    /*</ProtectedRoute>*/
                 }/>
                
                 <Route path="/ejercicios" element={
-                    <ProtectedRoute>
+                   /*<ProtectedRoute>*/
                         <ExercisesList />
-                    </ProtectedRoute>
+                   /*</ProtectedRoute>*/
                 }/>
                 
                 <Route path="/clients" element={
-                    <ProtectedRoute roleRequired="ADMIN">
+                    /*<ProtectedRoute roleRequired="ADMIN">*/
                         <ClientsList />
-                    </ProtectedRoute>
+                    /*</ProtectedRoute>*/
                 }/>
                 
                 <Route path="/nutri" element={
-                    <ProtectedRoute>
+                    /*<ProtectedRoute>*/
                         <NutritionList />
-                    </ProtectedRoute>
+                    /*</ProtectedRoute>*/
                 }/>
                 
             </Routes>
         </BrowserRouter>
-    </UserProvider>
+    /*</UserProvider>*/
 )
 
 }

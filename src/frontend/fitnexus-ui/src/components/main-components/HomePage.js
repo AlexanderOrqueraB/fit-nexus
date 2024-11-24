@@ -25,15 +25,17 @@ import SideBar from '../common-components/SideBar';
 
 export function HomePage() {
 	const location = useLocation(); //location tiene info sobre la ubi actual (URL + state)
-	const isAdmin = location.state?.isAdmin || false; 
+	const isAdmin = location.state?.isAdminProp || false; //usado al ejecutar junto al backend
+	const isAdminTest = true; //usado solo para el desarrollo del front
+	const isUserTest = false; //usado solo para el desarrollo del front 
 	// si vamos a usar mas props:
 	// const { isAdminProp, anotherProp } = location.state || { isAdminProp: false, anotherProp: defaultValue };
 
 	return (
 		<div className="flex min-h-screen w-full flex-col bg-muted/40">
-			<SideBar isAdmin = {isAdmin}></SideBar>
+			<SideBar isAdmin = {isAdminTest}></SideBar>
 			<div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-				<Header isAdmin = {isAdmin}></Header>
+				<Header isAdmin = {isAdminTest}></Header>
 				<main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
 					<Tabs defaultValue="all">

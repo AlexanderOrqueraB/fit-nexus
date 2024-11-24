@@ -6,7 +6,6 @@ import React, { useContext, useState } from "react";
 
 import { UserContext } from "./UserContext";
 
-
 import {
   Card,
   CardContent,
@@ -142,6 +141,11 @@ export function LoginForm() {
           <div className="mt-4 text-center text-sm">
           SOY ADMIN: {" "}
           <Link to={FITNEXUS_URL + "/dashboard"} state= {{ isAdminProp : true}} className="underline">
+            IR
+          </Link>
+          <div className="mt-4 text-center text-sm">
+          Unauthorized: {" "}
+          <Link to={FITNEXUS_URL + "/unauthorized"} state= {{ isAdminProp : true}} className="underline">
             IR
           </Link>
         </div>
