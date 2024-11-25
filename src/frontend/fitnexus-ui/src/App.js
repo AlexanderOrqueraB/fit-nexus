@@ -16,6 +16,7 @@ import ClientsList from "./components/main-components/ClientsList";
 import ExercisesList from "./components/main-components/ExercisesList";
 import NutritionList from "./components/main-components/NutritionList";
 import UnauthorizedPage from "./components/main-components/UnauthorizedPage";
+import ProtectedLayout from "./components/main-components/ProtectedLayout";
 
 
 function App () {
@@ -31,42 +32,43 @@ return (
                 <Route path="/signup" element={<SignUpForm/>}/>
 
                 {/* Rutas protegidas comunes */}
-                <Route path="/dashboard" element={
-                    /*<ProtectedRoute>*/
-                        <HomePage />
-                    /*</ProtectedRoute>*/
-                }/>
+                <Route element = {<ProtectedLayout />}>
+                    <Route path="/dashboard" element={
+                        /*<ProtectedRoute>*/
+                            <HomePage />
+                        /*</ProtectedRoute>*/
+                    }/>
 
-                <Route path="/edit-profile" element={
-                    /*<ProtectedRoute>*/
-                        <EditProfile />
-                    /*</ProtectedRoute>*/
-                }/>
+                    <Route path="/edit-profile" element={
+                        /*<ProtectedRoute>*/
+                            <EditProfile />
+                        /*</ProtectedRoute>*/
+                    }/>
 
-                <Route path="/create-exercise" element={
-                    /*<ProtectedRoute roleRequired="ADMIN">*/
-                        <CreateExercise />
-                    /*</ProtectedRoute>*/
-                }/>
-               
-                <Route path="/ejercicios" element={
-                   /*<ProtectedRoute>*/
-                        <ExercisesList />
-                   /*</ProtectedRoute>*/
-                }/>
+                    <Route path="/create-exercise" element={
+                        /*<ProtectedRoute roleRequired="ADMIN">*/
+                            <CreateExercise />
+                        /*</ProtectedRoute>*/
+                    }/>
                 
-                <Route path="/clients" element={
-                    /*<ProtectedRoute roleRequired="ADMIN">*/
-                        <ClientsList />
-                    /*</ProtectedRoute>*/
-                }/>
-                
-                <Route path="/nutri" element={
+                    <Route path="/ejercicios" element={
                     /*<ProtectedRoute>*/
-                        <NutritionList />
+                            <ExercisesList />
                     /*</ProtectedRoute>*/
-                }/>
-                
+                    }/>
+                    
+                    <Route path="/clients" element={
+                        /*<ProtectedRoute roleRequired="ADMIN">*/
+                            <ClientsList />
+                        /*</ProtectedRoute>*/
+                    }/>
+                    
+                    <Route path="/nutri" element={
+                        /*<ProtectedRoute>*/
+                            <NutritionList />
+                        /*</ProtectedRoute>*/
+                    }/>
+                </Route>
             </Routes>
         </BrowserRouter>
     /*</UserProvider>*/

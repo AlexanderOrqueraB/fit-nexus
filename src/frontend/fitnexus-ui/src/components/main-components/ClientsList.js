@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from 'react-router-dom';
-import axios from "axios";
 import {
 	ListFilter,
 	MoreHorizontal,
@@ -20,11 +18,8 @@ import {
 } from '../../components_ui/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
-import Header from '../common-components/Header';
-import SideBar from '../common-components/SideBar';
-import {CLIENTES} from "../constants/hardcodedModelDtos"
-import {FITNEXUS_URL} from "../constants/env";
-
+import {CLIENTES} from "../utils/hardcodedModelDtos"
+import {apiClient} from "../utils/client"
 
 export function ClientsList() {
 
@@ -32,8 +27,8 @@ export function ClientsList() {
 	const [data, setData] = useState({});
   
 	const handleClick = () => {
-	  axios
-		.get(FITNEXUS_URL + "/api/v1/ejercicios")
+	  apiClient
+		.get("/api/v1/ejercicios")
 		//.delete(URL)
 		.then ((response) => {
 		  setData(response.data);
@@ -44,21 +39,13 @@ export function ClientsList() {
 		  console.log(error.message)
 		})
 	}
-  
 	 useEffect( () => {
 	  handleClick();
 	 }, []) //empty array ensures that the effect only runs once
-
-	const location = useLocation(); //location tiene info sobre la ubi actual (URL + state)
-	const isAdmin = location.state?.isAdminProp || false; //usado al ejecutar junto al backend
-	const isAdminTest = true; //usado solo para el desarrollo del front
-	const isUserTest = false; //usado solo para el desarrollo del front
 	
 	return (
 		<div className="flex min-h-screen w-full flex-col bg-muted/40">
-			<SideBar isAdmin = {isAdminTest}></SideBar>
 			<div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-				<Header isAdmin = {isAdminTest}></Header>
 				<main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
 					<Tabs defaultValue="all">

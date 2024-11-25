@@ -28,7 +28,7 @@ import {
     DropdownMenuTrigger
 } from '../../components_ui/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '../../components_ui/ui/sheet';
-import {FITNEXUS_URL} from "../constants/env";
+import {FITNEXUS_URL} from "../utils/client";
 
 const Header = ({ isAdmin }) => {
     const navigate = useNavigate();

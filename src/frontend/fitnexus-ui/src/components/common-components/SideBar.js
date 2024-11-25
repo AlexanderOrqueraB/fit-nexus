@@ -11,7 +11,8 @@ import {
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../components_ui/ui/tooltip';
-import {FITNEXUS_URL, PLAN_NUTRI, ENTRENAMIENTOS} from "../constants/env";
+import {PLAN_NUTRI, ENTRENAMIENTOS} from "../utils/env";
+import {FITNEXUS_URL} from "../utils/client";
 
 const SideBar = ({ isAdmin }) => {
 

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Button } from "../../components_ui/ui/button"
 import React, { useRef, useState } from "react"; 
 import {
@@ -14,6 +13,7 @@ import { Input } from "../../components_ui/ui/input"
 import { Label } from "../../components_ui/ui/label"
 import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from 'sonner'
+import { apiClient } from "../utils/client";
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -58,7 +58,7 @@ export function CreateExercise() {
     //TODO: Examples, not tested yet
     async function getAllData () {
         try {
-            const res = await axios.get("/test");
+            const res = await apiClient.get("/test");
             //apiClient.get("/tutorials");
 
             const result = {
@@ -78,7 +78,7 @@ export function CreateExercise() {
 
         if (id) {
             try {
-                const res = await axios.get("/test");
+                const res = await apiClient.get("/test");
                 //apiClient.get(`/tutorials/${id}`);
 
                 const result = {
@@ -102,7 +102,7 @@ export function CreateExercise() {
         if (title) {
             try {
                 // const res = await instance.get(`/tutorials?title=${title}`);
-                const res = await axios.get("/test");
+                const res = await apiClient.get("/test");
                 //apiClient.get("/tutorials", {
                   //  params: {
                       //  title: title,
@@ -146,23 +146,23 @@ export function CreateExercise() {
       console.log("Enviando los siguientes datos: ", userData);
 
         //TODO: Review createEmployee(employee){
-        //        return axios.post(EMPLOYEE_API_BASE_URL, employee);
+        //        return apiClient.post(EMPLOYEE_API_BASE_URL, employee);
         //    }
 
         //TODO: Review example 1 getEmployeeById(employeeId){
-        //        return axios.get(EMPLOYEE_API_BASE_URL + '/' + employeeId);
+        //        return apiClient.get(EMPLOYEE_API_BASE_URL + '/' + employeeId);
         //    }
 
         //TODO: Review example 2 export const getProductById = async (id) => {
         //  try {
-        //    const response = await axios.get(`${apiUrl}/${id}`);
+        //    const response = await apiClient.get(`${apiUrl}/${id}`);
         //    return response.data;
         //  } catch (error) {
         //    throw error;
         //  }
         //}
 
-        axios.post("http://localhost:8080/api/v1/ejercicios", userData)
+        apiClient.post("/api/v1/ejercicios", userData)
         //.put(URL, userData)
         .then((response) => {
           console.log("Respuesta del servidor: ", response.data);

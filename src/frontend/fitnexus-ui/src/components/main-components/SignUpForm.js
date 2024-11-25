@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Button } from '../../components_ui/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components_ui/ui/card';
 import { Input } from '../../components_ui/ui/input';
@@ -12,7 +11,7 @@ SelectItem,
 SelectTrigger,
 SelectValue,
 } from "../../components_ui/ui/select"
-import {FITNEXUS_URL} from "../constants/env";
+import {apiClient, FITNEXUS_URL} from "../utils/client";
 
 export function SignUpForm() {
 	useState({});
@@ -49,8 +48,8 @@ export function SignUpForm() {
 
 		console.log('Datos de signup: ', userData);
 
-		axios
-			.post('http://localhost:8080/api/v1/signup', userData)
+		apiClient
+			.post('/api/v1/signup', userData)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);

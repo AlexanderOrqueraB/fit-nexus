@@ -1,5 +1,4 @@
-import React, { useRef, useState, useEffect } from "react"; //(2)
-import axios from "axios";
+import React, { useState, useEffect } from "react"; //(2)
 
 import {
   Table,
@@ -11,7 +10,8 @@ import {
   TableRow,
 } from "../../components_ui/ui/table"
 import { Button } from "../../components_ui/ui/button";
-import {EXERCISES} from "../constants/hardcodedModelDtos"
+import {EXERCISES} from "../utils/hardcodedModelDtos"
+import { apiClient } from "../utils/client";
 
 
 
@@ -21,7 +21,7 @@ export function ExerciseComponent() {
   const [data, setData] = useState({});
 
   const handleClick = () => {
-    axios
+    apiClient
       .get("http://localhost:8080/api/v1/ejercicios")
       //.delete(URL)
       .then ((response) => {

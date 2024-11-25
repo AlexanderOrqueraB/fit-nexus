@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from "../../components_ui/ui/button"
 import dumbbell from "../../images/db2.PNG"
@@ -17,7 +16,7 @@ import {
 import { Input } from "../../components_ui/ui/input"
 import { Label } from "../../components_ui/ui/label"
 import { toast } from 'sonner'
-import {FITNEXUS_URL} from "../constants/env";
+import {apiClient, FITNEXUS_URL} from "../utils/client";
 
 export function LoginForm() {
 
@@ -61,7 +60,7 @@ export function LoginForm() {
 
     console.log("Datos de login: ", userData);
 
-      axios.post("http://localhost:8080/api/v1/login", userData)
+      apiClient.post("/api/v1/login", userData)
       .then((response) => {
         console.log("Respuesta del servidor: ", response.data);
         console.log("Status: ", response.status);
@@ -140,39 +139,27 @@ export function LoginForm() {
           <Button onClick= {onSubmit} type="submit" className="w-full">
               Iniciar sesión
           </Button>
-          <div className="mt-4 text-center text-sm">
-          SOY ADMIN: {" "}
-          <Link to={FITNEXUS_URL + "/dashboard"} state= {{ isAdminProp : true}} className="underline">
-            IR
-          </Link>
+          
+          <div className="mt-2 text-center text-sm">
+          SOY ADMIN o USER:
+            <Button onClick={()=> navigate("/dashboard")} className="underline">
+              IR
+            </Button>
+          </div>
+          <div className="mt-2 text-center text-sm">
+            SOY Unauthorized:
+            <Button onClick={()=> navigate("/unauthorized")} className="underline">
+              IR
+            </Button>
+          </div>
+          <div className="mt-2 text-center text-sm">
+            No tienes una cuenta?
+            <Button onClick={()=> navigate("/signup")} className="underline">
+            Regístrate!
+            </Button>
+          </div>
         </div>
 
-        <div className="mt-4 text-center text-sm">
-          SOY Unauthorized: {" "}
-          <Link to={FITNEXUS_URL + "/unauthorized"} state= {{ isAdminProp : true}} className="underline">
-            IR
-          </Link>
-        </div>
-
-          <div className="mt-4 text-center text-sm">
-          SOY USER: {" "}
-          <Link to={FITNEXUS_URL + "/dashboard"} state= {{ isAdminProp : false}} className="underline">
-            IR
-          </Link>
-        </div>
-        </div>
-        <div className="mt-4 text-center text-sm">
-          No tienes una cuenta?{" "}
-          <Link to="http://localhost:8080/signup" className="underline">
-          Regístrate 8080
-          </Link>
-        </div>
-        <div className="mt-4 text-center text-sm">
-          FRONT REDIR: {" "}
-          <Link to={FITNEXUS_URL + "/signup"} className="underline">
-            Regístrate
-          </Link>
-        </div>
       </CardContent>
     </Card>
     <div className="relative flex-1 hidden lg:flex items-center justify-center bg-muted">

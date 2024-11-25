@@ -1,8 +1,6 @@
-import axios from 'axios';
 import { ListFilter, MoreHorizontal, UserCheck } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 import { Button } from '../../components_ui/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components_ui/ui/card';
 import {
@@ -27,10 +25,8 @@ import { Input } from '../../components_ui/ui/input';
 import { Label } from '../../components_ui/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
-import { FITNEXUS_URL } from '../constants/env';
-import { EXERCISES, PLAN, RUTINAS } from '../constants/hardcodedModelDtos';
-import Header from '../common-components/Header';
-import SideBar from '../common-components/SideBar';
+import { apiClient, FITNEXUS_URL } from '../utils/client';
+import { EXERCISES, PLAN, RUTINAS } from '../utils/hardcodedModelDtos';
 import { toast } from 'sonner'
 
 export interface ExercisesListProps {
@@ -78,8 +74,8 @@ export function ExercisesList() {
 
 		console.log('Enviando los siguientes datos: ', userData);
 
-		axios
-			.post('http://localhost:8080/api/v1/ejercicios', userData)
+		apiClient
+			.post('/api/v1/ejercicios', userData)
 			//.put(URL, userData)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
@@ -95,8 +91,8 @@ export function ExercisesList() {
 	};
 
 	const handleClickPlan = () => {
-		axios
-			.get(FITNEXUS_URL + '/api/v1/planes')
+		apiClient
+			.get('/api/v1/planes')
 			.then((response) => {
 				setData(response.data);
 				console.log('Respuesta del servidor /api/v1/planes: ', response.data);
@@ -108,8 +104,8 @@ export function ExercisesList() {
 	};
 
 	const handleClickRutina = () => {
-		axios
-			.get(FITNEXUS_URL + '/api/v1/rutinas')
+		apiClient
+			.get('/api/v1/rutinas')
 			.then((response) => {
 				setData(response.data);
 				console.log('Respuesta del servidor /api/v1/rutinas: ', response.data);
@@ -121,8 +117,8 @@ export function ExercisesList() {
 	};
 
 	const handleClickEjercicio = () => {
-		axios
-			.get(FITNEXUS_URL + '/api/v1/ejercicios')
+		apiClient
+			.get('/api/v1/ejercicios')
 			.then((response) => {
 				setData(response.data);
 				console.log('Respuesta del servidor /api/v1/ejercicios: ', response.data);
@@ -146,16 +142,9 @@ export function ExercisesList() {
 		//handleClickEjercicioPost();
 	}, []); //empty array ensures that the effect only runs once
 
-	const location = useLocation(); //location tiene info sobre la ubi actual (URL + state)
-	const isAdmin = location.state?.isAdminProp || false; //usado al ejecutar junto al backend
-	const isAdminTest = true; //usado solo para el desarrollo del front
-	const isUserTest = false; //usado solo para el desarrollo del front
-
 	return (
 		<div className="flex min-h-screen w-full flex-col bg-muted/40">
-			<SideBar isAdmin={isAdminTest}></SideBar>
 			<div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-				<Header isAdmin={isAdminTest}></Header>
 				<main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
 					<div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
 						<Tabs defaultValue="plan">
