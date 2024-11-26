@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Button } from "../../components_ui/ui/button"
 import dumbbell from "../../images/db2.PNG"
 import React, { useContext, useState } from "react"; 

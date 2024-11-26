@@ -9,7 +9,7 @@ import {
     PanelLeft,
 	Users2
 } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -29,9 +29,32 @@ import {
 } from '../../components_ui/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '../../components_ui/ui/sheet';
 import {FITNEXUS_URL} from "../utils/client";
+import BreadTest from "../common-components/BreadTest"
+import { Fragment } from "react";
 
 const Header = ({ isAdmin }) => {
+
+	const pathname = window.location.pathname;
+
+    const generateBreadcrumbs = () => {
+        const pathArray = pathname.split('/').filter((path) => path);
+        const breadcrumbs = pathArray.map((path, index) => {
+            const href = '/' + pathArray.slice(0, index + 1).join('/');
+            return { href, label: path };
+        });
+        return breadcrumbs;
+    };
+
+	const breadcrumbs = generateBreadcrumbs();
+
     const navigate = useNavigate();
+	const location =window.location.port;
+
+	const links = [{
+        name:"Home",
+        link:"/HOLA"
+    }]
+
 	return ( 
 <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
 					<Sheet>
@@ -98,21 +121,49 @@ const Header = ({ isAdmin }) => {
 						<BreadcrumbList>
 							<BreadcrumbItem>
 								<BreadcrumbLink asChild>
-									<Link href="#">Cambiar</Link>
+									<Link href="change">{location}</Link>
 								</BreadcrumbLink>
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
 								<BreadcrumbLink asChild>
-									<Link href="#">a</Link>
+									<Link href="change">{location}</Link>
 								</BreadcrumbLink>
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
-								<BreadcrumbPage>dinámico</BreadcrumbPage>
+								<BreadcrumbPage>{location}</BreadcrumbPage>
 							</BreadcrumbItem>
 						</BreadcrumbList>
 					</Breadcrumb>
+
+					{/* test breadcrumb*/}
+					<Breadcrumb>
+                    <BreadcrumbList>
+                        {breadcrumbs.map((breadcrumb, index) => (
+                            <Fragment key={index}>
+                                {index !== 0 && <BreadcrumbSeparator />}
+                                {index < breadcrumbs.length - 1 ? (
+                                    <BreadcrumbItem>
+                                        <Link href={breadcrumb.href}>
+                                            {breadcrumb.label.charAt(0).toUpperCase() + breadcrumb.label.slice(1)}
+                                        </Link>
+                                    </BreadcrumbItem>
+                                ) : (
+                                    <BreadcrumbItem>
+                                        <BreadcrumbLink>
+                                            {breadcrumb.label.charAt(0).toUpperCase() + breadcrumb.label.slice(1)}
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                )}
+                            </Fragment>
+                        ))}
+                    </BreadcrumbList>
+                </Breadcrumb>
+
+			    {/*Test 2*/}
+				<BreadTest title="FIT NEXUS" page="TEST2" links={links}/>
+
 					<div className="relative ml-auto flex-1 md:grow-0">
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>

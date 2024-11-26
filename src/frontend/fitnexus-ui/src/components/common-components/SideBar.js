@@ -5,6 +5,9 @@ import {
     Dumbbell,
     Home,
     LineChart,
+	Link2,
+	Link2Icon,
+	Link2Off,
     ShoppingCart,
     Users2
 } from 'lucide-react';
@@ -19,18 +22,13 @@ const SideBar = ({ isAdmin }) => {
 	return (
 		<aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
 			<nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
-				<Link to={FITNEXUS_URL + "/tbd"}
-					className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-				>
+				<Link to={FITNEXUS_URL + "/dashboard"} className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base">
 					<Dumbbell className="h-4 w-4 transition-all group-hover:scale-110" />
-					<span className="sr-only">Fit Nexus</span>
 				</Link>
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/tbd"}
-								className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-							>
+							<Link to={FITNEXUS_URL + "/tbd"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
 								<Home className="h-5 w-5" />
 								<span className="sr-only">Dashboard TBD</span>
 							</Link>
@@ -41,9 +39,7 @@ const SideBar = ({ isAdmin }) => {
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/tbd"}
-								className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-							>
+							<Link to={FITNEXUS_URL + "/dashboard"} className="flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
 								<ShoppingCart className="h-5 w-5" />
 								<span className="sr-only">Orders</span>
 							</Link>
@@ -54,9 +50,7 @@ const SideBar = ({ isAdmin }) => {
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/ejercicios"}
-								className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-							>
+							<Link to={FITNEXUS_URL + "/ejercicios"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
 								<BicepsFlexed className="h-5 w-5" />
 								<span className="sr-only">{ENTRENAMIENTOS}</span>
 							</Link>
@@ -67,9 +61,7 @@ const SideBar = ({ isAdmin }) => {
                 <TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/tbd"}
-								className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-							>
+							<Link to={FITNEXUS_URL + "/tbd"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
 								<Drumstick className="h-5 w-5" />
 								<span className="sr-only">{PLAN_NUTRI}</span>
 							</Link>
@@ -114,14 +106,34 @@ const SideBar = ({ isAdmin }) => {
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/edit-profile"}
-								className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-							>
+							<Link to={FITNEXUS_URL + "/edit-profile"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
 								<LineChart className="h-5 w-5" />
 								<span className="sr-only">Ajustes</span>
 							</Link>
 						</TooltipTrigger>
 						<TooltipContent side="right">Ajustes</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+
+				{/*Elementos SideBar de prueba*/}
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Link to={FITNEXUS_URL + "/edit-profile"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
+								<Link2Off className="h-5 w-5" />
+							</Link>
+						</TooltipTrigger>
+						<TooltipContent side="right">Test</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Link to={FITNEXUS_URL + "/edit-profile"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
+								< Link2 className="h-5 w-5" />
+							</Link>
+						</TooltipTrigger>
+						<TooltipContent side="right">Test</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
 			</nav>

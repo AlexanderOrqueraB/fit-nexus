@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 import React, { useState } from 'react';
 import { Button } from '../../components_ui/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components_ui/ui/card';
@@ -14,7 +14,10 @@ SelectValue,
 import {apiClient, FITNEXUS_URL} from "../utils/client";
 
 export function SignUpForm() {
+	const navigate = useNavigate();
+
 	useState({});
+	
 	const [data, setData] = useState({
 		nombre: '',
 		apellido: '',
@@ -113,20 +116,20 @@ export function SignUpForm() {
 							/>
 						</div>
 						<div className="grid gap-2">
-            <Label htmlFor="role">Tipo de usuario</Label>
-								<Select name="role" onValueChange={(value) => setData({ ...data, role: value })}>
-									<SelectTrigger>
-										<SelectValue placeholder="Entrenador" />
-									</SelectTrigger>
-									<SelectContent>
-											<SelectItem  value="ADMIN" required>
-												Entrenador
-											</SelectItem>
-											<SelectItem  value="USER" required>
-                        Cliente
-                      </SelectItem>
-									</SelectContent>
-								</Select>
+            			<Label htmlFor="role">Tipo de usuario</Label>
+							<Select name="role" onValueChange={(value) => setData({ ...data, role: value })}>
+								<SelectTrigger>
+									<SelectValue placeholder="Entrenador" />
+								</SelectTrigger>
+								<SelectContent>
+										<SelectItem  value="ADMIN" required>
+											Entrenador
+										</SelectItem>
+										<SelectItem  value="USER" required>
+											Cliente
+										</SelectItem>
+								</SelectContent>
+							</Select>
 						</div>
 						<div className="grid gap-2">
 							<Label htmlFor="password">Contraseña</Label>
@@ -156,16 +159,9 @@ export function SignUpForm() {
 					</div>
 					<div className="mt-4 text-center text-sm">
 						Tienes ya una cuenta?{' '}
-						<Link to="http://localhost:8080/" className="underline">
-							Iniciar sesión 8080
-						</Link>
-					</div>
-          <div className="mt-4 text-center text-sm">
-						FRONT REDIR: {' '}
-						<Link to={FITNEXUS_URL + "/"} className="underline">
-							Iniciar sesión
-
-						</Link>
+						<Button onClick={()=> navigate("/")} className="underline">
+							Ir a inicio de sesión 
+						</Button>
 					</div>
 				</div>
 			</CardContent>
