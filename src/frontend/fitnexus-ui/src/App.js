@@ -19,6 +19,7 @@ import UnauthorizedPage from "./components/main-components/UnauthorizedPage";
 import ProtectedLayout from "./components/main-components/ProtectedLayout";
 import Settings from "./components/main-components/Settings";
 import ProgressCustom from "./components/to-double-check/Progress";
+import Test2 from "./components/to-double-check/Test2";
 
 
 function App () {
@@ -75,6 +76,18 @@ return (
                     <Route path="/nutri" element={
                         /*<ProtectedRoute>*/
                             <NutritionList />
+                        /*</ProtectedRoute>*/
+                    }/>
+
+                    {/*Elementos sideBar de prueba test1 y test2*/}
+                    <Route path="/test1" element={
+                        /*<ProtectedRoute>*/
+                            <Settings />
+                        /*</ProtectedRoute>*/
+                    }/>
+                    <Route path="/test2" element={
+                        /*<ProtectedRoute>*/
+                            <Test2 />
                         /*</ProtectedRoute>*/
                     }/>
                 </Route>
