@@ -17,6 +17,8 @@ import ExercisesList from "./components/main-components/ExercisesList";
 import NutritionList from "./components/main-components/NutritionList";
 import UnauthorizedPage from "./components/main-components/UnauthorizedPage";
 import ProtectedLayout from "./components/main-components/ProtectedLayout";
+import Settings from "./components/main-components/Settings";
+import ProgressCustom from "./components/to-double-check/Progress";
 
 
 function App () {
@@ -33,15 +35,22 @@ return (
 
                 {/* Rutas protegidas comunes */}
                 <Route element = {<ProtectedLayout />}>
+                    <Route path="/home" element={
+                        /*<ProtectedRoute>*/
+                            <ProgressCustom />
+                        /*</ProtectedRoute>*/
+                    }/>
+                    
                     <Route path="/dashboard" element={
                         /*<ProtectedRoute>*/
                             <HomePage />
                         /*</ProtectedRoute>*/
                     }/>
 
+
                     <Route path="/edit-profile" element={
                         /*<ProtectedRoute>*/
-                            <EditProfile />
+                            <Settings />
                         /*</ProtectedRoute>*/
                     }/>
 

@@ -22,6 +22,21 @@ export const EXERCISES = [
     },
   ]
 
+  export const CLIENTE = 
+    {
+        "nombre": "Luke",
+        "apellido": "Skywalker",
+        "email": "luke@skywalker.com",
+        "objetivo": "PERDER_GRASA",
+        "genero": "HOMBRE",
+        "frecuenciaEjercicioSemanal": "LIGERO",
+        "edad": 25,
+        "peso": 80,
+        "altura": 175,
+        "clienteDesde": "2023-07-12"
+    }
+  
+
 export const CLIENTES = [
     {
         "nombre": "Luke",

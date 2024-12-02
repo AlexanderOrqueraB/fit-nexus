@@ -28,9 +28,9 @@ const SideBar = ({ isAdmin }) => {
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/tbd"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
+							<Link to={FITNEXUS_URL + "/home"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
 								<Home className="h-5 w-5" />
-								<span className="sr-only">Dashboard TBD</span>
+								<span className="sr-only">Home</span>
 							</Link>
 						</TooltipTrigger>
 						<TooltipContent side="right">Dashboard TBD</TooltipContent>
@@ -119,21 +119,21 @@ const SideBar = ({ isAdmin }) => {
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/edit-profile"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
+							<Link to={FITNEXUS_URL + "/test1"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
 								<Link2Off className="h-5 w-5" />
 							</Link>
 						</TooltipTrigger>
-						<TooltipContent side="right">Test</TooltipContent>
+						<TooltipContent side="right">Test1</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/edit-profile"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
+							<Link to={FITNEXUS_URL + "/test2"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
 								< Link2 className="h-5 w-5" />
 							</Link>
 						</TooltipTrigger>
-						<TooltipContent side="right">Test</TooltipContent>
+						<TooltipContent side="right">Test2</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
 			</nav>

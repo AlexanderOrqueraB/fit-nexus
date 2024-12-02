@@ -9,7 +9,7 @@ import {
     PanelLeft,
 	Users2
 } from 'lucide-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -48,12 +48,19 @@ const Header = ({ isAdmin }) => {
 	const breadcrumbs = generateBreadcrumbs();
 
     const navigate = useNavigate();
-	const location =window.location.port;
+	const location = window.location.port;
 
-	const links = [{
-        name:"Home",
-        link:"/HOLA"
-    }]
+	const links = [
+		{
+			name:"hola",
+			link:"/HOLA"
+    	},
+		{
+			name:"adios",
+			link:"/ADIOS"
+    	},
+
+	]
 
 	return ( 
 <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -162,7 +169,8 @@ const Header = ({ isAdmin }) => {
                 </Breadcrumb>
 
 			    {/*Test 2*/}
-				<BreadTest title="FIT NEXUS" page="TEST2" links={links}/>
+				<BreadTest title="FIT NEXUS" page="BreadTest" links={links}/>
+				
 
 					<div className="relative ml-auto flex-1 md:grow-0">
 					<DropdownMenu>

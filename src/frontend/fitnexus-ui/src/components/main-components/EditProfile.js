@@ -11,14 +11,14 @@ import {
 } from "../../components_ui/ui/dialog"
 import { Input } from "../../components_ui/ui/input"
 import { Label } from "../../components_ui/ui/label"
-import Settings from "./Settings"
+import {CLIENTE} from "../utils/hardcodedModelDtos"
 
 export function EditProfile() {
+  //TODO: Añadir get para obtener los datos de placeholder del cliente que va a editar su info
   return (
-    <div>
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Editar perfil</Button>
+        <Button variant="default">Editar perfil</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -37,7 +37,7 @@ export function EditProfile() {
             </Label>
             <Input
               id="nombre"
-              placeholder="Alex"
+              placeholder={CLIENTE.nombre}
               className="col-span-3"
             />
           </div>
@@ -47,19 +47,9 @@ export function EditProfile() {
             </Label>
             <Input
               id="apellido"
-              placeholder="Orquera"
+              placeholder={CLIENTE.apellido}
               className="col-span-3"
             />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="nombreDeUsuario" className="text-right">
-                Nombre de usuario
-              </Label>
-              <Input
-                id="nombreDeUsuario"
-                placeholder="aorquera"
-                className="col-span-3"
-              />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="email" className="text-right">
@@ -67,7 +57,7 @@ export function EditProfile() {
               </Label>
               <Input
                 id="email"
-                placeholder="aorquera@email.com"
+                placeholder={CLIENTE.email}
                 className="col-span-3"
               />
           </div>
@@ -77,8 +67,6 @@ export function EditProfile() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-    <Settings></Settings>
-    </div>
   )
 }
 
