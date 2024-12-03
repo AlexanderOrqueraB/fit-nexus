@@ -3,15 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components_ui/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components_ui/ui/card';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '../../components_ui/ui/dialog';
+
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -21,13 +13,13 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '../../components_ui/ui/dropdown-menu';
-import { Input } from '../../components_ui/ui/input';
-import { Label } from '../../components_ui/ui/label';
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
-import { apiClient, FITNEXUS_URL } from '../utils/client';
+import { apiClient } from '../utils/client';
 import { EXERCISES, PLAN, RUTINAS } from '../utils/hardcodedModelDtos';
 import { toast } from 'sonner'
+import ExercisePost from "./ExercisePost"
 
 export interface ExercisesListProps {
 	nombreEjercicio: string;
@@ -192,98 +184,8 @@ export function ExercisesList() {
 											Get/Refresh ejercicios
 										</span>
 									</Button>
-									<Dialog>
-										<DialogTrigger asChild>
-											<Button size="sm" className="h-8 gap-1" variant="outline">
-												Crear ejercicio
-												<UserCheck className="h-3.5 w-3.5" />
-											</Button>
-										</DialogTrigger>
-										<DialogContent className="sm:max-w-[425px]">
-											<DialogHeader>
-												<DialogTitle>Crear ejercicio </DialogTitle>
-												<DialogDescription>Crea un ejercicio aquí.</DialogDescription>
-												<DialogDescription>
-													Haz click en Guardar cuando hayas terminado.
-												</DialogDescription>
-											</DialogHeader>
-											<div className="grid gap-4 py-4">
-												<div className="grid grid-cols-4 items-center gap-4">
-													<Label htmlFor="name" className="text-right">
-														Nombre del ejercicio
-													</Label>
-													<Input
-														id="nombreEjercicio"
-														name="nombreEjercicio"
-														value={dataEx.nombreEjercicio}
-														onChange={handleChange}
-														placeholder="Press banca"
-														className="col-span-3"
-													/>
-												</div>
-												<div className="grid grid-cols-4 items-center gap-4">
-													<Label htmlFor="repeticion" className="text-right">
-														Repeticiones
-													</Label>
-													<Input
-														id="repeticion"
-														name="repeticion"
-														type="number"
-														value={dataEx.repeticion}
-														onChange={handleChange}
-														placeholder="5"
-														className="col-span-3"
-													/>
-												</div>
-												<div className="grid grid-cols-4 items-center gap-4">
-													<Label htmlFor="serie" className="text-right">
-														Series
-													</Label>
-													<Input
-														id="serie"
-														name="serie"
-														type="number"
-														value={dataEx.serie}
-														onChange={handleChange}
-														placeholder="5"
-														className="col-span-3"
-													/>
-												</div>
-												<div className="grid grid-cols-4 items-center gap-4">
-													<Label htmlFor="peso" className="text-right">
-														Peso (kg)
-													</Label>
-													<Input
-														id="peso"
-														name="peso"
-														type="number"
-														value={dataEx.peso}
-														onChange={handleChange}
-														placeholder="30"
-														className="col-span-3"
-													/>
-												</div>
-												<div className="grid grid-cols-4 items-center gap-4">
-													<Label htmlFor="cardioRealizado" className="text-right">
-														Cardio (TRUE, FALSE)
-													</Label>
-													<Input
-														id="cardioRealizado"
-														name="cardioRealizado"
-														value={dataEx.cardioRealizado}
-														onChange={handleChange}
-														placeholder="false"
-														className="col-span-3"
-													/>
-												</div>
-											</div>
-											<DialogFooter>
-												<Button onClick={onSubmit} type="submit">
-													Guardar cambios
-												</Button>
-											</DialogFooter>
-										</DialogContent>
-									</Dialog>
+									<ExercisePost />
+									
 								</div>
 							</div>
 							<TabsContent value="plan">

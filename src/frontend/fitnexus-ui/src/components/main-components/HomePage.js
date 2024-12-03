@@ -5,9 +5,7 @@ import EditProfile from "./EditProfile";
 import ChangePassword from './ChangePassword';
 import { Toaster, toast } from 'sonner'
 import { Button } from "../../components_ui/ui/button"
-
-
-
+import ExercisePost from './ExercisePost';
 
 export function HomePage() {
 
@@ -31,10 +29,13 @@ export function HomePage() {
 				<EditProfile />
 				<EditProfileExtra />
 				<ChangePassword />
-				
+
 				<Toaster expand={false} position="top-right" richColors closeButton  />
 				<Button onClick={confirmationToast} type="submit">Confirmation</Button>
       			<Button onClick={errorToast} type="submit">Error</Button>
+
+
+				<ExercisePost/>
 				
 			</div>
 		</div>
