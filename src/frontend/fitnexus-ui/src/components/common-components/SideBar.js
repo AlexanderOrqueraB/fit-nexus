@@ -59,7 +59,7 @@ const SideBar = ({ isAdmin }) => {
                 <TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/tbd"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
+							<Link to={FITNEXUS_URL + "/test1"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
 								<Drumstick className="h-5 w-5" />
 								<span className="sr-only">{PLAN_NUTRI}</span>
 							</Link>
