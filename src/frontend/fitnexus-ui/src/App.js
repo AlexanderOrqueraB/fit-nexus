@@ -3,8 +3,6 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 import { UserProvider } from "./components/main-components/UserContext";
 import ProtectedRoute from "./components/main-components/ProtectedRoute";
-
-import EditProfile from './components/main-components/EditProfile';
 import CreateExercise from './components/main-components/CreateExercise';
 
 import LoginForm from './components/main-components/LoginForm';
@@ -36,20 +34,16 @@ return (
 
                 {/* Rutas protegidas comunes */}
                 <Route element = {<ProtectedLayout />}>
-                    <Route path="/home" element={
-                        /*<ProtectedRoute>*/
-                            <ProgressCustom />
-                        /*</ProtectedRoute>*/
-                    }/>
                     
                     <Route path="/dashboard" element={
                         /*<ProtectedRoute>*/
+                        <div>
                             <HomePage />
+                            <ProgressCustom />
+                        </div>
                         /*</ProtectedRoute>*/
                     }/>
-
-
-                    <Route path="/edit-profile" element={
+                    <Route path="/settings" element={
                         /*<ProtectedRoute>*/
                             <Settings />
                         /*</ProtectedRoute>*/

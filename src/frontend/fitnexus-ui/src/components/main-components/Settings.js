@@ -22,6 +22,11 @@ import {
 import { Input } from "../../components_ui/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "../../components_ui/ui/sheet"
 import EditProfile from "./EditProfile"
+import { Table } from '../../components_ui/ui/table'
+import { Label } from '../../components_ui/ui/label'
+import { CLIENTE } from '../utils/hardcodedModelDtos'
+import EditProfileExtra from './EditProfileExtra'
+import ChangePassword from './ChangePassword'
 
 export function Settings() {
   return (
@@ -40,44 +45,98 @@ export function Settings() {
           <div className="grid gap-6">
             <Card x-chunk="dashboard-04-chunk-1">
               <CardHeader>
-                <CardTitle>Editar perfil</CardTitle>
+                <CardTitle>Datos iniciales
+                </CardTitle>
                 <CardDescription>
-                  Cambia aquí tu nombre, apellido y/o email
+                  Comprueba aquí tu nombre, apellido y/o email. Pulsa el botón para editar
                 </CardDescription>
               </CardHeader>
+              <CardContent>
+                <div className="grid w-full items-center gap-4">
+                  <div className="space-y-2">
+                    {[
+                      { label: "Nombre", value: CLIENTE.nombre },
+                      { label: "Apellido", value: CLIENTE.apellido },
+                      { label: "Email", value: CLIENTE.email },
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-center">
+                        <Label className="w-1/4">{item.label}</Label>
+                        <div className="w-3/4 p-2 bg-gray-100 border border-gray-300 rounded-md text-gray-700">
+                          {item.value}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
               <CardFooter className="border-t px-6 py-4">
                 <EditProfile></EditProfile>
               </CardFooter>
             </Card>
-            <Card x-chunk="dashboard-04-chunk-2">
+
+            <Card x-chunk="dashboard-04-chunk-1">
               <CardHeader>
-                <CardTitle>Plugins Directory</CardTitle>
+                <CardTitle>Cambiar contraseña
+                </CardTitle>
                 <CardDescription>
-                  The directory within your project, in which your plugins are
-                  located.
+                  Cambia aquí tu contraseña. Pulsa el botón para editar
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form className="flex flex-col gap-4">
-                  <Input
-                    placeholder="Project Name"
-                    defaultValue="/content/plugins"
-                  />
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="include" defaultChecked />
-                    <label
-                      htmlFor="include"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Allow administrators to change the directory.
-                    </label>
+                <div className="grid w-full items-center gap-4">
+                  <div className="space-y-2">
+                    {[
+                      { label: "Contraseña", value: "*******" }
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-center">
+                        <Label className="w-1/4">{item.label}</Label>
+                        <div className="w-3/4 p-2 bg-gray-100 border border-gray-300 rounded-md text-gray-700">
+                          {item.value}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </form>
+                </div>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
-                <Button>Save</Button>
+                <ChangePassword></ChangePassword>
               </CardFooter>
             </Card>
+
+            <Card x-chunk="dashboard-04-chunk-1">
+              <CardHeader>
+                <CardTitle>Datos extra
+                </CardTitle>
+                <CardDescription>
+                  Comprueba aquí tus datos extra (objetivo, edad, peso, etc). Pulsa el botón para editar
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid w-full items-center gap-4">
+                  <div className="space-y-2">
+                    {[
+                      { label: "Objetivo", value: CLIENTE.objetivo },
+                      { label: "Genero", value: CLIENTE.genero },
+                      { label: "Frecuencia Ejercicio", value: CLIENTE.frecuenciaEjercicioSemanal },
+                      { label: "Edad", value: CLIENTE.edad },
+                      { label: "Peso", value: CLIENTE.peso },
+                      { label: "Altura", value: CLIENTE.altura },
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-center">
+                        <Label className="w-1/4">{item.label}</Label>
+                        <div className="w-3/4 p-2 bg-gray-100 border border-gray-300 rounded-md text-gray-700">
+                          {item.value}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter className="border-t px-6 py-4">
+                <EditProfileExtra></EditProfileExtra>
+              </CardFooter>
+            </Card>
+
           </div>
         </div>
       </main>

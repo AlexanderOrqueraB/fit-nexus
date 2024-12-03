@@ -183,7 +183,7 @@ const Header = ({ isAdmin }) => {
 						<DropdownMenuContent align="end">
 							<DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem onClick= {()=>navigate('/edit-profile')}>
+							<DropdownMenuItem onClick= {()=>navigate('/settings')}>
                                 Ajustes
                             </DropdownMenuItem>
 							<DropdownMenuSeparator />
