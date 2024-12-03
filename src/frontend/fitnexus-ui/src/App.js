@@ -40,7 +40,7 @@ return (
                         /*<ProtectedRoute>*/
                         <div>
                             <HomePage />
-                            <ProgressCustom />
+
                         </div>
                         /*</ProtectedRoute>*/
                     }/>
