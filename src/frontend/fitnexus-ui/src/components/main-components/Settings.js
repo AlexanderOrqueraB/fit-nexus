@@ -16,6 +16,11 @@ import { CLIENTE } from '../utils/hardcodedModelDtos';
 
 export function Settings() {
   const [selectedSection, setSelectedSection] = useState("general");
+  
+  const objetivoMap = {
+    PERDER_GRASA: "Perder grasa",
+    GANAR_MUSCULO: "Ganar músculo"
+  };
 
   const renderSection = () => {
     switch (selectedSection) {
@@ -100,7 +105,7 @@ export function Settings() {
                     <div key={index} className="flex items-center">
                       <Label className="w-1/4">{item.label}</Label>
                       <div className="w-3/4 p-2 bg-gray-100 border border-gray-300 rounded-md text-gray-700">
-                        {item.value}
+                      {item.label === "Objetivo" ? objetivoMap[item.value] || item.value : item.value}
                       </div>
                     </div>
                   ))}
