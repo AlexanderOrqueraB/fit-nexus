@@ -11,7 +11,7 @@ SelectItem,
 SelectTrigger,
 SelectValue,
 } from "../../components_ui/ui/select"
-import {apiClient, FITNEXUS_URL} from "../utils/client";
+import {apiClient} from "../utils/client";
 
 export function SignUpForm() {
 	const navigate = useNavigate();

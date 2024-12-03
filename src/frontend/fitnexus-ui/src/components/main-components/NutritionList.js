@@ -85,7 +85,7 @@ export function ClientsList() {
 						<TabsContent value="all">
 							<Card x-chunk="dashboard-06-chunk-0">
 								<CardHeader>
-									<CardTitle>Clientes</CardTitle>
+									<CardTitle>CAMBIAR A NUTRI TABLE</CardTitle>
 									<CardDescription>
 										A continuación puedes ver tu lista actual de clientes.
 									</CardDescription>

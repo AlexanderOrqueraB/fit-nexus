@@ -1,30 +1,23 @@
-import {
-	File,
-	ListFilter,
-	MoreHorizontal,
-	PlusCircle
-} from 'lucide-react';
-import { Badge } from '../../components_ui/ui/badge';
-import { Button } from '../../components_ui/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components_ui/ui/card';
-import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger
-} from '../../components_ui/ui/dropdown-menu';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
 import { CLIENTE } from '../utils/hardcodedModelDtos';
 import ProgressCustom from "../to-double-check/Progress";
 import EditProfileExtra from './EditProfileExtra';
+import EditProfile from "./EditProfile";
+import ChangePassword from './ChangePassword';
+import { Toaster, toast } from 'sonner'
+import { Button } from "../../components_ui/ui/button"
+
 
 
 
 export function HomePage() {
+
+	const confirmationToast = () => {
+        toast.success('My first toast')
+      }
+
+      const errorToast = () => {
+        toast.error('My first toast')
+      }
 
 	return (
 		<div>
@@ -35,7 +28,14 @@ export function HomePage() {
 			</div>
 			<h3>No tienes aun añadidos tus datos extra para poder calcular tu dieta! Añadelos pulsando el botón</h3>
 			<div>
+				<EditProfile />
 				<EditProfileExtra />
+				<ChangePassword />
+				
+				<Toaster expand={false} position="top-right" richColors closeButton  />
+				<Button onClick={confirmationToast} type="submit">Confirmation</Button>
+      			<Button onClick={errorToast} type="submit">Error</Button>
+				
 			</div>
 		</div>
 	);

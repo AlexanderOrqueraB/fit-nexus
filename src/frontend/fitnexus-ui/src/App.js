@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react"; 
+import React from "react"; 
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
-import { UserProvider } from "./components/main-components/UserContext";
-import ProtectedRoute from "./components/main-components/ProtectedRoute";
 import CreateExercise from './components/main-components/CreateExercise';
 
 import LoginForm from './components/main-components/LoginForm';
@@ -16,8 +14,6 @@ import NutritionList from "./components/main-components/NutritionList";
 import UnauthorizedPage from "./components/main-components/UnauthorizedPage";
 import ProtectedLayout from "./components/main-components/ProtectedLayout";
 import Settings from "./components/main-components/Settings";
-import Settings2 from "./components/main-components/Settings";
-import ProgressCustom from "./components/to-double-check/Progress";
 import Test2 from "./components/to-double-check/Test2";
 
 
