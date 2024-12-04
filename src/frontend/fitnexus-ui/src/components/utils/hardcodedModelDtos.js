@@ -1,3 +1,12 @@
+export const EXERCISE = [
+  {
+    "nombreEjercicio": "Press banca",
+    "repeticion": 5,
+    "serie": 5,
+    "peso": 10,
+    "cardio": "No"
+  }]
+
 export const EXERCISES = [
     {
       "nombreEjercicio": "Press banca",
@@ -34,6 +43,14 @@ export const EXERCISES = [
         "peso": 80,
         "altura": 175,
         "clienteDesde": "2023-07-12"
+    }
+
+    export const ENTRENADOR = 
+    {
+        "nombre": "Luke",
+        "apellido": "Skywalker",
+        "email": "luke@skywalker.com",
+        "asesorNutricional": "false"
     }
   
 
@@ -85,6 +102,19 @@ export const CLIENTE_INFOEXTRA = [
     }
 ]
 
+export const RUTINA = 
+  {
+    "nombreRutina": "Torso Fuerza",
+    "fechaInicio": "2024-10-13",
+    "fechaFinal": "2024-12-13",
+    "entrenador": [
+        {
+            "email": "entrenador@email.com",
+        }
+    ]
+  }
+
+
 export const RUTINAS = [
   {
     "nombreRutina": "Torso Fuerza",
@@ -101,7 +131,7 @@ export const RUTINAS = [
   }
 ]
 
-  export const PLAN = [
+  export const PLAN2 = [
     {
       "nombrePlan": "Definicion verano",
       "fechaInicio": "2024-10-13",
@@ -132,6 +162,17 @@ export const RUTINAS = [
       ]
     }
   ]
+
+  export const PLAN = 
+    {
+      "nombrePlan": "Definicion verano",
+      "fechaInicio": "2024-10-13",
+      "fechaFinal": "2025-12-13",
+      "entrenador": 
+          {
+              "email": "entrenador@email.com"
+          }
+    }
 
   export const NUTRI = [
     {

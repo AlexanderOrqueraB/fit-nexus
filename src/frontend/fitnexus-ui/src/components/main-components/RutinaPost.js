@@ -15,20 +15,21 @@ import { Input } from '../../components_ui/ui/input';
 import { Label } from '../../components_ui/ui/label';
 import { apiClient } from '../utils/client';
 import { toast } from 'sonner'
+import { PLAN, RUTINA } from '../utils/hardcodedModelDtos';
+import { ENTRENADOR } from '../utils/hardcodedModelDtos';
 
 
 
-export function WIPRoutinePost() {
+export function RutinaPost() {
     useState({});
 	const [data, setData] = useState({});
 
 	const [dataEx, setDataEx] = useState({
 		//useState to store data from server
-		nombreEjercicio: '',
-		repeticion: '',
-		serie: '',
-		peso: '',
-		cardioRealizado: '',
+		nombreRutina: '',
+		fechaInicio: '',
+		fechaFinal: '',
+		entrenadorEmail: ''
 	});
 
     const confirmationToast = () => {
@@ -46,17 +47,16 @@ export function WIPRoutinePost() {
     const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
 		const userData = {
-			nombreEjercicio: data.nombreEjercicio,
-			repeticion: data.repeticion,
-			serie: data.serie,
-			peso: data.peso,
-			cardioRealizado: data.cardioRealizado,
+			nombreRutina: data.nombreRutina,
+			fechaInicio: data.fechaInicio,
+			fechaFinal: data.fechaFinal,
+			entrenadorEmail: data.entrenadorEmail
 		};
 
 		console.log('Enviando los siguientes datos: ', userData);
 
 		apiClient
-			.post('/api/v1/ejercicios', userData)
+			.post('/api/v1/rutina', userData)
 			//.put(URL, userData)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
@@ -84,78 +84,65 @@ export function WIPRoutinePost() {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Crear ejercicio </DialogTitle>
-                    <DialogDescription>Crea un ejercicio aquí.</DialogDescription>
+                    <DialogTitle>Rutina</DialogTitle>
+                    <DialogDescription>Crea tu rutina aquí</DialogDescription>
                     <DialogDescription>
-                        Haz click en Guardar cuando hayas terminado.
+                        Haz click en Guardar cuando hayas terminado
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
-                            Nombre del ejercicio
+                        <Label htmlFor="nombreRutina" className="text-right">
+                            Nombre de la rutina
                         </Label>
                         <Input
-                            id="nombreEjercicio"
-                            name="nombreEjercicio"
-                            value={dataEx.nombreEjercicio}
+                            id="nombreRutina"
+                            name="nombreRutina"
+                            /*value={RUTINA.nombreRutina}*/
                             onChange={handleChange}
-                            placeholder="Press banca"
+                            placeholder={RUTINA.nombreRutina}
                             className="col-span-3"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="repeticion" className="text-right">
-                            Repeticiones
+                        <Label htmlFor="fechaFinal" className="text-right">
+                            Fecha Inicio
                         </Label>
                         <Input
-                            id="repeticion"
-                            name="repeticion"
-                            type="number"
-                            value={dataEx.repeticion}
+                            id="fechaInicio"
+                            name="fechaInicio"
+                            type="date"
+                            /*value={dataEx.repeticion}*/
                             onChange={handleChange}
-                            placeholder="5"
+                            placeholder={RUTINA.fechaInicio}
                             className="col-span-3"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="serie" className="text-right">
-                            Series
+                        <Label htmlFor="fechaFinal" className="text-right">
+                            Fecha Final
                         </Label>
                         <Input
-                            id="serie"
-                            name="serie"
-                            type="number"
-                            value={dataEx.serie}
+                            id="fechaFinal"
+                            name="fechaFinal"
+                            type="date"
+                            /*value={dataEx.repeticion}*/
                             onChange={handleChange}
-                            placeholder="5"
+                            placeholder={RUTINA.fechaFinal}
                             className="col-span-3"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="peso" className="text-right">
-                            Peso (kg)
+                        <Label htmlFor="entrenador" className="text-right">
+                            Entrenador
                         </Label>
                         <Input
-                            id="peso"
-                            name="peso"
-                            type="number"
-                            value={dataEx.peso}
+                            id="entrenador"
+                            name="entrenador"
+                            type="email"
+                            /*value={dataEx.peso}*/
                             onChange={handleChange}
-                            placeholder="30"
-                            className="col-span-3"
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="cardioRealizado" className="text-right">
-                            Cardio (TRUE, FALSE)
-                        </Label>
-                        <Input
-                            id="cardioRealizado"
-                            name="cardioRealizado"
-                            value={dataEx.cardioRealizado}
-                            onChange={handleChange}
-                            placeholder="false"
+                            placeholder={ENTRENADOR.email}
                             className="col-span-3"
                         />
                     </div>
@@ -170,5 +157,4 @@ export function WIPRoutinePost() {
     );
 }
 
-
-export default WIPRoutinePost;
+export default RutinaPost;

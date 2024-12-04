@@ -6,8 +6,9 @@ import ChangePassword from './ChangePassword';
 import { Toaster, toast } from 'sonner'
 import { Button } from "../../components_ui/ui/button"
 import ExercisePost from './ExercisePost';
-import WIPRoutinePost from './WIPRoutinePost';
-import WIPPlanPost from './WIPPlanPost';
+import{ RutinaPost } from './RutinaPost';
+import{ PlanEntrenamientoFechaPost } from './PlanEntrenamientoFechaPost';
+import{ PlanEntrenamientoPost } from './PlanEntrenamientoPost';
 
 export function HomePage() {
 
@@ -38,9 +39,10 @@ export function HomePage() {
 				</div>
 
 				<div className="flex flex-row space-x-4"> 
+					<PlanEntrenamientoPost/>
+					<PlanEntrenamientoFechaPost/>
+					<RutinaPost/>
 					<ExercisePost/>
-					<WIPPlanPost/>
-					<WIPRoutinePost/>
 				</div>
 			</div>
 		</div>

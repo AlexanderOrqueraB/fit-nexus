@@ -84,10 +84,10 @@ export function ExercisePost() {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Crear ejercicio </DialogTitle>
-                    <DialogDescription>Crea un ejercicio aquí.</DialogDescription>
+                    <DialogTitle>Ejercicio</DialogTitle>
+                    <DialogDescription>Crea un ejercicio aquí</DialogDescription>
                     <DialogDescription>
-                        Haz click en Guardar cuando hayas terminado.
+                        Haz click en Guardar cuando hayas terminado
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
@@ -98,7 +98,7 @@ export function ExercisePost() {
                         <Input
                             id="nombreEjercicio"
                             name="nombreEjercicio"
-                            value={dataEx.nombreEjercicio}
+                            /*value={dataEx.nombreEjercicio}*/
                             onChange={handleChange}
                             placeholder="Press banca"
                             className="col-span-3"
@@ -112,7 +112,7 @@ export function ExercisePost() {
                             id="repeticion"
                             name="repeticion"
                             type="number"
-                            value={dataEx.repeticion}
+                            /*value={dataEx.repeticion}*/
                             onChange={handleChange}
                             placeholder="5"
                             className="col-span-3"
@@ -126,7 +126,7 @@ export function ExercisePost() {
                             id="serie"
                             name="serie"
                             type="number"
-                            value={dataEx.serie}
+                            /*value={dataEx.serie}*/
                             onChange={handleChange}
                             placeholder="5"
                             className="col-span-3"
@@ -140,7 +140,7 @@ export function ExercisePost() {
                             id="peso"
                             name="peso"
                             type="number"
-                            value={dataEx.peso}
+                            /*value={dataEx.peso}*/
                             onChange={handleChange}
                             placeholder="30"
                             className="col-span-3"
@@ -153,7 +153,7 @@ export function ExercisePost() {
                         <Input
                             id="cardioRealizado"
                             name="cardioRealizado"
-                            value={dataEx.cardioRealizado}
+                            /*value={dataEx.cardioRealizado}*/
                             onChange={handleChange}
                             placeholder="false"
                             className="col-span-3"
