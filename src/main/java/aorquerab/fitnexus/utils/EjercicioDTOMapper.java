@@ -7,24 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class EjercicioDTOMapper {
 
     //FROM Entity to DTO
-    public static EjercicioDtoRequest mapperFromEjercicio (Ejercicio ejercicio) {
-        EjercicioDtoRequest ejercicioDtoRequest = new EjercicioDtoRequest();
-        ejercicioDtoRequest.setNombreEjercicio(ejercicio.getNombreEjercicio());
-        ejercicioDtoRequest.setRepeticion(ejercicio.getRepeticion());
-        ejercicioDtoRequest.setSerie(ejercicio.getSerie());
-        ejercicioDtoRequest.setPeso(ejercicio.getPeso());
-        ejercicioDtoRequest.setCardio(ejercicio.getCardio());
-
-        return ejercicioDtoRequest;
-    }
-
     public static EjercicioDtoRequest mapperFromEjercicio (Ejercicio ejercicio) {
         if (ejercicio != null) {
             return EjercicioDtoRequest.builder()

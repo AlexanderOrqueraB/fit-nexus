@@ -80,6 +80,7 @@ public class PlanDeEntrenamientoController {
         }
     }
 
+    //TODO: Testear con postman
     @PostMapping
     public ResponseEntity<String> crearPlanEntrenamiento (
             @RequestBody PlanEntrenamientoDtoCrearRequest planEntrenamientoDto) {
@@ -95,12 +96,11 @@ public class PlanDeEntrenamientoController {
         PlanEntrenamientoDtoCrearRequest.Entrenador entrenadorDTO = PlanEntrenamientoDtoCrearRequest.Entrenador.builder()
                 .email(entrenador.getEmail())
                 .build();
-        //TODO REVIEW
+
         PlanDeEntrenamiento planDeEntrenamiento = PlanDeEntrenamiento.builder()
                 .nombrePlan(planEntrenamientoDto.getNombrePlan())
                 .entrenador(entrenador)
                 .build();
-
 
         planDeEntrenamientoRepository.save(planDeEntrenamiento);
         return new ResponseEntity<>(HttpStatus.CREATED);
