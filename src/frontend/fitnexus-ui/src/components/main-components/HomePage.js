@@ -5,10 +5,10 @@ import EditProfile from "./EditProfile";
 import ChangePassword from './ChangePassword';
 import { Toaster, toast } from 'sonner'
 import { Button } from "../../components_ui/ui/button"
-import ExercisePost from './ExercisePost';
-import{ RutinaPost } from './RutinaPost';
-import{ PlanEntrenamientoFechaPost } from './PlanEntrenamientoFechaPost';
-import{ PlanEntrenamientoPost } from './PlanEntrenamientoPost';
+import ExercisePost from '../buttons-components/ejercicio/PostExercise';
+import{ RutinaPost } from '../buttons-components/rutina/PostRutina';
+import{ PlanEntrenamientoFechaPost } from '../buttons-components/plan-entrenamiento/PlanEntrenamientoFechaPost';
+import{ PlanEntrenamientoPost } from '../buttons-components/plan-entrenamiento/PostPlanEntrenamiento';
 
 export function HomePage() {
 
@@ -39,10 +39,14 @@ export function HomePage() {
 				</div>
 
 				<div className="flex flex-row space-x-4"> 
+					<ExercisePost/>
+				</div>
+				<div className="flex flex-row space-x-4"> 
+					<RutinaPost/>
+				</div>
+				<div className="flex flex-row space-x-4"> 
 					<PlanEntrenamientoPost/>
 					<PlanEntrenamientoFechaPost/>
-					<RutinaPost/>
-					<ExercisePost/>
 				</div>
 			</div>
 		</div>

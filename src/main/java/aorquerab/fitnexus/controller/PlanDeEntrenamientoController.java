@@ -2,9 +2,11 @@ package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoCrearRequest;
+import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoFechasRequest;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoResponse;
 import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
+import aorquerab.fitnexus.model.exception.PlanDeEntrenamientoNotFoundException;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
 import aorquerab.fitnexus.repository.PlanDeEntrenamientoRepository;
@@ -29,6 +31,7 @@ public class PlanDeEntrenamientoController {
     }
 
     //TODO: Testear con postman
+    //TODO: React, innecesario ya que devuelve todos los ejercicios de BBDD, util para testing
     @GetMapping
     public ResponseEntity<List<PlanDeEntrenamiento>> obtenerPlanes(){
         log.info("Ejecutando obtenerPlanes...");
@@ -42,6 +45,7 @@ public class PlanDeEntrenamientoController {
     }
 
     //TODO: Testear con postman
+    //TODO: React, innecesario ya que devuelve todos los ejercicios de BBDD, util para testing
     @GetMapping("/planes-entrenamiento-dto")
     public ResponseEntity<List<PlanEntrenamientoDtoResponse>> obtenerPlanesEntrenamientoDTO() {
         log.info("Ejecutando obtenerPlanesEntrenamientoDTO...");
@@ -108,6 +112,28 @@ public class PlanDeEntrenamientoController {
 
     //TODO: POST Controller
     // para añadir fechas un plan
+
+    @PostMapping
+    public ResponseEntity<String> addFechaPlanEntrenamiento (
+            @RequestBody PlanEntrenamientoDtoFechasRequest planEntrenamientoDto) {
+        log.info("Ejecutando addFechaPlanEntrenamiento con el DTO: {}", planEntrenamientoDto);
+        if(planEntrenamientoDto == null)
+            throw new InvalidRequestException("Peticion para plan de entrenamiento no valida");
+        String nombrePlan = planEntrenamientoDto.getNombrePlan();
+        PlanDeEntrenamiento byNombrePlan =
+                planDeEntrenamientoRepository.findByNombrePlan(nombrePlan)
+                        .orElseThrow(()-> {
+                            log.warn("Plan no encontrado con el nombre: {}", nombrePlan);
+                            return new PlanDeEntrenamientoNotFoundException ("Plan no encontrado con el nombre: "
+                                    + nombrePlan);
+                        });
+
+        byNombrePlan.setFechaInicio(planEntrenamientoDto.getFechaInicio());
+        byNombrePlan.setFechaFinal(planEntrenamientoDto.getFechaFinal());
+
+        planDeEntrenamientoRepository.save(byNombrePlan);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
     //TODO: POST Controller
     // para asociar cliente a un plan

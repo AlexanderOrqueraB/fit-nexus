@@ -8,14 +8,14 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "../../components_ui/ui/dialog"
+} from "../../../components_ui/ui/dialog"
 
-import { Button } from '../../components_ui/ui/button';
-import { Input } from '../../components_ui/ui/input';
-import { Label } from '../../components_ui/ui/label';
-import { apiClient } from '../utils/client';
+import { Button } from '../../../components_ui/ui/button';
+import { Input } from '../../../components_ui/ui/input';
+import { Label } from '../../../components_ui/ui/label';
+import { apiClient } from '../../utils/client';
 import { toast } from 'sonner'
-import { ENTRENADOR, PLAN } from '../utils/hardcodedModelDtos';
+import { ENTRENADOR, PLAN } from '../../utils/hardcodedModelDtos';
 
 
 

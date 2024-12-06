@@ -19,7 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui
 import { apiClient } from '../utils/client';
 import { EXERCISES, PLAN, RUTINAS } from '../utils/hardcodedModelDtos';
 import { toast } from 'sonner'
-import ExercisePost from "./ExercisePost"
+import ExercisePost from "../buttons-components/ejercicio/PostExercise"
 
 export interface ExercisesListProps {
 	nombreEjercicio: string;

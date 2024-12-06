@@ -11,4 +11,5 @@ public interface PlanDeEntrenamientoRepository extends JpaRepository <PlanDeEntr
 
     List<PlanDeEntrenamiento> findAllByNombrePlan (String nombrePlan);
     Optional<Entrenador> findByEmail (String email);
+    Optional<PlanDeEntrenamiento> findByNombrePlan (String nombrePlan);
 }

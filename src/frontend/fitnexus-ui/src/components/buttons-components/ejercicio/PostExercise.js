@@ -8,28 +8,27 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "../../components_ui/ui/dialog"
+} from "../../../components_ui/ui/dialog"
 
-import { Button } from '../../components_ui/ui/button';
-import { Input } from '../../components_ui/ui/input';
-import { Label } from '../../components_ui/ui/label';
-import { apiClient } from '../utils/client';
+import { Button } from '../../../components_ui/ui/button';
+import { Input } from '../../../components_ui/ui/input';
+import { Label } from '../../../components_ui/ui/label';
+import { apiClient } from '../../utils/client';
 import { toast } from 'sonner'
-import { PLAN, RUTINA } from '../utils/hardcodedModelDtos';
-import { ENTRENADOR } from '../utils/hardcodedModelDtos';
 
 
 
-export function RutinaPost() {
+export function ExercisePost() {
     useState({});
 	const [data, setData] = useState({});
 
 	const [dataEx, setDataEx] = useState({
 		//useState to store data from server
-		nombreRutina: '',
-		fechaInicio: '',
-		fechaFinal: '',
-		entrenadorEmail: ''
+		nombreEjercicio: '',
+		repeticion: '',
+		serie: '',
+		peso: '',
+		cardioRealizado: '',
 	});
 
     const confirmationToast = () => {
@@ -47,16 +46,17 @@ export function RutinaPost() {
     const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
 		const userData = {
-			nombreRutina: data.nombreRutina,
-			fechaInicio: data.fechaInicio,
-			fechaFinal: data.fechaFinal,
-			entrenadorEmail: data.entrenadorEmail
+			nombreEjercicio: data.nombreEjercicio,
+			repeticion: data.repeticion,
+			serie: data.serie,
+			peso: data.peso,
+			cardioRealizado: data.cardioRealizado,
 		};
 
 		console.log('Enviando los siguientes datos: ', userData);
 
 		apiClient
-			.post('/api/v1/rutina', userData)
+			.post('/api/v1/ejercicios', userData)
 			//.put(URL, userData)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
@@ -78,71 +78,84 @@ export function RutinaPost() {
         <Dialog>
             <DialogTrigger asChild>
                 <Button size="sm" className="h-8 gap-1" variant="outline">
-                    Crear rutina
+                    Crear ejercicio
                     <UserCheck className="h-3.5 w-3.5" />
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Rutina</DialogTitle>
-                    <DialogDescription>Crea tu rutina aquí</DialogDescription>
+                    <DialogTitle>Ejercicio</DialogTitle>
+                    <DialogDescription>Crea un ejercicio aquí</DialogDescription>
                     <DialogDescription>
                         Haz click en Guardar cuando hayas terminado
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="nombreRutina" className="text-right">
-                            Nombre de la rutina
+                        <Label htmlFor="name" className="text-right">
+                            Nombre del ejercicio
                         </Label>
                         <Input
-                            id="nombreRutina"
-                            name="nombreRutina"
-                            /*value={RUTINA.nombreRutina}*/
+                            id="nombreEjercicio"
+                            name="nombreEjercicio"
+                            /*value={dataEx.nombreEjercicio}*/
                             onChange={handleChange}
-                            placeholder={RUTINA.nombreRutina}
+                            placeholder="Press banca"
                             className="col-span-3"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="fechaFinal" className="text-right">
-                            Fecha Inicio
+                        <Label htmlFor="repeticion" className="text-right">
+                            Repeticiones
                         </Label>
                         <Input
-                            id="fechaInicio"
-                            name="fechaInicio"
-                            type="date"
+                            id="repeticion"
+                            name="repeticion"
+                            type="number"
                             /*value={dataEx.repeticion}*/
                             onChange={handleChange}
-                            placeholder={RUTINA.fechaInicio}
+                            placeholder="5"
                             className="col-span-3"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="fechaFinal" className="text-right">
-                            Fecha Final
+                        <Label htmlFor="serie" className="text-right">
+                            Series
                         </Label>
                         <Input
-                            id="fechaFinal"
-                            name="fechaFinal"
-                            type="date"
-                            /*value={dataEx.repeticion}*/
+                            id="serie"
+                            name="serie"
+                            type="number"
+                            /*value={dataEx.serie}*/
                             onChange={handleChange}
-                            placeholder={RUTINA.fechaFinal}
+                            placeholder="5"
                             className="col-span-3"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="entrenador" className="text-right">
-                            Entrenador
+                        <Label htmlFor="peso" className="text-right">
+                            Peso (kg)
                         </Label>
                         <Input
-                            id="entrenador"
-                            name="entrenador"
-                            type="email"
+                            id="peso"
+                            name="peso"
+                            type="number"
                             /*value={dataEx.peso}*/
                             onChange={handleChange}
-                            placeholder={ENTRENADOR.email}
+                            placeholder="30"
+                            className="col-span-3"
+                        />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="cardioRealizado" className="text-right">
+                            Cardio (TRUE, FALSE)
+                        </Label>
+                        <Input
+                            id="cardioRealizado"
+                            name="cardioRealizado"
+                            /*value={dataEx.cardioRealizado}*/
+                            onChange={handleChange}
+                            placeholder="false"
                             className="col-span-3"
                         />
                     </div>
@@ -157,4 +170,5 @@ export function RutinaPost() {
     );
 }
 
-export default RutinaPost;
+
+export default ExercisePost;

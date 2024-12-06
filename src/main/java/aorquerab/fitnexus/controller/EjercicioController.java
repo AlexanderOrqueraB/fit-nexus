@@ -29,6 +29,7 @@ public class EjercicioController {
     }
 
     //TODO: Testear con postman
+    //TODO: React, innecesario ya que devuelve todos los ejercicios de BBDD, util para testing
     @GetMapping
     public ResponseEntity<List<Ejercicio>> obtenerEjercicios(){
         log.info("Ejecutando obtenerEjercicios...");
@@ -42,6 +43,7 @@ public class EjercicioController {
     }
 
     //TODO: Testear con postman
+    //TODO: React, innecesario ya que devuelve todos los ejercicios de BBDD, util para testing
     @GetMapping("/ejercicios-dto")
     public ResponseEntity<List<EjercicioDtoRequest>> obtenerEjerciciosDTO() {
         log.info("Ejecutando obtenerEjerciciosDTO...");

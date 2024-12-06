@@ -37,6 +37,7 @@ public class RutinaController {
         this.ejercicioRepository = ejercicioRepository;
     }
 
+    //TODO: React, innecesario ya que devuelve todos los ejercicios de BBDD, util para testing
     @GetMapping
     public ResponseEntity<List<Rutina>> obtenerRutinas() {
         log.info("Ejecutando obtenerRutinas...");
@@ -49,6 +50,7 @@ public class RutinaController {
         }
     }
 
+    //TODO: React, innecesario ya que devuelve todos los ejercicios de BBDD, util para testing
     @GetMapping("/rutinas-dto")
     public ResponseEntity<List<RutinaDTO>> obtenerRutinasDTO() {
         log.info("Ejecutando obtenerRutinasDTO...");
