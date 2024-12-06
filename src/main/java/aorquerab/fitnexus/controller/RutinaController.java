@@ -147,15 +147,15 @@ public class RutinaController {
             @PathVariable String nombreRutina,
             @RequestBody EjerciciosListDTO ejerciciosListDTO) {
         log.info("Ejecutando addEjerciciosEnLista con esta lista de ejerciciosDTO: {}", ejerciciosListDTO);
-        List<EjerciciosListDTO.EjercicioDTO> ejerciciosDTO = ejerciciosListDTO.getEjercicios();
-        List<Ejercicio> ejercicios = EjerciciosListDTO.builder().build();
-        Rutina rutina = Rutina.builder()
-                .ejercicios(ejercicios)
-                .build();
+//        List<EjerciciosListDTO.EjercicioDTO> ejerciciosDTO = ejerciciosListDTO.getEjercicios();
+//        List<Ejercicio> ejercicios = EjerciciosListDTO.builder().build();
+//        Rutina rutina = Rutina.builder()
+//                .ejercicios(ejercicios)
+//                .build();
         //TODO REVIEW
         //Tengo una lista de ejercicios con solo el nombre List<EjercicioDTO> ejercicios y un nombreRutina;
         //Creo una rutina de BD que contenga los ejercicios de la lista y NADA MAS?
-
+        return ResponseEntity.status(HttpStatus.OK).body("EMPTY");
     }
 
 
