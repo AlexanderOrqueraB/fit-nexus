@@ -15,6 +15,7 @@ import aorquerab.fitnexus.repository.RutinaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
@@ -159,6 +160,24 @@ public class RutinaController {
         //Creo una rutina de BD que contenga los ejercicios de la lista y NADA MAS?
         return ResponseEntity.status(HttpStatus.OK).body("EMPTY");
     }
+
+    //TODO: Testear con postman
+    @Transactional
+    @PostMapping ("/{idRutina}")
+    public ResponseEntity<String> addEjerciciosToRutina (
+            @PathVariable Long idRutina,
+            @RequestBody EjerciciosListDTO ejerciciosListDTO) {
+        log.info("Ejecutando addEjerciciosToRutina con esta lista de ejerciciosDTO: {}", ejerciciosListDTO);
+        List<EjerciciosListDTO.EjercicioDTO> ejerciciosFromDto = ejerciciosListDTO.getEjercicios();
+        List<Long> idExerciseList = ejerciciosFromDto.stream().map(EjerciciosListDTO.EjercicioDTO::getId).toList();
+        Optional<Rutina> rutinaFromDB = rutinaRepository.findById(idRutina)
+                .map(rutina -> {
+                    rutina.setEjercicios(ejercicioRepository.findAllById(idExerciseList));
+                    return rutinaRepository.save(rutina);
+                });
+        return ResponseEntity.status(HttpStatus.OK).body("Ejercicios agregados correctamente");
+    }
+
 
 
     //TODO: Testear con postman

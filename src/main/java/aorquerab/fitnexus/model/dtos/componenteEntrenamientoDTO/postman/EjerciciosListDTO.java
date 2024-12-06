@@ -19,6 +19,7 @@ public class EjerciciosListDTO {
     @Builder
     public static class EjercicioDTO {
         private String nombreEjercicio;
+        private Long id;
     }
 
 }
