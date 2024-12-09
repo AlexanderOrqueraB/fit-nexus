@@ -4,21 +4,21 @@ import {
     Drumstick,
     Dumbbell,
     Home,
-    LineChart,
 	Link2,
-	Link2Icon,
 	Link2Off,
 	Settings,
-    ShoppingCart,
     Users2
 } from 'lucide-react';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../components_ui/ui/tooltip';
 import {PLAN_NUTRI, ENTRENAMIENTOS} from "../utils/env";
 import {FITNEXUS_URL} from "../utils/client";
 
 const SideBar = ({ isAdmin }) => {
+    const location = useLocation(); // Get the current location
+
+    const isActive = (path) => location.pathname === path; // Function to check active link
 
 	return (
 		<aside className="w-16 flex-col border-r bg-background hidden sm:flex">
@@ -34,79 +34,99 @@ const SideBar = ({ isAdmin }) => {
 					</Tooltip>
 				</TooltipProvider>
 
+				{/*Iconos de Sidebar*/}
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/dashboard"} className="flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
-								<Home className="h-5 w-5" />
-								<span className="sr-only">Dashboard</span>
+							<Link to={FITNEXUS_URL + "/dashboard"} className={
+								`group flex h-9 w-9 items-center justify-center rounded-lg 
+								${isActive("/dashboard") ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:text-foreground'}
+							} md:h-8 md:w-8`}
+							>
+								<Home className={`h-5 w-5 ${isActive("/dashboard") ? 'text-bold' : ''}`} />
 							</Link>
 						</TooltipTrigger>
 						<TooltipContent side="right">Dashboard</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
+
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/ejercicios"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
-								<BicepsFlexed className="h-5 w-5" />
-								<span className="sr-only">{ENTRENAMIENTOS}</span>
+							<Link to={FITNEXUS_URL + "/ejercicios"} className={
+								`group flex h-9 w-9 items-center justify-center rounded-lg 
+								${isActive("/ejercicios") ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:text-foreground'}
+							} md:h-8 md:w-8`}
+							>
+								<BicepsFlexed className={`h-5 w-5 ${isActive("/ejercicios") ? 'text-bold' : ''}`} />
 							</Link>
 						</TooltipTrigger>
 						<TooltipContent side="right">{ENTRENAMIENTOS}</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
+
                 <TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/nutri"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
-								<Drumstick className="h-5 w-5" />
-								<span className="sr-only">{PLAN_NUTRI}</span>
+							<Link to={FITNEXUS_URL + "/nutri"} className={
+								`group flex h-9 w-9 items-center justify-center rounded-lg 
+								${isActive("/nutri") ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:text-foreground'}
+							} md:h-8 md:w-8`}
+							>
+								<Drumstick className={`h-5 w-5 ${isActive("/nutri") ? 'text-bold' : ''}`} />
 							</Link>
 						</TooltipTrigger>
 						<TooltipContent side="right">{PLAN_NUTRI}</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
+
 				{isAdmin ? (
-					<TooltipProvider>
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<Link to={FITNEXUS_URL + "/clients"}
-									className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-								>
-									<Users2 className="h-5 w-5" />
-									<span className="sr-only">Clientes</span>
-								</Link>
-							</TooltipTrigger>
-							<TooltipContent side="right">Clientes</TooltipContent>
-						</Tooltip>
-					</TooltipProvider>
-				) : (null)
+						<TooltipProvider>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Link to={FITNEXUS_URL + "/clients"}
+									className={
+										`group flex h-9 w-9 items-center justify-center rounded-lg 
+										${isActive("/clients") ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:text-foreground'}
+									} md:h-8 md:w-8`}
+									>
+										<Users2 className={`h-5 w-5 ${isActive("/clients") ? 'text-bold' : ''}`} />
+									</Link>
+								</TooltipTrigger>
+								<TooltipContent side="right">Clientes</TooltipContent>
+							</Tooltip>
+						</TooltipProvider>
+					) : (null)
                 }
+				
                 {isAdmin ? (
-					<TooltipProvider>
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<Link to={FITNEXUS_URL + "/create-exercise"}
-									className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-								>
-									<BrickWall className="h-5 w-5" />
-									<span className="sr-only">Workout Builder</span>
-								</Link>
-							</TooltipTrigger>
-							<TooltipContent side="right">Workout Builder</TooltipContent>
-						</Tooltip>
-					</TooltipProvider>
-                    
-				) : (null)
+						<TooltipProvider>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Link to={FITNEXUS_URL + "/create-exercise"}
+										className={
+											`group flex h-9 w-9 items-center justify-center rounded-lg 
+											${isActive("/create-exercise") ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:text-foreground'}
+										} md:h-8 md:w-8`}
+									>
+										<BrickWall className={`h-5 w-5 ${isActive("/create-exercise") ? 'text-bold' : ''}`} />
+									</Link>
+								</TooltipTrigger>
+								<TooltipContent side="right">Workout Builder</TooltipContent>
+							</Tooltip>
+						</TooltipProvider>  
+					) : (null)
                 }
 
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/settings"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
-								<Settings className="h-5 w-5" />
-								<span className="sr-only">Ajustes</span>
+							<Link to={FITNEXUS_URL + "/settings"} className={
+								`group flex h-9 w-9 items-center justify-center rounded-lg 
+								${isActive("/settings") ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:text-foreground'}
+							} md:h-8 md:w-8`}
+							>
+								<Settings className={`h-5 w-5 ${isActive("/settings") ? 'text-bold' : ''}`} />
 							</Link>
 						</TooltipTrigger>
 						<TooltipContent side="right">Ajustes</TooltipContent>
@@ -117,23 +137,33 @@ const SideBar = ({ isAdmin }) => {
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/test1"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
-								<Link2Off className="h-5 w-5" />
+							<Link to={FITNEXUS_URL + "/test1"} className={
+								`group flex h-9 w-9 items-center justify-center rounded-lg 
+								${isActive("/test1") ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:text-foreground'}
+							} md:h-8 md:w-8`}
+							>
+								<Link2Off className={`h-5 w-5 ${isActive("/test1") ? 'text-bold' : ''}`} />
 							</Link>
 						</TooltipTrigger>
 						<TooltipContent side="right">Test1</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
+				
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/test2"} className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8">
-								< Link2 className="h-5 w-5" />
+							<Link to={FITNEXUS_URL + "/test2"} className={
+								`group flex h-9 w-9 items-center justify-center rounded-lg 
+								${isActive("/test2") ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:text-foreground'}
+							} md:h-8 md:w-8`}
+							>
+								< Link2 className={`h-5 w-5 ${isActive("/test2") ? 'text-bold' : ''}`} />
 							</Link>
 						</TooltipTrigger>
 						<TooltipContent side="right">Test2</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
+
 			</nav>
 		</aside>
 	);

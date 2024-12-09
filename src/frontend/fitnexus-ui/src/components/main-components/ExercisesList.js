@@ -17,17 +17,17 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
 import { apiClient } from '../utils/client';
-import { EXERCISES, PLAN, RUTINAS } from '../utils/hardcodedModelDtos';
+import { EXERCISES, PLAN2, RUTINAS } from '../utils/hardcodedModelDtos';
 import { toast } from 'sonner'
 import ExercisePost from "../buttons-components/ejercicio/PostExercise"
 
-export interface ExercisesListProps {
-	nombreEjercicio: string;
-	repeticion: number;
-	serie: number;
-	peso: number;
-	cardioRealizado: boolean;
-}
+//export interface ExercisesListProps {
+//	nombreEjercicio: string;
+//	repeticion: number;
+//	serie: number;
+//	peso: number;
+///	cardioRealizado: boolean;
+//}
 
 export function ExercisesList() {
 	useState({});
@@ -212,7 +212,7 @@ export function ExercisesList() {
 											</TableHeader>
 
 											<TableBody>
-												{PLAN.map((data) => (
+												{PLAN2.map((data) => (
 													<TableRow key={data.nombrePlan}>
 														<TableCell className="font-medium">{data.nombrePlan}</TableCell>
 														<TableCell className="font-medium">
