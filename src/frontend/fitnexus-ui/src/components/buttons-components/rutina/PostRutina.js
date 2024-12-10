@@ -20,7 +20,7 @@ import { ENTRENADOR } from '../../utils/hardcodedModelDtos';
 
 
 
-export function RutinaPost() {
+export function PostRutina() {
     useState({});
 	const [data, setData] = useState({});
 
@@ -157,4 +157,4 @@ export function RutinaPost() {
     );
 }
 
-export default RutinaPost;
+export default PostRutina;

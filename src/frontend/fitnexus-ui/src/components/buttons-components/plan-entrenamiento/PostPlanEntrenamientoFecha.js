@@ -19,7 +19,7 @@ import { ENTRENADOR, PLAN } from '../../utils/hardcodedModelDtos';
 
 
 
-export function PlanEntrenamientoFechaPost() {
+export function PostPlanEntrenamientoFecha() {
     useState({});
 	const [data, setData] = useState({});
 
@@ -143,4 +143,4 @@ export function PlanEntrenamientoFechaPost() {
 }
 
 
-export default PlanEntrenamientoFechaPost;
+export default PostPlanEntrenamientoFecha;

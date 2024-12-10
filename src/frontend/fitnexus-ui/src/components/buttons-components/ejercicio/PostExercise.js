@@ -18,7 +18,7 @@ import { toast } from 'sonner'
 
 
 
-export function ExercisePost() {
+export function PostExercise() {
     useState({});
 	const [data, setData] = useState({});
 
@@ -171,4 +171,4 @@ export function ExercisePost() {
 }
 
 
-export default ExercisePost;
+export default PostExercise;
