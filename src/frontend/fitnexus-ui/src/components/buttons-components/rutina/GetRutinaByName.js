@@ -58,7 +58,9 @@ export function GetRutinaByName() {
 		apiClient
 			.post('/api/v1/rutina', userData)
 			//.put(URL, userData)
+            //.get('/api/v1/planes')
 			.then((response) => {
+                // para get setData(response.data);
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
 				if (response.status === 201) {

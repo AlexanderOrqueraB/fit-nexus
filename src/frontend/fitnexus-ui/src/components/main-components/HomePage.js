@@ -5,12 +5,19 @@ import EditProfile from "./EditProfile";
 import ChangePassword from './ChangePassword';
 import { Toaster, toast } from 'sonner'
 import { Button } from "../../components_ui/ui/button"
+
 import PostExercise from '../buttons-components/ejercicio/PostExercise';
+import PutExercise from '../buttons-components/ejercicio/PutExercise';
+import GetExerciseById from '../buttons-components/ejercicio/GetExerciseById';
+import GetExerciseByName from '../buttons-components/ejercicio/GetExerciseByName';
+import DeleteExercise from '../buttons-components/ejercicio/DeleteExercise';
+
 import PostRutina from '../buttons-components/rutina/PostRutina';
 import PostListEjerciciosInRutina from '../buttons-components/rutina/PostListEjerciciosInRutina';
 import GetRutinaByName from '../buttons-components/rutina/GetRutinaByName';
 import GetRutinaById from '../buttons-components/rutina/GetRutinaById';
 import DeleteExerciseListByName from '../buttons-components/rutina/DeleteExerciseListByName';
+
 import PostPlanEntrenamientoFecha  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamientoFecha';
 import PostPlanEntrenamiento  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamiento';
 
@@ -39,6 +46,30 @@ export function HomePage() {
 	useState({});
 	const [data, setData] = useState({});
 
+	//EJERCICIO LOGIC
+	//Listar ejercicios en tabla + Put Exercise
+	const [exercises, setExercises] = useState([]);
+    const [isEditOpen, setIsEditOpen] = useState(false);
+    const [selectedExercise, setSelectedExercise] = useState(null);
+
+	useEffect(() => {
+        // Obtener los ejercicios al cargar la página
+        apiClient.get('/api/v1/ejercicios')
+            .then(response => {
+                setExercises(response.data); // Actualizar estado con los datos obtenidos
+            })
+            .catch(error => {
+                console.error('Error al obtener los ejercicios:', error);
+            });
+    }, []);
+
+	const handleEditClick = (exercise) => {
+		setSelectedExercise(exercise);
+		setIsEditOpen(true);
+	};
+	//EJERCICIO LOGIC
+	//Listar ejercicios en tabla + Put Exercise
+
 	const [dataEx, setDataEx] = useState({
 		//useState to store data from server
 		nombreEjercicio: '',
@@ -63,45 +94,6 @@ export function HomePage() {
       const errorToast = () => {
         toast.error('My first toast')
       }
-
-	  const handleClickPlan = () => {
-		apiClient
-			.get('/api/v1/planes')
-			.then((response) => {
-				setData(response.data);
-				console.log('Respuesta del servidor /api/v1/planes: ', response.data);
-				console.log('Status: ', response.status);
-			})
-			.catch((error) => {
-				console.log(error.message);
-			});
-	};
-
-	const handleClickRutina = () => {
-		apiClient
-			.get('/api/v1/rutinas')
-			.then((response) => {
-				setData(response.data);
-				console.log('Respuesta del servidor /api/v1/rutinas: ', response.data);
-				console.log('Status: ', response.status);
-			})
-			.catch((error) => {
-				console.log(error.message);
-			});
-	};
-
-	const handleClickEjercicio = () => {
-		apiClient
-			.get('/api/v1/ejercicios')
-			.then((response) => {
-				setData(response.data);
-				console.log('Respuesta del servidor /api/v1/ejercicios: ', response.data);
-				console.log('Status: ', response.status);
-			})
-			.catch((error) => {
-				console.log(error.message);
-			});
-	};
 
 	const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
@@ -138,6 +130,7 @@ export function HomePage() {
 		//handleClickEjercicioPost();
 	}, []); //empty array ensures that the effect only runs once
 
+
 	return (
 		<div>
 		<h1>Bienvenido: {CLIENTE.nombre}</h1>
@@ -158,6 +151,10 @@ export function HomePage() {
 
 				<div className="flex flex-row space-x-4"> 
 					<PostExercise/>
+					<PutExercise/>
+					<GetExerciseById/>
+					<GetExerciseByName/>
+					<DeleteExercise/>
 				</div>
 				<div className="flex flex-row space-x-4"> 
 					<PostRutina/>
@@ -184,52 +181,11 @@ export function HomePage() {
 									<TabsTrigger value="rutina">Rutinas</TabsTrigger>
 									<TabsTrigger value="ejercicio">Ejercicios</TabsTrigger>
 								</TabsList>
-								<div className="ml-auto flex items-center gap-2">
-									<DropdownMenu>
-										<DropdownMenuTrigger asChild>
-											<Button variant="outline" size="sm" className="h-8 gap-1">
-												<ListFilter className="h-3.5 w-3.5" />
-												<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-													Filtro
-												</span>
-											</Button>
-										</DropdownMenuTrigger>
-										<DropdownMenuContent align="end">
-											<DropdownMenuLabel>Filtrar por</DropdownMenuLabel>
-											<DropdownMenuSeparator />
-											<DropdownMenuCheckboxItem checked>Todos</DropdownMenuCheckboxItem>
-											<DropdownMenuCheckboxItem>Planes de entrenamiento</DropdownMenuCheckboxItem>
-											<DropdownMenuCheckboxItem>Rutinas</DropdownMenuCheckboxItem>
-											<DropdownMenuCheckboxItem>Ejercicios</DropdownMenuCheckboxItem>
-											<DropdownMenuCheckboxItem>Cardio(Si/No)</DropdownMenuCheckboxItem>
-										</DropdownMenuContent>
-									</DropdownMenu>
-									<Button onClick={handleClickPlan} size="sm" className="h-8 gap-1">
-										<UserCheck className="h-3.5 w-3.5" />
-										<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-											Get/Refresh planes
-										</span>
-									</Button>
-									<Button onClick={handleClickRutina} size="sm" className="h-8 gap-1">
-										<UserCheck className="h-3.5 w-3.5" />
-										<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-											Get/Refresh rutinas
-										</span>
-									</Button>
-									<Button onClick={handleClickEjercicio} size="sm" className="h-8 gap-1">
-										<UserCheck className="h-3.5 w-3.5" />
-										<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-											Get/Refresh ejercicios
-										</span>
-									</Button>
-									
-								</div>
 							</div>
 							<TabsContent value="plan">
 								<Card x-chunk="dashboard-06-chunk-0">
 									<CardHeader>
 										<CardTitle>Planes de entrenamiento</CardTitle>
-										<CardDescription>A continuación puedes ver tus planes creados.</CardDescription>
 									</CardHeader>
 									<CardContent>
 										<Table>
@@ -239,10 +195,9 @@ export function HomePage() {
 													<TableHead>Fecha Inicio</TableHead>
 													<TableHead className="hidden md:table-cell">Fecha Final</TableHead>
 													<TableHead className="hidden md:table-cell">
-														Rutinas{' '}
+														Rutinas
 													</TableHead>
 													<TableHead className="hidden md:table-cell">
-														<span className="sr-only">Acciones</span>
 														Acciones
 													</TableHead>
 												</TableRow>
@@ -365,6 +320,7 @@ export function HomePage() {
 									</CardFooter>
 								</Card>
 							</TabsContent>
+							
 							<TabsContent value="ejercicio">
 								<Card x-chunk="dashboard-06-chunk-0">
 									<CardHeader>
@@ -383,22 +339,24 @@ export function HomePage() {
 													<TableHead className="hidden md:table-cell">Peso</TableHead>
 													<TableHead className="hidden md:table-cell">Cardio</TableHead>
 													<TableHead className="hidden md:table-cell">
-														<span className="sr-only">Acciones</span>
 														Acciones
 													</TableHead>
 												</TableRow>
 											</TableHeader>
 
 											<TableBody>
-												{EXERCISES.map((data) => (
-													<TableRow key={data.nombreEjercicio}>
+											{/*EJERCICIO LOGICL: istar ejercicios en tabla + Put Exercise*/}
+											{/*{exercises.map((exercise) => (*/}
+											{/*<TableRow key={exercise.id}>*/}
+												{EXERCISES.map((exercise) => (
+													<TableRow key={exercise.nombreEjercicio}>
 														<TableCell className="font-medium">
-															{data.nombreEjercicio}
+															{exercise.nombreEjercicio}
 														</TableCell>
-														<TableCell className="font-medium">{data.repeticion}</TableCell>
-														<TableCell className="font-medium">{data.serie}</TableCell>
-														<TableCell className="font-medium">{data.peso}</TableCell>
-														<TableCell className="font-medium">{data.cardio}</TableCell>
+														<TableCell className="font-medium">{exercise.repeticion}</TableCell>
+														<TableCell className="font-medium">{exercise.serie}</TableCell>
+														<TableCell className="font-medium">{exercise.peso}</TableCell>
+														<TableCell className="font-medium">{exercise.cardioRealizado ? 'Sí' : 'No'}</TableCell>
 														<TableCell>
 															<DropdownMenu>
 																<DropdownMenuTrigger asChild>
@@ -413,7 +371,9 @@ export function HomePage() {
 																</DropdownMenuTrigger>
 																<DropdownMenuContent align="end">
 																	<DropdownMenuLabel>Acciones</DropdownMenuLabel>
-																	<DropdownMenuItem>Editar ?</DropdownMenuItem>
+																	<DropdownMenuItem onClick={() => handleEditClick(exercise)}>
+																		Editar
+																	</DropdownMenuItem>
 																	<DropdownMenuItem>Eliminar</DropdownMenuItem>
 																</DropdownMenuContent>
 															</DropdownMenu>
@@ -422,6 +382,15 @@ export function HomePage() {
 												))}
 											</TableBody>
 										</Table>
+										{/*EJERCICIO LOGICL: istar ejercicios en tabla + Put Exercise*/}
+										{isEditOpen && (
+											<PutExercise
+											open={isEditOpen}
+											onClose={() => setIsEditOpen(false)}
+											exerciseData={selectedExercise}
+											/>
+										)}
+										{/*EJERCICIO LOGICL: istar ejercicios en tabla + Put Exercise*/}
 									</CardContent>
 									<CardFooter>
 										<div className="text-xs text-muted-foreground">

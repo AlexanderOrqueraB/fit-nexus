@@ -77,7 +77,7 @@ export function DeleteExerciseListByName() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button size="sm" className="h-8 gap-1" variant="outline">
+                <Button size="sm" className="h-8 gap-1" variant="destructive">
                     Borrar listaEjercicios por nombreRutina
                     <UserCheck className="h-3.5 w-3.5" />
                 </Button>
