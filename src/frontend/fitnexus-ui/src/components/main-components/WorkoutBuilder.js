@@ -444,6 +444,7 @@ export function WorkoutBuilder() {
                                     >
                                       Editar
 																		</DropdownMenuItem>
+                                    <DropdownMenuItem>Añadir imagen</DropdownMenuItem>
                                     <DropdownMenuItem>Eliminar</DropdownMenuItem>
                                   </DropdownMenuContent>
                                 </DropdownMenu>

@@ -160,7 +160,7 @@ export function Workout() {
 									  <DropdownMenuContent align="end">
 										<DropdownMenuLabel>Acciones</DropdownMenuLabel>
 										<DropdownMenuItem>
-										  Editar
+										  Ver imagen
 										</DropdownMenuItem>
 										<DropdownMenuItem>Eliminar</DropdownMenuItem>
 									  </DropdownMenuContent>
@@ -230,7 +230,7 @@ export function Workout() {
 									  <DropdownMenuContent align="end">
 										<DropdownMenuLabel>Acciones</DropdownMenuLabel>
 										<DropdownMenuItem>
-										  Editar
+										  Ver imagen
 										</DropdownMenuItem>
 										<DropdownMenuItem>Eliminar</DropdownMenuItem>
 									  </DropdownMenuContent>
@@ -298,7 +298,7 @@ export function Workout() {
 									  <DropdownMenuContent align="end">
 										<DropdownMenuLabel>Acciones</DropdownMenuLabel>
 										<DropdownMenuItem>
-										  Editar
+										  Ver imagen
 										</DropdownMenuItem>
 										<DropdownMenuItem>Eliminar</DropdownMenuItem>
 									  </DropdownMenuContent>

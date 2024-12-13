@@ -15,9 +15,10 @@ import {
 const animals = [
   { name: "Foto pesa", image: dumbbell, description: "Descripcion ejemplo" },
   { name: "Press banca", image: "https://media4.giphy.com/media/NLuFwZieDxvws/100.webp?cid=790b761193svlqhi5q3te829snudwzsfk6ams3g0wwv1q8wd&ep=v1_gifs_search&rid=100.webp&ct=g", description: "Se como el ratoncito" },
-  { name: "Tiger", image: "path/to/tiger.jpg", description: "The stealthy predator." },
-  { name: "Zebra", image: "path/to/zebra.jpg", description: "Known for its stripes." },
-  { name: "Giraffe", image: "path/to/giraffe.jpg", description: "The tallest animal." },
+  { name: "Foto 3", image: "path/to/photo3.jpg", description: "Descripcion ejemplo" },
+  { name: "Foto 4", image: "path/to/photo4.jpg", description: "Descripcion ejemplo" },
+  { name: "Foto 5", image: "path/to/photo5.jpg", description: "Descripcion ejemplo" },
+  { name: "Foto 6", image: "path/to/photo6.jpg", description: "Descripcion ejemplo" },
 ];
 
 export function Test2() {
