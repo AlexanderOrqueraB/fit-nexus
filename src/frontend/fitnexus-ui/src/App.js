@@ -1,7 +1,7 @@
 import React from "react"; 
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
-import CreateExercise from './components/main-components/CreateExercise';
+import CreateExercise, { WorkoutBuilder } from './components/main-components/WorkoutBuilder';
 
 import LoginForm from './components/main-components/LoginForm';
 import LogoutForm from './components/main-components/LogoutForm';
@@ -36,7 +36,6 @@ return (
                         /*<ProtectedRoute>*/
                         <div>
                             <HomePage />
-
                         </div>
                         /*</ProtectedRoute>*/
                     }/>
@@ -46,9 +45,9 @@ return (
                         /*</ProtectedRoute>*/
                     }/>
 
-                    <Route path="/create-exercise" element={
+                    <Route path="/workout-builder" element={
                         /*<ProtectedRoute roleRequired="ADMIN">*/
-                            <CreateExercise />
+                            <WorkoutBuilder />
                         /*</ProtectedRoute>*/
                     }/>
                 

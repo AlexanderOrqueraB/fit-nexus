@@ -103,13 +103,13 @@ const SideBar = ({ isAdmin }) => {
 						<TooltipProvider>
 							<Tooltip>
 								<TooltipTrigger asChild>
-									<Link to={FITNEXUS_URL + "/create-exercise"}
+									<Link to={FITNEXUS_URL + "/workout-builder"}
 										className={
 											`group flex h-9 w-9 items-center justify-center rounded-lg 
-											${isActive("/create-exercise") ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:text-foreground'}
+											${isActive("/workout-builder") ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:text-foreground'}
 										} md:h-8 md:w-8`}
 									>
-										<BrickWall className={`h-5 w-5 ${isActive("/create-exercise") ? 'text-bold' : ''}`} />
+										<BrickWall className={`h-5 w-5 ${isActive("/workout-builder") ? 'text-bold' : ''}`} />
 									</Link>
 								</TooltipTrigger>
 								<TooltipContent side="right">Workout Builder</TooltipContent>
