@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-	ListFilter,
-	MoreHorizontal,
-	UserCheck
+	ListFilter
 } from 'lucide-react';
 import { Badge } from '../../components_ui/ui/badge';
 import { Button } from '../../components_ui/ui/button';
@@ -11,43 +9,43 @@ import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
-	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '../../components_ui/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
-import {CLIENTES} from "../utils/hardcodedModelDtos"
-import {apiClient} from "../utils/client"
+import { Toaster, toast } from 'sonner';
+import { fetchClientData } from '../utils/api';
 
 export function ClientsList() {
 
-	useState ({});
-	const [data, setData] = useState({});
-  
-	const handleClick = () => {
-	  apiClient
-		.get("/api/v1/ejercicios")
-		//.delete(URL)
-		.then ((response) => {
-		  setData(response.data);
-		  console.log("Respuesta del servidor: ", response.data);
-		  console.log("Status: ", response.status);
-		})
-		.catch((error) => {
-		  console.log(error.message)
-		})
-	}
-	 useEffect( () => {
-	  handleClick();
-	 }, []) //empty array ensures that the effect only runs once
+	const [clients, setClients] = useState([]);
+	const [selectedClient, setselectedClient] = useState(null);
+
+	useEffect(() => {
+		// Cargar datos desde varias fuentes simultáneamente
+		const loadData = async () => {
+		  try {
+			// Ejecutar todas las solicitudes en paralelo
+			const clients = await fetchClientData();
 	
+			// Actualizar los estados con los datos obtenidos
+			setClients(clients);
+
+		  } catch (error) {
+			console.error('Error al cargar datos:', error);
+			toast.error('Hubo un error al cargar los datos.');
+		  }
+		};
+		loadData();
+	  }, []); // Llama a loadData solo al montar el componente
+ 	
 	return (
 		<div className="flex min-h-screen w-full flex-col bg-muted/40">
 			<div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
 				<main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-          <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
+          <div className="mx-auto grid max-w-[99rem] flex-1 auto-rows-max gap-4">
 					<Tabs defaultValue="all">
 						<div className="flex items-center">
 							<TabsList>
@@ -74,10 +72,6 @@ export function ClientsList() {
 										<DropdownMenuCheckboxItem>Altura</DropdownMenuCheckboxItem>
 									</DropdownMenuContent>
 								</DropdownMenu>
-								<Button onClick={handleClick} size="sm" className="h-8 gap-1">
-									<UserCheck className="h-3.5 w-3.5" />
-									<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Get/Refresh Clientes</span>
-								</Button>
 							</div>
 						</div>
 						<TabsContent value="all">
@@ -100,59 +94,33 @@ export function ClientsList() {
 												<TableHead className="hidden md:table-cell">Edad</TableHead>
 												<TableHead className="hidden md:table-cell">Peso</TableHead>
 												<TableHead className="hidden md:table-cell">Altura</TableHead>
-												<TableHead className="hidden md:table-cell">
-													Cliente desde
-												</TableHead>
-												<TableHead className="hidden md:table-cell">
-													<span className="sr-only">Acciones</span>
-													Acciones
-												</TableHead>
+												<TableHead className="hidden md:table-cell">Cliente desde</TableHead>
 											</TableRow>
 										</TableHeader>
 
 										<TableBody>
-										{CLIENTES.map((data) => (
-											<TableRow key={data.nombre}>
-												<TableCell className="font-medium">{data.nombre}</TableCell>
-												<TableCell className="font-medium">{data.apellido}</TableCell>
-												<TableCell className="font-medium">{data.email}</TableCell>
+										{clients.map((client) => (
+											<TableRow key={client.id}>
+												<TableCell className="font-medium">{client.nombre}</TableCell>
+												<TableCell className="font-medium">{client.apellido}</TableCell>
+												<TableCell className="font-medium">{client.email}</TableCell>
 												<TableCell>
-													<Badge variant="outline">{data.objetivo}</Badge>
+													<Badge variant="outline">{client.objetivo}</Badge>
 												</TableCell>
 												<TableCell>
-													<Badge variant="secondary">{data.genero}</Badge>
+													<Badge variant="secondary">{client.genero}</Badge>
 												</TableCell>
-												<TableCell className="hidden md:table-cell">{data.edad}</TableCell>
-												<TableCell className="hidden md:table-cell">{data.peso}</TableCell>
-												<TableCell className="hidden md:table-cell">{data.altura}</TableCell>
+												<TableCell className="hidden md:table-cell">{client.edad}</TableCell>
+												<TableCell className="hidden md:table-cell">{client.peso}</TableCell>
+												<TableCell className="hidden md:table-cell">{client.altura}</TableCell>
 												<TableCell className="hidden md:table-cell">
-													{data.clienteDesde}
-												</TableCell>
-												<TableCell>
-													<DropdownMenu>
-														<DropdownMenuTrigger asChild>
-															<Button aria-haspopup="true" size="icon" variant="ghost">
-																<MoreHorizontal className="h-4 w-4" />
-																<span className="sr-only">Toggle menu</span>
-															</Button>
-														</DropdownMenuTrigger>
-														<DropdownMenuContent align="end">
-															<DropdownMenuLabel>Acciones</DropdownMenuLabel>
-															<DropdownMenuItem>Editar</DropdownMenuItem>
-															<DropdownMenuItem>Eliminar</DropdownMenuItem>
-														</DropdownMenuContent>
-													</DropdownMenu>
+													{client.clienteDesde}
 												</TableCell>
 											</TableRow>
 											))}
 										</TableBody>
 									</Table>
 								</CardContent>
-								<CardFooter>
-									<div className="text-xs text-muted-foreground">
-										Mostrando <strong>1-5</strong> de <strong>12</strong> clientes
-									</div>
-								</CardFooter>
 							</Card>
 						</TabsContent>
 

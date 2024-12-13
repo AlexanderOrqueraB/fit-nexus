@@ -19,7 +19,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
 import { MoreHorizontal } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components_ui/ui/card';
-import { fetchData } from '../utils/api';
+import { fetchWorkoutData } from '../utils/api';
 
 export function WorkoutBuilder() {
   const [data, setData] = useState({}); //useState to store data from server
@@ -40,7 +40,7 @@ export function WorkoutBuilder() {
     const loadData = async () => {
       try {
         // Ejecutar todas las solicitudes en paralelo
-        const { exercises, routines, plans } = await fetchData();
+        const { exercises, routines, plans } = await fetchWorkoutData();
 
         // Actualizar los estados con los datos obtenidos
         setExercises(exercises);

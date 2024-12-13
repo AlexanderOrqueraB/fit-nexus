@@ -9,7 +9,7 @@ import SignUpForm from './components/main-components/SignUpForm';
 
 import HomePage from "./components/main-components/HomePage";
 import ClientsList from "./components/main-components/ClientsList";
-import ExercisesList from "./components/main-components/ExercisesList";
+import ExercisesList, { Workout } from "./components/main-components/Workout";
 import NutritionList from "./components/main-components/NutritionList";
 import UnauthorizedPage from "./components/main-components/UnauthorizedPage";
 import ProtectedLayout from "./components/main-components/ProtectedLayout";
@@ -53,7 +53,7 @@ return (
                 
                     <Route path="/ejercicios" element={
                     /*<ProtectedRoute>*/
-                            <ExercisesList />
+                            <Workout />
                     /*</ProtectedRoute>*/
                     }/>
                     

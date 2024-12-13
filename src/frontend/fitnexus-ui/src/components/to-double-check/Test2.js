@@ -1,37 +1,50 @@
-import React from 'react';
-
 import dumbbell from "../../images/db2.PNG"
  
-import { Card, CardContent } from "../../components_ui/ui/card"
+import React from 'react';
+
+import { Card, CardContent } from "../../components_ui/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "../../components_ui/ui/carousel"
- 
+} from "../../components_ui/ui/carousel";
+
+// Array con las imágenes y sus textos correspondientes
+const animals = [
+  { name: "Foto pesa", image: dumbbell, description: "Descripcion ejemplo" },
+  { name: "Press banca", image: "https://media4.giphy.com/media/NLuFwZieDxvws/100.webp?cid=790b761193svlqhi5q3te829snudwzsfk6ams3g0wwv1q8wd&ep=v1_gifs_search&rid=100.webp&ct=g", description: "Se como el ratoncito" },
+  { name: "Tiger", image: "path/to/tiger.jpg", description: "The stealthy predator." },
+  { name: "Zebra", image: "path/to/zebra.jpg", description: "Known for its stripes." },
+  { name: "Giraffe", image: "path/to/giraffe.jpg", description: "The tallest animal." },
+];
+
 export function Test2() {
   return (
+    <div>
     <Carousel className="w-full max-w-xs">
       <CarouselContent>
-        {Array.from({ length: 5 }).map((_, index) => (
+        {animals.map((animal, index) => (
           <CarouselItem key={index}>
             <div className="p-1">
               <Card>
-                <CardContent className="flex aspect-square items-center justify-center p-6">
-                  <span className="text-4xl font-semibold">{index + 1}</span>
-                  <div className="relative flex-1 hidden lg:flex items-center justify-center bg-muted">
+                <CardContent className="flex flex-col items-center justify-center p-6">
+                  {/* Nombre del animal */}
+                  <span className="text-2xl font-bold mb-2">{animal.name}</span>
+                  {/* Imagen del animal */}
+                  <div className="relative flex items-center justify-center bg-muted">
                     <img
-                    src={dumbbell}
-                    alt="dumbbell"
-                    width="1920"
-                    height="1080"
-                    className="h-50 w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                      src={animal.image}
+                      alt={animal.name}
+                      width="1920"
+                      height="1080"
+                      className="h-50 w-full object-cover dark:brightness-[0.2] dark:grayscale"
                     />
-                </div>
+                  </div>
+                  {/* Descripción debajo de la imagen */}
+                  <span className="text-sm mt-2 text-center">{animal.description}</span>
                 </CardContent>
-                
               </Card>
             </div>
           </CarouselItem>
@@ -40,7 +53,8 @@ export function Test2() {
       <CarouselPrevious />
       <CarouselNext />
     </Carousel>
-  )
+    </div>
+  );
 }
 
 export default Test2;
