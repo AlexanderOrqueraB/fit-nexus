@@ -8,7 +8,6 @@ import { Button } from "../../components_ui/ui/button"
 
 import PostExercise from '../buttons-components/ejercicio/PostExercise';
 import PutExercise from '../buttons-components/ejercicio/PutExercise';
-import GetExerciseById from '../buttons-components/ejercicio/GetExerciseById';
 import GetExerciseByName from '../buttons-components/ejercicio/GetExerciseByName';
 import DeleteExercise from '../buttons-components/ejercicio/DeleteExercise';
 
@@ -152,7 +151,6 @@ export function HomePage() {
 				<div className="flex flex-row space-x-4"> 
 					<PostExercise/>
 					<PutExercise/>
-					<GetExerciseById/>
 					<GetExerciseByName/>
 					<DeleteExercise/>
 				</div>

@@ -148,22 +148,6 @@ const SideBar = ({ isAdmin }) => {
 						<TooltipContent side="right">Test1</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
-				
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/test2"} className={
-								`group flex h-9 w-9 items-center justify-center rounded-lg 
-								${isActive("/test2") ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:text-foreground'}
-							} md:h-8 md:w-8`}
-							>
-								< Link2 className={`h-5 w-5 ${isActive("/test2") ? 'text-bold' : ''}`} />
-							</Link>
-						</TooltipTrigger>
-						<TooltipContent side="right">Test2</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-
 			</nav>
 		</aside>
 	);
