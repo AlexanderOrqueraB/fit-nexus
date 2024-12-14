@@ -1,7 +1,17 @@
 {
-  "nombreEjercicio": "Nombre ejercicio",
-  "repeticion": 5,
-  "serie": 5,
-  "peso": 10,
-  "cardio": false
+  "planRequest": {
+    "nombreEjercicio": "Nombre ejercicio",
+    "repeticion": 5,
+    "serie": 5,
+    "peso": 10,
+    "cardio": false
+  },
+  "planRequestPUT": {
+    "nombreEjercicio": "Nombre ejercicio",
+    "repeticion": 5,
+    "serie": 5,
+    "peso": 10,
+    "cardio": false
+  }
+
 }

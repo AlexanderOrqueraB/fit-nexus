@@ -20,23 +20,4 @@ public class EjercicioDtoRequest {
     private Integer peso;
     private Boolean cardio;
 
-    String planRequest = """
-    {
-        "nombreEjercicio": "Press banca",
-        "repeticion": 5,
-        "serie": 5,
-        "peso": 10,
-        "cardio": false
-    }
-    """;
-
-    String planRequestPUT = """
-    {
-        "nombreEjercicio": "Press banca",
-        "repeticion": null,
-        "serie": null,
-        "peso": 10,
-        "cardio": null
-    }
-    """;
 }
