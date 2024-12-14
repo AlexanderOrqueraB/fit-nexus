@@ -1,4 +1,5 @@
 import {
+	BarChart2Icon,
     BicepsFlexed,
     BrickWall,
     Drumstick,
@@ -146,6 +147,21 @@ const SideBar = ({ isAdmin }) => {
 							</Link>
 						</TooltipTrigger>
 						<TooltipContent side="right">Test1</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Link to={FITNEXUS_URL + "/nutrition-chart"} className={
+								`group flex h-9 w-9 items-center justify-center rounded-lg 
+								${isActive("/nutrition-chart") ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:text-foreground'}
+							} md:h-8 md:w-8`}
+							>
+								<BarChart2Icon className={`h-5 w-5 ${isActive("/nutrition-chart") ? 'text-bold' : ''}`} />
+							</Link>
+						</TooltipTrigger>
+						<TooltipContent side="right">nutrition-chart</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
 			</nav>

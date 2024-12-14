@@ -15,6 +15,7 @@ import UnauthorizedPage from "./components/main-components/UnauthorizedPage";
 import ProtectedLayout from "./components/main-components/ProtectedLayout";
 import Settings from "./components/main-components/Settings";
 import Test2 from "./components/to-double-check/Test2";
+import NutritionChart from "./components/to-double-check/NutritionChart";
 
 
 function App () {
@@ -75,9 +76,9 @@ return (
                             <Test2 />
                         /*</ProtectedRoute>*/
                     }/>
-                    <Route path="/test2" element={
+                    <Route path="/nutrition-chart" element={
                         /*<ProtectedRoute>*/
-                            <Test2 />
+                            <NutritionChart />
                         /*</ProtectedRoute>*/
                     }/>
                 </Route>
