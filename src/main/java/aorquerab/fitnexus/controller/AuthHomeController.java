@@ -105,7 +105,9 @@ public class AuthHomeController {
                 log.info("postSignup Entrenador ejecutado y registrado correctamente.");
                 SignupDTOResponse responsePayload = SignupDTOResponse.builder()
                         .email(entrenadorActualizado.getEmail())
-                        .fitNexusId(fitNexusId).build();
+                        .fitNexusId(fitNexusId)
+                        .clienteDesde(entrenadorActualizado.getClienteDesde())
+                        .build();
                 responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(responsePayload);
             }
         } catch (Exception e) {

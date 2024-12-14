@@ -39,8 +39,8 @@ public class SecurityConfig {
                         .requestMatchers("/api-docs").permitAll()
 
                         //ROLE ACCESS CONTROL Spring Controllers
-                        .requestMatchers(HttpMethod.GET,FITNEXUS_BASE_URI + "/ejercicios").hasAnyRole("ADMIN","USER") //OK from postman
-                        .requestMatchers(HttpMethod.POST,FITNEXUS_BASE_URI + "/ejercicios").hasRole("ADMIN") //OK from user
+                        //.requestMatchers(HttpMethod.GET,FITNEXUS_BASE_URI + "/ejercicios").hasAnyRole("ADMIN","USER")
+                        //.requestMatchers(HttpMethod.POST,FITNEXUS_BASE_URI + "/ejercicios").hasRole("ADMIN") //OK from user
 
                         //TODO: START Change auth permissions (testing purpose for the moment) +
                         // change .anyRequest().permitAll() to .anyRequest().authenticated()
@@ -59,7 +59,7 @@ public class SecurityConfig {
                         //TODO: END
 
                         //ROLE ACCESS CONTROL React pages
-                        .requestMatchers("/create-exercise").hasRole("ADMIN")
+                        //.requestMatchers("/create-exercise").hasRole("ADMIN")
 
                         //.requestMatchers("/api/v1/ejercicios").permitAll() FUNSIONA
                         .anyRequest().permitAll()

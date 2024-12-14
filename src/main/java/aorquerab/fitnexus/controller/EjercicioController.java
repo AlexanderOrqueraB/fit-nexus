@@ -35,6 +35,7 @@ public class EjercicioController {
         log.info("Ejecutando obtenerEjercicios...");
         try {
             List <Ejercicio> ejercicioList = ejercicioRepository.findAll();
+            if (ejercicioList.isEmpty()) throw new EjercicioNotFoundException("No hay ejercicios en BD: ");
             return ResponseEntity.status(HttpStatus.OK).body(ejercicioList);
         } catch (Exception e) {
             log.warn("Error al obtener lista de ejercicios", e);
