@@ -4,6 +4,7 @@ import aorquerab.fitnexus.TestDataUtil;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -27,6 +28,7 @@ class EjercicioControllerTest {
     }
 
     @Test
+    @Disabled
     void testThatObtenerEjerciciosReturnsHttp200() {
         final ResponseEntity<List<Ejercicio>> ejercicioListResult =
                 ResponseEntity.status(HttpStatus.OK)

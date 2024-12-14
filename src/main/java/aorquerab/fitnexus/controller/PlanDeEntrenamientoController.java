@@ -92,7 +92,7 @@ public class PlanDeEntrenamientoController {
         if(planEntrenamientoDto == null)
             throw new InvalidRequestException("Peticion para plan de entrenamiento no valida");
         String entrenadorEmail = planEntrenamientoDto.getEntrenador().getEmail();
-        Entrenador entrenador = planDeEntrenamientoRepository.findByEmail(entrenadorEmail)
+        Entrenador entrenador = planDeEntrenamientoRepository.findByEntrenador_Email(entrenadorEmail)
                 .orElseThrow(() -> {
                     log.warn("Entrenador no encontrado por el email: {}", entrenadorEmail);
                     return new EntrenadorNotFoundException("Entrenador no encontrado con el email: " + entrenadorEmail);
@@ -113,7 +113,7 @@ public class PlanDeEntrenamientoController {
     //TODO: POST Controller
     // para añadir fechas un plan
 
-    @PostMapping
+    @PostMapping ("/fecha")
     public ResponseEntity<String> addFechaPlanEntrenamiento (
             @RequestBody PlanEntrenamientoDtoFechasRequest planEntrenamientoDto) {
         log.info("Ejecutando addFechaPlanEntrenamiento con el DTO: {}", planEntrenamientoDto);

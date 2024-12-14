@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface PlanDeEntrenamientoRepository extends JpaRepository <PlanDeEntrenamiento,Long> {
 
     List<PlanDeEntrenamiento> findAllByNombrePlan (String nombrePlan);
-    Optional<Entrenador> findByEmail (String email);
+    Optional<Entrenador> findByEntrenador_Email(String email);
     Optional<PlanDeEntrenamiento> findByNombrePlan (String nombrePlan);
 }
