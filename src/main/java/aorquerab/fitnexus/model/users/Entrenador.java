@@ -20,7 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@ToString(exclude = "password")
+@ToString(exclude = {"password", "rutinas", "pautasNutricionales", "clientes", "planesDeEntrenamiento", "ejercicios"})
 @EqualsAndHashCode
 @Entity
 @Table(name = "entrenador")

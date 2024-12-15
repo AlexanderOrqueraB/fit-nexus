@@ -35,9 +35,9 @@ CREATE TABLE IF NOT EXISTS entrenador (
 CREATE TABLE IF NOT EXISTS ejercicio (
     id SERIAL PRIMARY KEY,
     nombre_ejercicio VARCHAR (100) NOT NULL,
-    repeticion INT NOT NULL,
-    serie INT NOT NULL,
-    peso INT NOT NULL,
+    repeticion INT,
+    serie INT,
+    peso INT,
     cardio BOOLEAN,
     entrenador_id INT,
     CONSTRAINT fk_entrenador_ejercicio

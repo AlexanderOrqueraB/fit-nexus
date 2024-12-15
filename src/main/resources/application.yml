@@ -27,3 +27,8 @@ spring:
 springdoc:
   api-docs:
     path: /api-docs
+
+#Para habilitar logs detallados y ver como Jackson deserializa JSON
+#logging:
+#  level:
+#    com.fasterxml.jackson: DEBUG

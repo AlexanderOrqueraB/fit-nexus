@@ -56,6 +56,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, FITNEXUS_BASE_URI + "/ejercicios").permitAll()
                         .requestMatchers(HttpMethod.GET, FITNEXUS_BASE_URI + "/ejercicios/**").permitAll()
                         .requestMatchers(HttpMethod.POST, FITNEXUS_BASE_URI + "/ejercicios/**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, FITNEXUS_BASE_URI + "/rutinas").permitAll()
+                        .requestMatchers(HttpMethod.GET, FITNEXUS_BASE_URI + "/rutinas/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, FITNEXUS_BASE_URI + "/rutinas/**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, FITNEXUS_BASE_URI + "/planes").permitAll()
+                        .requestMatchers(HttpMethod.GET, FITNEXUS_BASE_URI + "/planes/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, FITNEXUS_BASE_URI + "/planes/**").permitAll()
                         //TODO: END
 
                         //ROLE ACCESS CONTROL React pages

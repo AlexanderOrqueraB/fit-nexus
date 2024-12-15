@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -38,12 +39,17 @@ public class RutinaController {
         this.ejercicioRepository = ejercicioRepository;
     }
 
-    //TODO: React, innecesario ya que devuelve todos los ejercicios de BBDD, util para testing
+    //Testeado Postman + SB
+    //Test con React: innecesario ya que devuelve todos los ejercicios de BBDD
     @GetMapping
     public ResponseEntity<List<Rutina>> obtenerRutinas() {
         log.info("Ejecutando obtenerRutinas...");
         try {
             List<Rutina> rutinasList = rutinaRepository.findAll();
+            if (rutinasList.isEmpty()) {
+                log.warn("Rutinas no encontradas en base de datos...");
+                throw new RutinaNotFoundException("Rutinas no encontradas...");
+            }
             return ResponseEntity.status(HttpStatus.OK).body(rutinasList);
         } catch (Exception e) {
             log.warn("Error al obtener lista de rutinas", e);
@@ -51,7 +57,8 @@ public class RutinaController {
         }
     }
 
-    //TODO: React, innecesario ya que devuelve todos los ejercicios de BBDD, util para testing
+    //Testeado Postman + SB
+    //Test con React: innecesario ya que devuelve todos los ejercicios de BBDD
     @GetMapping("/rutinas-dto")
     public ResponseEntity<List<RutinaDTO>> obtenerRutinasDTO() {
         log.info("Ejecutando obtenerRutinasDTO...");
@@ -66,6 +73,10 @@ public class RutinaController {
                                     .collect(Collectors.toList()))
                             .build())
                     .collect(Collectors.toList());
+            if (rutinaDTOList.isEmpty()) {
+                log.warn("Rutinas no encontradas en base de datos...");
+                throw new RutinaNotFoundException("Rutinas no encontradas...");
+            }
             return ResponseEntity.status(HttpStatus.OK).body(rutinaDTOList);
         } catch (Exception e) {
             log.warn("Error al obtener lista de rutinasDTO", e);
@@ -73,7 +84,7 @@ public class RutinaController {
         }
     }
 
-    //TODO: Testear con postman
+    //Testeado Postman + SB
     @GetMapping ("/{idRutina}")
     public ResponseEntity<RutinaDTO> obtenerRutinaPorId (@PathVariable Long idRutina) {
         log.info("Ejecutando obtenerRutinaPorId con el id: {}", idRutina);
@@ -94,10 +105,10 @@ public class RutinaController {
         return ResponseEntity.status(HttpStatus.OK).body(rutinaDTO);
     }
 
-    //TODO: Testear con postman
+    //Testeado Postman + SB
     @GetMapping ("/rutina/{nombreRutina}")
     public ResponseEntity<List<RutinaDTO>> obtenerRutinasPorNombre (@PathVariable String nombreRutina) {
-        log.info("Ejecutando obtenerRutinasPorNombre con el id: {}" ,nombreRutina);
+        log.info("Ejecutando obtenerRutinasPorNombre con el nombre: {}" ,nombreRutina);
         List <Rutina> rutinasList = rutinaRepository.findAllByNombreRutina(nombreRutina);
         if (rutinasList.isEmpty()) {
             log.warn("Rutina no encontrada en base de datos: {}", nombreRutina);
@@ -116,7 +127,7 @@ public class RutinaController {
         return ResponseEntity.status(HttpStatus.OK).body(rutinaDTOList);
     }
 
-    //TODO: Testear con postman
+    //Testeado Postman + SB
     @PostMapping
     public ResponseEntity<String> crearRutina(@RequestBody RutinaDtoRequest rutinaDtoRequest) {
         log.info("Ejecutando crearRutina con este rutinaDtoRequest: {}", rutinaDtoRequest);
@@ -161,9 +172,9 @@ public class RutinaController {
         return ResponseEntity.status(HttpStatus.OK).body("EMPTY");
     }
 
-    //TODO: Testear con postman
+    //Testeado Postman + SB
     @Transactional
-    @PostMapping ("/{idRutina}")
+    @PostMapping ("/rutina/{idRutina}")
     public ResponseEntity<String> addEjerciciosToRutina (
             @PathVariable Long idRutina,
             @RequestBody EjerciciosListDTO ejerciciosListDTO) {

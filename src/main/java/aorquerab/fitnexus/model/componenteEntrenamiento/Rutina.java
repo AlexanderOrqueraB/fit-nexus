@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@ToString(exclude = {"entrenador", "planDeEntrenamientos"})
 @EqualsAndHashCode
 @Entity
 @Table(name = "rutina")

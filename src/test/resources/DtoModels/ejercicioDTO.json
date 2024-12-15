@@ -57,5 +57,17 @@
     "entrenador": {
       "email": "emailEntrenador"
     }
+  },
+  "EjerciciosListDTO": {
+    "ejercicios": [
+      {
+        "id": 3,
+        "nombreEjercicio": "Dominadas"
+      },
+      {
+        "id": 2,
+        "nombreEjercicio": "Press Banca"
+      }
+    ]
   }
 }

@@ -3,6 +3,7 @@ package aorquerab.fitnexus.controller;
 import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
 import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
+import aorquerab.fitnexus.model.exception.RutinaNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,8 +17,8 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(EjercicioNotFoundException.class)
-    public ResponseEntity<String> handleEjercicioNotFoundException (EjercicioNotFoundException ex) {
+    @ExceptionHandler({EjercicioNotFoundException.class, RutinaNotFoundException.class})
+    public ResponseEntity<String> handleComponenteEntrenamientoNotFoundException (RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 

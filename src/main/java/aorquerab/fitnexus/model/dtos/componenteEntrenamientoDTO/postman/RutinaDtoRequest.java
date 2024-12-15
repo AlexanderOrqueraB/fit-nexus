@@ -20,6 +20,8 @@ public class RutinaDtoRequest {
 
     @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Entrenador {
         private String email;
     }
