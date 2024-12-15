@@ -24,14 +24,4 @@ public class RutinaDtoRequest {
         private String email;
     }
 
-    String rutinaRequest = """
-    {
-        "nombreRutina": "Rutina A",
-        "fechaInicio": "2024-06-18",
-        "fechaFinal": "2025-06-18",
-        "entrenador": {
-            "email": {{emailEntrenador}}
-        }
-    }
-    """;
 }

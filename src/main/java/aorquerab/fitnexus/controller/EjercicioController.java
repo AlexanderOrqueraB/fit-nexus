@@ -163,7 +163,7 @@ public class EjercicioController {
         return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoActualizado);
     }
 
-    //TODO: Testear con postman
+    //Testeado Postman + SB
     @DeleteMapping("/{idEjercicio}")
     public ResponseEntity<String> eliminarEjercicio (@PathVariable Long idEjercicio) {
         log.info("Ejecutando eliminarEjercicio con el id: {}", idEjercicio);

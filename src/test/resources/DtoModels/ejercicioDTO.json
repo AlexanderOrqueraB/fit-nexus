@@ -1,17 +1,61 @@
 {
-  "planRequest": {
+  "EjercicioDtoRequest (post)": {
     "nombreEjercicio": "Nombre ejercicio",
     "repeticion": 5,
     "serie": 5,
     "peso": 10,
     "cardio": false
   },
-  "planRequestPUT": {
-    "nombreEjercicio": "Nombre ejercicio",
-    "repeticion": 5,
-    "serie": 5,
+  "EjercicioDtoRequest (put)": {
+    "nombreEjercicio": "Press banca",
+    "repeticion": null,
+    "serie": null,
     "peso": 10,
-    "cardio": false
+    "cardio": null
+  },
+  "EntrenadorDTORequest": {
+    "nombre": "Nombre nuevo",
+    "apellido": null,
+    "asesorNutricional": null
+  },
+  "PlanEntrenamientoDtoAsociarRequest": {
+    "nombrePlan": "Plan X",
+    "cliente": {
+      "email": "emailCliente"
+    }
+  },
+  "PlanEntrenamientoDtoFechasRequest": {
+    "nombrePlan": "Plan X",
+    "fechaInicio": "2024-06-18",
+    "fechaFinal": "2025-06-18"
+  },
+  "PlanEntrenamientoDtoCrearRequest": {
+    "nombrePlan": "Plan X",
+    "entrenador": {
+      "email": "emailEntrenador"
+    }
+  },
+  "PlanEntrenamientoDtoResponse" : {
+    "nombrePlan": "Plan X",
+    "fechaInicio": "2024-06-18",
+    "fechaFinal": "2025-06-18",
+    "cliente": {
+      "email": "emailCliente"
+    },
+    "entrenador": {
+    "email": "emailEntrenador"
+    }
+  },
+  "ChangeLoginDTO": {
+    "email": "Apellido nuevo",
+    "password": "2024-06-18"
+  },
+  "RutinaDtoRequest" : {
+    "nombreRutina": "Rutina A",
+    "fechaInicio": "2024-06-18",
+    "fechaFinal": "2025-06-18",
+    "entrenador": {
+      "email": "emailEntrenador"
+    }
   }
-
 }

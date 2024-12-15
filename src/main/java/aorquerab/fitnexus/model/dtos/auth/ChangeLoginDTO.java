@@ -14,10 +14,4 @@ public class ChangeLoginDTO {
     private String email;
     private String password;
 
-    String changeLoginDTORequest = """
-    {
-        "email": "Apellido nuevo",
-        "password": "2024-06-18"
-    }
-    """;
 }

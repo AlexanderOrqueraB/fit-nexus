@@ -31,17 +31,4 @@ public class PlanEntrenamientoDtoResponse {
         private String email;
     }
 
-    String planRequest = """
-    {
-        "nombrePlan": "Plan X",
-        "fechaInicio": "2024-06-18",
-        "fechaFinal": "2025-06-18",
-        "cliente": {
-            "email": {{emailCliente}}
-        },
-        "entrenador": {
-            "email": {{emailEntrenador}}
-        }
-    }
-    """;
 }

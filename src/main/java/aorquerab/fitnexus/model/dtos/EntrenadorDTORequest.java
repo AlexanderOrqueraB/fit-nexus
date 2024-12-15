@@ -15,11 +15,4 @@ public class EntrenadorDTORequest {
     private String apellido;
     private Boolean asesorNutricional;
 
-    String entrenadorRequestPUT = """
-    {
-        "nombre": "Nombre nuevo",
-        "apellido": null,
-        "asesorNutricional": null
-    }
-    """;
 }

@@ -17,11 +17,4 @@ public class PlanEntrenamientoDtoFechasRequest {
     private LocalDate fechaInicio;
     private LocalDate fechaFinal;
 
-    String planRequest = """
-    {
-        "nombrePlan": "Plan X",
-        "fechaInicio": "2024-06-18",
-        "fechaFinal": "2025-06-18"
-    }
-    """;
 }

@@ -20,12 +20,4 @@ public class PlanEntrenamientoDtoCrearRequest {
         private String email;
     }
 
-    String planRequest = """
-    {
-        "nombrePlan": "Plan X",
-        "entrenador": {
-            "email": {{emailEntrenador}}
-        }
-    }
-    """;
 }

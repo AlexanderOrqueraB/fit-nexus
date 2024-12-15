@@ -20,12 +20,4 @@ public class PlanEntrenamientoDtoAsociarRequest {
         private String email;
     }
 
-    String planRequest = """
-    {
-        "nombrePlan": "Plan X",
-        "cliente": {
-            "email": {{emailCliente}}
-        }
-    }
-    """;
 }

@@ -36,6 +36,7 @@ public class Rutina {
     @JsonIgnore
     private Entrenador entrenador;
 
+    @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "rutina_ejercicio",
@@ -44,6 +45,7 @@ public class Rutina {
     )
     private List<Ejercicio> ejercicios = new ArrayList<>();
 
+    @Builder.Default
     @ManyToMany(mappedBy = "rutinas", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore //To avoid infinite serialization
     private List<PlanDeEntrenamiento> planDeEntrenamientos = new ArrayList<>();

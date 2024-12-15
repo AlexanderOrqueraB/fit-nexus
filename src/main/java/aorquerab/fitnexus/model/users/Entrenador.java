@@ -52,22 +52,27 @@ public class Entrenador {
         this.password = PASSWORD_ENCODER.encode(password);
     }
 
+    @Builder.Default
     @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Cliente> clientes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<PlanNutricional> pautasNutricionales = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<PlanDeEntrenamiento> planesDeEntrenamiento = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Rutina> rutinas = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Ejercicio> ejercicios = new ArrayList<>();

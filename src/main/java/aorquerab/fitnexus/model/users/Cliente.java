@@ -71,6 +71,7 @@ public class Cliente {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Entrenador entrenador;
 
+    @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
         name = "cliente_pauta_nutricional",
@@ -80,6 +81,7 @@ public class Cliente {
     @JsonIgnore
     private List<PlanNutricional> planNutricional = new ArrayList<>();
 
+    @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
         name = "cliente_plan_de_entrenamiento",
@@ -89,6 +91,7 @@ public class Cliente {
     @JsonIgnore
     private List<PlanDeEntrenamiento> planDeEntrenamiento = new ArrayList<>();
 
+    @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
         name = "cliente_rutina",
@@ -98,6 +101,7 @@ public class Cliente {
     @JsonIgnore
     private List<Rutina> rutinas = new ArrayList<>();
 
+    @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
         name = "cliente_ejercicio",
