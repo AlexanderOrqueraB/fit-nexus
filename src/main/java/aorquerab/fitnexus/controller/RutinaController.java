@@ -194,18 +194,11 @@ public class RutinaController {
     //TODO: Testear con postman
     // opcion con JPQL
     // DELETE Controller para eliminar una lista de ejercicios
-    @DeleteMapping
+    @DeleteMapping("/jqpl/{nombreRutina}")
     public ResponseEntity<String> eliminarListaDeEjerciciosFromRutinaWithJPQL (
             @RequestBody List<String> listaEjerciciosPorNombre,
             @PathVariable String nombreRutina) {
-        String ejemplo = """
-            [
-                "Press banca",
-                "Sentadilla",
-                "Peso muerto",
-                "Dominadas"
-            ]
-                """;
+
         log.info("Ejecutando eliminarListaDeEjerciciosFromRutina con esta lista de ejercicios: {}" , listaEjerciciosPorNombre);
         if (listaEjerciciosPorNombre == null || listaEjerciciosPorNombre.isEmpty())
             throw new InvalidRequestException("Error en la lista de ejercicios enviada");
@@ -218,7 +211,7 @@ public class RutinaController {
     //TODO: Testear con postman
     // opcion sin JPQL
     // DELETE Controller para eliminar una lista de ejercicios
-    @DeleteMapping("/{nombreRutina}")
+    @DeleteMapping("/nojpql/{nombreRutina}")
     public ResponseEntity<String> eliminarListaDeEjerciciosFromRutinaWithoutJPQL(
             @RequestBody List<String> listaEjerciciosPorNombre,
             @PathVariable String nombreRutina) {

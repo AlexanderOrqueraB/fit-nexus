@@ -69,5 +69,13 @@
         "nombreEjercicio": "Press Banca"
       }
     ]
+  },
+  "listaEjerciciosPorNombre": {
+    "ejercicios": [
+      "Press banca",
+      "Sentadilla",
+      "Peso muerto",
+      "Dominadas"
+    ]
   }
 }
