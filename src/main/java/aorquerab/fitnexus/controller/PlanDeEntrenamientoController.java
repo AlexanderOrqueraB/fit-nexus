@@ -37,6 +37,10 @@ public class PlanDeEntrenamientoController {
         log.info("Ejecutando obtenerPlanes...");
         try {
             List<PlanDeEntrenamiento> planesDeEntrenamientoList = planDeEntrenamientoRepository.findAll();
+            if (planesDeEntrenamientoList.isEmpty()) {
+                log.warn("Planes de entrenamiento no encontradas en base de datos...");
+                throw new PlanDeEntrenamientoNotFoundException("Planes de entrenamiento no encontrados...");
+            }
             return ResponseEntity.status(HttpStatus.OK).body(planesDeEntrenamientoList);
         } catch (Exception e) {
             log.warn("Error al obtener lista de planes de entrenamiento", e);
@@ -77,6 +81,10 @@ public class PlanDeEntrenamientoController {
                                         .cliente(clienteDTO)
                                             .build();
                             }).toList();
+            if (planEntrenamientoDtoResponseList.isEmpty()) {
+                log.warn("Planes de entrenamiento no encontradas en base de datos...");
+                throw new PlanDeEntrenamientoNotFoundException("Planes de entrenamiento no encontrados...");
+            }
             return ResponseEntity.status(HttpStatus.OK).body(planEntrenamientoDtoResponseList);
         } catch (Exception e) {
             log.warn("Error al obtener planesEntrenamientoDTO: ", e);
@@ -112,7 +120,6 @@ public class PlanDeEntrenamientoController {
 
     //TODO: POST Controller
     // para añadir fechas un plan
-
     @PostMapping ("/fecha")
     public ResponseEntity<String> addFechaPlanEntrenamiento (
             @RequestBody PlanEntrenamientoDtoFechasRequest planEntrenamientoDto) {
@@ -136,20 +143,14 @@ public class PlanDeEntrenamientoController {
     }
 
     //TODO: POST Controller
-    // para asociar cliente a un plan
+    // para asociar cliente a un plan/asignar un plan a un cliente concreto
+    //TODO: DELETE controller
+    // Para eliminar la asignacion de un plan a un cliente concreto
+
+    //TODO: DELETE controller
+    // Para borrar un plan
 
 
-    //TODO: GET Controller
-    // para obtener lista de planes
-    //TODO: GET Controller
-    // para obtener lista de planesDTO
-    //TODO: GET Controller
-    // para obtener plan por id
-    //TODO: GET Controller
-    // para obtener plan por nombreDePlan
-
-    //TODO: POST Controller
-    // para crear un plan
 
 
     //TODO: POST Controller
@@ -165,19 +166,5 @@ public class PlanDeEntrenamientoController {
 
     //TODO: DELETE controller
     // para eliminar una rutina de un plan
-
-    //TODO: DELETE controller
-    // Para borrar un plan
-
-
-
-    //TODO: POST controller
-    // Para asignar un plan a un cliente concreto
-
-    //TODO: DELETE controller
-    // Para eliminar la asignacion de un plan a un cliente concreto
-
-    //TODO: GET Controller
-    // Obtener los clientes asignados a un plan concreto
 
 }
