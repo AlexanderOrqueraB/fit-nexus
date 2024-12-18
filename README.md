@@ -18,7 +18,7 @@ Utiliza openapi-gradle-plugin para generar open API docs, configuracion en build
 bloque openApi {}
 
 Pasos:
-1. Ejecuta el comando ```./gradlew clean build generateOpenApiDocs``` (con la parte de construcción de React comentada y Docker desktop runnin)
+1. Ejecuta el comando ```./gradlew clean build generateOpenApiDocs``` (con la parte de construcción de React comentada y Docker desktop running)
 2. Copia build/docs/fit-nexus.json en swagger editor, revisa y comparte!
 
 ## Consultar Open API Docs (Swagger) tras iniciar la aplicación:

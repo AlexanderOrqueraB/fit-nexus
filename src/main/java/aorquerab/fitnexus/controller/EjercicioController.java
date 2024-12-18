@@ -85,6 +85,34 @@ public class EjercicioController {
         return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoRequest);
     }
 
+    //TODO: Could be on plan, rutina o ejercicio controller
+    // De esta forma el cliente puede ver sus ejercicios y con el mismo component de react el entrenador puede
+    // ver los suyos
+    @GetMapping ("/xx/{datoCliente/datoEntrenador}")
+    public ... obtenerEjerciciosPorUsuario
+
+    @GetMapping ("/xx/{datoCliente/datoEntrenador}")
+    public ... obtenerRutinaPorUsuario
+
+    @GetMapping ("/xx/{datoCliente/datoEntrenador}")
+    public ... obtenerPlanPorUsuario
+
+    Table rutina_ejercicio
+    Table plan_de_entrenamiento_rutina
+    Table cliente_ejercicio
+    Table cliente_rutina
+    Table cliente_plan_de_entrenamiento
+
+    //TODO: Done
+    @PostMapping("/whatever")
+    public addEjerciciosToRutina a una rutina
+
+    @PostMapping("/whatever")
+    public addRutinasEnLista a un plan
+
+
+
+
     //Testeado Postman + SB
     @GetMapping ("/ejercicio/{nombreEjercicio}")
     public ResponseEntity<List<EjercicioDtoRequest>> obtenerEjerciciosPorNombre(@PathVariable String nombreEjercicio) {
