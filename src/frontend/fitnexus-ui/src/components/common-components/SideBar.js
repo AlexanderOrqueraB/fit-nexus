@@ -134,36 +134,6 @@ const SideBar = ({ isAdmin }) => {
 					</Tooltip>
 				</TooltipProvider>
 
-				{/*Elementos SideBar de prueba*/}
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/test1"} className={
-								`group flex h-9 w-9 items-center justify-center rounded-lg 
-								${isActive("/test1") ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:text-foreground'}
-							} md:h-8 md:w-8`}
-							>
-								<Link2Off className={`h-5 w-5 ${isActive("/test1") ? 'text-bold' : ''}`} />
-							</Link>
-						</TooltipTrigger>
-						<TooltipContent side="right">Test1</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Link to={FITNEXUS_URL + "/nutrition-chart"} className={
-								`group flex h-9 w-9 items-center justify-center rounded-lg 
-								${isActive("/nutrition-chart") ? 'bg-primary text-primary-foreground font-bold' : 'text-muted-foreground hover:text-foreground'}
-							} md:h-8 md:w-8`}
-							>
-								<BarChart2Icon className={`h-5 w-5 ${isActive("/nutrition-chart") ? 'text-bold' : ''}`} />
-							</Link>
-						</TooltipTrigger>
-						<TooltipContent side="right">nutrition-chart</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
 			</nav>
 		</aside>
 	);

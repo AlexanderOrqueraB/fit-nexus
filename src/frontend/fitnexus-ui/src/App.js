@@ -10,11 +10,9 @@ import SignUpForm from './components/main-components/SignUpForm';
 import HomePage from "./components/main-components/HomePage";
 import ClientsList from "./components/main-components/ClientsList";
 import ExercisesList, { Workout } from "./components/main-components/Workout";
-import NutritionList from "./components/main-components/NutritionList";
 import UnauthorizedPage from "./components/main-components/UnauthorizedPage";
 import ProtectedLayout from "./components/main-components/ProtectedLayout";
 import Settings from "./components/main-components/Settings";
-import Test2 from "./components/to-double-check/Test2";
 import NutritionChart from "./components/to-double-check/NutritionChart";
 
 
@@ -66,21 +64,10 @@ return (
                     
                     <Route path="/nutri" element={
                         /*<ProtectedRoute>*/
-                            <NutritionList />
-                        /*</ProtectedRoute>*/
-                    }/>
-
-                    {/*Elementos sideBar de prueba test1 y test2*/}
-                    <Route path="/test1" element={
-                        /*<ProtectedRoute>*/
-                            <Test2 />
-                        /*</ProtectedRoute>*/
-                    }/>
-                    <Route path="/nutrition-chart" element={
-                        /*<ProtectedRoute>*/
                             <NutritionChart />
                         /*</ProtectedRoute>*/
                     }/>
+
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -21,6 +21,15 @@ import { EXERCISES, PLAN2, RUTINAS } from '../utils/hardcodedModelDtos';
 import { toast } from 'sonner'
 import ExercisePost from "../buttons-components/ejercicio/PostExercise"
 import { fetchWorkoutData } from '../utils/api';
+import {
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+  } from '../../components_ui/ui/sheet';
+import Test2 from '../to-double-check/Test2';
 
 
 export function Workout() {
@@ -110,8 +119,8 @@ export function Workout() {
 						<CardHeader>
 						  <CardTitle>Planes de entrenamiento</CardTitle>
 						  <CardDescription>
-							A continuación puedes ver tus planes de entrenamiento creados
-												</CardDescription>
+							A continuación puedes ver tus planes de entrenamiento asignados
+						  </CardDescription>
 						</CardHeader>
 						<CardContent>
 						  <Table>
@@ -121,7 +130,7 @@ export function Workout() {
 								<TableHead>Fecha Inicio</TableHead>
 								<TableHead className="hidden md:table-cell">
 								  Fecha Final
-															</TableHead>
+								</TableHead>
 								<TableHead className="hidden md:table-cell">Rutinas</TableHead>
 								<TableHead className="hidden md:table-cell">Acciones</TableHead>
 							  </TableRow>
@@ -179,7 +188,7 @@ export function Workout() {
 						<CardHeader>
 						  <CardTitle>Rutinas</CardTitle>
 						  <CardDescription>
-							A continuación puedes ver tus rutinas creadas.
+							A continuación puedes ver tus rutinas asignadas.
 												</CardDescription>
 						</CardHeader>
 						<CardContent>
@@ -249,7 +258,15 @@ export function Workout() {
 						<CardHeader>
 						  <CardTitle>Ejercicios</CardTitle>
 							<CardDescription>
-								A continuación puedes ver tus ejercicios creados.
+								A continuación puedes ver tus ejercicios asignados:
+								<Sheet>
+									<SheetTrigger>VER FOTOS</SheetTrigger>
+									<SheetContent>
+										<SheetHeader>
+											<Test2/>
+										</SheetHeader>
+									</SheetContent>
+								</Sheet>
 							</CardDescription>
 						</CardHeader>
 						<CardContent>

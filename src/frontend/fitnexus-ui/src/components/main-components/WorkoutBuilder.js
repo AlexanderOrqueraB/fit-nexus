@@ -21,6 +21,15 @@ import { MoreHorizontal } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components_ui/ui/card';
 import { fetchWorkoutData } from '../utils/api';
 
+import PostRutina from '../buttons-components/rutina/PostRutina';
+import PostListEjerciciosInRutina from '../buttons-components/rutina/PostListEjerciciosInRutina';
+import GetRutinaByName from '../buttons-components/rutina/GetRutinaByName';
+import GetRutinaById from '../buttons-components/rutina/GetRutinaById';
+import DeleteExerciseListByName from '../buttons-components/rutina/DeleteExerciseListByName';
+
+import PostPlanEntrenamientoFecha  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamientoFecha';
+import PostPlanEntrenamiento  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamiento';
+
 export function WorkoutBuilder() {
   const [data, setData] = useState({}); //useState to store data from server
 
@@ -222,7 +231,19 @@ export function WorkoutBuilder() {
           <PostExercise />
           <PutExercise />
           <GetExerciseByName />
+          <DeleteExercise/>
         </div>
+        <div className="flex flex-row space-x-4"> 
+					<PostRutina/>
+					<PostListEjerciciosInRutina/>
+					<GetRutinaByName/>
+					<GetRutinaById/>
+					<DeleteExerciseListByName/>
+				</div>
+				<div className="flex flex-row space-x-4"> 
+					<PostPlanEntrenamiento/>
+					<PostPlanEntrenamientoFecha/>
+				</div>
       </div>
 
       <div className="flex min-h-screen w-full flex-col bg-muted/40">
