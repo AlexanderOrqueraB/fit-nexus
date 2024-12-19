@@ -11,6 +11,7 @@ import aorquerab.fitnexus.model.exception.RutinaNotFoundException;
 import aorquerab.fitnexus.model.users.Entrenador;
 import aorquerab.fitnexus.repository.EjercicioRepository;
 import aorquerab.fitnexus.repository.EntrenadorRepository;
+import aorquerab.fitnexus.repository.RutinaEjercicioRepository;
 import aorquerab.fitnexus.repository.RutinaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,11 +33,13 @@ public class RutinaController {
     private final RutinaRepository rutinaRepository;
     private final EntrenadorRepository entrenadorRepository;
     private final EjercicioRepository ejercicioRepository;
+    private final RutinaEjercicioRepository rutinaEjercicioRepository;
 
-    public RutinaController(RutinaRepository rutinaRepository, EntrenadorRepository entrenadorRepository, EjercicioRepository ejercicioRepository) {
+    public RutinaController(RutinaRepository rutinaRepository, EntrenadorRepository entrenadorRepository, EjercicioRepository ejercicioRepository, RutinaEjercicioRepository rutinaEjercicioRepository) {
         this.rutinaRepository = rutinaRepository;
         this.entrenadorRepository = entrenadorRepository;
         this.ejercicioRepository = ejercicioRepository;
+        this.rutinaEjercicioRepository = rutinaEjercicioRepository;
     }
 
     //Testeado Postman + SB
@@ -150,43 +153,57 @@ public class RutinaController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Rutina creada correctamente en BD");
     }
 
-    //TODO: POST Controller
-    // Añadir ejercicios existentes
-    // (en una lista con muchos o 1 ejercicio, enviando idEjercicio o nombreEjercicio)
-    // a una rutina existente (necesitaremos el nombre de la rutina)
-    // Para añadirEjercicios EN UNA LISTA DE EJERCICIOS a una rutina
-    // puede ser util, sacar a un servicio la logica de obtenerEjercicioPorId para usarlo aqui tambien
-    @PostMapping("/{nombreRutina}")
-    public ResponseEntity<String> addEjerciciosEnLista (
-            @PathVariable String nombreRutina,
-            @RequestBody EjerciciosListDTO ejerciciosListDTO) {
-        log.info("Ejecutando addEjerciciosEnLista con esta lista de ejerciciosDTO: {}", ejerciciosListDTO);
-//        List<EjerciciosListDTO.EjercicioDTO> ejerciciosDTO = ejerciciosListDTO.getEjercicios();
-//        List<Ejercicio> ejercicios = EjerciciosListDTO.builder().build();
-//        Rutina rutina = Rutina.builder()
-//                .ejercicios(ejercicios)
-//                .build();
-        //TODO REVIEW
-        //Tengo una lista de ejercicios con solo el nombre List<EjercicioDTO> ejercicios y un nombreRutina;
-        //Creo una rutina de BD que contenga los ejercicios de la lista y NADA MAS?
-        return ResponseEntity.status(HttpStatus.OK).body("EMPTY");
-    }
-
-    //Testeado Postman + SB
+    //TODO: Testear con postman
+    // Agregar un ejercicio que ya existe: Debe evitar duplicados.
+    // Agregar y eliminar listas de ejercicios: Verifica que todas las relaciones se procesen correctamente.
     @Transactional
-    @PostMapping ("/rutina/{idRutina}")
+    @PostMapping ("/rutina/{idRutina}/ejercicios")
     public ResponseEntity<String> addEjerciciosToRutina (
             @PathVariable Long idRutina,
             @RequestBody EjerciciosListDTO ejerciciosListDTO) {
-        log.info("Ejecutando addEjerciciosToRutina con esta lista de ejerciciosDTO: {}", ejerciciosListDTO);
+        log.info("Ejecutando addEjerciciosToRutina con esta lista de ejerciciosDTO: {} y esta rutina: {}"
+                ,ejerciciosListDTO, idRutina);
+
+        if(!rutinaRepository.existsById(idRutina)) {
+            throw new RutinaNotFoundException("Rutina no encontrada: " + idRutina);
+        }
+
         List<EjerciciosListDTO.EjercicioDTO> ejerciciosFromDto = ejerciciosListDTO.getEjercicios();
         List<Long> idExerciseList = ejerciciosFromDto.stream().map(EjerciciosListDTO.EjercicioDTO::getId).toList();
-        Optional<Rutina> rutinaFromDB = rutinaRepository.findById(idRutina)
-                .map(rutina -> {
-                    rutina.setEjercicios(ejercicioRepository.findAllById(idExerciseList));
-                    return rutinaRepository.save(rutina);
-                });
-        return ResponseEntity.status(HttpStatus.OK).body("Ejercicios agregados correctamente");
+
+        //Añade cada ejercicio a la rutina usando la tabla intermedia (rutina_ejercicio)
+        idExerciseList.forEach(
+                ejercicioId -> rutinaEjercicioRepository.addEjercicioToRutina(idRutina,ejercicioId)
+        );
+
+        return ResponseEntity.status(HttpStatus.OK).body("Ejercicios añadidos correctamente a la rutina");
+    }
+
+    //TODO: Testear con postman
+    // Eliminar un ejercicio que no está en la rutina: No debe lanzar errores.
+    // Agregar y eliminar listas de ejercicios: Verifica que todas las relaciones se procesen correctamente.
+    @Transactional
+    @DeleteMapping("/rutina/{idRutina}/ejercicios")
+    public ResponseEntity<String> deleteEjerciciosFromRutina(
+            @PathVariable Long idRutina,
+            @RequestBody EjerciciosListDTO ejerciciosListDTO) {
+        log.info("Ejecutando deleteEjerciciosFromRutina con esta lista de ejerciciosDTO: {} y esta rutina: {}"
+                ,ejerciciosListDTO, idRutina);
+
+        // Verificar si la rutina existe
+        if (!rutinaRepository.existsById(idRutina)) {
+            throw new RutinaNotFoundException("Rutina no encontrada: " + idRutina);
+        }
+
+        List<EjerciciosListDTO.EjercicioDTO> ejerciciosFromDto = ejerciciosListDTO.getEjercicios();
+        List<Long> idExerciseList = ejerciciosFromDto.stream().map(EjerciciosListDTO.EjercicioDTO::getId).toList();
+
+        // Eliminar cada ejercicio de la rutina usando la tabla intermedia (rutina_ejercicio)
+        idExerciseList.forEach(ejercicioId ->
+                rutinaEjercicioRepository.deleteEjercicioFromRutina(idRutina, ejercicioId)
+        );
+
+        return ResponseEntity.status(HttpStatus.OK).body("Ejercicios eliminados correctamente de la rutina");
     }
 
 
@@ -246,8 +263,6 @@ public class RutinaController {
     //TODO: PUT Controller
     // para modificar datos de una rutina (nombre o fechas)
 
-    //TODO: DELETE controller
-    // para eliminar un ejercicio de una rutina
 
     //TODO: DELETE controller
     // Para borrar una rutina
