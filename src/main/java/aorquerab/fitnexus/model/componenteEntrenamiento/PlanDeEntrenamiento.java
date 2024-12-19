@@ -43,11 +43,6 @@ public class PlanDeEntrenamiento {
     private Entrenador entrenador;
 
     @Builder.Default
-    @ManyToMany(mappedBy = "planDeEntrenamiento", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Valoracion> valoraciones = new ArrayList<>();
-
-    @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable (
             name = "plan_de_entrenamiento_rutina",

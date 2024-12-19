@@ -79,15 +79,6 @@ Table cliente {
     version int
 }
 
-// Table: valoracion
-Table valoracion {
-    id SERIAL [pk]
-    comentario varchar(100) [not null]
-    cliente_id int [ref: > cliente.id]
-    plan_de_entrenamiento_id int [ref: > plan_de_entrenamiento.id]
-    version int
-}
-
 // Intermediate table: cliente_plan_nutricional
 Table cliente_plan_nutricional {
     cliente_id int [ref: > cliente.id]

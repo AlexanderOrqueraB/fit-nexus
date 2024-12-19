@@ -2,7 +2,6 @@ DROP TABLE IF EXISTS ejercicio CASCADE;
 DROP TABLE IF EXISTS plan_nutricional CASCADE;
 DROP TABLE IF EXISTS plan_de_entrenamiento CASCADE;
 DROP TABLE IF EXISTS rutina CASCADE;
-DROP TABLE IF EXISTS valoracion CASCADE;
 DROP TABLE IF EXISTS cliente CASCADE;
 DROP TABLE IF EXISTS entrenador CASCADE;
 
@@ -104,20 +103,6 @@ CREATE TABLE IF NOT EXISTS cliente (
     CONSTRAINT fk_entrenador
         FOREIGN KEY(entrenador_id)
         REFERENCES entrenador(id),
-    version INT
-);
-
-CREATE TABLE IF NOT EXISTS valoracion (
-    id SERIAL PRIMARY KEY,
-    comentario VARCHAR (100) NOT NULL,
-    cliente_id INT,
-    plan_de_entrenamiento_id INT,
-    CONSTRAINT fk_cliente_valoracion
-        FOREIGN KEY(cliente_id)
-        REFERENCES cliente(id),
-    CONSTRAINT fk_plan_de_entrenamiento
-        FOREIGN KEY(plan_de_entrenamiento_id)
-        REFERENCES plan_de_entrenamiento(id),
     version INT
 );
 
