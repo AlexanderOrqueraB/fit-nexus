@@ -42,6 +42,77 @@ export function WorkoutBuilder() {
   const [plans, setPlans] = useState([]);
   const [selectedPlan, setSelectedPlan] = useState(null);
 
+  //estado booleando para "test mode"
+  const [isTestMode, setIsTestMode] = useState(false);
+
+  const testExercises = [
+    {
+      id: 1,
+      nombreEjercicio: 'Dominadas',
+      repeticion: 10,
+      serie: 3,
+      peso: 0,
+      cardioRealizado: false,
+    },
+    {
+      id: 2,
+      nombreEjercicio: 'Press Banca',
+      repeticion: 12,
+      serie: 4,
+      peso: 50,
+      cardioRealizado: false,
+    },
+  ];
+  
+  const testRoutines = [
+    {
+      id: 1,
+      nombreRutina: 'Rutina Fuerza',
+      fechaInicio: '2024-12-01',
+      fechaFinal: '2024-12-31',
+      ejercicios: [
+        { nombreEjercicio: 'Sentadilla' },
+        { nombreEjercicio: 'Peso Muerto' },
+      ],
+    },
+  ];
+  
+  const testPlans = [
+    {
+      id: 1,
+      nombrePlan: 'Plan Noviembre',
+      fechaInicio: '2024-11-01',
+      fechaFinal: '2024-11-30',
+      rutinas: [{ nombreRutina: 'Rutina de Pecho' }],
+    },
+  ];
+
+  //Alternamos entre datos reales y datos de prueba
+  const displayedExercises = isTestMode ? testExercises : exercises;
+  const displayedRoutines = isTestMode ? testRoutines : routines;
+  const displayedPlans = isTestMode ? testPlans : plans;  
+
+  //Testing data to delete (change exercises2 to exercises)
+  const [exercises2, setExercises2] = useState([
+    {
+      id: 1,
+      nombreEjercicio: 'Dominadas',
+      repeticion: 10,
+      serie: 3,
+      peso: 0,
+      cardioRealizado: false,
+    },
+    {
+      id: 2,
+      nombreEjercicio: 'Press Banca',
+      repeticion: 12,
+      serie: 4,
+      peso: 50,
+      cardioRealizado: false,
+    },
+  ]);
+  //Testing data to delete
+
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   useEffect(() => {
@@ -256,6 +327,9 @@ export function WorkoutBuilder() {
                     <TabsTrigger value="plan">Planes</TabsTrigger>
                     <TabsTrigger value="rutina">Rutinas</TabsTrigger>
                     <TabsTrigger value="ejercicio">Ejercicios</TabsTrigger>
+                    <Button onClick={() => setIsTestMode(!isTestMode)}>
+                      {isTestMode ? 'Usar Datos Reales' : 'Usar Datos de Prueba'}
+                    </Button>
                   </TabsList>
                 </div>
                 <TabsContent value="plan">
@@ -281,7 +355,7 @@ export function WorkoutBuilder() {
                         </TableHeader>
 
                         <TableBody>
-                          {plans.map((plan) => (
+                          {displayedPlans.map((plan) => (
                             <TableRow key={plan.id}>
                               <TableCell className="font-medium">
                                 {plan.nombrePlan}
@@ -356,7 +430,7 @@ export function WorkoutBuilder() {
                         </TableHeader>
 
                         <TableBody>
-                          {routines.map((routine) => (
+                          {displayedRoutines.map((routine) => (
                             <TableRow key={routine.id}>
                               <TableCell className="font-medium">
                                 {routine.nombreRutina}
@@ -427,7 +501,7 @@ export function WorkoutBuilder() {
                         </TableHeader>
 
                         <TableBody>
-                          {exercises.map((exercise) => (
+                          {displayedExercises.map((exercise) => (
                             <TableRow key={exercise.id}>
                               <TableCell className="font-medium">
                                 {exercise.nombreEjercicio}
