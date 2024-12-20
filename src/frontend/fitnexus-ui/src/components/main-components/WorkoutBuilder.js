@@ -92,27 +92,6 @@ export function WorkoutBuilder() {
   const displayedRoutines = isTestMode ? testRoutines : routines;
   const displayedPlans = isTestMode ? testPlans : plans;  
 
-  //Testing data to delete (change exercises2 to exercises)
-  const [exercises2, setExercises2] = useState([
-    {
-      id: 1,
-      nombreEjercicio: 'Dominadas',
-      repeticion: 10,
-      serie: 3,
-      peso: 0,
-      cardioRealizado: false,
-    },
-    {
-      id: 2,
-      nombreEjercicio: 'Press Banca',
-      repeticion: 12,
-      serie: 4,
-      peso: 50,
-      cardioRealizado: false,
-    },
-  ]);
-  //Testing data to delete
-
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   useEffect(() => {

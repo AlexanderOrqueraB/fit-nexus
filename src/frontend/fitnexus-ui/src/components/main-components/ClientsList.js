@@ -23,6 +23,39 @@ export function ClientsList() {
 	const [clients, setClients] = useState([]);
 	const [selectedClient, setselectedClient] = useState(null);
 
+	  //estado booleando para "test mode"
+	  const [isTestMode, setIsTestMode] = useState(false);
+
+	const testClients = [
+		{
+			"nombre": "Luke",
+			"apellido": "Skywalker",
+			"email": "luke@skywalker.com",
+			"objetivo": "PERDER_GRASA",
+			"genero": "HOMBRE",
+			"frecuenciaEjercicioSemanal": "LIGERO",
+			"edad": 25,
+			"peso": 80,
+			"altura": 175,
+			"clienteDesde": "2023-07-12"
+		},
+		{
+			"nombre": "Leia",
+			"apellido": "Skywalker",
+			"email": "leia@skywalker.com",
+			"objetivo": "PERDER_GRASA",
+			"genero": "MUJER",
+			"frecuenciaEjercicioSemanal": "LIGERO",
+			"edad": 25,
+			"peso": 80,
+			"altura": 175,
+			"clienteDesde": "2023-07-12"
+		}
+	]
+
+	//Alternamos entre datos reales y datos de prueba
+	const displayedClients = isTestMode ? testClients : clients;
+
 	useEffect(() => {
 		// Cargar datos desde varias fuentes simultáneamente
 		const loadData = async () => {
@@ -52,6 +85,9 @@ export function ClientsList() {
 								<TabsTrigger value="all">Clientes</TabsTrigger>
 								<TabsTrigger value="fat">Perder grasa</TabsTrigger>
 								<TabsTrigger value="muscle">Ganar músculo</TabsTrigger>
+								<Button onClick={() => setIsTestMode(!isTestMode)}>
+                      				{isTestMode ? 'Usar Datos Reales' : 'Usar Datos de Prueba'}
+                    			</Button>
 							</TabsList>
 							<div className="ml-auto flex items-center gap-2">
 								<DropdownMenu>
@@ -99,7 +135,7 @@ export function ClientsList() {
 										</TableHeader>
 
 										<TableBody>
-										{clients.map((client) => (
+										{displayedClients.map((client) => (
 											<TableRow key={client.id}>
 												<TableCell className="font-medium">{client.nombre}</TableCell>
 												<TableCell className="font-medium">{client.apellido}</TableCell>
