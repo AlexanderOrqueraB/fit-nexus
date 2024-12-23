@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { Button } from "../../components_ui/ui/button"
-import dumbbell from "../../images/db2.PNG"
+import fitNexusLogo from "../../images/fit-nexus-logo.jpeg"
 import React, { useContext, useState } from "react"; 
 
 import { UserContext } from "./UserContext";
@@ -15,7 +15,7 @@ import {
 } from "../../components_ui/ui/card"
 import { Input } from "../../components_ui/ui/input"
 import { Label } from "../../components_ui/ui/label"
-import { toast } from 'sonner'
+import { toast, Toaster } from 'sonner'
 import {apiClient, FITNEXUS_URL} from "../utils/client";
 
 export function LoginForm() {
@@ -32,8 +32,8 @@ export function LoginForm() {
       toast.success('My first toast')
     }
 
-    const errorToast = ({message}) => {
-      toast.error(message)
+    const errorToast = () => {
+      toast.error('test')
     }
 
   // Handle changes on inputs
@@ -45,7 +45,7 @@ export function LoginForm() {
         [name]: value,
       });
     };
- 
+
   const onSubmit = (e) => {
     e.preventDefault(); //prevent refresh on page
     const userData = {
@@ -54,7 +54,8 @@ export function LoginForm() {
       };
 
     if (!userData.email || !userData.password) {
-      errorToast('Por favor introduce ambos campos...');
+
+      errorToast();
       throw new Error('Por favor introduce ambos campos...');
     }
 
@@ -100,16 +101,18 @@ export function LoginForm() {
 
 
   return (
-  <div className="w-full lg:grid lg:min-h lg:grid-cols-2 xl:min-h-[800px]">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-muted p-6 lg:p-10">
+        <div className="grid w-full max-w-3xl grid-cols-1 lg:grid-cols-2">
     <Card className="mx-auto max-w-sm">
-      <CardHeader>
-        <CardTitle className="text-2xl">Iniciar sesión</CardTitle>
-        <CardDescription>
-          Introduce tu email para acceder a tu cuenta
-        </CardDescription>
-      </CardHeader>
       <CardContent>
-        <div className="grid gap-4">
+      <div className="p-6 md:p-8">
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-col items-center text-center">
+              <h1 className="text-2xl font-bold">Iniciar sesión</h1>
+                <p className="text-muted-foreground">
+                  Introduce tu email para acceder a tu cuenta
+                </p>
+                </div>
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -141,38 +144,49 @@ export function LoginForm() {
           </Button>
           
           <div className="mt-2 text-center text-sm">
-          SOY ADMIN o USER:
+          SOY ADMIN o USER: {" "}
             <Button onClick={()=> navigate("/dashboard")} className="underline">
               IR
             </Button>
           </div>
           <div className="mt-2 text-center text-sm">
-            SOY Unauthorized:
+            SOY Unauthorized: {" "}
             <Button onClick={()=> navigate("/unauthorized")} className="underline">
               IR
             </Button>
           </div>
-          <div className="mt-2 text-center text-sm">
-            No tienes una cuenta?
+          <div className="text-center text-sm">
+            No tienes una cuenta? {" "}
             <Button onClick={()=> navigate("/signup")} className="underline">
             Regístrate!
             </Button>
           </div>
         </div>
-
+        </div>
       </CardContent>
     </Card>
-    <div className="relative flex-1 hidden lg:flex items-center justify-center bg-muted">
+    <div className="relative hidden bg-muted lg:flex">
         <img
-          src={dumbbell}
-          alt="dumbbell"
+          src={fitNexusLogo}
+          alt="fitNexusLogo"
           width="1920"
           height="1080"
-          className="h-50 w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
+      </div>
+    </div>
+    <div className="mt-4 text-center text-xs text-muted-foreground">
+      Al continuar, aceptas nuestros{" "}
+          <a href="#" className="underline underline-offset-4 hover:text-primary">
+            Términos de servicio
+          </a>{" "}
+      y nuestra{" "}
+      <a href="#" className="underline underline-offset-4 hover:text-primary">
+        Política de privacidad
+      </a>.
     </div>
   </div>
-  )
+  );
 }
 
 export default LoginForm

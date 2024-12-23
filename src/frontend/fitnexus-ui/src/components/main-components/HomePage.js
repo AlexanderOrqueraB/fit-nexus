@@ -122,12 +122,26 @@ export function HomePage() {
 	return (
 		<div>
 			<h1>Bienvenido: {CLIENTE.nombre}</h1>
-			<h3>No tienes aun añadidos tus datos extra para poder calcular tu dieta!</h3>
-			<h3>Añadelos pulsando el botón</h3>
-			<div>
+			<div className="flex flex-1 flex-col gap-4 p-4">
+		<div className="grid auto-rows-min gap-4 md:grid-cols-3">
+            <div className="aspect-video rounded-xl bg-muted/50" >
+				<h3>No tienes aun añadidos tus datos extra para poder calcular tu dieta!</h3>
+			</div>
+            <div className="aspect-video rounded-xl bg-muted/50" >
+				<h3>Añadelos pulsando el botón</h3>
 				<div className="flex flex-row space-x-4"> 
-					<EditProfileExtra />
+				<EditProfileExtra />
 				</div>
+			</div>
+            <div className="aspect-video rounded-xl bg-muted/50" />
+          </div>
+          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
+		  </div>
+        </div>
+
+
+			<div>
+				
 			</div>
 		</div>
 	);
