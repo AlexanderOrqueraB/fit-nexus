@@ -2,9 +2,16 @@ package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.EjercicioDtoRequest;
+import aorquerab.fitnexus.model.enumerator.Role;
+import aorquerab.fitnexus.model.exception.ClienteNotFoundException;
 import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
+import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
+import aorquerab.fitnexus.model.users.Cliente;
+import aorquerab.fitnexus.model.users.Entrenador;
+import aorquerab.fitnexus.repository.ClienteRepository;
 import aorquerab.fitnexus.repository.EjercicioRepository;
+import aorquerab.fitnexus.repository.EntrenadorRepository;
 import aorquerab.fitnexus.utils.EjercicioDTOMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
@@ -23,9 +31,13 @@ import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 public class EjercicioController {
 
     private final EjercicioRepository ejercicioRepository;
+    private final ClienteRepository clienteRepository;
+    private final EntrenadorRepository entrenadorRepository;
 
-    public EjercicioController(EjercicioRepository ejercicioRepository) {
+    public EjercicioController(EjercicioRepository ejercicioRepository, ClienteRepository clienteRepository, EntrenadorRepository entrenadorRepository) {
         this.ejercicioRepository = ejercicioRepository;
+        this.clienteRepository = clienteRepository;
+        this.entrenadorRepository = entrenadorRepository;
     }
 
     //Testeado Postman + SB
@@ -71,6 +83,82 @@ public class EjercicioController {
         }
     }
 
+    //TODO: Testear con Postman
+    @GetMapping("/roles/{userEmailId}")
+    @ResponseBody
+    public Optional<Role> obtenerRolePorEmailId (@PathVariable String userEmailId){
+        log.info("Ejecutando obtenerRolePorEmailId con este emailId: {} ", userEmailId);
+        Cliente clienteByEmailId = clienteRepository.findByEmail(userEmailId).orElseThrow( () -> {
+                log.warn("Cliente no encontrado con el email: {}", userEmailId);
+                return new ClienteNotFoundException("Cliente no encontrado en BD: " + userEmailId);
+                });
+        if(clienteByEmailId != null) {
+            return Optional.of(clienteByEmailId.getRole());
+        }
+
+        Entrenador entrenadorByEmailId = entrenadorRepository.findByEmail(userEmailId).orElseThrow( () -> {
+            log.warn("Entrenador no encontrado con el email: {}", userEmailId);
+            return new EntrenadorNotFoundException("Entrenador no encontrado en BD: " + userEmailId);
+        });
+
+        if (entrenadorByEmailId != null) {
+            return Optional.of(entrenadorByEmailId.getRole());
+        }
+        log.info("Email no encontrado en base de datos");
+        return Optional.empty();
+    }
+
+    //TODO: Testear en Postman
+    //TODO: Testear en React
+    @GetMapping("/ejercicio/usuario/{emailId}")
+    public ResponseEntity<List<EjercicioDtoRequest>> obtenerEjercicioPorUsuario(@PathVariable String emailId) {
+        log.info("Ejecutando obtenerEjercicioPorUsuario...");
+        try {
+            List<Ejercicio> ejercicios = Collections.emptyList();
+            Optional<Role> rolUsuario = Optional.ofNullable(obtenerRolePorEmailId(emailId).orElseThrow(() -> {
+                log.warn("Error al obtener rol para el email: {}", emailId);
+                return new RuntimeException("Error al obtener el rol");
+            }));
+            if (rolUsuario.isPresent()) {
+                if (rolUsuario.get().equals(Role.ADMIN)) {
+                    log.info("Obteniendo ejercicios para entrenador con email: {}", emailId);
+                    ejercicios = entrenadorRepository.findByEmail(emailId)
+                            .map(Entrenador::getEjercicios)
+                            .orElseThrow(() -> new EntrenadorNotFoundException("Entrenador no encontrado con el email: " + emailId));
+                } else if (rolUsuario.get().equals(Role.USER)) {
+                    log.info("Obteniendo ejercicios para cliente con email: {}", emailId);
+                    ejercicios = clienteRepository.findByEmail(emailId)
+                            .map(Cliente::getEjercicios)
+                            .orElseThrow(() -> new ClienteNotFoundException("Cliente no encontrado con el email: " + emailId));
+                } else {
+                    throw new IllegalArgumentException("El usuario no tiene un rol valido");
+                }
+
+                if (ejercicios.isEmpty()) {
+                    throw new EjercicioNotFoundException("No se encontraron ejercicios.");
+                }
+            }
+
+            List<EjercicioDtoRequest> ejercicioDtoRequestList = ejercicios.stream()
+                    .map(ejercicio -> EjercicioDtoRequest.builder()
+                            .nombreEjercicio(ejercicio.getNombreEjercicio())
+                            .repeticion(ejercicio.getRepeticion())
+                            .serie(ejercicio.getSerie())
+                            .peso(ejercicio.getPeso())
+                            .cardio(ejercicio.getCardio())
+                            .build()).toList();
+
+            if (ejercicioDtoRequestList.isEmpty()) {
+                log.warn("Ejercicios no encontrados en base de datos...");
+                throw new EjercicioNotFoundException("Ejercicios no encontrados...");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoRequestList);
+        } catch (Exception e) {
+            log.warn("Error al obtener ejerciciosDTO: ", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
+    }
+
     //Testeado Postman + SB
     @GetMapping ("/{idEjercicio}")
     public ResponseEntity<EjercicioDtoRequest> obtenerEjercicioPorId(@PathVariable Long idEjercicio) {
@@ -85,32 +173,9 @@ public class EjercicioController {
         return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoRequest);
     }
 
-    //TODO: Could be on plan, rutina o ejercicio controller
-    // De esta forma el cliente puede ver sus ejercicios y con el mismo component de react el entrenador puede
-    // ver los suyos
-    @GetMapping ("/xx/{datoCliente/datoEntrenador}")
-    public ... obtenerEjerciciosPorUsuario
-
-    @GetMapping ("/xx/{datoCliente/datoEntrenador}")
-    public ... obtenerRutinaPorUsuario
-
-    @GetMapping ("/xx/{datoCliente/datoEntrenador}")
-    public ... obtenerPlanPorUsuario
-
-    Table rutina_ejercicio
-    Table plan_de_entrenamiento_rutina
-    Table cliente_ejercicio
-    Table cliente_rutina
-    Table cliente_plan_de_entrenamiento
-
-    //TODO: Done
-    @PostMapping("/whatever")
-    public addEjerciciosToRutina a una rutina
-
-    @PostMapping("/whatever")
-    public addRutinasEnLista a un plan
-
-
+    //TODO: Table cliente_ejercicio
+    //TODO: Table cliente_rutina
+    //TODO: Table cliente_plan_de_entrenamiento
 
 
     //Testeado Postman + SB
