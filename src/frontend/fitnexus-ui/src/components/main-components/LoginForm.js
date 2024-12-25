@@ -18,6 +18,7 @@ import { Label } from "../../components_ui/ui/label"
 import { toast, Toaster } from 'sonner'
 import {apiClient, FITNEXUS_URL} from "../utils/client";
 
+
 export function LoginForm() {
 
   const { setUser } = useContext(UserContext);
@@ -54,7 +55,6 @@ export function LoginForm() {
       };
 
     if (!userData.email || !userData.password) {
-
       errorToast();
       throw new Error('Por favor introduce ambos campos...');
     }
@@ -157,7 +157,7 @@ export function LoginForm() {
           </div>
           <div className="text-center text-sm">
             No tienes una cuenta? {" "}
-            <Button onClick={()=> navigate("/signup")} className="underline">
+            <Button onClick={()=> navigate("/signup")}  className="w-full">
             Regístrate!
             </Button>
           </div>

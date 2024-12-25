@@ -19,6 +19,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "../../components_ui/ui/chart"
+import { Button } from "../../components_ui/ui/button"
+import { CustomAlertDialog } from "./CustomAlertDialog"
 
 const chartMacros = [
   { macronutriente: "Proteínas", porcentajes: 30, gramos:120, fill: "var(--color-chrome)" },
@@ -49,6 +51,16 @@ const chartConfig = {
     color: "hsl(var(--chart-2))",
   },
 }
+
+const pautaMoreInfo = "Los porcentajes vienen fijados de la forma 30% proteínas, 30% hidratos de carbono y 40% grasas para" + 
+"favorecer la pérdida de grasa. Los gramos se calculan con el total de kcal y teniendo en cuenta que la grasa aporta 9kcal por gramo, " +
+"mientras que los hidratos y las proteínas aportan 4 kcal."
+
+const kcalMoreInfo = "Para el cálculo de kcal se utiliza en primer lugar la fórmula de Harris-Benedict que utiliza: la edad, la altura, " +
+"el peso y el género para calcular la tasa de metabolismo basal (la energía que quemamos en reposo). A continuación se calculan las kcal de " +
+"mantenimiento agregando un factor de actividad según la frecuencia de ejercicio semanal que modifica esas kcal. Por último, " +
+"y en función del objetivo se añaden (300 kcal) para ganar músculo de forma eficiente o se restan (400kcal) para perder grasa de forma saludable."
+
 
 export function NutritionChart() {
   const totalPorcentajes = React.useMemo(() => {
@@ -135,6 +147,11 @@ export function NutritionChart() {
           Si mueves el cursor sobre el gráfico, podrás ver la cantidad de gramos y el porcentajes
           de cada macronutriente
         </div>
+        <CustomAlertDialog
+          messageButton = "De dónde salen estos datos?"
+          title = "Macronutrientes en % y en gramos"
+          description = {pautaMoreInfo} 
+        />
       </CardFooter>
     </Card>
 
@@ -209,6 +226,11 @@ export function NutritionChart() {
         <div className="leading-none text-muted-foreground">
           Si mueves el cursor sobre el gráfico, podrás ver la cantidad de kcal para cada macronutriente
         </div>
+        <CustomAlertDialog
+          messageButton = "De dónde salen estos datos?"
+          title = "Cantidad de kilocalorías"
+          description = {kcalMoreInfo} 
+        />
       </CardFooter>
     </Card>
     
