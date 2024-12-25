@@ -220,10 +220,10 @@ export function Workout() {
 										</Button>
 									  </DropdownMenuTrigger>
 									  <DropdownMenuContent align="end">
-										<DropdownMenuLabel>Acciones</DropdownMenuLabel>
 										<DropdownMenuItem>
 										  Ver imagen
 										</DropdownMenuItem>
+										<DropdownMenuSeparator />
 										<DropdownMenuItem>Eliminar</DropdownMenuItem>
 									  </DropdownMenuContent>
 									</DropdownMenu>

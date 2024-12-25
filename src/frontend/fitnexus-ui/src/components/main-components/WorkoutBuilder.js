@@ -29,6 +29,7 @@ import DeleteExerciseListByName from '../buttons-components/rutina/DeleteExercis
 
 import PostPlanEntrenamientoFecha  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamientoFecha';
 import PostPlanEntrenamiento  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamiento';
+import { Dialog } from '../../components_ui/ui/dialog';
 
 export function WorkoutBuilder() {
   const [data, setData] = useState({}); //useState to store data from server
@@ -352,6 +353,7 @@ export function WorkoutBuilder() {
                               </TableCell>
 
                               <TableCell>
+                                <Dialog>
                                 <DropdownMenu>
                                   <DropdownMenuTrigger asChild>
                                     <Button
@@ -373,8 +375,12 @@ export function WorkoutBuilder() {
                                       Editar
 																		</DropdownMenuItem>
                                     <DropdownMenuItem>Eliminar</DropdownMenuItem>
+                                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          Test
+        </DropdownMenuItem>
                                   </DropdownMenuContent>
                                 </DropdownMenu>
+                                </Dialog>
                               </TableCell>
                             </TableRow>
                           ))}

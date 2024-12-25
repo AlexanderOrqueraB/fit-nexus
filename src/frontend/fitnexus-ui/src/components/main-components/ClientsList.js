@@ -9,6 +9,8 @@ import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
+	DropdownMenuRadioGroup,
+	DropdownMenuRadioItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
@@ -23,8 +25,8 @@ export function ClientsList() {
 	const [clients, setClients] = useState([]);
 	const [selectedClient, setselectedClient] = useState(null);
 
-	  //estado booleando para "test mode"
-	  const [isTestMode, setIsTestMode] = useState(false);
+	//estado booleando para "test mode"
+	const [isTestMode, setIsTestMode] = useState(false);
 
 	const testClients = [
 		{
@@ -43,7 +45,7 @@ export function ClientsList() {
 			"nombre": "Leia",
 			"apellido": "Skywalker",
 			"email": "leia@skywalker.com",
-			"objetivo": "PERDER_GRASA",
+			"objetivo": "GANAR_MUSCULO",
 			"genero": "MUJER",
 			"frecuenciaEjercicioSemanal": "LIGERO",
 			"edad": 25,
@@ -55,6 +57,22 @@ export function ClientsList() {
 
 	//Alternamos entre datos reales y datos de prueba
 	const displayedClients = isTestMode ? testClients : clients;
+
+	const [visibleColumns, setVisibleColumns] = useState([
+		'nombre', 
+		'apellido', 
+		'email', 
+		'objetivo',
+		'genero',
+		'clienteDesde'
+	  ]);
+
+	//Para el filtro de objetivo
+	const [selectedObjective, setSelectedObjective] = useState('Todos');
+
+	const filteredClients = displayedClients.filter((client) =>
+	selectedObjective === 'Todos' || client.objetivo === selectedObjective
+	);
 
 	useEffect(() => {
 		// Cargar datos desde varias fuentes simultáneamente
@@ -83,8 +101,6 @@ export function ClientsList() {
 						<div className="flex items-center">
 							<TabsList>
 								<TabsTrigger value="all">Clientes</TabsTrigger>
-								<TabsTrigger value="fat">Perder grasa</TabsTrigger>
-								<TabsTrigger value="muscle">Ganar músculo</TabsTrigger>
 								<Button onClick={() => setIsTestMode(!isTestMode)}>
                       				{isTestMode ? 'Usar Datos Reales' : 'Usar Datos de Prueba'}
                     			</Button>
@@ -97,16 +113,35 @@ export function ClientsList() {
 											<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Filtro</span>
 										</Button>
 									</DropdownMenuTrigger>
+
+
 									<DropdownMenuContent align="end">
-										<DropdownMenuLabel>Filtrar por</DropdownMenuLabel>
-										<DropdownMenuSeparator />
-										<DropdownMenuCheckboxItem checked>Todos</DropdownMenuCheckboxItem>
-										<DropdownMenuCheckboxItem>Perder grasa</DropdownMenuCheckboxItem>
-										<DropdownMenuCheckboxItem>Ganar músculo</DropdownMenuCheckboxItem>
-										<DropdownMenuCheckboxItem>Edad</DropdownMenuCheckboxItem>
-										<DropdownMenuCheckboxItem>Peso</DropdownMenuCheckboxItem>
-										<DropdownMenuCheckboxItem>Altura</DropdownMenuCheckboxItem>
-									</DropdownMenuContent>
+	<DropdownMenuLabel>Mostrar columnas</DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    {['nombre', 'apellido', 'email', 'objetivo', 'genero', 'edad', 'peso', 'altura', 'clienteDesde'].map((column) => (
+      <DropdownMenuCheckboxItem
+        key={column}
+        checked={visibleColumns.includes(column)}
+        onCheckedChange={() => {
+          setVisibleColumns((prev) =>
+            prev.includes(column)
+              ? prev.filter((col) => col !== column)
+              : [...prev, column]
+          );
+        }}>
+        {column.charAt(0).toUpperCase() + column.slice(1)}
+      </DropdownMenuCheckboxItem>
+    ))}
+    <DropdownMenuSeparator />
+    <DropdownMenuLabel>Filtrar por objetivo</DropdownMenuLabel>
+    <DropdownMenuRadioGroup value={selectedObjective} onValueChange={setSelectedObjective}>
+      <DropdownMenuRadioItem value="Todos">Todos</DropdownMenuRadioItem>
+      <DropdownMenuRadioItem value="PERDER_GRASA">Perder grasa</DropdownMenuRadioItem>
+      <DropdownMenuRadioItem value="GANAR_MUSCULO">Ganar músculo</DropdownMenuRadioItem>
+    </DropdownMenuRadioGroup>
+
+
+	</DropdownMenuContent>
 								</DropdownMenu>
 							</div>
 						</div>
@@ -122,61 +157,37 @@ export function ClientsList() {
 									<Table>
 										<TableHeader>
 											<TableRow>
-												<TableHead>Nombre</TableHead>
-												<TableHead>Apellido</TableHead>
-												<TableHead className="hidden md:table-cell">Email</TableHead>
-												<TableHead className="hidden md:table-cell">Objetivo</TableHead>
-												<TableHead className="hidden md:table-cell">Genero</TableHead>
-												<TableHead className="hidden md:table-cell">Edad</TableHead>
-												<TableHead className="hidden md:table-cell">Peso</TableHead>
-												<TableHead className="hidden md:table-cell">Altura</TableHead>
-												<TableHead className="hidden md:table-cell">Cliente desde</TableHead>
+											{visibleColumns.includes('nombre') && <TableHead>Nombre</TableHead>}
+      										{visibleColumns.includes('apellido') && <TableHead>Apellido</TableHead>}
+											{visibleColumns.includes('email') && <TableHead className="hidden md:table-cell">Email</TableHead>}
+											{visibleColumns.includes('objetivo') && <TableHead className="hidden md:table-cell">Objetivo</TableHead>}
+											{visibleColumns.includes('genero') && <TableHead className="hidden md:table-cell">Genero</TableHead>}
+											{visibleColumns.includes('edad') && <TableHead className="hidden md:table-cell">Edad</TableHead>}
+											{visibleColumns.includes('peso') && <TableHead className="hidden md:table-cell">Peso</TableHead>}
+											{visibleColumns.includes('altura') && <TableHead className="hidden md:table-cell">Altura</TableHead>}
+											{visibleColumns.includes('clienteDesde') && <TableHead className="hidden md:table-cell">Cliente desde</TableHead>}
 											</TableRow>
 										</TableHeader>
 
 										<TableBody>
-										{displayedClients.map((client) => (
+										{filteredClients.map((client) => (
 											<TableRow key={client.id}>
-												<TableCell className="font-medium">{client.nombre}</TableCell>
-												<TableCell className="font-medium">{client.apellido}</TableCell>
-												<TableCell className="font-medium">{client.email}</TableCell>
-												<TableCell>
-													<Badge variant="outline">{client.objetivo}</Badge>
-												</TableCell>
-												<TableCell>
-													<Badge variant="secondary">{client.genero}</Badge>
-												</TableCell>
-												<TableCell className="hidden md:table-cell">{client.edad}</TableCell>
-												<TableCell className="hidden md:table-cell">{client.peso}</TableCell>
-												<TableCell className="hidden md:table-cell">{client.altura}</TableCell>
-												<TableCell className="hidden md:table-cell">
-													{client.clienteDesde}
-												</TableCell>
+        {visibleColumns.includes('nombre') && <TableCell className="font-medium">{client.nombre}</TableCell>}
+        {visibleColumns.includes('apellido') && <TableCell className="font-medium">{client.apellido}</TableCell>}
+        {visibleColumns.includes('email') && <TableCell className="font-medium">{client.email}</TableCell>}
+        {visibleColumns.includes('objetivo') && <TableCell><Badge variant="outline">{client.objetivo}</Badge></TableCell>}
+        {visibleColumns.includes('genero') && <TableCell><Badge variant="secondary">{client.genero}</Badge></TableCell>}
+        {visibleColumns.includes('edad') && <TableCell className="hidden md:table-cell">{client.edad}</TableCell>}
+        {visibleColumns.includes('peso') && <TableCell className="hidden md:table-cell">{client.peso}</TableCell>}
+        {visibleColumns.includes('altura') && <TableCell className="hidden md:table-cell">{client.altura}</TableCell>}
+        {visibleColumns.includes('clienteDesde') && <TableCell className="hidden md:table-cell">{client.clienteDesde}</TableCell>}
+
 											</TableRow>
 											))}
 										</TableBody>
 									</Table>
 								</CardContent>
 							</Card>
-						</TabsContent>
-
-						<TabsContent value="fat">
-							<Card x-chunk="dashboard-06-chunk-0"></Card>
-							<CardHeader>
-									<CardTitle>Perder grasa</CardTitle>
-									<CardDescription>
-										Lista de clientes que quieren perder grasa
-									</CardDescription>
-								</CardHeader>
-						</TabsContent>
-						<TabsContent value="muscle">
-							<Card x-chunk="dashboard-06-chunk-0"></Card>
-							<CardHeader>
-									<CardTitle>Ganar músculo</CardTitle>
-									<CardDescription>
-										Lista de clientes que quieren ganar músculo
-									</CardDescription>
-								</CardHeader>
 						</TabsContent>
 					</Tabs>
           </div>
