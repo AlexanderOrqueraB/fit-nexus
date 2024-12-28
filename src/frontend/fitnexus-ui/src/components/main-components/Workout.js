@@ -1,18 +1,8 @@
-import { ListFilter, MoreHorizontal, UserCheck } from 'lucide-react';
+import { Info, InfoIcon, ListFilter, MoreHorizontal, UserCheck } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components_ui/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components_ui/ui/card';
-
-import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from '../../components_ui/ui/dropdown-menu';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
@@ -29,7 +19,19 @@ import {
 	SheetTitle,
 	SheetTrigger,
   } from '../../components_ui/ui/sheet';
-import Test2 from '../to-double-check/Test2';
+import {
+	DropdownMenu,
+	DropdownMenuCheckboxItem,
+	DropdownMenuContent,
+	DropdownMenuRadioGroup,
+	DropdownMenuRadioItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger
+} from '../../components_ui/ui/dropdown-menu';
+import ExercisesInfoImg from '../to-double-check/ExercisesInfoImg';
+import { Badge } from '../../components_ui/ui/badge';
+
 
 
 export function Workout() {
@@ -61,6 +63,14 @@ export function Workout() {
 		  peso: 50,
 		  cardioRealizado: false,
 		},
+		{
+			id: 3,
+			nombreEjercicio: 'Caminar cinta',
+			repeticion: 1,
+			serie: 1,
+			peso: 0,
+			cardioRealizado: true,
+		  },
 	  ];
 	  
 	  const testRoutines = [
@@ -90,7 +100,20 @@ export function Workout() {
 	  const displayedExercises = isTestMode ? testExercises : exercises;
 	  const displayedRoutines = isTestMode ? testRoutines : routines;
 	  const displayedPlans = isTestMode ? testPlans : plans; 
-  
+	
+	//Para el filtro de objetivo
+	const [selectedCardio, setSelectedCardio] = useState('Todos');
+	
+	// Estado para rastrear la pestaña activa
+	const [activeTab, setActiveTab] = useState('ejercicio'); 
+
+	const filteredExercises = displayedExercises.filter((exercise) => {
+		if (selectedCardio === 'Todos') return true;
+		const isCardio = selectedCardio === 'true'; // Convertimos a booleano
+		return exercise.cardioRealizado === isCardio; // Compararmos valores booleanos
+	  });
+	  
+
 	const handleChange = (e) => {
 		const { name, value } = e.target;
 		setData({
@@ -156,7 +179,7 @@ export function Workout() {
 			<div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
 			  <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
 				<div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
-				  <Tabs defaultValue="plan">
+				  <Tabs defaultValue="ejercicio" onValueChange={(value) => setActiveTab(value)}>
 					<div className="flex items-center">
 					  <TabsList>
 						<TabsTrigger value="plan">Planes</TabsTrigger>
@@ -166,6 +189,31 @@ export function Workout() {
 							{isTestMode ? 'Usar Datos Reales' : 'Usar Datos de Prueba'}
 						</Button>
 					  </TabsList>
+					  {activeTab === 'ejercicio' && (
+					  <div className="ml-auto flex items-center gap-2">
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<Button variant="outline" size="sm" className="h-8 gap-1">
+											<ListFilter className="h-3.5 w-3.5" />
+											<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Filtro</span>
+										</Button>
+									</DropdownMenuTrigger>
+
+
+									<DropdownMenuContent align="end">
+    <DropdownMenuLabel>Visualizar ejercicios</DropdownMenuLabel>
+    <DropdownMenuRadioGroup value={selectedCardio} onValueChange={setSelectedCardio}>
+      <DropdownMenuRadioItem value="Todos">Todos</DropdownMenuRadioItem>
+      <DropdownMenuRadioItem value="true">Sólo cardio</DropdownMenuRadioItem>
+      <DropdownMenuRadioItem value="false">Ejercicio normal</DropdownMenuRadioItem>
+    </DropdownMenuRadioGroup>
+
+
+	</DropdownMenuContent>
+								</DropdownMenu>
+							</div>
+							)}
+
 					</div>
 					<TabsContent value="plan">
 					  <Card x-chunk="dashboard-06-chunk-0">
@@ -185,7 +233,6 @@ export function Workout() {
 								  Fecha Final
 								</TableHead>
 								<TableHead className="hidden md:table-cell">Rutinas</TableHead>
-								<TableHead className="hidden md:table-cell">Acciones</TableHead>
 							  </TableRow>
 							</TableHeader>
 	
@@ -205,28 +252,6 @@ export function Workout() {
 									{plan.rutinas.map((rutina, index) => (
 									  <div key={index}>{rutina.nombreRutina}</div>
 									))}
-								  </TableCell>
-	
-								  <TableCell>
-									<DropdownMenu>
-									  <DropdownMenuTrigger asChild>
-										<Button
-										  aria-haspopup="true"
-										  size="icon"
-										  variant="ghost"
-										>
-										  <MoreHorizontal className="h-4 w-4" />
-										  <span className="sr-only">Toggle menu</span>
-										</Button>
-									  </DropdownMenuTrigger>
-									  <DropdownMenuContent align="end">
-										<DropdownMenuItem>
-										  Ver imagen
-										</DropdownMenuItem>
-										<DropdownMenuSeparator />
-										<DropdownMenuItem>Eliminar</DropdownMenuItem>
-									  </DropdownMenuContent>
-									</DropdownMenu>
 								  </TableCell>
 								</TableRow>
 							  ))}
@@ -278,25 +303,20 @@ export function Workout() {
 									))}
 								  </TableCell>
 								  <TableCell>
-									<DropdownMenu>
-									  <DropdownMenuTrigger asChild>
-										<Button
-										  aria-haspopup="true"
-										  size="icon"
-										  variant="ghost"
-										>
-										  <MoreHorizontal className="h-4 w-4" />
-										  <span className="sr-only">Toggle menu</span>
-										</Button>
-									  </DropdownMenuTrigger>
-									  <DropdownMenuContent align="end">
-										<DropdownMenuLabel>Acciones</DropdownMenuLabel>
-										<DropdownMenuItem>
-										  Ver imagen
-										</DropdownMenuItem>
-										<DropdownMenuItem>Eliminar</DropdownMenuItem>
-									  </DropdownMenuContent>
-									</DropdownMenu>
+								  	<Button 
+									  	aria-haspopup="true"
+										size="icon"
+										variant="ghost">
+										<Info/>
+										<Sheet>
+											<SheetTrigger>Info</SheetTrigger>
+											<SheetContent>
+												<SheetHeader>
+													<ExercisesInfoImg/>
+												</SheetHeader>
+											</SheetContent>
+										</Sheet> 
+									</Button>
 								  </TableCell>
 								</TableRow>
 							  ))}
@@ -312,14 +332,6 @@ export function Workout() {
 						  <CardTitle>Ejercicios</CardTitle>
 							<CardDescription>
 								A continuación puedes ver tus ejercicios asignados:
-								<Sheet>
-									<SheetTrigger>VER FOTOS</SheetTrigger>
-									<SheetContent>
-										<SheetHeader>
-											<Test2/>
-										</SheetHeader>
-									</SheetContent>
-								</Sheet>
 							</CardDescription>
 						</CardHeader>
 						<CardContent>
@@ -336,7 +348,7 @@ export function Workout() {
 							</TableHeader>
 	
 							<TableBody>
-							  {displayedExercises.map((exercise) => (
+							  {filteredExercises.map((exercise) => (
 								<TableRow key={exercise.id}>
 								  <TableCell className="font-medium">
 									{exercise.nombreEjercicio}
@@ -350,29 +362,26 @@ export function Workout() {
 								  <TableCell className="font-medium">
 									{exercise.peso}
 								  </TableCell>
-								  <TableCell className="font-medium">
-									{exercise.cardioRealizado ? 'Sí' : 'No'}
-								  </TableCell>
+								<TableCell>
+									<Badge variant="outline">
+										{exercise.cardioRealizado ? 'Sí' : 'No'}
+									</Badge>
+								</TableCell>
 								  <TableCell>
-									<DropdownMenu>
-									  <DropdownMenuTrigger asChild>
-										<Button
-										  aria-haspopup="true"
-										  size="icon"
-										  variant="ghost"
-										>
-										  <MoreHorizontal className="h-4 w-4" />
-										  <span className="sr-only">Toggle menu</span>
-										</Button>
-									  </DropdownMenuTrigger>
-									  <DropdownMenuContent align="end">
-										<DropdownMenuLabel>Acciones</DropdownMenuLabel>
-										<DropdownMenuItem>
-										  Ver imagen
-										</DropdownMenuItem>
-										<DropdownMenuItem>Eliminar</DropdownMenuItem>
-									  </DropdownMenuContent>
-									</DropdownMenu>
+									  <Button 
+									  	aria-haspopup="true"
+										size="icon"
+										variant="ghost">
+										<Info/>
+										<Sheet>
+											<SheetTrigger>Info</SheetTrigger>
+											<SheetContent>
+												<SheetHeader>
+													<ExercisesInfoImg/>
+												</SheetHeader>
+											</SheetContent>
+										</Sheet> 
+									  </Button>
 								  </TableCell>
 								</TableRow>
 							  ))}

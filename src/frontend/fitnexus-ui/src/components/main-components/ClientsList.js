@@ -145,6 +145,9 @@ export function ClientsList() {
 								</DropdownMenu>
 							</div>
 						</div>
+
+
+						
 						<TabsContent value="all">
 							<Card x-chunk="dashboard-06-chunk-0">
 								<CardHeader>

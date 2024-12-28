@@ -1,3 +1,4 @@
+import { InfoIcon } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,7 +20,9 @@ export function CustomAlertDialog ({
   return (
   <AlertDialog>
   <AlertDialogTrigger asChild>
-    <Button variant="outline">{messageButton}</Button>
+    <Button variant="outline">
+      {messageButton}
+    </Button>
   </AlertDialogTrigger>
   <AlertDialogContent>
     <AlertDialogHeader>

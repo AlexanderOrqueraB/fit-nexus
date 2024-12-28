@@ -21,7 +21,7 @@ const animals = [
   { name: "Foto 6", image: "path/to/photo6.jpg", description: "Descripcion ejemplo" },
 ];
 
-export function Test2() {
+export function ExercisesInfoImg() {
   return (
     <div>
     <Carousel className="w-full max-w-xs">
@@ -58,4 +58,4 @@ export function Test2() {
   );
 }
 
-export default Test2;
+export default ExercisesInfoImg;
