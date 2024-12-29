@@ -252,9 +252,11 @@ export function Workout() {
 									{plan.fechaFinal}
 								  </TableCell>
 								  <TableCell className="font-medium">
-									{plan.rutinas.map((rutina, index) => (
-									  <div key={index}>{rutina.nombreRutina}</div>
-									))}
+								  	<ul className="list-disc pl-4">
+										{plan.rutinas.map((rutina, index) => (
+										<li key={index}>{rutina.nombreRutina}</li>
+										))}
+									</ul>
 								  </TableCell>
 								</TableRow>
 							  ))}
@@ -280,11 +282,10 @@ export function Workout() {
 								<TableHead>Fecha Inicio</TableHead>
 								<TableHead className="hidden md:table-cell">
 								  Fecha Final
-															</TableHead>
+								</TableHead>
 								<TableHead className="hidden md:table-cell">
 								  Ejercicios
-															</TableHead>
-								<TableHead className="hidden md:table-cell">Acciones</TableHead>
+								</TableHead>
 							  </TableRow>
 							</TableHeader>
 	
@@ -301,25 +302,11 @@ export function Workout() {
 									{routine.fechaFinal}
 								  </TableCell>
 								  <TableCell className="font-medium">
-									{routine.ejercicios.map((ejercicio, index) => (
-									  <div key={index}>{ejercicio.nombreEjercicio}</div>
-									))}
-								  </TableCell>
-								  <TableCell>
-								  	<Button 
-									  	aria-haspopup="true"
-										size="icon"
-										variant="ghost">
-										<Info/>
-										<Sheet>
-											<SheetTrigger>Info</SheetTrigger>
-											<SheetContent>
-												<SheetHeader>
-													<ExercisesInfoImg/>
-												</SheetHeader>
-											</SheetContent>
-										</Sheet> 
-									</Button>
+								  	<ul className="list-disc pl-4">
+										{routine.ejercicios.map((ejercicio, index) => (
+										<li key={index}>{ejercicio.nombreEjercicio}</li>
+										))}
+									</ul>
 								  </TableCell>
 								</TableRow>
 							  ))}
