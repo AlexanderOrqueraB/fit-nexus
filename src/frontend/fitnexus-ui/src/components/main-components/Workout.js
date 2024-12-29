@@ -43,64 +43,70 @@ export function Workout() {
   
 	const [plans, setPlans] = useState([]);
 
-	  //estado booleando para "test mode"
-	  const [isTestMode, setIsTestMode] = useState(false);
+	const [selectedExercise, setSelectedExercise] = useState(null); 
 
-	  const testExercises = [
-		{
-		  id: 1,
-		  nombreEjercicio: 'Dominadas',
-		  repeticion: 10,
-		  serie: 3,
-		  peso: 0,
-		  cardioRealizado: false,
+	const handleInfoClick = (exercise) => {
+		setSelectedExercise(exercise);
+	};
+
+	//estado booleando para "test mode"
+	const [isTestMode, setIsTestMode] = useState(false);
+
+	const testExercises = [
+	{
+		id: 1,
+		nombreEjercicio: 'Dominadas',
+		repeticion: 10,
+		serie: 3,
+		peso: 0,
+		cardioRealizado: false,
+	},
+	{
+		id: 2,
+		nombreEjercicio: 'Press Banca',
+		repeticion: 12,
+		serie: 4,
+		peso: 50,
+		cardioRealizado: false,
+	},
+	{
+		id: 3,
+		nombreEjercicio: 'Caminar cinta',
+		repeticion: 1,
+		serie: 1,
+		peso: 0,
+		cardioRealizado: true,
 		},
-		{
-		  id: 2,
-		  nombreEjercicio: 'Press Banca',
-		  repeticion: 12,
-		  serie: 4,
-		  peso: 50,
-		  cardioRealizado: false,
-		},
-		{
-			id: 3,
-			nombreEjercicio: 'Caminar cinta',
-			repeticion: 1,
-			serie: 1,
-			peso: 0,
-			cardioRealizado: true,
-		  },
-	  ];
-	  
-	  const testRoutines = [
-		{
-		  id: 1,
-		  nombreRutina: 'Rutina Fuerza',
-		  fechaInicio: '2024-12-01',
-		  fechaFinal: '2024-12-31',
-		  ejercicios: [
-			{ nombreEjercicio: 'Sentadilla' },
-			{ nombreEjercicio: 'Peso Muerto' },
-		  ],
-		},
-	  ];
-	  
-	  const testPlans = [
-		{
-		  id: 1,
-		  nombrePlan: 'Plan Noviembre',
-		  fechaInicio: '2024-11-01',
-		  fechaFinal: '2024-11-30',
-		  rutinas: [{ nombreRutina: 'Rutina de Pecho' }],
-		},
-	  ];
+	];
 	
-	  //Alternamos entre datos reales y datos de prueba
-	  const displayedExercises = isTestMode ? testExercises : exercises;
-	  const displayedRoutines = isTestMode ? testRoutines : routines;
-	  const displayedPlans = isTestMode ? testPlans : plans; 
+	const testRoutines = [
+	{
+		id: 1,
+		nombreRutina: 'Rutina Fuerza',
+		fechaInicio: '2024-12-01',
+		fechaFinal: '2024-12-31',
+		ejercicios: [
+		{ nombreEjercicio: 'Sentadilla' },
+		{ nombreEjercicio: 'Peso Muerto' },
+		],
+	},
+	];
 	
+	const testPlans = [
+	{
+		id: 1,
+		nombrePlan: 'Plan Noviembre',
+		fechaInicio: '2024-11-01',
+		fechaFinal: '2024-11-30',
+		rutinas: [{ nombreRutina: 'Rutina de Pecho' }],
+	},
+	];
+
+	//Alternamos entre datos reales y datos de prueba
+	const displayedExercises = isTestMode ? testExercises : exercises;
+	const displayedRoutines = isTestMode ? testRoutines : routines;
+	const displayedPlans = isTestMode ? testPlans : plans; 
+
 	//Para el filtro de objetivo
 	const [selectedCardio, setSelectedCardio] = useState('Todos');
 	
@@ -201,19 +207,16 @@ export function Workout() {
 
 
 									<DropdownMenuContent align="end">
-    <DropdownMenuLabel>Visualizar ejercicios</DropdownMenuLabel>
-    <DropdownMenuRadioGroup value={selectedCardio} onValueChange={setSelectedCardio}>
-      <DropdownMenuRadioItem value="Todos">Todos</DropdownMenuRadioItem>
-      <DropdownMenuRadioItem value="true">Sólo cardio</DropdownMenuRadioItem>
-      <DropdownMenuRadioItem value="false">Ejercicio normal</DropdownMenuRadioItem>
-    </DropdownMenuRadioGroup>
-
-
-	</DropdownMenuContent>
+										<DropdownMenuLabel>Visualizar ejercicios</DropdownMenuLabel>
+												<DropdownMenuRadioGroup value={selectedCardio} onValueChange={setSelectedCardio}>
+												<DropdownMenuRadioItem value="Todos">Todos</DropdownMenuRadioItem>
+												<DropdownMenuRadioItem value="true">Sólo cardio</DropdownMenuRadioItem>
+												<DropdownMenuRadioItem value="false">Ejercicio normal</DropdownMenuRadioItem>
+											</DropdownMenuRadioGroup>
+									</DropdownMenuContent>
 								</DropdownMenu>
 							</div>
 							)}
-
 					</div>
 					<TabsContent value="plan">
 					  <Card x-chunk="dashboard-06-chunk-0">
@@ -371,13 +374,16 @@ export function Workout() {
 									  <Button 
 									  	aria-haspopup="true"
 										size="icon"
-										variant="ghost">
+										variant="ghost"
+										onClick={() => handleInfoClick(exercise)}>
 										<Info/>
 										<Sheet>
 											<SheetTrigger>Info</SheetTrigger>
 											<SheetContent>
 												<SheetHeader>
-													<ExercisesInfoImg/>
+													<ExercisesInfoImg
+														exercise={selectedExercise}
+													/>
 												</SheetHeader>
 											</SheetContent>
 										</Sheet> 

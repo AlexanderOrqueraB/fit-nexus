@@ -21,39 +21,64 @@ const animals = [
   { name: "Foto 6", image: "path/to/photo6.jpg", description: "Descripcion ejemplo" },
 ];
 
-export function ExercisesInfoImg() {
+
+export function ExercisesInfoImg ({exercise}) {
+  const exerciseImages = {
+    "Press Banca": {
+      image: "https://media4.giphy.com/media/NLuFwZieDxvws/100.webp?cid=790b761193svlqhi5q3te829snudwzsfk6ams3g0wwv1q8wd&ep=v1_gifs_search&rid=100.webp&ct=g",
+      description: "Sé como el ratoncito",
+    },
+    Sentadillas: {
+      image: "path/to/squat.jpg",
+      description: "Una buena postura es clave",
+    },
+    notFound: {
+      image: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHZsNnRwb3YwdjZjZTFtdzRnNTQycWxyZDV2enU4aXczZTA0bTcycyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KBYyUGgDEsILK/giphy.gif",
+      description: "El camino comienza con un paso",
+    },
+  };
+
+  const { nombreEjercicio } = exercise;
+  const exerciseData = exerciseImages[nombreEjercicio];
+
+  if (!exerciseData) {
+    return (
+      <div className="text-center">
+        <Card>
+        <CardContent className="flex flex-col items-center justify-center p-6">
+          <span className="text-2xl font-bold mb-2">{nombreEjercicio}</span>
+          <div className="relative flex items-center justify-center bg-muted">
+            <img
+              src={exerciseImages.notFound.image}
+              width="1920"
+              height="1080"
+              className="h-50 w-full object-cover dark:brightness-[0.2] dark:grayscale"
+            />
+          </div>
+          <span className="text-sm mt-2 text-center">No hay descripción disponible para este ejercicio.</span>
+        </CardContent>
+      </Card>
+      </div>
+    );
+  }
+
   return (
     <div>
-    <Carousel className="w-full max-w-xs">
-      <CarouselContent>
-        {animals.map((animal, index) => (
-          <CarouselItem key={index}>
-            <div className="p-1">
-              <Card>
-                <CardContent className="flex flex-col items-center justify-center p-6">
-                  {/* Nombre del animal */}
-                  <span className="text-2xl font-bold mb-2">{animal.name}</span>
-                  {/* Imagen del animal */}
-                  <div className="relative flex items-center justify-center bg-muted">
-                    <img
-                      src={animal.image}
-                      alt={animal.name}
-                      width="1920"
-                      height="1080"
-                      className="h-50 w-full object-cover dark:brightness-[0.2] dark:grayscale"
-                    />
-                  </div>
-                  {/* Descripción debajo de la imagen */}
-                  <span className="text-sm mt-2 text-center">{animal.description}</span>
-                </CardContent>
-              </Card>
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
+      <Card>
+        <CardContent className="flex flex-col items-center justify-center p-6">
+          <span className="text-2xl font-bold mb-2">{nombreEjercicio}</span>
+          <div className="relative flex items-center justify-center bg-muted">
+            <img
+              src={exerciseData.image}
+              alt={nombreEjercicio}
+              width="1920"
+              height="1080"
+              className="h-50 w-full object-cover dark:brightness-[0.2] dark:grayscale"
+            />
+          </div>
+          <span className="text-sm mt-2 text-center">{exerciseData.description}</span>
+        </CardContent>
+      </Card>
     </div>
   );
 }
