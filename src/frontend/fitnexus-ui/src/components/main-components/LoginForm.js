@@ -15,9 +15,8 @@ import {
 } from "../../components_ui/ui/card"
 import { Input } from "../../components_ui/ui/input"
 import { Label } from "../../components_ui/ui/label"
-import { toast, Toaster } from 'sonner'
+import { toast } from 'sonner'
 import {apiClient, FITNEXUS_URL} from "../utils/client";
-
 
 export function LoginForm() {
 
@@ -33,8 +32,8 @@ export function LoginForm() {
       toast.success('My first toast')
     }
 
-    const errorToast = () => {
-      toast.error('test')
+    const errorToast = (message) => {
+      toast.error(message)
     }
 
   // Handle changes on inputs
@@ -66,12 +65,11 @@ export function LoginForm() {
         console.log("Respuesta del servidor: ", response.data);
         console.log("Status: ", response.status);
         
-        const { token, role } = response.data;
+        const { role } = response.data;
         
-        //Guardamos token y rol en el contexto
-        setUser({ token, role });
-        //Guardamos token y rol 
-        localStorage.setItem("authToken", token); //check if needed
+        //Guardamos y rol en el contexto
+        setUser({ role });
+        //Guardamos  rol 
         localStorage.setItem("userRole", role);
 
         if((response.status === 401)){
@@ -99,6 +97,44 @@ export function LoginForm() {
       });
     };
 
+  const onSubmitTest = (role) => {
+    if (!data.email || !data.password) {
+      errorToast();
+      return;
+    }
+
+    const validCredentials = {
+      admin: {
+        email: "admin",
+        password: "1234",
+      },
+      user: {
+        email: "user",
+        password: "5678",
+      },
+    };
+
+    // Simula la validación de credenciales y asigna el rol
+    if (role === "admin") {
+      if (data.email === validCredentials.admin.email && data.password === validCredentials.admin.password) {
+        setUser({ role: "ADMIN" });
+        localStorage.setItem("userRole", "ADMIN");
+        confirmationToast();
+        navigate('/dashboard', { state: { isAdminProp: true } });
+      } else {
+        errorToast("Credenciales incorrectas para admin.");
+      }
+    } else if (role === "user") {
+      if (data.email === validCredentials.user.email && data.password === validCredentials.user.password) {
+        setUser({ role: "USER" });
+        localStorage.setItem("userRole", "USER");
+        confirmationToast();
+        navigate('/dashboard', { state: { isAdminProp: false } });
+      } else {
+        errorToast("Credenciales incorrectas para usuario.");
+      }
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-muted p-6 lg:p-10">
@@ -144,15 +180,13 @@ export function LoginForm() {
           </Button>
           
           <div className="mt-2 text-center text-sm">
-          SOY ADMIN o USER: {" "}
-            <Button onClick={()=> navigate("/dashboard")} className="underline">
-              IR
+            <Button onClick={() => onSubmitTest('admin')}>
+              Iniciar como Admin
             </Button>
           </div>
           <div className="mt-2 text-center text-sm">
-            SOY Unauthorized: {" "}
-            <Button onClick={()=> navigate("/unauthorized")} className="underline">
-              IR
+            <Button onClick={() => onSubmitTest('user')}>
+              Iniciar como Usuario
             </Button>
           </div>
           <div className="text-center text-sm">

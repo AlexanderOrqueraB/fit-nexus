@@ -14,6 +14,7 @@ import UnauthorizedPage from "./components/main-components/UnauthorizedPage";
 import ProtectedLayout from "./components/main-components/ProtectedLayout";
 import Settings from "./components/main-components/Settings";
 import NutritionChart from "./components/to-double-check/NutritionChart";
+import { Toaster } from "sonner";
 
 
 function App () {
@@ -21,6 +22,7 @@ function App () {
 return (
     /*<UserProvider>*/
         <BrowserRouter>
+        <Toaster />
             <Routes>
                 {/* Rutas públicas */}
                 <Route path="/" element={<LoginForm/>}/>
