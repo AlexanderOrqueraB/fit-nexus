@@ -29,8 +29,20 @@ export function LoginForm() {
     });
     
     const confirmationToast = (message) => {
-      toast.success(message)
+      toast((message), {
+        action: {
+          label: 'Cerrar'
+        },
+      })
     }
+    //success
+    //info
+    //error
+    //custom
+    //message
+    //promise
+    //dismiss
+    //loading
 
     const errorToast = (message) => {
       toast.error(message)
@@ -54,8 +66,8 @@ export function LoginForm() {
       };
 
     if (!userData.email || !userData.password) {
-      errorToast('Por favor introduce ambos campos...');
-      throw new Error('Por favor introduce ambos campos...');
+      confirmationToast('Por favor introduce ambos campos...')
+      //errorToast('Por favor introduce ambos campos...');
     }
 
     console.log("Datos de login: ", userData);
