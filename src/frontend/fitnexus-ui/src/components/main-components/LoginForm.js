@@ -28,8 +28,8 @@ export function LoginForm() {
     password: "",
     });
     
-    const confirmationToast = () => {
-      toast.success('My first toast')
+    const confirmationToast = (message) => {
+      toast.success(message)
     }
 
     const errorToast = (message) => {
@@ -54,7 +54,7 @@ export function LoginForm() {
       };
 
     if (!userData.email || !userData.password) {
-      errorToast();
+      errorToast('Por favor introduce ambos campos...');
       throw new Error('Por favor introduce ambos campos...');
     }
 
@@ -73,13 +73,13 @@ export function LoginForm() {
         localStorage.setItem("userRole", role);
 
         if((response.status === 401)){
-          errorToast ('Error 401, (change message error)')
+          errorToast ('Error 401 usuario no autorizado')
         }
         if (response.status === 200) {
           console.log("Rol del usuario:", role);
           console.log("Mostrando Toast de Login Okay...")
           //TODO: Toast de confirmacion
-          confirmationToast();
+          confirmationToast("Login efectuado correctamente!");
 
           if (role === "ADMIN") {
             console.log("Redireccionando a pagina admin");
@@ -93,13 +93,13 @@ export function LoginForm() {
       })
       .catch((error) => {
         console.error("Error en la autenticación: ", error);
-        errorToast('Error en la autenticacion');
+        errorToast("Error en la autenticacion");
       });
     };
 
   const onSubmitTest = (role) => {
     if (!data.email || !data.password) {
-      errorToast();
+      errorToast('Por favor introduce ambos campos...');
       return;
     }
 
@@ -119,16 +119,16 @@ export function LoginForm() {
       if (data.email === validCredentials.admin.email && data.password === validCredentials.admin.password) {
         setUser({ role: "ADMIN" });
         localStorage.setItem("userRole", "ADMIN");
-        confirmationToast();
+        confirmationToast("Login efectuado correctamente como administrador!");
         navigate('/dashboard', { state: { isAdminProp: true } });
       } else {
-        errorToast("Credenciales incorrectas para admin.");
+        errorToast("Credenciales incorrectas de administrador");
       }
     } else if (role === "user") {
       if (data.email === validCredentials.user.email && data.password === validCredentials.user.password) {
         setUser({ role: "USER" });
         localStorage.setItem("userRole", "USER");
-        confirmationToast();
+        confirmationToast("Login efectuado correctamente como usuario!");
         navigate('/dashboard', { state: { isAdminProp: false } });
       } else {
         errorToast("Credenciales incorrectas para usuario.");
