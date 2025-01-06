@@ -77,7 +77,7 @@ export function PostExercise() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button size="sm" className="h-8 gap-1" variant="secondary">
+                <Button size="sm" className="h-8 gap-1" variant="default">
                     Crear ejercicio
                     <UserCheck className="h-3.5 w-3.5" />
                 </Button>
@@ -161,7 +161,7 @@ export function PostExercise() {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button onClick={onSubmit} type="submit">
+                    <Button type="submit" onClick={onSubmit} type="submit">
                         Guardar cambios
                     </Button>
                 </DialogFooter>

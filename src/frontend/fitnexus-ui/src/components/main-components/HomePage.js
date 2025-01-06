@@ -3,9 +3,9 @@ import ProgressCustom from "../to-double-check/Progress";
 import EditProfileExtra from './EditProfileExtra';
 import EditProfile from "./EditProfile";
 import ChangePassword from './ChangePassword';
-import { Toaster, toast } from 'sonner'
+import { customToast } from '../utils/customToast'
 import { Button } from "../../components_ui/ui/button"
-
+import { useNavigate } from 'react-router-dom'
 import PostExercise from '../buttons-components/ejercicio/PostExercise';
 import PutExercise from '../buttons-components/ejercicio/PutExercise';
 import GetExerciseByName from '../buttons-components/ejercicio/GetExerciseByName';
@@ -30,13 +30,11 @@ import { apiClient } from '../utils/client';
 import React, { useEffect, useState } from 'react';
 
 
-
-
 export function HomePage() {
 
 	useState({});
 	const [data, setData] = useState({});
-
+	const navigate = useNavigate();
 	//EJERCICIO LOGIC
 	//Listar ejercicios en tabla + Put Exercise
 	const [exercises, setExercises] = useState([]);
@@ -78,16 +76,6 @@ export function HomePage() {
 		});
 	};
 
-	const confirmationToast = () => {
-        toast.success('My first toast')
-      }
-
-      const errorToast = () => {
-        toast.error('My first toast')
-      }
-	//<Toaster expand={false} position="top-right" richColors closeButton  />
-	//<Button onClick={confirmationToast} type="submit">Confirmation</Button>
-	//<Button onClick={errorToast} type="submit">Error</Button>
 
 	const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
@@ -109,7 +97,7 @@ export function HomePage() {
 				console.log('Status: ', response.status);
 				if (response.status === 201) {
 					console.log('Mostrando Toast de Ejercicio Guardado...');
-					confirmationToast();
+					customToast({message : "Cambiar mensaje!", type : "success"});
 				}
 			})
 			.catch((error) => {
@@ -127,35 +115,53 @@ export function HomePage() {
 			<div className="flex flex-1 flex-col gap-4 p-4">
 				<div className="grid auto-rows-min gap-4 md:grid-cols-3">
             		<div className="aspect-video rounded-xl bg-muted/50" >
-						<h3>No tienes aun añadidos tus datos extra para poder calcular tu dieta!</h3>
-						<h3>Añadelos pulsando el botón</h3>
-						<div className="flex flex-row space-x-4"> 
-						<EditProfileExtra />
+					<Card>
+						<CardContent className="flex flex-col items-center justify-center p-6">
+						<span className="text-2xl font-bold mb-2">Quieres ver tu dieta?</span>
+						<div className="relative flex items-center justify-center">
+						Primero añade unos datos extra:
 						</div>
+						<span className="text-sm mt-2 text-center"></span>
+						<EditProfileExtra />
+						<div className="relative flex items-center justify-center">
+						O consulta tus ejercicios:
+						</div>
+						<span className="text-sm mt-2 text-center"></span>
+						<Button onClick={()=> navigate("/ejercicios")}>						
+							Let´s go!
+						</Button>
+						<span className="text-sm mt-2 text-center"></span>
+						</CardContent>
+					</Card>
 					</div>
             		<div className="aspect-video rounded-xl bg-muted/50" >
-						
-					</div>
-            		<div className="aspect-video rounded-xl bg-muted/50" >
-							<img
+						<img
 							src={fitNexusLogo}
 							alt="fitNexusLogo"
-					
-							/>
-					
+							className="inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+						/>
 					</div>
-					<div className="aspect-video rounded-xl bg-muted/50" >
-						<h3>ejemplo extra</h3>
-					</div>
-					<div className="aspect-video rounded-xl bg-muted/50" >
-						<h3>ejemplo extra</h3>
-					</div>
-					<div className="aspect-video rounded-xl bg-muted/50" >
-						<h3>ejemplo extra</h3>
+            		<div className="aspect-video rounded-xl bg-muted/50" >
+					<Card>
+						<CardContent className="flex flex-col items-center justify-center p-6">
+						<span className="text-2xl font-bold mb-2">Quieres crear un ejercicio?</span>
+						<div className="relative flex items-center justify-center">
+							Créalo ahora mismo pulsando el botón:
+						</div>
+						<span className="text-sm mt-2 text-center"></span>
+						<span className="text-sm mt-2 text-center"></span>
+						<PostExercise />
+						<div className="relative flex items-center justify-center">
+							O accede directamente al Workout Builder!
+						</div>
+						<span className="text-sm mt-2 text-center"></span>
+						<Button onClick={()=> navigate("/workout-builder")}>						
+							Let´s go!
+						</Button>
+						</CardContent>
+					</Card>
 					</div>
          		</div>
-				<div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
-				</div>
         	</div>
 		</div>
 	);
