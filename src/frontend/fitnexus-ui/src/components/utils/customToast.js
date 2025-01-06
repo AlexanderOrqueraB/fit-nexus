@@ -6,8 +6,8 @@ export const customToast = ({
   description = "description to be added",
   label = "cerrar" }) => {
 
-    const promise = () => 
-    new Promise((resolve) => setTimeout(() => resolve({ name: 'Sonner' }), 2000));
+  const promise = () => 
+  new Promise((resolve) => setTimeout(() => resolve({ name: 'Sonner' }), 2000));
 
   switch (type) {
 
@@ -22,19 +22,35 @@ export const customToast = ({
       break;
     
     case "success":
-      toast.success(message);
+      toast.success(message, {
+        action: {
+          label: label
+        }
+      })
       break;
 
     case "info":
-      toast.info(message);
+      toast.info(message, {
+        action: {
+          label: label
+        }
+      })
       break;
 
     case "error":
-      toast.error(message);
+      toast.error(message, {
+        action: {
+          label: label
+        }
+      })
       break;
 
     case "warning":
-      toast.warning(message);
+      toast.warning(message, {
+        action: {
+          label: label
+        }
+      })
       break;
 
     case "action":
@@ -44,19 +60,14 @@ export const customToast = ({
         }
       })
       break;
-    
-    case "description":
-      toast.message(message, {
-        description: description,
-      })
-      break;
 
     case "default":
-      toast(message); 
+      toast(message, {
+        description: description,
+      })
       break;
   }
 };
 
 export default customToast
 
-import { customToast } from '../utils/'

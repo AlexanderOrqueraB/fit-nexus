@@ -15,8 +15,8 @@ import {
 } from "../../components_ui/ui/card"
 import { Input } from "../../components_ui/ui/input"
 import { Label } from "../../components_ui/ui/label"
-import { toast } from 'sonner'
 import {apiClient, FITNEXUS_URL} from "../utils/client";
+import { customToast } from '../utils/customToast'
 
 export function LoginForm() {
 
@@ -27,26 +27,6 @@ export function LoginForm() {
     email: "",
     password: "",
     });
-    
-    const confirmationToast = (message) => {
-      toast((message), {
-        action: {
-          label: 'Cerrar'
-        },
-      })
-    }
-    //success
-    //info
-    //error
-    //custom
-    //message
-    //promise
-    //dismiss
-    //loading
-
-    const errorToast = (message) => {
-      toast.error(message)
-    }
 
   // Handle changes on inputs
   //...data: make a duplicate of a previous state everytime the data change to avoid overwriting
@@ -66,11 +46,11 @@ export function LoginForm() {
       };
 
     if (!userData.email || !userData.password) {
-      confirmationToast('Por favor introduce ambos campos...')
-      //errorToast('Por favor introduce ambos campos...');
+      customToast({message : "Introduce ambos campos!", type : "warning"});
     }
 
-    console.log("Datos de login: ", userData);
+    else {
+      console.log("Datos de login: ", userData);
 
       apiClient.post("/api/v1/login", userData)
       .then((response) => {
@@ -85,13 +65,13 @@ export function LoginForm() {
         localStorage.setItem("userRole", role);
 
         if((response.status === 401)){
-          errorToast ('Error 401 usuario no autorizado')
+          customToast({message : "Error 401 usuario no autorizado", type : "error"});
         }
         if (response.status === 200) {
           console.log("Rol del usuario:", role);
           console.log("Mostrando Toast de Login Okay...")
           //TODO: Toast de confirmacion
-          confirmationToast("Login efectuado correctamente!");
+          customToast({message : "Login efectuado correctamente!", type : "success"});
 
           if (role === "ADMIN") {
             console.log("Redireccionando a pagina admin");
@@ -105,13 +85,14 @@ export function LoginForm() {
       })
       .catch((error) => {
         console.error("Error en la autenticación: ", error);
-        errorToast("Error en la autenticacion");
+        customToast({message : "Error en la autenticacion", type : "error"});
       });
+    }
     };
 
   const onSubmitTest = (role) => {
     if (!data.email || !data.password) {
-      errorToast('Por favor introduce ambos campos...');
+      customToast({message : "Por favor introduce ambos campos...", type : "success"});
       return;
     }
 
@@ -131,19 +112,19 @@ export function LoginForm() {
       if (data.email === validCredentials.admin.email && data.password === validCredentials.admin.password) {
         setUser({ role: "ADMIN" });
         localStorage.setItem("userRole", "ADMIN");
-        confirmationToast("Login efectuado correctamente como administrador!");
+        customToast({message : "Login efectuado correctamente como administrador!", type : "success"});
         navigate('/dashboard', { state: { isAdminProp: true } });
       } else {
-        errorToast("Credenciales incorrectas de administrador");
+        customToast({message : "Credenciales incorrectas para administrador.", type : "error"});
       }
     } else if (role === "user") {
       if (data.email === validCredentials.user.email && data.password === validCredentials.user.password) {
         setUser({ role: "USER" });
         localStorage.setItem("userRole", "USER");
-        confirmationToast("Login efectuado correctamente como usuario!");
+        customToast({message : "Login efectuado correctamente como usuario!", type : "success"});
         navigate('/dashboard', { state: { isAdminProp: false } });
       } else {
-        errorToast("Credenciales incorrectas para usuario.");
+        customToast({message : "Credenciales incorrectas para usuario.", type : "error"});
       }
     }
   };
