@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-	ListFilter
+	ListFilter, LucideRefreshCcw, RefreshCcw, RefreshCcwDotIcon, RefreshCcwIcon
 } from 'lucide-react';
 import { Badge } from '../../components_ui/ui/badge';
 import { Button } from '../../components_ui/ui/button';
@@ -17,7 +17,7 @@ import {
 } from '../../components_ui/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
-import { Toaster, toast } from 'sonner';
+import { customToast } from '../utils/customToast'
 import { fetchClientData } from '../utils/api';
 
 export function ClientsList() {
@@ -56,7 +56,7 @@ export function ClientsList() {
 	]
 
 	//Alternamos entre datos reales y datos de prueba
-	const displayedClients = isTestMode ? testClients : clients;
+	const displayedClients = (isTestMode ? testClients : clients) || [];
 
 	const [visibleColumns, setVisibleColumns] = useState([
 		'nombre', 
@@ -74,23 +74,25 @@ export function ClientsList() {
 	selectedObjective === 'Todos' || client.objetivo === selectedObjective
 	);
 
-	useEffect(() => {
-		// Cargar datos desde varias fuentes simultáneamente
-		const loadData = async () => {
-		  try {
-			// Ejecutar todas las solicitudes en paralelo
-			const clients = await fetchClientData();
-	
-			// Actualizar los estados con los datos obtenidos
-			setClients(clients);
+	// Cargar datos desde varias fuentes simultáneamente
+	const loadData = async () => {
+		try {
+		// Ejecutar todas las solicitudes en paralelo
+		const clients = await fetchClientData();
 
-		  } catch (error) {
-			console.error('Error al cargar datos:', error);
-			toast.error('Hubo un error al cargar los datos.');
-		  }
-		};
-		loadData();
-	  }, []); // Llama a loadData solo al montar el componente
+		// Actualizar los estados con los datos obtenidos
+		setClients(clients);
+
+		} catch (error) {
+		console.error('Error al cargar datos:', error);
+		console.log('Disparando customToast');
+		customToast({message : "Hubo un error al cargar los datos de planes/rutinas/ejercicios", type : "error"});
+		}
+	};
+	
+	useEffect(() => {
+	loadData();
+	}, []); // Llama a loadData solo al montar el componente
  	
 	return (
 		<div className="flex min-h-screen w-full flex-col bg-muted/40">
@@ -99,11 +101,17 @@ export function ClientsList() {
           <div className="mx-auto grid max-w-[99rem] flex-1 auto-rows-max gap-4">
 					<Tabs defaultValue="all">
 						<div className="flex items-center">
-							<TabsList>
+							<TabsList className="flex items-center space-x-4">
 								<TabsTrigger value="all">Clientes</TabsTrigger>
 								<Button onClick={() => setIsTestMode(!isTestMode)}>
                       				{isTestMode ? 'Usar Datos Reales' : 'Usar Datos de Prueba'}
                     			</Button>
+								<div className="ml-auto">
+									<Button onClick={() => loadData()}>
+										<RefreshCcwIcon className="h-3.5 w-3.5" />
+											Refrescar datos
+									</Button>
+								</div>
 							</TabsList>
 							<div className="ml-auto flex items-center gap-2">
 								<DropdownMenu>

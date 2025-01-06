@@ -103,9 +103,9 @@ export function Workout() {
 	];
 
 	//Alternamos entre datos reales y datos de prueba
-	const displayedExercises = isTestMode ? testExercises : exercises;
-	const displayedRoutines = isTestMode ? testRoutines : routines;
-	const displayedPlans = isTestMode ? testPlans : plans; 
+	const displayedExercises = (isTestMode ? testExercises : exercises) || [];
+	const displayedRoutines = (isTestMode ? testRoutines : routines) || [];
+	const displayedPlans = (isTestMode ? testPlans : plans) || [];
 
 	//Para el filtro de objetivo
 	const [selectedCardio, setSelectedCardio] = useState('Todos');

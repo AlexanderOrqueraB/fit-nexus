@@ -89,9 +89,9 @@ export function WorkoutBuilder() {
   ];
 
   //Alternamos entre datos reales y datos de prueba
-  const displayedExercises = isTestMode ? testExercises : exercises;
-  const displayedRoutines = isTestMode ? testRoutines : routines;
-  const displayedPlans = isTestMode ? testPlans : plans;  
+  const displayedExercises = (isTestMode ? testExercises : exercises) || [];
+  const displayedRoutines = (isTestMode ? testRoutines : routines) || [];
+  const displayedPlans = (isTestMode ? testPlans : plans) || [];
 
   const [isEditOpen, setIsEditOpen] = useState(false);
 
@@ -306,8 +306,8 @@ export function WorkoutBuilder() {
                     </Button>
                     <div className="ml-auto">
                       <Button onClick={() => loadData()}>
-                      <RefreshCwIcon className="h-3.5 w-3.5" />
-                        Refrescar datos
+                        <RefreshCwIcon className="h-3.5 w-3.5" />
+                          Refrescar datos
                       </Button>
                     </div>
                   </TabsList>
