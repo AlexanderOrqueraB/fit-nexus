@@ -22,7 +22,7 @@ function App () {
 return (
     /*<UserProvider>*/
         <BrowserRouter>
-        <Toaster expand={true} position="top-right"/>
+        <Toaster richColors expand={true} position="top-right"/>
             <Routes>
                 {/* Rutas públicas */}
                 <Route path="/" element={<LoginForm/>}/>

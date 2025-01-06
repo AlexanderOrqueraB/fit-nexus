@@ -1,4 +1,4 @@
-import { Info, InfoIcon, ListFilter, MoreHorizontal, UserCheck } from 'lucide-react';
+import { Info, InfoIcon, ListFilter, MoreHorizontal, RefreshCcwIcon, UserCheck } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components_ui/ui/button';
@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
 import { apiClient } from '../utils/client';
 import { EXERCISES, PLAN2, RUTINAS } from '../utils/hardcodedModelDtos';
-import { toast } from 'sonner'
+import { customToast } from '../utils/customToast'
 import ExercisePost from "../buttons-components/ejercicio/PostExercise"
 import { fetchWorkoutData } from '../utils/api';
 import {
@@ -128,28 +128,25 @@ export function Workout() {
 		});
 	};
 
-	useEffect(() => {
-		// Cargar datos desde varias fuentes simultáneamente
-		const loadData = async () => {
-		  try {
-			// Ejecutar todas las solicitudes en paralelo
-			const { exercises, routines, plans } = await fetchWorkoutData();
-	
-			// Actualizar los estados con los datos obtenidos
-			setExercises(exercises);
-			setRoutines(routines);
-			setPlans(plans);
-		  } catch (error) {
-			console.error('Error al cargar datos:', error);
-			toast.error('Hubo un error al cargar los datos.');
-		  }
-		};
-		loadData();
-	  }, []); // Llama a loadData solo al montar el componente
+	// Cargar datos desde varias fuentes simultáneamente
+	const loadData = async () => {
+		try {
+		// Ejecutar todas las solicitudes en paralelo
+		const { exercises, routines, plans } = await fetchWorkoutData();
 
-	const confirmationToast = () => {
-        toast.success('My first toast')
-      }
+		// Actualizar los estados con los datos obtenidos
+		setExercises(exercises);
+		setRoutines(routines);
+		setPlans(plans);
+		} catch (error) {
+		console.error('Error al cargar datos:', error);
+		customToast({message : "Hubo un error al cargar los datos de planes/rutinas/ejercicios", type : "error"});
+		}
+	};
+	
+	useEffect(() => {
+	loadData();
+	}, []); // Llama a loadData solo al montar el componente
 
 	const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
@@ -171,7 +168,8 @@ export function Workout() {
 				console.log('Status: ', response.status);
 				if (response.status === 201) {
 					console.log('Mostrando Toast de Ejercicio Guardado...');
-					confirmationToast();
+					customToast({message : "Cambiar mensaje", type : "success"});
+
 				}
 			})
 			.catch((error) => {
@@ -187,13 +185,19 @@ export function Workout() {
 				<div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
 				  <Tabs defaultValue="ejercicio" onValueChange={(value) => setActiveTab(value)}>
 					<div className="flex items-center">
-					  <TabsList>
+					  <TabsList className="flex items-center space-x-4">
 						<TabsTrigger value="plan">Planes</TabsTrigger>
 						<TabsTrigger value="rutina">Rutinas</TabsTrigger>
 						<TabsTrigger value="ejercicio">Ejercicios</TabsTrigger>
 						<Button onClick={() => setIsTestMode(!isTestMode)}>
 							{isTestMode ? 'Usar Datos Reales' : 'Usar Datos de Prueba'}
 						</Button>
+						<div className="ml-auto">
+							<Button onClick={() => loadData()}>
+							<RefreshCcwIcon className="h-3.5 w-3.5" />
+								Refrescar datos
+							</Button>
+						</div>
 					  </TabsList>
 					  {activeTab === 'ejercicio' && (
 					  <div className="ml-auto flex items-center gap-2">

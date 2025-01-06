@@ -1,5 +1,5 @@
 import { apiClient } from '../utils/client';
-import { toast } from 'sonner'
+import { customToast } from '../utils/customToast'
 
 export const fetchWorkoutData = async () => {
     try {
@@ -16,8 +16,6 @@ export const fetchWorkoutData = async () => {
         };
     } catch (error) {
         console.error('Error al cargar los datos:', error);
-        toast.error('Hubo un error al cargar los datos.');
-        throw error; // Lanza el error para manejarlo en el componente llamante
     }
 };
 
@@ -32,7 +30,6 @@ export const fetchClientData = async () => {
         };
     } catch (error) {
         console.error('Error al cargar los datos:', error);
-        toast.error('Hubo un error al cargar los datos.');
-        throw error; // Lanza el error para manejarlo en el componente llamante
+        customToast({message : "Hubo un error al cargar los datos", type : "error"});
     }
 };
