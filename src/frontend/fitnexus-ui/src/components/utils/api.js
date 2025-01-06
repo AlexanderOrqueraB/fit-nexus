@@ -14,8 +14,8 @@ export const fetchWorkoutData = async () => {
             plans: plansResponse.data
         };
     } catch (error) {
-        throw new Error('Error al cargar los datos planes/rutinas/ejercicios');
         console.error('Error al cargar los datos:', error);
+        throw new Error('Error al cargar los datos planes/rutinas/ejercicios');
     }
 };
 
@@ -29,7 +29,7 @@ export const fetchClientData = async () => {
             clients: clientResponse.data
         };
     } catch (error) {
-        throw new Error('Error al cargar los datos de clientes');
         console.error('Error al cargar los datos:', error);
+        throw new Error('Error al cargar los datos de clientes');
     }
 };
