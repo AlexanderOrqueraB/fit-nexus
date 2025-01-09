@@ -6,7 +6,6 @@ import { apiClient } from '../utils/client';
 import PostExercise from '../buttons-components/ejercicio/PostExercise';
 import PutExercise from '../buttons-components/ejercicio/PutExercise';
 import GetExerciseByName from '../buttons-components/ejercicio/GetExerciseByName';
-import DeleteExercise from '../buttons-components/ejercicio/DeleteExercise';
 
 import {
   DropdownMenu,
@@ -15,9 +14,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '../../components_ui/ui/dropdown-menu';
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
-import { MoreHorizontal, RefreshCwIcon } from 'lucide-react';
+import { Delete, DeleteIcon, Edit, Info, MoreHorizontal, RefreshCwIcon } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components_ui/ui/card';
 import { fetchWorkoutData } from '../utils/api';
 
@@ -30,12 +30,18 @@ import DeleteExerciseListByName from '../buttons-components/rutina/DeleteExercis
 import PostPlanEntrenamientoFecha  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamientoFecha';
 import PostPlanEntrenamiento  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamiento';
 import { Dialog } from '../../components_ui/ui/dialog';
+import DeleteModalPost from '../to-double-check/DeleteModalPost';
+
+
+const deleteMessage = "deleteMessage"
+const deleteTitle = "La acción de eliminar no se puede revertir"
+const deleteDescription = "Pulsa Eliminar para confirmar la acción de eliminar, cancelar para salir"
 
 export function WorkoutBuilder() {
   const [data, setData] = useState({}); //useState to store data from server
 
   const [exercises, setExercises] = useState([]);
-  const [selectedExercise, setSelectedExercise] = useState(null);
+  const [selectedExercise, setSelectedExercise] = useState({});
 
   const [routines, setRoutines] = useState([]);
   const [selectedRoutine, setSelectedRoutine] = useState(null);
@@ -94,6 +100,7 @@ export function WorkoutBuilder() {
   const displayedPlans = (isTestMode ? testPlans : plans) || [];
 
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   // Cargar datos desde varias fuentes simultáneamente
   const loadData = async () => {
@@ -124,6 +131,19 @@ export function WorkoutBuilder() {
       setSelectedPlan(item);
     }
     setIsEditOpen(true);
+    setIsDeleteOpen(false);
+  };
+
+  const handleDeleteClick = (item, type) => {
+    if (type === 'exercise') {
+      setSelectedExercise(item);
+    } else if (type === 'routine') {
+      setSelectedRoutine(item);
+    } else if (type === 'plan') {
+      setSelectedPlan(item);
+    }
+    setIsDeleteOpen(true);
+    setIsEditOpen(false);
   };
 
   // Handle changes on inputs
@@ -273,10 +293,7 @@ export function WorkoutBuilder() {
     <div>
       <div>
         <div className="flex flex-row space-x-4">
-          <PostExercise />
-          <PutExercise />
           <GetExerciseByName />
-          <DeleteExercise/>
         </div>
         <div className="flex flex-row space-x-4"> 
 					<PostRutina/>
@@ -304,6 +321,7 @@ export function WorkoutBuilder() {
                     <Button onClick={() => setIsTestMode(!isTestMode)}>
                       {isTestMode ? 'Usar Datos Reales' : 'Usar Datos de Prueba'}
                     </Button>
+                    <PostExercise />
                     <div className="ml-auto">
                       <Button onClick={() => loadData()}>
                         <RefreshCwIcon className="h-3.5 w-3.5" />
@@ -330,7 +348,7 @@ export function WorkoutBuilder() {
                               Fecha Final
 														</TableHead>
                             <TableHead className="hidden md:table-cell">Rutinas</TableHead>
-                            <TableHead className="hidden md:table-cell">Acciones</TableHead>
+                            <TableHead className="hidden md:table-cell">Editar</TableHead>
                           </TableRow>
                         </TableHeader>
 
@@ -410,7 +428,7 @@ export function WorkoutBuilder() {
                             <TableHead className="hidden md:table-cell">
                               Ejercicios
 														</TableHead>
-                            <TableHead className="hidden md:table-cell">Acciones</TableHead>
+                            <TableHead className="hidden md:table-cell">Editar</TableHead>
                           </TableRow>
                         </TableHeader>
 
@@ -481,7 +499,8 @@ export function WorkoutBuilder() {
                             <TableHead className="hidden md:table-cell">Series</TableHead>
                             <TableHead className="hidden md:table-cell">Peso</TableHead>
                             <TableHead className="hidden md:table-cell">Cardio</TableHead>
-                            <TableHead className="hidden md:table-cell">Acciones</TableHead>
+                            <TableHead className="hidden md:table-cell">Editar</TableHead>
+                            <TableHead className="hidden md:table-cell">Eliminar</TableHead>
                           </TableRow>
                         </TableHeader>
 
@@ -504,30 +523,22 @@ export function WorkoutBuilder() {
                                 {exercise.cardioRealizado ? 'Sí' : 'No'}
                               </TableCell>
                               <TableCell>
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger asChild>
-                                    <Button
-                                      aria-haspopup="true"
-                                      size="icon"
-                                      variant="ghost"
-                                    >
-                                      <MoreHorizontal className="h-4 w-4" />
-                                      <span className="sr-only">Toggle menu</span>
-                                    </Button>
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent align="end">
-                                    <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                                    <DropdownMenuItem
-                                      onClick={() =>
-                                        handleEditClick(exercise, 'exercise')
-                                      }
-                                    >
-                                      Editar
-																		</DropdownMenuItem>
-                                    <DropdownMenuItem>Añadir imagen</DropdownMenuItem>
-                                    <DropdownMenuItem>Eliminar</DropdownMenuItem>
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
+                                <Button 
+                                  aria-haspopup="true"
+                                  size="icon"
+                                  variant="ghost"
+                                  onClick={() => handleEditClick(exercise, 'exercise')}>
+                                <Edit/>
+                                </Button>
+                              </TableCell>
+                              <TableCell>
+                                <Button 
+                                  aria-haspopup="true"
+                                  size="icon"
+                                  variant="ghost"
+                                  onClick={() => handleDeleteClick(exercise, 'exercise')}>
+                                <Delete/>
+                                </Button>
                               </TableCell>
                             </TableRow>
                           ))}
@@ -537,6 +548,16 @@ export function WorkoutBuilder() {
                         <PutExercise
                           open={isEditOpen}
                           onClose={() => setIsEditOpen(false)}
+                          exerciseData={selectedExercise}
+                        />
+                      )}
+                      {isDeleteOpen && (
+                        <DeleteModalPost
+                          messageButton = {deleteMessage}
+                          title = {deleteTitle}
+                          description = {deleteDescription} 
+                          open={isDeleteOpen}
+                          onClose={() => setIsDeleteOpen(false)}
                           exerciseData={selectedExercise}
                         />
                       )}

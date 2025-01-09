@@ -70,7 +70,6 @@ export function LoginForm() {
         if (response.status === 200) {
           console.log("Rol del usuario:", role);
           console.log("Mostrando Toast de Login Okay...")
-          //TODO: Toast de confirmacion
           customToast({message : "Login efectuado correctamente!", type : "success"});
 
           if (role === "ADMIN") {
