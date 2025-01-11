@@ -2,36 +2,25 @@ import { Button } from '../../components_ui/ui/button';
 import React, { useRef, useEffect, useState } from 'react';
 import { customToast } from '../utils/customToast'
 import { apiClient } from '../utils/client';
-
 import PostExercise from '../buttons-components/ejercicio/PostExercise';
 import PutExercise from '../buttons-components/ejercicio/PutExercise';
 import GetExerciseByName from '../buttons-components/ejercicio/GetExerciseByName';
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from '../../components_ui/ui/dropdown-menu';
-
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger} 
+from '../../components_ui/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
 import { Delete, DeleteIcon, Edit, Info, MoreHorizontal, RefreshCwIcon } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components_ui/ui/card';
 import { fetchWorkoutData } from '../utils/api';
-
 import PostRutina from '../buttons-components/rutina/PostRutina';
 import PostListEjerciciosInRutina from '../buttons-components/rutina/PostListEjerciciosInRutina';
 import GetRutinaByName from '../buttons-components/rutina/GetRutinaByName';
 import GetRutinaById from '../buttons-components/rutina/GetRutinaById';
 import DeleteExerciseListByName from '../buttons-components/rutina/DeleteExerciseListByName';
-
 import PostPlanEntrenamientoFecha  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamientoFecha';
 import PostPlanEntrenamiento  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamiento';
 import { Dialog } from '../../components_ui/ui/dialog';
 import DeleteModalPost from '../to-double-check/DeleteModalPost';
-
 
 const deleteMessage = "deleteMessage"
 const deleteTitle = "La acción de eliminar no se puede revertir"
@@ -49,7 +38,6 @@ export function WorkoutBuilder() {
   const [plans, setPlans] = useState([]);
   const [selectedPlan, setSelectedPlan] = useState(null);
 
-  //estado booleando para "test mode"
   const [isTestMode, setIsTestMode] = useState(false);
 
   const testExercises = [
@@ -94,7 +82,6 @@ export function WorkoutBuilder() {
     },
   ];
 
-  //Alternamos entre datos reales y datos de prueba
   const displayedExercises = (isTestMode ? testExercises : exercises) || [];
   const displayedRoutines = (isTestMode ? testRoutines : routines) || [];
   const displayedPlans = (isTestMode ? testPlans : plans) || [];
@@ -102,10 +89,8 @@ export function WorkoutBuilder() {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-  // Cargar datos desde varias fuentes simultáneamente
   const loadData = async () => {
     try {
-      // Ejecutar todas las solicitudes en paralelo
       const { exercises, routines, plans } = await fetchWorkoutData();
 
       // Actualizar los estados con los datos obtenidos
@@ -155,94 +140,7 @@ export function WorkoutBuilder() {
     });
   };
 
-  //TODO: Example to get all, get by id and get by title
-  const get_id = useRef(null);
-  const get_title = useRef(null);
-
-  const [getResult, setGetResult] = useState(null);
-
-  const fortmatResponse = (res) => {
-    return JSON.stringify(res, null, 2);
-  };
-
-  //TODO: Examples, not tested yet
-  async function getAllData() {
-    try {
-      const res = await apiClient.get('/test');
-      //apiClient.get("/tutorials");
-
-      const result = {
-        status: res.status + '-' + res.statusText,
-        headers: res.headers,
-        data: res.data,
-      };
-
-      setGetResult(fortmatResponse(result));
-    } catch (err) {
-      setGetResult(fortmatResponse(err.response?.data || err));
-    }
-  }
-  //TODO: Examples, not tested yet
-  async function getDataById() {
-    const id = get_id.current.value;
-
-    if (id) {
-      try {
-        const res = await apiClient.get('/test');
-        //apiClient.get(`/tutorials/${id}`);
-
-        const result = {
-          data: res.data,
-          status: res.status,
-          statusText: res.statusText,
-          headers: res.headers,
-        };
-
-        setGetResult(fortmatResponse(result));
-      } catch (err) {
-        setGetResult(fortmatResponse(err.response?.data || err));
-      }
-    }
-  }
-
-  //TODO: Examples, not tested yet
-  async function getDataByTitle() {
-    const title = get_title.current.value;
-
-    if (title) {
-      try {
-        // const res = await instance.get(`/tutorials?title=${title}`);
-        const res = await apiClient.get('/test');
-        //apiClient.get("/tutorials", {
-        //  params: {
-        //  title: title,
-        // },
-        // });
-
-        const result = {
-          status: res.status + '-' + res.statusText,
-          headers: res.headers,
-          data: res.data,
-        };
-
-        setGetResult(fortmatResponse(result));
-      } catch (err) {
-        setGetResult(fortmatResponse(err.response?.data || err));
-      }
-    }
-  }
-  //TODO: Examples, not tested yet
-  const clearGetOutput = () => {
-    setGetResult(null);
-  };
-
-  //TODO example in return () <input type="text" ref={get_title} className="form-control ml-2" placeholder="Title" />
-  //  <div className="input-group-append">
-  //  <button className="btn btn-sm btn-primary" onClick={getDataByTitle}>Find By Title</button>
-  //  </div>
-
-  // <button className="btn btn-sm btn-warning ml-2" onClick={clearGetOutput}>Clear</button>
-
+  
   const onSubmit = (e) => {
     e.preventDefault(); //prevent refresh on page
     const userData = {
@@ -254,23 +152,6 @@ export function WorkoutBuilder() {
     };
 
     console.log('Enviando los siguientes datos: ', userData);
-
-    //TODO: Review createEmployee(employee){
-    //        return apiClient.post(EMPLOYEE_API_BASE_URL, employee);
-    //    }
-
-    //TODO: Review example 1 getEmployeeById(employeeId){
-    //        return apiClient.get(EMPLOYEE_API_BASE_URL + '/' + employeeId);
-    //    }
-
-    //TODO: Review example 2 export const getProductById = async (id) => {
-    //  try {
-    //    const response = await apiClient.get(`${apiUrl}/${id}`);
-    //    return response.data;
-    //  } catch (error) {
-    //    throw error;
-    //  }
-    //}
 
     apiClient
       .post('/api/v1/ejercicios', userData)
@@ -344,9 +225,7 @@ export function WorkoutBuilder() {
                           <TableRow>
                             <TableHead>Nombre del plan</TableHead>
                             <TableHead>Fecha Inicio</TableHead>
-                            <TableHead className="hidden md:table-cell">
-                              Fecha Final
-														</TableHead>
+                            <TableHead className="hidden md:table-cell">Fecha Final</TableHead>
                             <TableHead className="hidden md:table-cell">Rutinas</TableHead>
                             <TableHead className="hidden md:table-cell">Editar</TableHead>
                           </TableRow>
@@ -355,21 +234,14 @@ export function WorkoutBuilder() {
                         <TableBody>
                           {displayedPlans.map((plan) => (
                             <TableRow key={plan.id}>
-                              <TableCell className="font-medium">
-                                {plan.nombrePlan}
-                              </TableCell>
-                              <TableCell className="font-medium">
-                                {plan.fechaInicio}
-                              </TableCell>
-                              <TableCell className="font-medium">
-                                {plan.fechaFinal}
-                              </TableCell>
+                              <TableCell className="font-medium">{plan.nombrePlan}</TableCell>
+                              <TableCell className="font-medium">{plan.fechaInicio}</TableCell>
+                              <TableCell className="font-medium">{plan.fechaFinal}</TableCell>
                               <TableCell className="font-medium">
                                 {plan.rutinas.map((rutina, index) => (
                                   <div key={index}>{rutina.nombreRutina}</div>
                                 ))}
                               </TableCell>
-
                               <TableCell>
                                 <Dialog>
                                 <DropdownMenu>
@@ -385,17 +257,13 @@ export function WorkoutBuilder() {
                                   </DropdownMenuTrigger>
                                   <DropdownMenuContent align="end">
                                     <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                                    <DropdownMenuItem
-                                      onClick={() =>
-                                        handleEditClick(plan, 'plan')
-                                      }
-                                    >
+                                    <DropdownMenuItem onClick={() =>handleEditClick(plan, 'plan')}>
                                       Editar
 																		</DropdownMenuItem>
                                     <DropdownMenuItem>Eliminar</DropdownMenuItem>
                                     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-          Test
-        </DropdownMenuItem>
+                                      Test
+                                    </DropdownMenuItem>
                                   </DropdownMenuContent>
                                 </DropdownMenu>
                                 </Dialog>
@@ -422,12 +290,8 @@ export function WorkoutBuilder() {
                           <TableRow>
                             <TableHead>Nombre de la rutina</TableHead>
                             <TableHead>Fecha Inicio</TableHead>
-                            <TableHead className="hidden md:table-cell">
-                              Fecha Final
-														</TableHead>
-                            <TableHead className="hidden md:table-cell">
-                              Ejercicios
-														</TableHead>
+                            <TableHead className="hidden md:table-cell">Fecha Final</TableHead>
+                            <TableHead className="hidden md:table-cell">Ejercicios</TableHead>
                             <TableHead className="hidden md:table-cell">Editar</TableHead>
                           </TableRow>
                         </TableHeader>
@@ -435,15 +299,9 @@ export function WorkoutBuilder() {
                         <TableBody>
                           {displayedRoutines.map((routine) => (
                             <TableRow key={routine.id}>
-                              <TableCell className="font-medium">
-                                {routine.nombreRutina}
-                              </TableCell>
-                              <TableCell className="font-medium">
-                                {routine.fechaInicio}
-                              </TableCell>
-                              <TableCell className="font-medium">
-                                {routine.fechaFinal}
-                              </TableCell>
+                              <TableCell className="font-medium">{routine.nombreRutina}</TableCell>
+                              <TableCell className="font-medium">{routine.fechaInicio}</TableCell>
+                              <TableCell className="font-medium">{routine.fechaFinal}</TableCell>
                               <TableCell className="font-medium">
                                 {routine.ejercicios.map((ejercicio, index) => (
                                   <div key={index}>{ejercicio.nombreEjercicio}</div>
@@ -507,21 +365,11 @@ export function WorkoutBuilder() {
                         <TableBody>
                           {displayedExercises.map((exercise) => (
                             <TableRow key={exercise.id}>
-                              <TableCell className="font-medium">
-                                {exercise.nombreEjercicio}
-                              </TableCell>
-                              <TableCell className="font-medium">
-                                {exercise.repeticion}
-                              </TableCell>
-                              <TableCell className="font-medium">
-                                {exercise.serie}
-                              </TableCell>
-                              <TableCell className="font-medium">
-                                {exercise.peso}
-                              </TableCell>
-                              <TableCell className="font-medium">
-                                {exercise.cardioRealizado ? 'Sí' : 'No'}
-                              </TableCell>
+                              <TableCell className="font-medium">{exercise.nombreEjercicio}</TableCell>
+                              <TableCell className="font-medium">{exercise.repeticion}</TableCell>
+                              <TableCell className="font-medium">{exercise.serie}</TableCell>
+                              <TableCell className="font-medium">{exercise.peso}</TableCell>
+                              <TableCell className="font-medium">{exercise.cardioRealizado ? 'Sí' : 'No'}</TableCell>
                               <TableCell>
                                 <Button 
                                   aria-haspopup="true"
