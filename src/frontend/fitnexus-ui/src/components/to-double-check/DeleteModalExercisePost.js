@@ -15,7 +15,7 @@ import { customToast } from '../utils/customToast'
 import { apiClient } from '../utils/client';
 
 
-export function DeleteModalPost ({ 
+export function DeleteModalExercisePost ({ 
   messageButton = "Eliminar", 
   title = "Titulo ejemplo",
   description = "descripcion",
@@ -51,7 +51,7 @@ const [dataEx, setDataEx] = useState({
 
 const onSubmit = (e) => {
   e.preventDefault();
-  const updatedExercise = {
+  const deletedExercise = {
       nombreEjercicio: data.nombreEjercicio,
       repeticion: data.repeticion,
       serie: data.serie,
@@ -59,10 +59,10 @@ const onSubmit = (e) => {
       cardioRealizado: data.cardioRealizado,
   };
 
-  console.log('Enviando los siguientes datos: ', updatedExercise);
+  console.log('Enviando los siguientes datos: ', deletedExercise);
 
   // Enviar la solicitud PUT para actualizar el ejercicio
-  apiClient.delete(`/api/v1/ejercicios/${exerciseData.id}`, updatedExercise)
+  apiClient.delete(`/api/v1/ejercicios/${exerciseData.id}`, deletedExercise)
       .then(response => {
           customToast({message : "Ejercicio eliminado correctamente!", type : "success"});
           onClose(); // Cerrar el modal
@@ -126,4 +126,4 @@ useEffect(() => {
   );
 };
 
-export default DeleteModalPost
+export default DeleteModalExercisePost

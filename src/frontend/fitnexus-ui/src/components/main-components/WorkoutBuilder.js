@@ -9,7 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 from '../../components_ui/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
-import { Delete, DeleteIcon, Edit, Info, MoreHorizontal, RefreshCwIcon } from 'lucide-react';
+import { Delete, DeleteIcon, Edit, Edit2, Info, MoreHorizontal, RefreshCwIcon } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components_ui/ui/card';
 import { fetchWorkoutData } from '../utils/api';
 import PostRutina from '../buttons-components/rutina/PostRutina';
@@ -20,7 +20,9 @@ import DeleteExerciseListByName from '../buttons-components/rutina/DeleteExercis
 import PostPlanEntrenamientoFecha  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamientoFecha';
 import PostPlanEntrenamiento  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamiento';
 import { Dialog } from '../../components_ui/ui/dialog';
-import DeleteModalPost from '../to-double-check/DeleteModalPost';
+import DeleteModalPost, { DeleteModalExercisePost } from '../to-double-check/DeleteModalExercisePost';
+import PutRutina from '../buttons-components/rutina/PutRutina';
+import DeleteModalRoutinePost from '../to-double-check/DeleteModalRoutinePost';
 
 const deleteMessage = "deleteMessage"
 const deleteTitle = "La acción de eliminar no se puede revertir"
@@ -293,6 +295,9 @@ export function WorkoutBuilder() {
                             <TableHead className="hidden md:table-cell">Fecha Final</TableHead>
                             <TableHead className="hidden md:table-cell">Ejercicios</TableHead>
                             <TableHead className="hidden md:table-cell">Editar</TableHead>
+                            <TableHead className="hidden md:table-cell">Editar ejs</TableHead>
+                            <TableHead className="hidden md:table-cell">Eliminar</TableHead>
+
                           </TableRow>
                         </TableHeader>
 
@@ -308,34 +313,53 @@ export function WorkoutBuilder() {
                                 ))}
                               </TableCell>
                               <TableCell>
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger asChild>
-                                    <Button
-                                      aria-haspopup="true"
-                                      size="icon"
-                                      variant="ghost"
-                                    >
-                                      <MoreHorizontal className="h-4 w-4" />
-                                      <span className="sr-only">Toggle menu</span>
-                                    </Button>
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent align="end">
-                                    <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                                    <DropdownMenuItem
-                                      onClick={() =>
-                                        handleEditClick(routine, 'routine')
-                                      }
-                                    >
-                                      Editar
-																		</DropdownMenuItem>
-                                    <DropdownMenuItem>Eliminar</DropdownMenuItem>
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
+                              <Button 
+                                  aria-haspopup="true"
+                                  size="icon"
+                                  variant="ghost"
+                                  onClick={() => handleEditClick(routine, 'routine')}>
+                                <Edit/>
+                              </Button>
+                              </TableCell>
+                              <TableCell>
+                              <Button 
+                                  aria-haspopup="true"
+                                  size="icon"
+                                  variant="ghost"
+                                  onClick={() => handleEditClick(routine, 'routine')}>
+                                <Edit2/>
+                              </Button>
+                              </TableCell>
+                              <TableCell>
+                                <Button 
+                                  aria-haspopup="true"
+                                  size="icon"
+                                  variant="ghost"
+                                  onClick={() => handleDeleteClick(routine, 'routine')}>
+                                <Delete/>
+                                </Button>
                               </TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
                       </Table>
+                      {isEditOpen && (
+                        <PutRutina
+                          open={isEditOpen}
+                          onClose={() => setIsEditOpen(false)}
+                          routineData={selectedRoutine}
+                        />
+                      )}
+                      {isDeleteOpen && (
+                        <DeleteModalRoutinePost
+                          messageButton = {deleteMessage}
+                          title = {deleteTitle}
+                          description = {deleteDescription} 
+                          open={isDeleteOpen}
+                          onClose={() => setIsDeleteOpen(false)}
+                          exerciseData={selectedExercise}
+                        />
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>
@@ -400,7 +424,7 @@ export function WorkoutBuilder() {
                         />
                       )}
                       {isDeleteOpen && (
-                        <DeleteModalPost
+                        <DeleteModalExercisePost
                           messageButton = {deleteMessage}
                           title = {deleteTitle}
                           description = {deleteDescription} 

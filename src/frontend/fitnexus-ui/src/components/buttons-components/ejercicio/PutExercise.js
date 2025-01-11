@@ -14,10 +14,9 @@ import { Button } from '../../../components_ui/ui/button';
 import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
-import { toast } from 'sonner'
+import { customToast } from '../../utils/customToast'
 
 
-{/*EJERCICIO LOGICL: istar ejercicios en tabla + Put Exercise*/}
 export function PutExercise ({ open, onClose, exerciseData }) {
     const [data, setData] = useState({
         nombreEjercicio: exerciseData?.nombreEjercicio || '',
@@ -25,21 +24,16 @@ export function PutExercise ({ open, onClose, exerciseData }) {
         serie: exerciseData?.serie || '',
         peso: exerciseData?.peso || '',
         cardioRealizado: exerciseData?.cardioRealizado || '',
-      });
-{/*EJERCICIO LOGICL: istar ejercicios en tabla + Put Exercise*/}
+        });
 
-	const [dataEx, setDataEx] = useState({
-		//useState to store data from server
-		nombreEjercicio: '',
-		repeticion: '',
-		serie: '',
-		peso: '',
-		cardioRealizado: '',
-	});
-
-    const confirmationToast = () => {
-        toast.success('My first toast')
-      }
+    const [dataEx, setDataEx] = useState({
+        //useState to store data from server
+        nombreEjercicio: '',
+        repeticion: '',
+        serie: '',
+        peso: '',
+        cardioRealizado: '',
+    });
 
 {/*EJERCICIO LOGICL: istar ejercicios en tabla + Put Exercise*/}
     const handleChange = (e) => {
@@ -65,14 +59,17 @@ const onSubmit = (e) => {
     // Enviar la solicitud PUT para actualizar el ejercicio
     apiClient.put(`/api/v1/ejercicios/${exerciseData.id}`, updatedExercise)
         .then(response => {
-            toast.success('Ejercicio actualizado correctamente');
+            console.log('Respuesta del servidor: ', response.data);
+            console.log('Status: ', response.status);
+            if (response.status ===200) {
+                customToast({message : "Ejercicio actualizado correctamente!", type : "error"});
+            }
             onClose(); // Cerrar el modal
         })
         .catch(error => {
-            toast.error('Error al actualizar el ejercicio');
+            customToast({message : "Error al actualizar el ejercicio!", type : "error"});
             console.error('Error al actualizar el ejercicio:', error);
         });
-
     console.log('Datos actualizados:', data);
     //onClose(); // Cerrar el modal después de guardar
 };
