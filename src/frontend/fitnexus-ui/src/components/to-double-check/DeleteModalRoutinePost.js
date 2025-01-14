@@ -77,11 +77,6 @@ useEffect(() => {
 
   return (
   <AlertDialog open= {open} onOpenChange={onClose}>
-  <AlertDialogTrigger asChild>
-    <Button variant="outline">
-      {messageButton}
-    </Button>
-  </AlertDialogTrigger>
   <AlertDialogContent>
     <AlertDialogHeader>
       <AlertDialogTitle>{title}</AlertDialogTitle>

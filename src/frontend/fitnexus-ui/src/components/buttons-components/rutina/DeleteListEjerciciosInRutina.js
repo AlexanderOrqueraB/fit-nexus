@@ -1,137 +1,133 @@
 import React, { useEffect, useState } from 'react';
-import { UserCheck } from 'lucide-react';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "../../../components_ui/ui/dialog"
-
-import { Button } from '../../../components_ui/ui/button';
-import { Input } from '../../../components_ui/ui/input';
-import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
-import { customToast } from '../../utils/customToast'
-import { PLAN, RUTINA } from '../../utils/hardcodedModelDtos';
-import { ENTRENADOR } from '../../utils/hardcodedModelDtos';
+import { customToast } from '../../utils/customToast';
+import { Button } from '../../../components_ui/ui/button';
+import { Label } from '../../../components_ui/ui/label';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../../../components_ui/ui/dialog";
 
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "../../../components_ui/ui/alert-dialog"
 
+export function DeleteListEjerciciosInRutina({ open, onClose, routineData }) {
+  const [data, setData] = useState({
+    nombreRutina: routineData?.nombreRutina || '',
+    ejerciciosSeleccionados: routineData?.ejercicios?.map((e) => e.id) || [],
+  });
 
-export function DeleteListEjerciciosInRutina ({ open, onClose, routineData }) {
-    const [data, setData] = useState({
-        nombreRutina: routineData?.nombreRutina || '',
-        fechaInicio: routineData?.fechaInicio || '',
-        fechaFinal: routineData?.fechaFinal || '',
-      });
+  const handleCheckboxChange = (exerciseId, isChecked) => {
+    setData((prev) => {
+      const updatedEjercicios = isChecked
+        ? [...prev.ejerciciosSeleccionados, exerciseId]
+        : prev.ejerciciosSeleccionados.filter((id) => id !== exerciseId);
 
-    const handleChange = (e) => {
-		const { name, value } = e.target;
-		setData({
-			...data,
-			[name]: value,
-		});
-	};
+      return {
+        ...prev,
+        ejerciciosSeleccionados: updatedEjercicios,
+      };
+    });
+  };
 
-    const onSubmit = (e) => {
-		e.preventDefault(); //prevent refresh on page
-		const updatedRoutine = {
-			nombreRutina: data.nombreRutina,
-			fechaInicio: data.fechaInicio,
-			fechaFinal: data.fechaFinal,
-		};
-
-		console.log('Enviando los siguientes datos: ', updatedRoutine);
-
-		apiClient
-			.put('/api/v1/rutina/${exerciseData.id}', updatedRoutine)
-			.then((response) => {
-				console.log('Respuesta del servidor: ', response.data);
-				console.log('Status: ', response.status);
-				if (response.status === 200) {
-                    customToast({message : "Rutina actualizada correctamente!", type : "error"});
-				}
-                onClose(); // Cerrar el modal
-			})
-			.catch((error) => {
-                customToast({message : "Error al actualizar el ejercicio!", type : "error"});
-				console.error('Error en la petición: ', error);
-			});
-            console.log('Datos actualizados:', data);
-            //onClose(); // Cerrar el modal después de guardar
-	};
-
-    useEffect(() => {
-        // Actualizar los datos si cambia routineData
-        if (routineData) {
-            setData({
-                nombreRutina: routineData.nombreRutina || '',
-                fechaInicio: routineData.fechaInicio || '',
-                fechaFinal: routineData.fechaFinal || '',
-            });
-        }
-    }, [routineData]);
-
-    return (
-        <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>Rutina</DialogTitle>
-                    <DialogDescription>Crea tu rutina aquí</DialogDescription>
-                    <DialogDescription>
-                        Haz click en Guardar cuando hayas terminado
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="nombreRutina" className="text-right">
-                            Nombre de la rutina
-                        </Label>
-                        <Input
-                            id="nombreRutina"
-                            name="nombreRutina"
-                            onChange={handleChange}
-                            value={data.nombreRutina || ''}
-                            className="col-span-3"
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="fechaFinal" className="text-right">
-                            Fecha Inicio
-                        </Label>
-                        <Input
-                            id="fechaInicio"
-                            name="fechaInicio"
-                            type="date"
-                            onChange={handleChange}
-                            value={data.fechaInicio  || ''}
-                            className="col-span-3"
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="fechaFinal" className="text-right">
-                            Fecha Final
-                        </Label>
-                        <Input
-                            id="fechaFinal"
-                            name="fechaFinal"
-                            type="date"
-                            onChange={handleChange}
-                            value={data.fechaFinal  || ''}
-                            className="col-span-3"
-                        />
-                    </div>
-                </div>
-                <DialogFooter>
-                    <Button onClick={onSubmit} type="submit">
-                        Guardar cambios
-                    </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+  const onSubmit = (e) => {
+    e.preventDefault(); // prevent page refresh
+    const ejerciciosSeleccionados = routineData.ejercicios.filter(exercise =>
+      data.ejerciciosSeleccionados.includes(exercise.id)
     );
+
+    const ejerciciosDTO = ejerciciosSeleccionados.map(exercise => ({
+      id: exercise.id,
+      nombreEjercicio: exercise.nombreEjercicio
+    }));
+
+    const updatedRoutine = {
+      ejercicios: ejerciciosDTO,  // Lista de ejercicios con id y nombre
+    };
+
+    apiClient
+      .delete(`/api/v1/rutina/${routineData.id}/ejercicios`, { data: updatedRoutine })
+      .then((response) => {
+        customToast({ message: "Ejercicios eliminados correctamente!", type: "success" });
+        onClose(); // Close the modal
+      })
+      .catch((error) => {
+        customToast({ message: "Error al eliminar ejercicios!", type: "error" });
+        console.error('Error en la petición: ', error);
+      });
+  };
+
+  useEffect(() => {
+    if (routineData) {
+      setData({
+        nombreRutina: routineData.nombreRutina || '',
+        ejerciciosSeleccionados: [],
+      });
+    }
+  }, [routineData]);
+
+  return (
+    <AlertDialog open={open} onOpenChange={onClose}>
+      <AlertDialogContent className="sm:max-w-[425px]">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Eliminar Ejercicios</AlertDialogTitle>
+          <AlertDialogDescription>Selecciona los ejercicios que quieres eliminar de la rutina</AlertDialogDescription>
+        </AlertDialogHeader>
+        
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label className="text-right">Ejercicios disponibles:</Label>
+            <div className="space-y-2">
+              {routineData.ejercicios.map((exercise) => (
+                <div key={exercise.id} className="items-top flex space-x-2">
+                  <input
+                    type="checkbox"
+                    id={`exercise-${exercise.id}`}
+                    checked={data.ejerciciosSeleccionados.includes(exercise.id)}
+                    onChange={(e) => handleCheckboxChange(exercise.id, e.target.checked)}
+                    className="h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-red-500"
+                  />
+                  <label
+                    htmlFor={`exercise-${exercise.id}`}
+                    className="text-sm font-medium leading-none"
+                  >
+                    {exercise.nombreEjercicio}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <AlertDialogFooter>
+        <AlertDialogCancel onClick={() => {
+            onClose();
+            setData({
+                nombreRutina: routineData?.nombreRutina || '',
+                ejerciciosSeleccionados: routineData?.ejercicios?.map((e) => e.id) || [],
+            });
+          }}>
+            Cancelar
+        </AlertDialogCancel>
+        <AlertDialogAction onClick={onSubmit}>
+            Eliminar
+        </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
 }
 
 export default DeleteListEjerciciosInRutina;

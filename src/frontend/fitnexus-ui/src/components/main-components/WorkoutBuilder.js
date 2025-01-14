@@ -75,7 +75,7 @@ export function WorkoutBuilder() {
       fechaInicio: '2025-12-01',
       fechaFinal: '2025-12-31',
       ejercicios: [
-        { id: 1, nombreEjercicio: 'Benchpress' },
+        { id: 1, nombreEjercicio: 'Bench' },
         { id: 2, nombreEjercicio: 'Fondos' },
       ],
       entrenador: [
@@ -164,7 +164,11 @@ export function WorkoutBuilder() {
     setIsAddExerciseToRoutineOpen(true);
   };
 
-  const handleRemoveExerciseFromRoutine = (item) => { };
+  const handleRemoveExerciseFromRoutine = (routine) => {
+    console.log("Selected Routine:", routine);
+    setSelectedExercise(routine); // Guarda la rutina que tiene ejercicios seleccionados
+    setIsRemoveExerciseFromRoutineOpen(true); // Abre el modal de eliminación
+  };
 
   // Handle changes on inputs
   const handleChange = (e) => {
@@ -402,7 +406,6 @@ export function WorkoutBuilder() {
                       )}
                       {isDeleteOpen && (
                         <DeleteModalRoutinePost
-                          messageButton = {deleteMessage}
                           title = {deleteTitle}
                           description = {deleteDescription} 
                           open={isDeleteOpen}
@@ -420,12 +423,12 @@ export function WorkoutBuilder() {
                       )}
                       {isRemoveExerciseFromRoutineOpen && (
                         <DeleteListEjerciciosInRutina
-                          messageButton = {deleteMessage}
                           title = {deleteTitle}
                           description = {deleteDescription} 
+                          
                           open={isRemoveExerciseFromRoutineOpen}
                           onClose={() => setIsRemoveExerciseFromRoutineOpen(false)}
-                          exerciseData={selectedExercise}
+                          routineData={selectedExercise}
                         />
                       )}
                     </CardContent>
