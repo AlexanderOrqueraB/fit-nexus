@@ -25,7 +25,6 @@ export function PutRutina ({ open, onClose, routineData }) {
         nombreRutina: routineData?.nombreRutina || '',
         fechaInicio: routineData?.fechaInicio || '',
         fechaFinal: routineData?.fechaFinal || '',
-        entrenadorEmail: routineData?.entrenadorEmail || '',
       });
 
     const handleChange = (e) => {
@@ -42,7 +41,6 @@ export function PutRutina ({ open, onClose, routineData }) {
 			nombreRutina: data.nombreRutina,
 			fechaInicio: data.fechaInicio,
 			fechaFinal: data.fechaFinal,
-			entrenadorEmail: data.entrenadorEmail
 		};
 
 		console.log('Enviando los siguientes datos: ', updatedRoutine);
@@ -72,19 +70,12 @@ export function PutRutina ({ open, onClose, routineData }) {
                 nombreRutina: routineData.nombreRutina || '',
                 fechaInicio: routineData.fechaInicio || '',
                 fechaFinal: routineData.fechaFinal || '',
-                entrenadorEmail: routineData.entrenadorEmail || '',
             });
         }
     }, [routineData]);
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogTrigger asChild>
-                <Button size="sm" className="h-8 gap-1" variant="outline">
-                    Crear rutina
-                    <UserCheck className="h-3.5 w-3.5" />
-                </Button>
-            </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Rutina</DialogTitle>
@@ -101,9 +92,8 @@ export function PutRutina ({ open, onClose, routineData }) {
                         <Input
                             id="nombreRutina"
                             name="nombreRutina"
-                            /*value={RUTINA.nombreRutina}*/
                             onChange={handleChange}
-                            placeholder={data.nombreRutina || ''}
+                            value={data.nombreRutina || ''}
                             className="col-span-3"
                         />
                     </div>
@@ -115,9 +105,8 @@ export function PutRutina ({ open, onClose, routineData }) {
                             id="fechaInicio"
                             name="fechaInicio"
                             type="date"
-                            /*value={dataEx.repeticion}*/
                             onChange={handleChange}
-                            placeholder={data.fechaInicio  || ''}
+                            value={data.fechaInicio  || ''}
                             className="col-span-3"
                         />
                     </div>
@@ -129,23 +118,8 @@ export function PutRutina ({ open, onClose, routineData }) {
                             id="fechaFinal"
                             name="fechaFinal"
                             type="date"
-                            /*value={dataEx.repeticion}*/
                             onChange={handleChange}
-                            placeholder={data.fechaFinal  || ''}
-                            className="col-span-3"
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="entrenador" className="text-right">
-                            Entrenador
-                        </Label>
-                        <Input
-                            id="entrenador"
-                            name="entrenador"
-                            type="email"
-                            /*value={dataEx.peso}*/
-                            onChange={handleChange}
-                            placeholder={data.email  || ''}
+                            value={data.fechaFinal  || ''}
                             className="col-span-3"
                         />
                     </div>

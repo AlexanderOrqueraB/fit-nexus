@@ -90,12 +90,6 @@ useEffect(() => {
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogTrigger asChild>
-                <Button size="sm" className="h-8 gap-1" variant="outline">
-                    Editar ejercicio
-                    <UserCheck className="h-3.5 w-3.5" />
-                </Button>
-            </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Ejercicio</DialogTitle>

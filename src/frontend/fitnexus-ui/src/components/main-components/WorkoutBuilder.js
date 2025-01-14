@@ -9,7 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 from '../../components_ui/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
-import { Delete, DeleteIcon, Edit, Edit2, Info, MoreHorizontal, RefreshCwIcon } from 'lucide-react';
+import { BadgeXIcon, CircleMinusIcon, CirclePlusIcon, Delete, DeleteIcon, Edit, Edit2, Info, Minus, MoreHorizontal, Plus, RefreshCwIcon, Trash2Icon } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components_ui/ui/card';
 import { fetchWorkoutData } from '../utils/api';
 import PostRutina from '../buttons-components/rutina/PostRutina';
@@ -60,18 +60,39 @@ export function WorkoutBuilder() {
       cardioRealizado: false,
     },
   ];
-  
+
+  const formatDateToDDMMYYYY = (isoDate) => {
+    if (!isoDate) return '';
+    const [year, month, day] = isoDate.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
   const testRoutines = [
     {
       id: 1,
-      nombreRutina: 'Rutina Fuerza',
-      fechaInicio: '2024-12-01',
-      fechaFinal: '2024-12-31',
+      nombreRutina: 'Rutina Torso',
+      fechaInicio: '2025-12-01',
+      fechaFinal: '2025-12-31',
+      ejercicios: [
+        { nombreEjercicio: 'Benchpress' },
+        { nombreEjercicio: 'Fondos' },
+      ],
+      entrenador: [
+        {
+            email: "entrenador@email.com",
+        }
+    ]
+    },
+    {
+      id: 2,
+      nombreRutina: 'Rutina Pierna',
+      fechaInicio: '2025-12-01',
+      fechaFinal: '2025-12-31',
       ejercicios: [
         { nombreEjercicio: 'Sentadilla' },
-        { nombreEjercicio: 'Peso Muerto' },
+        { nombreEjercicio: 'Deadlift' },
       ],
-    },
+    }
   ];
   
   const testPlans = [
@@ -295,9 +316,9 @@ export function WorkoutBuilder() {
                             <TableHead className="hidden md:table-cell">Fecha Final</TableHead>
                             <TableHead className="hidden md:table-cell">Ejercicios</TableHead>
                             <TableHead className="hidden md:table-cell">Editar</TableHead>
-                            <TableHead className="hidden md:table-cell">Editar ejs</TableHead>
+                            <TableHead className="hidden md:table-cell">Añadir</TableHead>
+                            <TableHead className="hidden md:table-cell">Quitar</TableHead>
                             <TableHead className="hidden md:table-cell">Eliminar</TableHead>
-
                           </TableRow>
                         </TableHeader>
 
@@ -305,8 +326,8 @@ export function WorkoutBuilder() {
                           {displayedRoutines.map((routine) => (
                             <TableRow key={routine.id}>
                               <TableCell className="font-medium">{routine.nombreRutina}</TableCell>
-                              <TableCell className="font-medium">{routine.fechaInicio}</TableCell>
-                              <TableCell className="font-medium">{routine.fechaFinal}</TableCell>
+                              <TableCell className="font-medium">{routine.fechaInicio ? formatDateToDDMMYYYY(routine.fechaInicio) : ''}</TableCell>
+                              <TableCell className="font-medium">{routine.fechaFinal ? formatDateToDDMMYYYY(routine.fechaFinal) : ''}</TableCell>
                               <TableCell className="font-medium">
                                 {routine.ejercicios.map((ejercicio, index) => (
                                   <div key={index}>{ejercicio.nombreEjercicio}</div>
@@ -321,22 +342,35 @@ export function WorkoutBuilder() {
                                 <Edit/>
                               </Button>
                               </TableCell>
+
+
                               <TableCell>
                               <Button 
                                   aria-haspopup="true"
                                   size="icon"
                                   variant="ghost"
                                   onClick={() => handleEditClick(routine, 'routine')}>
-                                <Edit2/>
+                                <CirclePlusIcon/>
                               </Button>
                               </TableCell>
+                              <TableCell>
+                              <Button 
+                                  aria-haspopup="true"
+                                  size="icon"
+                                  variant="ghost"
+                                  onClick={() => handleEditClick(routine, 'routine')}>
+                                <CircleMinusIcon/>
+                              </Button>
+                              </TableCell>
+
+
                               <TableCell>
                                 <Button 
                                   aria-haspopup="true"
                                   size="icon"
                                   variant="ghost"
                                   onClick={() => handleDeleteClick(routine, 'routine')}>
-                                <Delete/>
+                                <Trash2Icon/>
                                 </Button>
                               </TableCell>
                             </TableRow>
@@ -409,7 +443,7 @@ export function WorkoutBuilder() {
                                   size="icon"
                                   variant="ghost"
                                   onClick={() => handleDeleteClick(exercise, 'exercise')}>
-                                <Delete/>
+                                <Trash2Icon/>
                                 </Button>
                               </TableCell>
                             </TableRow>
