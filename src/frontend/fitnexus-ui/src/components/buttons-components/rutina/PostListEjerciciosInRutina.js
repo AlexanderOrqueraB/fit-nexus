@@ -1,160 +1,162 @@
 import React, { useEffect, useState } from 'react';
-import { UserCheck } from 'lucide-react';
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "../../../components_ui/ui/dialog"
-
+import { apiClient } from '../../utils/client';
+import { customToast } from '../../utils/customToast';
 import { Button } from '../../../components_ui/ui/button';
 import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
-import { apiClient } from '../../utils/client';
-import { toast } from 'sonner'
-import { PLAN, RUTINA } from '../../utils/hardcodedModelDtos';
-import { ENTRENADOR } from '../../utils/hardcodedModelDtos';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../../../components_ui/ui/dialog";
 
-
-
-export function PostListEjerciciosInRutina() {
-    useState({});
-	const [data, setData] = useState({});
-
-	const [dataEx, setDataEx] = useState({
-		//useState to store data from server
-		nombreRutina: '',
-		fechaInicio: '',
-		fechaFinal: '',
-		entrenadorEmail: ''
-	});
-
-    const confirmationToast = () => {
-        toast.success('My first toast')
+const testExercises = [
+    {
+        "id": 5,
+        "nombreEjercicio": "Curl"
+      },
+      {
+        "id": 6,
+        "nombreEjercicio": "Abs"
       }
+];
 
-    const handleChange = (e) => {
-		const { name, value } = e.target;
-		setData({
-			...data,
-			[name]: value,
-		});
-	};
+export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
+    const [data, setData] = useState({
+    nombreRutina: routineData?.nombreRutina || '',
+    ejerciciosSeleccionados: routineData?.ejercicios?.map((e) => e.id) || [],
+    });
 
-    const onSubmit = (e) => {
-		e.preventDefault(); //prevent refresh on page
-		const userData = {
-			nombreRutina: data.nombreRutina,
-			fechaInicio: data.fechaInicio,
-			fechaFinal: data.fechaFinal,
-			entrenadorEmail: data.entrenadorEmail
-		};
+  const [availableExercises, setAvailableExercises] = useState(testExercises);
 
-		console.log('Enviando los siguientes datos: ', userData);
+  const handleCheckboxChange = (exerciseId, isChecked) => {
+    console.log('Checkbox change:', exerciseId, isChecked); // Log the exercise id and checked status
 
-		apiClient
-			.post('/api/v1/rutina', userData)
-			//.put(URL, userData)
-			.then((response) => {
-				console.log('Respuesta del servidor: ', response.data);
-				console.log('Status: ', response.status);
-				if (response.status === 201) {
-					console.log('Mostrando Toast de Ejercicio Guardado...');
-					confirmationToast();
-				}
-			})
-			.catch((error) => {
-				console.error('Error en la petición: ', error);
-			});
-	};
+    setData((prev) => {
+      const updatedEjercicios = isChecked
+        ? [...prev.ejerciciosSeleccionados, exerciseId]
+        : prev.ejerciciosSeleccionados.filter((id) => id !== exerciseId);
+        
+      console.log('Updated ejerciciosSeleccionados:', updatedEjercicios); // Log the updated list of selected exercises
 
-    useEffect(() => {
-	}, []);
+      return {
+        ...prev,
+        ejerciciosSeleccionados: updatedEjercicios,
+      };
+    });
+  };
 
-    return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button size="sm" className="h-8 gap-1" variant="outline">
-                    Crear rutina desde listaEjercicios
-                    <UserCheck className="h-3.5 w-3.5" />
-                </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>Rutina</DialogTitle>
-                    <DialogDescription>Crea tu rutina aquí</DialogDescription>
-                    <DialogDescription>
-                        Haz click en Guardar cuando hayas terminado
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="nombreRutina" className="text-right">
-                            Nombre de la rutina
-                        </Label>
-                        <Input
-                            id="nombreRutina"
-                            name="nombreRutina"
-                            /*value={RUTINA.nombreRutina}*/
-                            onChange={handleChange}
-                            placeholder={RUTINA.nombreRutina}
-                            className="col-span-3"
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="fechaFinal" className="text-right">
-                            Fecha Inicio
-                        </Label>
-                        <Input
-                            id="fechaInicio"
-                            name="fechaInicio"
-                            type="date"
-                            /*value={dataEx.repeticion}*/
-                            onChange={handleChange}
-                            placeholder={RUTINA.fechaInicio}
-                            className="col-span-3"
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="fechaFinal" className="text-right">
-                            Fecha Final
-                        </Label>
-                        <Input
-                            id="fechaFinal"
-                            name="fechaFinal"
-                            type="date"
-                            /*value={dataEx.repeticion}*/
-                            onChange={handleChange}
-                            placeholder={RUTINA.fechaFinal}
-                            className="col-span-3"
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="entrenador" className="text-right">
-                            Entrenador
-                        </Label>
-                        <Input
-                            id="entrenador"
-                            name="entrenador"
-                            type="email"
-                            /*value={dataEx.peso}*/
-                            onChange={handleChange}
-                            placeholder={ENTRENADOR.email}
-                            className="col-span-3"
-                        />
-                    </div>
+  const onSubmit = (e) => {
+    e.preventDefault(); // prevent page refresh
+    const ejerciciosSeleccionados = availableExercises.filter(exercise => 
+        data.ejerciciosSeleccionados.includes(exercise.id)
+      );
+    
+    // Formatear los ejercicios para enviarlos en el formato adecuado
+    const ejerciciosDTO = ejerciciosSeleccionados.map(exercise => ({
+    id: exercise.id,
+    nombreEjercicio: exercise.nombreEjercicio
+    }));
+
+    const updatedRoutine = {
+    ejercicios: ejerciciosDTO,  // Lista de ejercicios con id y nombre
+    };
+
+    console.log('Enviando los siguientes datos: ', updatedRoutine);
+
+    apiClient
+        .post(`/api/v1/rutina/${routineData.id}/ejercicios`, updatedRoutine)
+        .then((response) => {
+        console.log('Respuesta del servidor: ', response.data);
+        console.log('Status: ', response.status);
+        if (response.status === 200) {
+          customToast({ message: "Rutina actualizada correctamente!", type: "success" });
+        }
+        onClose(); // Close the modal
+      })
+      .catch((error) => {
+        customToast({ message: "Error al añadir ejercicios!", type: "error" });
+        console.error('Error en la petición: ', error);
+      });
+  };
+
+  useEffect(() => {
+    console.log("Routine Data in PostListEjerciciosInRutina:", routineData);
+    if (routineData) {
+      setData({
+        nombreRutina: routineData.nombreRutina || '',
+        ejerciciosSeleccionados: routineData.ejercicios?.map((e) => e.id) || [],
+      });
+    }
+    if (routineData && routineData.ejercicios) {
+        const selectedExerciseIds = routineData.ejercicios.map(e => e.id);
+        setAvailableExercises(testExercises);
+        setData((prev) => ({
+          ...prev,
+          ejerciciosSeleccionados: selectedExerciseIds.filter(id => testExercises.some(exercise => exercise.id === id)),
+        }));
+      }
+  }, [routineData]);
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Modificar Rutina</DialogTitle>
+          <DialogDescription>Selecciona los ejercicios que quieres añadir a la rutina</DialogDescription>
+          <DialogDescription>
+            Haz click en Guardar cuando hayas terminado
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="nombreRutina" className="text-right">
+              Nombre de la rutina
+            </Label>
+            <Input
+              id="nombreRutina"
+              name="nombreRutina"
+              value={data.nombreRutina || ''}
+              disabled
+              className="col-span-3"
+            />
+          </div>
+  
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label className="text-right">Ejercicios disponibles:</Label>
+            <div className="space-y-2">
+              {availableExercises.map((exercise) => (
+                <div key={exercise.id} className="items-top flex space-x-2">
+                  <input
+                    type="checkbox"
+                    id={`exercise-${exercise.id}`}
+                    checked={data.ejerciciosSeleccionados.includes(exercise.id)}
+                    onChange={(e) => handleCheckboxChange(exercise.id, e.target.checked)}
+                    className="h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-500"
+                  />
+                  <label
+                    htmlFor={`exercise-${exercise.id}`}
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    {exercise.nombreEjercicio}
+                  </label>
                 </div>
-                <DialogFooter>
-                    <Button onClick={onSubmit} type="submit">
-                        Guardar cambios
-                    </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-    );
+              ))}
+            </div>
+          </div>
+        </div>
+        <DialogFooter>
+          <Button onClick={onSubmit} type="submit">
+            Guardar
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+  
 }
 
 export default PostListEjerciciosInRutina;

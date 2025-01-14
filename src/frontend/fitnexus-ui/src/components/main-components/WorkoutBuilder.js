@@ -23,6 +23,7 @@ import { Dialog } from '../../components_ui/ui/dialog';
 import DeleteModalPost, { DeleteModalExercisePost } from '../to-double-check/DeleteModalExercisePost';
 import PutRutina from '../buttons-components/rutina/PutRutina';
 import DeleteModalRoutinePost from '../to-double-check/DeleteModalRoutinePost';
+import DeleteListEjerciciosInRutina from '../buttons-components/rutina/DeleteListEjerciciosInRutina';
 
 const deleteMessage = "deleteMessage"
 const deleteTitle = "La acción de eliminar no se puede revertir"
@@ -74,8 +75,8 @@ export function WorkoutBuilder() {
       fechaInicio: '2025-12-01',
       fechaFinal: '2025-12-31',
       ejercicios: [
-        { nombreEjercicio: 'Benchpress' },
-        { nombreEjercicio: 'Fondos' },
+        { id: 1, nombreEjercicio: 'Benchpress' },
+        { id: 2, nombreEjercicio: 'Fondos' },
       ],
       entrenador: [
         {
@@ -89,8 +90,8 @@ export function WorkoutBuilder() {
       fechaInicio: '2025-12-01',
       fechaFinal: '2025-12-31',
       ejercicios: [
-        { nombreEjercicio: 'Sentadilla' },
-        { nombreEjercicio: 'Deadlift' },
+        { id: 3, nombreEjercicio: 'Sentadilla' },
+        { id: 4, nombreEjercicio: 'Deadlift' },
       ],
     }
   ];
@@ -111,6 +112,9 @@ export function WorkoutBuilder() {
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  const [isAddExerciseToRoutineOpen, setIsAddExerciseToRoutineOpen] = useState(false);
+  const [isRemoveExerciseFromRoutineOpen, setIsRemoveExerciseFromRoutineOpen] = useState(false);
 
   const loadData = async () => {
     try {
@@ -154,6 +158,14 @@ export function WorkoutBuilder() {
     setIsEditOpen(false);
   };
 
+  const handleAddExerciseToRoutine = (routine) => {
+    console.log("Selected Routine:", routine);
+    setSelectedRoutine(routine);
+    setIsAddExerciseToRoutineOpen(true);
+  };
+
+  const handleRemoveExerciseFromRoutine = (item) => { };
+
   // Handle changes on inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -163,6 +175,9 @@ export function WorkoutBuilder() {
     });
   };
 
+  const openAddExercise = () => {
+    <PostListEjerciciosInRutina />
+  }
   
   const onSubmit = (e) => {
     e.preventDefault(); //prevent refresh on page
@@ -349,16 +364,17 @@ export function WorkoutBuilder() {
                                   aria-haspopup="true"
                                   size="icon"
                                   variant="ghost"
-                                  onClick={() => handleEditClick(routine, 'routine')}>
+                                  onClick={() => handleAddExerciseToRoutine(routine)}>
                                 <CirclePlusIcon/>
                               </Button>
                               </TableCell>
+
                               <TableCell>
                               <Button 
                                   aria-haspopup="true"
                                   size="icon"
                                   variant="ghost"
-                                  onClick={() => handleEditClick(routine, 'routine')}>
+                                  onClick={() => handleRemoveExerciseFromRoutine(routine)}>
                                 <CircleMinusIcon/>
                               </Button>
                               </TableCell>
@@ -391,6 +407,24 @@ export function WorkoutBuilder() {
                           description = {deleteDescription} 
                           open={isDeleteOpen}
                           onClose={() => setIsDeleteOpen(false)}
+                          exerciseData={selectedExercise}
+                        />
+                      )}
+
+                      {isAddExerciseToRoutineOpen && (
+                        <PostListEjerciciosInRutina
+                          open={isAddExerciseToRoutineOpen}
+                          onClose={() => setIsAddExerciseToRoutineOpen(false)}
+                          routineData={selectedRoutine}
+                        />
+                      )}
+                      {isRemoveExerciseFromRoutineOpen && (
+                        <DeleteListEjerciciosInRutina
+                          messageButton = {deleteMessage}
+                          title = {deleteTitle}
+                          description = {deleteDescription} 
+                          open={isRemoveExerciseFromRoutineOpen}
+                          onClose={() => setIsRemoveExerciseFromRoutineOpen(false)}
                           exerciseData={selectedExercise}
                         />
                       )}
