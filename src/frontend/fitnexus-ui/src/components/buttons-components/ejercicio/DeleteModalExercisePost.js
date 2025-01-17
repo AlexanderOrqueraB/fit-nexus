@@ -9,10 +9,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../../components_ui/ui/alert-dialog"
-import { Button } from "../../components_ui/ui/button"
-import { customToast } from '../utils/customToast'
-import { apiClient } from '../utils/client';
+} from "../../../components_ui/ui/alert-dialog"
+import { Button } from "../../../components_ui/ui/button"
+import { customToast } from '../../utils/customToast'
+import { apiClient } from '../../utils/client';
 
 
 export function DeleteModalExercisePost ({ 

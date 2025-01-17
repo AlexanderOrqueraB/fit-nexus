@@ -1,29 +1,29 @@
 import { Button } from '../../components_ui/ui/button';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { customToast } from '../utils/customToast'
 import { apiClient } from '../utils/client';
 import PostExercise from '../buttons-components/ejercicio/PostExercise';
 import PutExercise from '../buttons-components/ejercicio/PutExercise';
-import GetExerciseByName from '../buttons-components/ejercicio/GetExerciseByName';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger} 
 from '../../components_ui/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
-import { BadgeXIcon, CircleMinusIcon, CirclePlusIcon, Delete, DeleteIcon, Edit, Edit2, Info, Minus, MoreHorizontal, Plus, RefreshCwIcon, Trash2Icon } from 'lucide-react';
+import { CircleMinusIcon, CirclePlusIcon, Delete, DeleteIcon, Edit, Edit2, Info, Minus, MoreHorizontal, Plus, RefreshCwIcon, Trash2Icon } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components_ui/ui/card';
 import { fetchWorkoutData } from '../utils/api';
 import PostRutina from '../buttons-components/rutina/PostRutina';
 import PostListEjerciciosInRutina from '../buttons-components/rutina/PostListEjerciciosInRutina';
-import GetRutinaByName from '../buttons-components/rutina/GetRutinaByName';
-import GetRutinaById from '../buttons-components/rutina/GetRutinaById';
-import DeleteExerciseListByName from '../buttons-components/rutina/DeleteExerciseListByName';
 import PostPlanEntrenamientoFecha  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamientoFecha';
 import PostPlanEntrenamiento  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamiento';
 import { Dialog } from '../../components_ui/ui/dialog';
-import DeleteModalPost, { DeleteModalExercisePost } from '../to-double-check/DeleteModalExercisePost';
+import DeleteModalExercisePost from '../buttons-components/ejercicio/DeleteModalExercisePost';
 import PutRutina from '../buttons-components/rutina/PutRutina';
-import DeleteModalRoutinePost from '../to-double-check/DeleteModalRoutinePost';
+import DeleteModalRoutinePost from '../buttons-components/rutina/DeleteModalRoutinePost';
 import DeleteListEjerciciosInRutina from '../buttons-components/rutina/DeleteListEjerciciosInRutina';
+import PutPlanEntrenamiento from '../buttons-components/plan-entrenamiento/PutPlanEntrenamiento';
+import DeleteModalPlanPost from '../buttons-components/plan-entrenamiento/DeleteModalPlanPost';
+import PostListRoutinesInPlan from '../buttons-components/plan-entrenamiento/PostListRoutinesInPlan';
+import DeleteListRoutinesInPlan from '../buttons-components/plan-entrenamiento/DeleteListRoutinesInPlan';
 
 const deleteMessage = "deleteMessage"
 const deleteTitle = "La acción de eliminar no se puede revertir"
@@ -102,7 +102,7 @@ export function WorkoutBuilder() {
       nombrePlan: 'Plan Noviembre',
       fechaInicio: '2024-11-01',
       fechaFinal: '2024-11-30',
-      rutinas: [{ nombreRutina: 'Rutina de Pecho' }],
+      rutinas: [{ nombreRutina: 'Hombro360' }],
     },
   ];
 
@@ -113,8 +113,13 @@ export function WorkoutBuilder() {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
+  //rutina
   const [isAddExerciseToRoutineOpen, setIsAddExerciseToRoutineOpen] = useState(false);
   const [isRemoveExerciseFromRoutineOpen, setIsRemoveExerciseFromRoutineOpen] = useState(false);
+
+  //plan
+  const [isAddRoutineToPlanOpen, setIsAddRoutineToPlanOpen] = useState(false);
+  const [isRemoveRoutineFromPlanOpen, setIsRemoveRoutineFromPlanOpen] = useState(false);
 
   const loadData = async () => {
     try {
@@ -158,16 +163,28 @@ export function WorkoutBuilder() {
     setIsEditOpen(false);
   };
 
+  //rutina
   const handleAddExerciseToRoutine = (routine) => {
     console.log("Selected Routine:", routine);
     setSelectedRoutine(routine);
     setIsAddExerciseToRoutineOpen(true);
   };
-
   const handleRemoveExerciseFromRoutine = (routine) => {
     console.log("Selected Routine:", routine);
     setSelectedExercise(routine); // Guarda la rutina que tiene ejercicios seleccionados
     setIsRemoveExerciseFromRoutineOpen(true); // Abre el modal de eliminación
+  };
+
+  //plan
+  const handleAddRoutineToPlan = (plan) => {
+    console.log("Selected Plan:", plan);
+    setSelectedPlan(plan);
+    setIsAddRoutineToPlanOpen(true);
+  };
+  const handleRemoveRoutineFromPlan = (plan) => {
+    console.log("Selected Plan:", plan);
+    setSelectedRoutine(plan); // Guarda el plan que tiene rutinas seleccionadas
+    setIsRemoveRoutineFromPlanOpen(true); // Abre el modal de eliminación
   };
 
   // Handle changes on inputs
@@ -215,15 +232,8 @@ export function WorkoutBuilder() {
   return (
     <div>
       <div>
-        <div className="flex flex-row space-x-4">
-          <GetExerciseByName />
-        </div>
         <div className="flex flex-row space-x-4"> 
-					<PostRutina/>
 					<PostListEjerciciosInRutina/>
-					<GetRutinaByName/>
-					<GetRutinaById/>
-					<DeleteExerciseListByName/>
 				</div>
 				<div className="flex flex-row space-x-4"> 
 					<PostPlanEntrenamiento/>
@@ -257,6 +267,10 @@ export function WorkoutBuilder() {
                   <Card x-chunk="dashboard-06-chunk-0">
                     <CardHeader>
                       <CardTitle>Planes de entrenamiento</CardTitle>
+                      <div className= "text-right">
+                        <PostPlanEntrenamiento />
+                        <PostPlanEntrenamientoFecha/>
+                      </div>
                       <CardDescription>
                         A continuación puedes ver tus planes de entrenamiento creados
 											</CardDescription>
@@ -270,6 +284,9 @@ export function WorkoutBuilder() {
                             <TableHead className="hidden md:table-cell">Fecha Final</TableHead>
                             <TableHead className="hidden md:table-cell">Rutinas</TableHead>
                             <TableHead className="hidden md:table-cell">Editar</TableHead>
+                            <TableHead className="hidden md:table-cell">Añadir</TableHead>
+                            <TableHead className="hidden md:table-cell">Quitar</TableHead>
+                            <TableHead className="hidden md:table-cell">Eliminar</TableHead>
                           </TableRow>
                         </TableHeader>
 
@@ -285,35 +302,82 @@ export function WorkoutBuilder() {
                                 ))}
                               </TableCell>
                               <TableCell>
-                                <Dialog>
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger asChild>
-                                    <Button
-                                      aria-haspopup="true"
-                                      size="icon"
-                                      variant="ghost"
-                                    >
-                                      <MoreHorizontal className="h-4 w-4" />
-                                      <span className="sr-only">Toggle menu</span>
-                                    </Button>
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent align="end">
-                                    <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                                    <DropdownMenuItem onClick={() =>handleEditClick(plan, 'plan')}>
-                                      Editar
-																		</DropdownMenuItem>
-                                    <DropdownMenuItem>Eliminar</DropdownMenuItem>
-                                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                      Test
-                                    </DropdownMenuItem>
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
-                                </Dialog>
+                                <Button 
+                                    aria-haspopup="true"
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={() => handleEditClick(plan, 'plan')}>
+                                  <Edit/>
+                                </Button>
                               </TableCell>
+
+                              <TableCell>
+                                <Button 
+                                    aria-haspopup="true"
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={() => handleAddRoutineToPlan(plan)}>
+                                  <CirclePlusIcon/>
+                                </Button>
+                              </TableCell>
+
+                              <TableCell>
+                                <Button 
+                                    aria-haspopup="true"
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={() => handleRemoveRoutineFromPlan(plan)}>
+                                  <CircleMinusIcon />
+                                </Button>
+                              </TableCell>
+                              
+                              <TableCell>
+                                <Button 
+                                  aria-haspopup="true"
+                                  size="icon"
+                                  variant="ghost"
+                                  onClick={() => handleDeleteClick(plan, 'plan')}>
+                                <Trash2Icon color="red"/>
+                                </Button>
+                              </TableCell>
+
                             </TableRow>
                           ))}
                         </TableBody>
                       </Table>
+                      {isEditOpen && (
+                        <PutPlanEntrenamiento
+                          open={isEditOpen}
+                          onClose={() => setIsEditOpen(false)}
+                          planData={selectedPlan}
+                        />
+                      )}
+                      {isDeleteOpen && (
+                        <DeleteModalPlanPost
+                          title = {deleteTitle}
+                          description = {deleteDescription} 
+                          open={isDeleteOpen}
+                          onClose={() => setIsDeleteOpen(false)}
+                          routineData={selectedRoutine}
+                        />
+                      )}
+
+                      {isAddRoutineToPlanOpen && (
+                        <PostListRoutinesInPlan
+                          open={isAddRoutineToPlanOpen}
+                          onClose={() => setIsAddRoutineToPlanOpen(false)}
+                          planData={selectedPlan}
+                        />
+                      )}
+                      {isRemoveRoutineFromPlanOpen && (
+                        <DeleteListRoutinesInPlan
+                          title = {deleteTitle}
+                          description = {deleteDescription} 
+                          open={isRemoveRoutineFromPlanOpen}
+                          onClose={() => setIsRemoveRoutineFromPlanOpen(false)}
+                          planData={selectedRoutine}
+                        />
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>
@@ -322,6 +386,9 @@ export function WorkoutBuilder() {
                   <Card x-chunk="dashboard-06-chunk-0">
                     <CardHeader>
                       <CardTitle>Rutinas</CardTitle>
+                      <div className= "text-right">
+                          <PostRutina />
+                      </div>
                       <CardDescription>
                         A continuación puedes ver tus rutinas creadas.
 											</CardDescription>
@@ -353,34 +420,34 @@ export function WorkoutBuilder() {
                                 ))}
                               </TableCell>
                               <TableCell>
-                              <Button 
-                                  aria-haspopup="true"
-                                  size="icon"
-                                  variant="ghost"
-                                  onClick={() => handleEditClick(routine, 'routine')}>
-                                <Edit/>
-                              </Button>
+                                <Button 
+                                    aria-haspopup="true"
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={() => handleEditClick(routine, 'routine')}>
+                                  <Edit/>
+                                </Button>
                               </TableCell>
 
 
                               <TableCell>
-                              <Button 
-                                  aria-haspopup="true"
-                                  size="icon"
-                                  variant="ghost"
-                                  onClick={() => handleAddExerciseToRoutine(routine)}>
-                                <CirclePlusIcon/>
-                              </Button>
+                                <Button 
+                                    aria-haspopup="true"
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={() => handleAddExerciseToRoutine(routine)}>
+                                  <CirclePlusIcon/>
+                                </Button>
                               </TableCell>
 
                               <TableCell>
-                              <Button 
-                                  aria-haspopup="true"
-                                  size="icon"
-                                  variant="ghost"
-                                  onClick={() => handleRemoveExerciseFromRoutine(routine)}>
-                                <CircleMinusIcon/>
-                              </Button>
+                                <Button 
+                                    aria-haspopup="true"
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={() => handleRemoveExerciseFromRoutine(routine)}>
+                                  <CircleMinusIcon />
+                                </Button>
                               </TableCell>
 
 
@@ -390,7 +457,7 @@ export function WorkoutBuilder() {
                                   size="icon"
                                   variant="ghost"
                                   onClick={() => handleDeleteClick(routine, 'routine')}>
-                                <Trash2Icon/>
+                                <Trash2Icon color="red"/>
                                 </Button>
                               </TableCell>
                             </TableRow>
@@ -439,8 +506,11 @@ export function WorkoutBuilder() {
                   <Card x-chunk="dashboard-06-chunk-0">
                     <CardHeader>
                       <CardTitle>Ejercicios</CardTitle>
+                      <div className= "text-right">
+                          <PostExercise />
+                      </div>
                       <CardDescription>
-                        A continuación puedes ver tus ejercicios creados.
+                        A continuación puedes ver tus ejercicios creados:
 											</CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -480,7 +550,7 @@ export function WorkoutBuilder() {
                                   size="icon"
                                   variant="ghost"
                                   onClick={() => handleDeleteClick(exercise, 'exercise')}>
-                                <Trash2Icon/>
+                                <Trash2Icon color="red"/>
                                 </Button>
                               </TableCell>
                             </TableRow>

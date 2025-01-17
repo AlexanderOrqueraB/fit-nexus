@@ -8,7 +8,6 @@ import { Button } from "../../components_ui/ui/button"
 import { useNavigate } from 'react-router-dom'
 import PostExercise from '../buttons-components/ejercicio/PostExercise';
 import PutExercise from '../buttons-components/ejercicio/PutExercise';
-import GetExerciseByName from '../buttons-components/ejercicio/GetExerciseByName';
 
 import fitNexusLogo from "../../images/fit-nexus-logo.jpeg"
 

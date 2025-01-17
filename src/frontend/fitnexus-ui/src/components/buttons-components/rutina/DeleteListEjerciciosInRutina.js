@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { apiClient } from '../../utils/client';
 import { customToast } from '../../utils/customToast';
-import { Button } from '../../../components_ui/ui/button';
 import { Label } from '../../../components_ui/ui/label';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "../../../components_ui/ui/dialog";
 
 import {
     AlertDialog,
@@ -21,7 +12,6 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
   } from "../../../components_ui/ui/alert-dialog"
 
 export function DeleteListEjerciciosInRutina({ open, onClose, routineData }) {

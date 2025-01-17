@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { UserCheck } from 'lucide-react';
+import { Pencil, UserCheck } from 'lucide-react';
 import {
 	Dialog,
 	DialogContent,
@@ -79,7 +79,7 @@ export function PostExercise() {
             <DialogTrigger asChild>
                 <Button size="sm" className="h-8 gap-1" variant="default">
                     Crear ejercicio
-                    <UserCheck className="h-3.5 w-3.5" />
+                    <Pencil className="h-3.5 w-3.5" />
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">

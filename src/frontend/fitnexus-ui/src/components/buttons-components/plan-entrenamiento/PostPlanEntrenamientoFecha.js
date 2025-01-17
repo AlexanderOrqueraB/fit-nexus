@@ -77,7 +77,7 @@ export function PostPlanEntrenamientoFecha() {
         <Dialog>
             <DialogTrigger asChild>
                 <Button size="sm" className="h-8 gap-1" variant="outline">
-                    Añadir fecha a plan
+                    Añadir fecha a plan (pending props)
                     <UserCheck className="h-3.5 w-3.5" />
                 </Button>
             </DialogTrigger>
@@ -97,7 +97,8 @@ export function PostPlanEntrenamientoFecha() {
                         <Input
                             id="nombrePlan"
                             name="nombrePlan"
-                            /*value={PLAN.nombrePlan}*/
+                            value={PLAN.nombrePlan}
+                            disabled
                             onChange={handleChange}
                             placeholder={PLAN.nombrePlan}
                             className="col-span-3"

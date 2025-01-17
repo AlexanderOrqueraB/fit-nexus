@@ -55,14 +55,13 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
         data.ejerciciosSeleccionados.includes(exercise.id)
       );
     
-    // Formatear los ejercicios para enviarlos en el formato adecuado
     const ejerciciosDTO = ejerciciosSeleccionados.map(exercise => ({
     id: exercise.id,
     nombreEjercicio: exercise.nombreEjercicio
     }));
 
     const updatedRoutine = {
-    ejercicios: ejerciciosDTO,  // Lista de ejercicios con id y nombre
+    ejercicios: ejerciciosDTO,  // Lista de EJERCICIOS con id y nombre
     };
 
     console.log('Enviando los siguientes datos: ', updatedRoutine);

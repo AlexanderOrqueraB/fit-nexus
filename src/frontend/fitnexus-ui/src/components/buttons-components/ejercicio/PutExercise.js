@@ -93,7 +93,7 @@ useEffect(() => {
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Ejercicio</DialogTitle>
-                    <DialogDescription>Crea un ejercicio aquí</DialogDescription>
+                    <DialogDescription>Edita tu ejercicio</DialogDescription>
                     <DialogDescription>
                         Haz click en Guardar cuando hayas terminado
                     </DialogDescription>

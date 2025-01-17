@@ -46,7 +46,7 @@ export function PutRutina ({ open, onClose, routineData }) {
 		console.log('Enviando los siguientes datos: ', updatedRoutine);
 
 		apiClient
-			.put('/api/v1/rutina/${exerciseData.id}', updatedRoutine)
+			.put('/api/v1/rutina/${routineData.id}', updatedRoutine)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
@@ -79,7 +79,7 @@ export function PutRutina ({ open, onClose, routineData }) {
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Rutina</DialogTitle>
-                    <DialogDescription>Crea tu rutina aquí</DialogDescription>
+                    <DialogDescription>Edita tu rutina aquí</DialogDescription>
                     <DialogDescription>
                         Haz click en Guardar cuando hayas terminado
                     </DialogDescription>
