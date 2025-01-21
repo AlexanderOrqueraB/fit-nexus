@@ -15,7 +15,7 @@ import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
 import { toast } from 'sonner'
-import { ENTRENADOR, PLAN } from '../../utils/hardcodedModelDtos';
+import { planWithEntrenador, mockEntrenador } from '../../../mocks/mockData'
 
 
 
@@ -96,9 +96,9 @@ export function PostPlanEntrenamiento() {
                         <Input
                             id="nombrePlan"
                             name="nombrePlan"
-                            /*value={PLAN.nombrePlan}*/
+                            /*value={planWithEntrenador.nombrePlan}*/
                             onChange={handleChange}
-                            placeholder={PLAN.nombrePlan}
+                            placeholder={planWithEntrenador.nombrePlan}
                             className="col-span-3"
                         />
                     </div>
@@ -110,9 +110,9 @@ export function PostPlanEntrenamiento() {
                             id="entrenador"
                             name="entrenador"
                             type="email"
-                            /*value={ENTRENADOR.email}*/
+                            /*value={mockEntrenador.email}*/
                             onChange={handleChange}
-                            placeholder={ENTRENADOR.email}
+                            placeholder={mockEntrenador.email}
                             className="col-span-3"
                         />
                     </div>

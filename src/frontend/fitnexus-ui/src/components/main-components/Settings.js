@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "../../components_ui/ui/card";
 import { Label } from '../../components_ui/ui/label';
-import { CLIENTE } from '../utils/hardcodedModelDtos';
+import { mockClients } from '../../mocks/mockData';
 
 export function Settings() {
   const [selectedSection, setSelectedSection] = useState("general");
@@ -36,9 +36,9 @@ export function Settings() {
               <div className="grid w-full items-center gap-4">
                 <div className="space-y-2">
                   {[
-                    { label: "Nombre", value: CLIENTE.nombre },
-                    { label: "Apellido", value: CLIENTE.apellido },
-                    { label: "Email", value: CLIENTE.email },
+                    { label: "Nombre", value: mockClients[0].nombre },
+                    { label: "Apellido", value: mockClients[0].apellido },
+                    { label: "Email", value: mockClients[0].email },
                   ].map((item, index) => (
                     <div key={index} className="flex items-center">
                       <Label className="w-1/4">{item.label}</Label>
@@ -94,12 +94,12 @@ export function Settings() {
               <div className="grid w-full items-center gap-4">
                 <div className="space-y-2">
                   {[
-                    { label: "Objetivo", value: CLIENTE.objetivo },
-                    { label: "Genero", value: CLIENTE.genero },
-                    { label: "Frecuencia Ejercicio", value: CLIENTE.frecuenciaEjercicioSemanal },
-                    { label: "Edad", value: CLIENTE.edad },
-                    { label: "Peso", value: CLIENTE.peso },
-                    { label: "Altura", value: CLIENTE.altura },
+                    { label: "Objetivo", value: mockClients[0].objetivo },
+                    { label: "Genero", value: mockClients[0].genero },
+                    { label: "Frecuencia Ejercicio", value: mockClients[0].frecuenciaEjercicioSemanal },
+                    { label: "Edad", value: mockClients[0].edad },
+                    { label: "Peso", value: mockClients[0].peso },
+                    { label: "Altura", value: mockClients[0].altura },
                   ].map((item, index) => (
                     <div key={index} className="flex items-center">
                       <Label className="w-1/4">{item.label}</Label>

@@ -11,7 +11,6 @@ import {
 } from "../../components_ui/ui/dialog"
 import { Input } from "../../components_ui/ui/input"
 import { Label } from "../../components_ui/ui/label"
-import {CLIENTE} from "../utils/hardcodedModelDtos"
 
 export function EditProfile() {
   //TODO: Añadir get para obtener los datos de placeholder del cliente que va a editar su info

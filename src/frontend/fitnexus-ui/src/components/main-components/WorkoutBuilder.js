@@ -4,8 +4,6 @@ import { customToast } from '../utils/customToast'
 import { apiClient } from '../utils/client';
 import PostExercise from '../buttons-components/ejercicio/PostExercise';
 import PutExercise from '../buttons-components/ejercicio/PutExercise';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger} 
-from '../../components_ui/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
 import { CircleMinusIcon, CirclePlusIcon, Delete, DeleteIcon, Edit, Edit2, Info, Minus, MoreHorizontal, Plus, RefreshCwIcon, Trash2Icon } from 'lucide-react';
@@ -15,7 +13,6 @@ import PostRutina from '../buttons-components/rutina/PostRutina';
 import PostListEjerciciosInRutina from '../buttons-components/rutina/PostListEjerciciosInRutina';
 import PostPlanEntrenamientoFecha  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamientoFecha';
 import PostPlanEntrenamiento  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamiento';
-import { Dialog } from '../../components_ui/ui/dialog';
 import DeleteModalExercisePost from '../buttons-components/ejercicio/DeleteModalExercisePost';
 import PutRutina from '../buttons-components/rutina/PutRutina';
 import DeleteModalRoutinePost from '../buttons-components/rutina/DeleteModalRoutinePost';
@@ -24,6 +21,7 @@ import PutPlanEntrenamiento from '../buttons-components/plan-entrenamiento/PutPl
 import DeleteModalPlanPost from '../buttons-components/plan-entrenamiento/DeleteModalPlanPost';
 import PostListRoutinesInPlan from '../buttons-components/plan-entrenamiento/PostListRoutinesInPlan';
 import DeleteListRoutinesInPlan from '../buttons-components/plan-entrenamiento/DeleteListRoutinesInPlan';
+import { mockExercises, mockRoutinesBuilder, mockPlans } from '../../mocks/mockData'
 
 const deleteMessage = "deleteMessage"
 const deleteTitle = "La acción de eliminar no se puede revertir"
@@ -43,72 +41,15 @@ export function WorkoutBuilder() {
 
   const [isTestMode, setIsTestMode] = useState(false);
 
-  const testExercises = [
-    {
-      id: 1,
-      nombreEjercicio: 'Dominadas',
-      repeticion: 10,
-      serie: 3,
-      peso: 0,
-      cardioRealizado: false,
-    },
-    {
-      id: 2,
-      nombreEjercicio: 'Press Banca',
-      repeticion: 12,
-      serie: 4,
-      peso: 50,
-      cardioRealizado: false,
-    },
-  ];
-
   const formatDateToDDMMYYYY = (isoDate) => {
     if (!isoDate) return '';
     const [year, month, day] = isoDate.split('-');
     return `${day}/${month}/${year}`;
   };
 
-  const testRoutines = [
-    {
-      id: 1,
-      nombreRutina: 'Rutina Torso',
-      fechaInicio: '2025-12-01',
-      fechaFinal: '2025-12-31',
-      ejercicios: [
-        { id: 1, nombreEjercicio: 'Bench' },
-        { id: 2, nombreEjercicio: 'Fondos' },
-      ],
-      entrenador: [
-        {
-            email: "entrenador@email.com",
-        }
-    ]
-    },
-    {
-      id: 2,
-      nombreRutina: 'Rutina Pierna',
-      fechaInicio: '2025-12-01',
-      fechaFinal: '2025-12-31',
-      ejercicios: [
-        { id: 3, nombreEjercicio: 'Sentadilla' },
-        { id: 4, nombreEjercicio: 'Deadlift' },
-      ],
-    }
-  ];
-  
-  const testPlans = [
-    {
-      id: 1,
-      nombrePlan: 'Plan Noviembre',
-      fechaInicio: '2024-11-01',
-      fechaFinal: '2024-11-30',
-      rutinas: [{ nombreRutina: 'Hombro360' }],
-    },
-  ];
-
-  const displayedExercises = (isTestMode ? testExercises : exercises) || [];
-  const displayedRoutines = (isTestMode ? testRoutines : routines) || [];
-  const displayedPlans = (isTestMode ? testPlans : plans) || [];
+  const displayedExercises = (isTestMode ? mockExercises : exercises) || [];
+  const displayedRoutines = (isTestMode ? mockRoutinesBuilder : routines) || [];
+  const displayedPlans = (isTestMode ? mockPlans : plans) || [];
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);

@@ -19,6 +19,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
 import { customToast } from '../utils/customToast'
 import { fetchClientData } from '../utils/api';
+import { mockClients } from '../../mocks/mockData'
 
 export function ClientsList() {
 
@@ -28,35 +29,8 @@ export function ClientsList() {
 	//estado booleando para "test mode"
 	const [isTestMode, setIsTestMode] = useState(false);
 
-	const testClients = [
-		{
-			"nombre": "Luke",
-			"apellido": "Skywalker",
-			"email": "luke@skywalker.com",
-			"objetivo": "PERDER_GRASA",
-			"genero": "HOMBRE",
-			"frecuenciaEjercicioSemanal": "LIGERO",
-			"edad": 25,
-			"peso": 80,
-			"altura": 175,
-			"clienteDesde": "2023-07-12"
-		},
-		{
-			"nombre": "Leia",
-			"apellido": "Skywalker",
-			"email": "leia@skywalker.com",
-			"objetivo": "GANAR_MUSCULO",
-			"genero": "MUJER",
-			"frecuenciaEjercicioSemanal": "LIGERO",
-			"edad": 25,
-			"peso": 80,
-			"altura": 175,
-			"clienteDesde": "2023-07-12"
-		}
-	]
-
 	//Alternamos entre datos reales y datos de prueba
-	const displayedClients = (isTestMode ? testClients : clients) || [];
+	const displayedClients = (isTestMode ? mockClients : clients) || [];
 
 	const [visibleColumns, setVisibleColumns] = useState([
 		'nombre', 

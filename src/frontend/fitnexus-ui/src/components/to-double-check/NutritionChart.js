@@ -2,7 +2,6 @@
 "use client"
 
 import * as React from "react"
-import { TrendingUp } from "lucide-react"
 import { Label, Pie, PieChart } from "recharts"
 
 import {
@@ -17,22 +16,9 @@ import {
 import {
   ChartContainer,
   ChartTooltip,
-  ChartTooltipContent,
 } from "../../components_ui/ui/chart"
-import { Button } from "../../components_ui/ui/button"
 import { CustomAlertDialog } from "./CustomAlertDialog"
-
-const chartMacros = [
-  { macronutriente: "Proteínas", porcentajes: 30, gramos:120, fill: "var(--color-chrome)" },
-  { macronutriente: "Hidratos de carbono", porcentajes: 30, gramos:150, fill: "var(--color-safari)" },
-  { macronutriente: "Grasas", porcentajes: 40, gramos:70, fill: "var(--color-firefox)" },
-]
-
-const chartKcal = [
-  { macronutriente: "Proteínas", kcal: 800, fill: "var(--color-chrome)" },
-  { macronutriente: "Hidratos de carbono", kcal: 720, fill: "var(--color-safari)" },
-  { macronutriente: "Grasas", kcal: 520, fill: "var(--color-firefox)" },
-]
+import { mockChartMacros, mockChartKcal } from '../../mocks/mockData'
 
 const chartConfig = {
   porcentajes: {
@@ -64,11 +50,11 @@ const kcalMoreInfo = "Para el cálculo de kcal se utiliza en primer lugar la fó
 
 export function NutritionChart() {
   const totalPorcentajes = React.useMemo(() => {
-    return chartMacros.reduce((acc, curr) => acc + curr.porcentajes, 0)
+    return mockChartMacros.reduce((acc, curr) => acc + curr.porcentajes, 0)
   }, [])
 
   const totalKcal = React.useMemo(() => {
-    return chartKcal.reduce((acc, curr) => acc + curr.kcal, 0)
+    return mockChartKcal.reduce((acc, curr) => acc + curr.kcal, 0)
   }, [])
 
   return (
@@ -99,7 +85,7 @@ export function NutritionChart() {
             }}
           />
             <Pie
-              data={chartMacros}
+              data={mockChartMacros}
               dataKey="porcentajes"
               nameKey="macronutriente"
               innerRadius={70}
@@ -179,7 +165,7 @@ export function NutritionChart() {
             }}
           />
             <Pie
-              data={chartKcal}
+              data={mockChartKcal}
               dataKey="kcal"
               nameKey="macronutriente"
               innerRadius={70}

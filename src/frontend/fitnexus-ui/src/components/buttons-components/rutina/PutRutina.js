@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { UserCheck } from 'lucide-react';
 import {
 	Dialog,
 	DialogContent,
@@ -7,7 +6,6 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "../../../components_ui/ui/dialog"
 
 import { Button } from '../../../components_ui/ui/button';
@@ -15,10 +13,6 @@ import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
 import { customToast } from '../../utils/customToast'
-import { PLAN, RUTINA } from '../../utils/hardcodedModelDtos';
-import { ENTRENADOR } from '../../utils/hardcodedModelDtos';
-
-
 
 export function PutRutina ({ open, onClose, routineData }) {
     const [data, setData] = useState({

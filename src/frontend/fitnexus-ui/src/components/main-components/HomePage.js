@@ -1,33 +1,15 @@
-import { CLIENTE } from '../utils/hardcodedModelDtos';
-import ProgressCustom from "../to-double-check/Progress";
 import EditProfileExtra from './EditProfileExtra';
-import EditProfile from "./EditProfile";
-import ChangePassword from './ChangePassword';
 import { customToast } from '../utils/customToast'
 import { Button } from "../../components_ui/ui/button"
 import { useNavigate } from 'react-router-dom'
 import PostExercise from '../buttons-components/ejercicio/PostExercise';
-import PutExercise from '../buttons-components/ejercicio/PutExercise';
 
 import fitNexusLogo from "../../images/fit-nexus-logo.jpeg"
 
-import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from '../../components_ui/ui/dropdown-menu';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
-import { EXERCISES, PLAN2, RUTINAS } from '../utils/hardcodedModelDtos';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
-import { ListFilter, MoreHorizontal, UserCheck } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components_ui/ui/card';
+import { Card, CardContent } from '../../components_ui/ui/card';
 import { apiClient } from '../utils/client';
 import React, { useEffect, useState } from 'react';
-
+import { mockClients } from '../../mocks/mockData'
 
 export function HomePage() {
 
@@ -110,7 +92,7 @@ export function HomePage() {
 
 	return (
 		<div>
-			<h1>Bienvenido: {CLIENTE.nombre}</h1>
+			<h1>Bienvenido: {mockClients[0].nombre} :)</h1>
 			<div className="flex flex-1 flex-col gap-4 p-4">
 				<div className="grid auto-rows-min gap-4 md:grid-cols-3">
             		<div className="aspect-video rounded-xl bg-muted/50" >

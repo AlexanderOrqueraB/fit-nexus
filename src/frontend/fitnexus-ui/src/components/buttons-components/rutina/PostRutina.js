@@ -15,9 +15,7 @@ import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
 import { toast } from 'sonner'
-import { PLAN, RUTINA } from '../../utils/hardcodedModelDtos';
-import { ENTRENADOR } from '../../utils/hardcodedModelDtos';
-
+import { mockEntrenador, mockRoutinesBuilder } from '../../../mocks/mockData'
 
 
 export function PostRutina() {
@@ -98,9 +96,9 @@ export function PostRutina() {
                         <Input
                             id="nombreRutina"
                             name="nombreRutina"
-                            /*value={RUTINA.nombreRutina}*/
+                            /*value={mockRoutinesBuilder.nombreRutina}*/
                             onChange={handleChange}
-                            placeholder={RUTINA.nombreRutina}
+                            placeholder={mockRoutinesBuilder.nombreRutina}
                             className="col-span-3"
                         />
                     </div>
@@ -112,9 +110,9 @@ export function PostRutina() {
                             id="fechaInicio"
                             name="fechaInicio"
                             type="date"
-                            /*value={dataEx.repeticion}*/
+                            /*value={mockRoutinesBuilder.fechaInicio}*/
                             onChange={handleChange}
-                            placeholder={RUTINA.fechaInicio}
+                            placeholder={mockRoutinesBuilder.fechaInicio}
                             className="col-span-3"
                         />
                     </div>
@@ -128,7 +126,7 @@ export function PostRutina() {
                             type="date"
                             /*value={dataEx.repeticion}*/
                             onChange={handleChange}
-                            placeholder={RUTINA.fechaFinal}
+                            placeholder={mockRoutinesBuilder.fechaFinal}
                             className="col-span-3"
                         />
                     </div>
@@ -142,7 +140,7 @@ export function PostRutina() {
                             type="email"
                             /*value={dataEx.peso}*/
                             onChange={handleChange}
-                            placeholder={ENTRENADOR.email}
+                            placeholder={mockEntrenador.email}
                             className="col-span-3"
                         />
                     </div>

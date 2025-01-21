@@ -11,7 +11,7 @@ import {
 } from "../../components_ui/ui/dialog"
 import { Input } from "../../components_ui/ui/input"
 import { Label } from "../../components_ui/ui/label"
-import {CLIENTE} from "../utils/hardcodedModelDtos"
+import { mockClients } from '../../mocks/mockData'
 
 export function EditProfileExtra() {
   //TODO: Añadir get para obtener los datos de placeholder del cliente que va a editar su info
@@ -34,7 +34,7 @@ export function EditProfileExtra() {
             </Label>
             <Input
               id="nombre"
-              placeholder={CLIENTE.objetivo}
+              placeholder={mockClients[0].objetivo}
               className="col-span-3"
             />
           </div>
@@ -44,7 +44,7 @@ export function EditProfileExtra() {
             </Label>
             <Input
               id="apellido"
-              placeholder={CLIENTE.genero}
+              placeholder={mockClients[0].genero}
               className="col-span-3"
             />
           </div>
@@ -54,7 +54,7 @@ export function EditProfileExtra() {
               </Label>
               <Input
                 id="email"
-                placeholder={CLIENTE.frecuenciaEjercicioSemanal}
+                placeholder={mockClients[0].frecuenciaEjercicioSemanal}
                 className="col-span-3"
               />
           </div>
@@ -64,7 +64,7 @@ export function EditProfileExtra() {
               </Label>
               <Input
                 id="email"
-                placeholder={CLIENTE.edad}
+                placeholder={mockClients[0].edad}
                 className="col-span-3"
               />
           </div>
@@ -74,7 +74,7 @@ export function EditProfileExtra() {
               </Label>
               <Input
                 id="email"
-                placeholder={CLIENTE.peso}
+                placeholder={mockClients[0].peso}
                 className="col-span-3"
               />
           </div>
@@ -84,7 +84,7 @@ export function EditProfileExtra() {
               </Label>
               <Input
                 id="email"
-                placeholder={CLIENTE.altura}
+                placeholder={mockClients[0].altura}
                 className="col-span-3"
               />
           </div>

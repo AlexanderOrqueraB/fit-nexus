@@ -1,37 +1,30 @@
-import { Info, InfoIcon, ListFilter, MoreHorizontal, RefreshCcwIcon, UserCheck } from 'lucide-react';
+import { Info, ListFilter, RefreshCcwIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components_ui/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components_ui/ui/card';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
 import { apiClient } from '../utils/client';
-import { EXERCISES, PLAN2, RUTINAS } from '../utils/hardcodedModelDtos';
 import { customToast } from '../utils/customToast'
-import ExercisePost from "../buttons-components/ejercicio/PostExercise"
 import { fetchWorkoutData } from '../utils/api';
 import {
 	Sheet,
 	SheetContent,
-	SheetDescription,
 	SheetHeader,
-	SheetTitle,
 	SheetTrigger,
   } from '../../components_ui/ui/sheet';
 import {
 	DropdownMenu,
-	DropdownMenuCheckboxItem,
 	DropdownMenuContent,
 	DropdownMenuRadioGroup,
 	DropdownMenuRadioItem,
 	DropdownMenuLabel,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '../../components_ui/ui/dropdown-menu';
 import ExercisesInfoImg from '../to-double-check/ExercisesInfoImg';
 import { Badge } from '../../components_ui/ui/badge';
-
+import { mockExercises, mockRoutine, mockPlans } from '../../mocks/mockData'
 
 
 export function Workout() {
@@ -52,60 +45,10 @@ export function Workout() {
 	//estado booleando para "test mode"
 	const [isTestMode, setIsTestMode] = useState(false);
 
-	const testExercises = [
-	{
-		id: 1,
-		nombreEjercicio: 'Dominadas',
-		repeticion: 10,
-		serie: 3,
-		peso: 0,
-		cardioRealizado: false,
-	},
-	{
-		id: 2,
-		nombreEjercicio: 'Press Banca',
-		repeticion: 12,
-		serie: 4,
-		peso: 50,
-		cardioRealizado: false,
-	},
-	{
-		id: 3,
-		nombreEjercicio: 'Caminar cinta',
-		repeticion: 1,
-		serie: 1,
-		peso: 0,
-		cardioRealizado: true,
-		},
-	];
-	
-	const testRoutines = [
-	{
-		id: 1,
-		nombreRutina: 'Rutina Fuerza',
-		fechaInicio: '2024-12-01',
-		fechaFinal: '2024-12-31',
-		ejercicios: [
-		{ nombreEjercicio: 'Sentadilla' },
-		{ nombreEjercicio: 'Peso Muerto' },
-		],
-	},
-	];
-	
-	const testPlans = [
-	{
-		id: 1,
-		nombrePlan: 'Plan Noviembre',
-		fechaInicio: '2024-11-01',
-		fechaFinal: '2024-11-30',
-		rutinas: [{ nombreRutina: 'Rutina de Pecho' }],
-	},
-	];
-
 	//Alternamos entre datos reales y datos de prueba
-	const displayedExercises = (isTestMode ? testExercises : exercises) || [];
-	const displayedRoutines = (isTestMode ? testRoutines : routines) || [];
-	const displayedPlans = (isTestMode ? testPlans : plans) || [];
+	const displayedExercises = (isTestMode ? mockExercises : exercises) || [];
+	const displayedRoutines = (isTestMode ? mockRoutine : routines) || [];
+	const displayedPlans = (isTestMode ? mockPlans : plans) || [];
 
 	//Para el filtro de objetivo
 	const [selectedCardio, setSelectedCardio] = useState('Todos');

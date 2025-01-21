@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Pencil, UserCheck } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import {
 	Dialog,
 	DialogContent,

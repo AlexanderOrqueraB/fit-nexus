@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { UserCheck } from 'lucide-react';
 import {
 	Dialog,
 	DialogContent,
@@ -7,7 +6,6 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "../../../components_ui/ui/dialog"
 
 import { Button } from '../../../components_ui/ui/button';

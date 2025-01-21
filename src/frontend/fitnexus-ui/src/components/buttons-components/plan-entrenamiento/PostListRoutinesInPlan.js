@@ -12,17 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../../../components_ui/ui/dialog";
-
-const testRoutines = [
-    {
-        "id": 15,
-        "nombreRutina": "Torso423"
-      },
-      {
-        "id": 16,
-        "nombreRutina": "Pierna423"
-      }
-];
+import { mockAddRoutines } from '../../../mocks/mockData'
 
 export function PostListRoutinesInPlan({ open, onClose, planData }) {
     const [data, setData] = useState({
@@ -30,7 +20,7 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
     rutinasSeleccionadas: planData?.rutinas?.map((e) => e.id) || [],
     });
 
-  const [availableRoutines, setAvailableRoutines] = useState(testRoutines);
+  const [availableRoutines, setAvailableRoutines] = useState(mockAddRoutines);
 
   const handleCheckboxChange = (routineId, isChecked) => {
     console.log('Checkbox change:', routineId, isChecked); // Log the exercise id and checked status
@@ -92,10 +82,10 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
     }
     if (planData && planData.rutinas) {
         const selectedRoutineIds = planData.rutinas.map(e => e.id);
-        setAvailableRoutines(testRoutines);
+        setAvailableRoutines(mockAddRoutines);
         setData((prev) => ({
           ...prev,
-          rutinasSeleccionadas: selectedRoutineIds.filter(id => testRoutines.some(routine => routine.id === id)),
+          rutinasSeleccionadas: selectedRoutineIds.filter(id => mockAddRoutines.some(routine => routine.id === id)),
         }));
       }
   }, [planData]);

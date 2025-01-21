@@ -13,16 +13,7 @@ import {
   DialogTitle,
 } from "../../../components_ui/ui/dialog";
 
-const testExercises = [
-    {
-        "id": 5,
-        "nombreEjercicio": "Curl"
-      },
-      {
-        "id": 6,
-        "nombreEjercicio": "Abs"
-      }
-];
+import { mockAddExercises } from '../../../mocks/mockData'
 
 export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
     const [data, setData] = useState({
@@ -30,7 +21,7 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
     ejerciciosSeleccionados: routineData?.ejercicios?.map((e) => e.id) || [],
     });
 
-  const [availableExercises, setAvailableExercises] = useState(testExercises);
+  const [availableExercises, setAvailableExercises] = useState(mockAddExercises);
 
   const handleCheckboxChange = (exerciseId, isChecked) => {
     console.log('Checkbox change:', exerciseId, isChecked); // Log the exercise id and checked status
@@ -92,10 +83,10 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
     }
     if (routineData && routineData.ejercicios) {
         const selectedExerciseIds = routineData.ejercicios.map(e => e.id);
-        setAvailableExercises(testExercises);
+        setAvailableExercises(mockAddExercises);
         setData((prev) => ({
           ...prev,
-          ejerciciosSeleccionados: selectedExerciseIds.filter(id => testExercises.some(exercise => exercise.id === id)),
+          ejerciciosSeleccionados: selectedExerciseIds.filter(id => mockAddExercises.some(exercise => exercise.id === id)),
         }));
       }
   }, [routineData]);

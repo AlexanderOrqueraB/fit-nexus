@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"; //(2)
-
 import {
   Table,
   TableBody,
@@ -10,9 +9,8 @@ import {
   TableRow,
 } from "../../components_ui/ui/table"
 import { Button } from "../../components_ui/ui/button";
-import {EXERCISES} from "../utils/hardcodedModelDtos"
 import { apiClient } from "../utils/client";
-
+import { mockExercises } from '../../mocks/mockData'
 
 
 export function ExerciseComponent() {
@@ -52,7 +50,7 @@ export function ExerciseComponent() {
     </TableHeader>
 
      <TableBody>
-        {EXERCISES.map((exercise) => (
+        {mockExercises.map((exercise) => (
           <TableRow key={exercise.nombreEjercicio}>
             <TableCell className="font-medium">{exercise.nombreEjercicio}</TableCell>
             <TableCell className="w-[200px]">{exercise.repeticion}</TableCell>
@@ -64,7 +62,7 @@ export function ExerciseComponent() {
       </TableBody>
 
       <TableBody>
-        {EXERCISES.map((data) => (
+        {mockExercises.map((data) => (
           <TableRow key={data.nombreEjercicio}>
             <TableCell className="font-medium">{data.nombreEjercicio}</TableCell>
             <TableCell className="w-[200px]">{data.repeticion}</TableCell>

@@ -11,7 +11,7 @@ import {
 } from "../../components_ui/ui/dialog"
 import { Input } from "../../components_ui/ui/input"
 import { Label } from "../../components_ui/ui/label"
-import {CLIENTE} from "../utils/hardcodedModelDtos"
+import { mockClients } from '../../mocks/mockData'
 
 export function EditProfile() {
   //TODO: Añadir get para obtener los datos de placeholder del cliente que va a editar su info
@@ -37,7 +37,7 @@ export function EditProfile() {
             </Label>
             <Input
               id="nombre"
-              placeholder={CLIENTE.nombre}
+              placeholder={mockClients.nombre}
               className="col-span-3"
             />
           </div>
@@ -47,7 +47,7 @@ export function EditProfile() {
             </Label>
             <Input
               id="apellido"
-              placeholder={CLIENTE.apellido}
+              placeholder={mockClients.apellido}
               className="col-span-3"
             />
           </div>
@@ -57,7 +57,7 @@ export function EditProfile() {
               </Label>
               <Input
                 id="email"
-                placeholder={CLIENTE.email}
+                placeholder={mockClients.email}
                 className="col-span-3"
               />
           </div>
