@@ -11,9 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EjercicioDtoRequest {
 
-    //TODO: Cualquier entrenador puede crear ejercicios que otro entrenador puede usar,
-    // se guardan en BBDD accesibles para todos los entrenadores
-
     private String nombreEjercicio;
     private Integer repeticion;
     private Integer serie;

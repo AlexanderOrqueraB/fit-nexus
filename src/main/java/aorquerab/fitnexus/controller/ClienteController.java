@@ -39,8 +39,6 @@ public class ClienteController {
         }
     }
 
-    //TODO: Crear un GetMapping que devuelva el cliente, entrenador y su plan nutricional (todo: añadir nombre de plan a entidad y dto)
-
     @GetMapping("/clientes-dto")
     public ResponseEntity<List<ClienteDTO>> obtenerClientesYentrenadoresDTO(){
         log.info("Ejecutando obtenerClientesYentrenadoresDTO...");

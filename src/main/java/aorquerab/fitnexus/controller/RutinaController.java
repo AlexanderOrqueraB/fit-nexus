@@ -32,13 +32,12 @@ import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 public class RutinaController {
     private final RutinaRepository rutinaRepository;
     private final EntrenadorRepository entrenadorRepository;
-    private final EjercicioRepository ejercicioRepository;
     private final RutinaEjercicioRepository rutinaEjercicioRepository;
 
-    public RutinaController(RutinaRepository rutinaRepository, EntrenadorRepository entrenadorRepository, EjercicioRepository ejercicioRepository, RutinaEjercicioRepository rutinaEjercicioRepository) {
+    public RutinaController(RutinaRepository rutinaRepository, EntrenadorRepository entrenadorRepository,
+                            RutinaEjercicioRepository rutinaEjercicioRepository) {
         this.rutinaRepository = rutinaRepository;
         this.entrenadorRepository = entrenadorRepository;
-        this.ejercicioRepository = ejercicioRepository;
         this.rutinaEjercicioRepository = rutinaEjercicioRepository;
     }
 
