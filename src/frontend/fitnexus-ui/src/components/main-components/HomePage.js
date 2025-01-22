@@ -10,6 +10,7 @@ import { Card, CardContent } from '../../components_ui/ui/card';
 import { apiClient } from '../utils/client';
 import React, { useEffect, useState } from 'react';
 import { mockClients } from '../../mocks/mockData'
+import PostProfileExtra from './PostProfileExtra';
 
 export function HomePage() {
 
@@ -103,7 +104,7 @@ export function HomePage() {
 						Primero añade unos datos extra:
 						</div>
 						<span className="text-sm mt-2 text-center"></span>
-						<EditProfileExtra />
+						<PostProfileExtra />
 						<div className="relative flex items-center justify-center">
 						O consulta tus ejercicios:
 						</div>

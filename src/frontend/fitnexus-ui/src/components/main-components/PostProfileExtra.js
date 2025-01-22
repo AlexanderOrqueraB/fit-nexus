@@ -16,7 +16,7 @@ import { fetchClientData } from '../utils/api';
 import { customToast } from '../utils/customToast'
 import {apiClient} from "../utils/client";
 
-export function EditProfileExtra() {
+export function PostProfileExtra() {
   const [clients, setClients] = useState([]);
 	const loadData = async () => {
 		try {
@@ -68,7 +68,7 @@ export function EditProfileExtra() {
     console.log('Datos del usuario: ', userData);
 
     apiClient
-      .put(`/api/v1/cliente/addClienteIdFromProps`, userData)
+      .post(`/api/v1/cliente/addClienteIdFromProps`, userData)
       .then((response) => {
         if (response.status === 200) {
           console.log("Datos actualizados correctamente:", response.data);
@@ -84,7 +84,7 @@ export function EditProfileExtra() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default">Editar datos</Button>
+        <Button variant="default">Añadir datos extra</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -170,4 +170,4 @@ export function EditProfileExtra() {
   )
 }
 
-export default EditProfileExtra
+export default PostProfileExtra

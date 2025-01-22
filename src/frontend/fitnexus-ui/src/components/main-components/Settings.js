@@ -29,7 +29,7 @@ export function Settings() {
             <CardHeader>
               <CardTitle>Datos generales</CardTitle>
               <CardDescription>
-                Comprueba aquí tu nombre, apellido y/o email. Pulsa el botón para editar.
+                Comprueba aquí tu nombre, apellido o email. Pulsa el botón para editar.
               </CardDescription>
             </CardHeader>
             <CardContent>
