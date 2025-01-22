@@ -60,7 +60,7 @@ const onSubmit = (e) => {
             console.log('Respuesta del servidor: ', response.data);
             console.log('Status: ', response.status);
             if (response.status ===200) {
-                customToast({message : "Ejercicio actualizado correctamente!", type : "error"});
+                customToast({message : "Ejercicio actualizado correctamente!", type : "success"});
             }
             onClose(); // Cerrar el modal
         })

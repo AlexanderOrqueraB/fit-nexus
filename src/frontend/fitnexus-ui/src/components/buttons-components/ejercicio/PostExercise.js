@@ -14,7 +14,7 @@ import { Button } from '../../../components_ui/ui/button';
 import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
-import { toast } from 'sonner'
+import { customToast } from '../../utils/customToast'
 
 
 
@@ -30,10 +30,6 @@ export function PostExercise() {
 		peso: '',
 		cardioRealizado: '',
 	});
-
-    const confirmationToast = () => {
-        toast.success('My first toast')
-      }
 
     const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -62,11 +58,11 @@ export function PostExercise() {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
 				if (response.status === 201) {
-					console.log('Mostrando Toast de Ejercicio Guardado...');
-					confirmationToast();
+					customToast({message : "Ejercicio creado correctamente!", type : "success"});
 				}
 			})
 			.catch((error) => {
+                customToast({message : "Error al crear el ejercicio!", type : "error"});
 				console.error('Error en la petición: ', error);
 			});
 	};

@@ -12,6 +12,8 @@ SelectTrigger,
 SelectValue,
 } from "../../components_ui/ui/select"
 import {apiClient} from "../utils/client";
+import { customToast } from '../utils/customToast'
+import { mockClients } from '../../mocks/mockData'
 
 export function SignUpForm() {
 	const navigate = useNavigate();
@@ -25,6 +27,7 @@ export function SignUpForm() {
 		password: '',
 		confirmPassword: '',
 		role: '',
+		fitNexusId: '',
 	});
 
 	const handleChange = (e) => {
@@ -43,10 +46,13 @@ export function SignUpForm() {
 			email: data.email,
 			password: data.password,
 			role: data.role,
+			...(data.role === "USER" && data.fitNexusId && {
+				entrenador: { fitNexusId: data.fitNexusId },
+			}),
 		};
 
 		if (userData.password !== data.confirmPassword) {
-			throw new Error('Las contraseñas no coinciden...');
+			customToast({message : "Las contraseñas no coinciden!", type : "warning"});
 		}
 
 		console.log('Datos de signup: ', userData);
@@ -57,15 +63,12 @@ export function SignUpForm() {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
 				if (response.status === 201) {
-					console.log('Mostrando Toast de Login Okay...');
-					if (response.data.role === 'ADMIN') {
-						console.log('Redireccionando a pagina admin');
-					} else if (response.data.role === 'USER') {
-						console.log('Redireccionando a pagina no admin');
-					}
+					customToast({message : "Registro realizado correctamente!", type : "success"});
+					navigate('/');
 				}
 			})
 			.catch((error) => {
+				customToast({message : "Error en el registro!", type : "error"});
 				console.error('Error en el proceso de registro: ', error);
 			});
 	};
@@ -87,7 +90,7 @@ export function SignUpForm() {
 								type="text"
 								value={data.nombre}
 								onChange={handleChange}
-								placeholder="Pepito"
+								placeholder={mockClients[0].nombre}
 								required
 							/>
 						</div>
@@ -99,7 +102,7 @@ export function SignUpForm() {
 								type="text"
 								value={data.apellido}
 								onChange={handleChange}
-								placeholder="Pepitez"
+								placeholder={mockClients[0].apellido}
 								required
 							/>
 						</div>
@@ -111,13 +114,14 @@ export function SignUpForm() {
 								type="email"
 								value={data.email}
 								onChange={handleChange}
-								placeholder="pepito@email.com"
+								placeholder={mockClients[0].email}
 								required
 							/>
 						</div>
 						<div className="grid gap-2">
             			<Label htmlFor="role">Tipo de usuario</Label>
-							<Select name="role" onValueChange={(value) => setData({ ...data, role: value })}>
+							<Select name="role" 
+							onValueChange={(value) => setData({ ...data, role: value, fitNexusId: '' })}>
 								<SelectTrigger>
 									<SelectValue placeholder="Entrenador" />
 								</SelectTrigger>
@@ -131,6 +135,20 @@ export function SignUpForm() {
 								</SelectContent>
 							</Select>
 						</div>
+						{data.role === "USER" && (
+							<div className="grid col-span-2 gap-2">
+							<Label htmlFor="fitNexusId">Entrenador FitNexusId</Label>
+							<Input
+								id="fitNexusId"
+								name="fitNexusId"
+								type="text"
+								value={data.fitNexusId}
+								onChange={handleChange}
+								placeholder="Introduce el código de tu entrenador"
+								required
+							/>
+						</div>
+						)}
 						<div className="grid gap-2">
 							<Label htmlFor="password">Contraseña</Label>
 							<Input
@@ -158,8 +176,8 @@ export function SignUpForm() {
 						</Button>
 					</div>
 					<div className="mt-4 text-center text-sm">
-						Tienes ya una cuenta?{' '}
-						<Button onClick={()=> navigate("/")} className="underline">
+						¿Tienes ya una cuenta?{' '}
+						<Button onClick={()=> navigate("/")} >
 							Ir a inicio de sesión 
 						</Button>
 					</div>
