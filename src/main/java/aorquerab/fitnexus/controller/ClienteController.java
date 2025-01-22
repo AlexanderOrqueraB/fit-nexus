@@ -86,7 +86,7 @@ public class ClienteController {
     //TODO Obtener cliente por otro Atributo (FUTURE REFACTOR)
 
     @PostMapping("/{clienteId}")
-    public ResponseEntity<String> crearCliente(
+    public ResponseEntity<String> crearDatosExtraCliente(
             @PathVariable Long clienteId,
             @RequestBody ClienteDtoRequest clienteDTORequest) {
         log.info("Ejecutando crearCliente con este clienteId: {}", clienteId);
@@ -96,6 +96,11 @@ public class ClienteController {
         }
         Optional<Cliente> cliente = clienteRepository.findById(clienteId);
         log.info("Cliente a actualizar: {}", cliente);
+        if (cliente.isEmpty()) {
+            log.error("Cliente no encontrado con ID: {}", clienteId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado");
+        }
+
         cliente.ifPresent(cl -> {
             cl.setObjetivo(clienteDTORequest.getObjetivo());
             cl.setGenero(clienteDTORequest.getGenero());
@@ -109,7 +114,32 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Cliente con datos extra creados correctamente");
     }
 
-    //TODO: PUT, DELETE by Id (Check if neccesary)
+    @PutMapping("/{clienteId}")
+    public ResponseEntity<String> actualizarDatosExtraCliente(
+            @PathVariable Long clienteId,
+            @RequestBody ClienteDtoRequest clienteDTORequest) {
+        log.info("Ejecutando actualizarCliente con este clienteId: {}", clienteId);
+        log.info("ClienteDTORequest recibido: {}", clienteDTORequest);
+
+        Optional<Cliente> clienteOptional = clienteRepository.findById(clienteId);
+        if (clienteOptional.isEmpty()) {
+            log.error("Cliente no encontrado con ID: {}", clienteId);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado");
+        }
+
+        Cliente cliente = clienteOptional.get();
+        cliente.setObjetivo(clienteDTORequest.getObjetivo());
+        cliente.setGenero(clienteDTORequest.getGenero());
+        cliente.setFrecuenciaEjercicioSemanal(clienteDTORequest.getFrecuenciaEjercicioSemanal());
+        cliente.setEdad(clienteDTORequest.getEdad());
+        cliente.setPeso(clienteDTORequest.getPeso());
+        cliente.setAltura(clienteDTORequest.getAltura());
+
+        clienteRepository.save(cliente);
+        log.info("Cliente actualizado correctamente: {}", cliente);
+        return ResponseEntity.status(HttpStatus.OK).body("Cliente actualizado correctamente");
+
+    }
 
     //TODO: DELETE all (In case entrenador want to delete their account, maybe this one could be delete the reference
     // for the previous entrenador, just in case cliente want to keep using FIT NEXUS with another entrenador
