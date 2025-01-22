@@ -1,5 +1,5 @@
 import { Button } from "../../components_ui/ui/button"
-
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -11,9 +11,12 @@ import {
 } from "../../components_ui/ui/dialog"
 import { Input } from "../../components_ui/ui/input"
 import { Label } from "../../components_ui/ui/label"
+import { customToast } from '../utils/customToast'
+import { fetchClientData } from '../utils/api';
 
 export function EditProfile() {
-  //TODO: Añadir get para obtener los datos de placeholder del cliente que va a editar su info
+
+  //TODO: CARGAR contraseña?
   return (
     <Dialog>
       <DialogTrigger asChild>

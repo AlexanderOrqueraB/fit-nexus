@@ -15,7 +15,7 @@ import { mockClients } from '../../mocks/mockData';
 
 export function Settings() {
   const [selectedSection, setSelectedSection] = useState("general");
-  
+  //TODO: GET para poder pasarle a EditProfileExtra un prop con el clientId
   const objetivoMap = {
     PERDER_GRASA: "Perder grasa",
     GANAR_MUSCULO: "Ganar músculo"

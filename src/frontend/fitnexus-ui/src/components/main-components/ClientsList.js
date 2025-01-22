@@ -60,7 +60,7 @@ export function ClientsList() {
 		} catch (error) {
 		console.error('Error al cargar datos:', error);
 		console.log('Disparando customToast');
-		customToast({message : "Hubo un error al cargar los datos de planes/rutinas/ejercicios", type : "error"});
+		customToast({message : "Hubo un error al cargar los datos de cliente", type : "error"});
 		}
 	};
 	

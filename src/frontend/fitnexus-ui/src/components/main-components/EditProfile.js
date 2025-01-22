@@ -1,5 +1,5 @@
 import { Button } from "../../components_ui/ui/button"
-
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,9 +12,70 @@ import {
 import { Input } from "../../components_ui/ui/input"
 import { Label } from "../../components_ui/ui/label"
 import { mockClients } from '../../mocks/mockData'
+import { customToast } from '../utils/customToast'
+import { fetchClientData } from '../utils/api';
+import {apiClient} from "../utils/client";
 
 export function EditProfile() {
-  //TODO: Añadir get para obtener los datos de placeholder del cliente que va a editar su info
+  const [clients, setClients] = useState([]);
+  	// Cargar datos desde varias fuentes simultáneamente
+	const loadData = async () => {
+		try {
+		// Ejecutar todas las solicitudes en paralelo
+		const clients = await fetchClientData();
+
+		// Actualizar los estados con los datos obtenidos
+		setClients(clients);
+
+		} catch (error) {
+		console.error('Error al cargar datos:', error);
+		console.log('Disparando customToast');
+		customToast({message : "Hubo un error al cargar los datos de cliente", type : "error"});
+		}
+	};
+	
+	useEffect(() => {
+	loadData();
+	}, []); // Llama a loadData solo al montar el componente
+
+  const [data, setData] = useState({
+    nombre: '',
+    apellido: '',
+    email: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      [name]: value,
+    });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const userData = {
+			nombre: data.nombre,
+      apellido: data.apellido,
+      email: data.email,
+		};
+
+    console.log('Datos del usuario: ', userData);
+
+    apiClient
+      .put(`/api/v1/cliente/addClienteIdFromProps`, userData)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("Datos actualizados correctamente:", response.data);
+          customToast({message : "Datos actualizados correctamente", type : "success"});
+        }
+    })
+      .catch((error) => {
+        console.error("Error al actualizar los datos:", error);
+        customToast({message : "Error al actualizar los datos", type : "error"});
+      });
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -37,7 +98,7 @@ export function EditProfile() {
             </Label>
             <Input
               id="nombre"
-              placeholder={mockClients.nombre}
+              placeholder={mockClients[0].nombre}
               className="col-span-3"
             />
           </div>
@@ -47,7 +108,7 @@ export function EditProfile() {
             </Label>
             <Input
               id="apellido"
-              placeholder={mockClients.apellido}
+              placeholder={mockClients[0].apellido}
               className="col-span-3"
             />
           </div>
@@ -57,13 +118,14 @@ export function EditProfile() {
               </Label>
               <Input
                 id="email"
-                placeholder={mockClients.email}
+                placeholder={mockClients[0].email}
                 className="col-span-3"
               />
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Guardar cambios</Button>
+        <Button onClick={onSubmit} type="submit" className="w-full">
+            Guardar cambios</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
