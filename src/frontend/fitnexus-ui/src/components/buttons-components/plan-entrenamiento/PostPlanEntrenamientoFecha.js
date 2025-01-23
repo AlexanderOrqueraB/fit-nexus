@@ -14,24 +14,16 @@ import { Button } from '../../../components_ui/ui/button';
 import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
-import { toast } from 'sonner'
 import { planWithEntrenador } from '../../../mocks/mockData'
+import { customToast } from '../../utils/customToast'
 
+export function PostPlanEntrenamientoFecha ({ open, onClose, planData }) {
+    const [data, setData] = useState({
+        nombrePlan: planData?.nombrePlan || '',
+        fechaInicio: '',
+        fechaFinal: '',
+      });
 
-export function PostPlanEntrenamientoFecha() {
-    useState({});
-	const [data, setData] = useState({});
-
-	const [dataEx, setDataEx] = useState({
-		//useState to store data from server
-		nombrePlan: '',
-		fechaInicio: '',
-        fechaFinal: ''
-	});
-
-    const confirmationToast = () => {
-        toast.success('My first toast')
-      }
 
     const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -41,49 +33,48 @@ export function PostPlanEntrenamientoFecha() {
 		});
 	};
 
-    //TODO: AÑADIR GET para obtener el nombre del plan y añadirle las fechas
-
     const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
-		const userData = {
+        const createdDatePlan = {
 			nombrePlan: data.nombrePlan,
 			fechaInicio: data.fechaInicio,
             fechaFinal: data.fechaFinal
 		};
 
-		console.log('Enviando los siguientes datos: ', userData);
+		console.log('Enviando los siguientes datos: ', createdDatePlan);
 
 		apiClient
-			.post('/api/v1/cambiar', userData)
-			//.put(URL, userData)
+			.post('/api/v1/planes/fecha', createdDatePlan)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
 				if (response.status === 201) {
-					console.log('Mostrando Toast de Ejercicio Guardado...');
-					confirmationToast();
+                    customToast({message : "Fecha del plan creada correctamente!", type : "success"});
 				}
 			})
 			.catch((error) => {
-				console.error('Error en la petición: ', error);
+                customToast({message : "Error al crear la fecha del plan de entrenamiento!", type : "error"});
+                console.error('Error al crear el plan de entrenamiento', error);
 			});
 	};
 
     useEffect(() => {
-	}, []);
+        // Actualizar los datos si cambia planData
+        if (planData) {
+            setData({
+                nombrePlan: planData?.nombrePlan || '',
+                fechaInicio: planData?.fechaInicio || '',
+                fechaFinal: planData?.fechaFinal || '',
+            });
+        }
+    }, [planData]);
 
     return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button size="sm" className="h-8 gap-1" variant="outline">
-                    Añadir fecha a plan (pending props)
-                    <UserCheck className="h-3.5 w-3.5" />
-                </Button>
-            </DialogTrigger>
+        <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Plan de entrenamiento</DialogTitle>
-                    <DialogDescription>Añade fechas aquí</DialogDescription>
+                    <DialogDescription>Añade la fecha aquí</DialogDescription>
                     <DialogDescription>
                         Haz click en Guardar cuando hayas terminado
                     </DialogDescription>
@@ -99,7 +90,6 @@ export function PostPlanEntrenamientoFecha() {
                             value={planWithEntrenador.nombrePlan}
                             disabled
                             onChange={handleChange}
-                            placeholder={planWithEntrenador.nombrePlan}
                             className="col-span-3"
                         />
                     </div>
@@ -111,7 +101,7 @@ export function PostPlanEntrenamientoFecha() {
                             id="fechaInicial"
                             name="fechaInicial"
                             type="date"
-                            /*value={ENTRENADOR.email}*/
+                            value={planWithEntrenador.fechaInicio}
                             onChange={handleChange}
                             placeholder={planWithEntrenador.fechaInicio}
                             className="col-span-3"
@@ -125,7 +115,7 @@ export function PostPlanEntrenamientoFecha() {
                             id="fechaFinal"
                             name="fechaFinal"
                             type="date"
-                            /*value={ENTRENADOR.email}*/
+                            value={planWithEntrenador.fechaFinal}
                             onChange={handleChange}
                             placeholder={planWithEntrenador.fechaFinal}
                             className="col-span-3"

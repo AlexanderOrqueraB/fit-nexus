@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { UserCheck } from 'lucide-react';
 import {
 	Dialog,
 	DialogContent,
@@ -6,20 +7,23 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
+	DialogTrigger,
 } from "../../../components_ui/ui/dialog"
 
 import { Button } from '../../../components_ui/ui/button';
 import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
+import { planWithEntrenador } from '../../../mocks/mockData'
 import { customToast } from '../../utils/customToast'
 
-
-export function PutPlanEntrenamiento ({ open, onClose, planData }) {
+export function PutPlanEntrenamientoFecha ({ open, onClose, planData }) {
     const [data, setData] = useState({
         nombrePlan: planData?.nombrePlan || '',
-        entrenadorEmail: planData?.entrenadorEmail || '',
+        fechaInicio: planData?.fechaInicio || '',
+        fechaFinal: planData?.fechaFinal || '',
       });
+
 
     const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -31,29 +35,27 @@ export function PutPlanEntrenamiento ({ open, onClose, planData }) {
 
     const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
-		const updatedPlan = {
+        const updatedPlan = {
 			nombrePlan: data.nombrePlan,
-			entrenadorEmail: data.entrenadorEmail,
+			fechaInicio: data.fechaInicio,
+            fechaFinal: data.fechaFinal
 		};
 
 		console.log('Enviando los siguientes datos: ', updatedPlan);
 
 		apiClient
-			.put('/api/v1/plan/${planData.id}', updatedPlan)
+			.put('/api/v1/planes/fecha', updatedPlan)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
-				if (response.status === 200) {
-                    customToast({message : "Plan actualizado correctamente!", type : "success"});
+				if (response.status === 201) {
+                    customToast({message : "Fecha del plan actualizada correctamente!", type : "success"});
 				}
-                onClose(); // Cerrar el modal
 			})
 			.catch((error) => {
-                customToast({message : "Error al actualizar el plan de entrenamiento!", type : "error"});
-				console.error('Error al actualizar el plan de entrenamiento', error);
+                customToast({message : "Error al actualizar la fecha del plan de entrenamiento!", type : "error"});
+                console.error('Error al actualizar el plan de entrenamiento', error);
 			});
-            console.log('Datos actualizados:', data);
-            //onClose(); // Cerrar el modal después de guardar
 	};
 
     useEffect(() => {
@@ -61,7 +63,8 @@ export function PutPlanEntrenamiento ({ open, onClose, planData }) {
         if (planData) {
             setData({
                 nombrePlan: planData?.nombrePlan || '',
-                entrenadorEmail: planData?.entrenadorEmail || '',
+                fechaInicio: planData?.fechaInicio || '',
+                fechaFinal: planData?.fechaFinal || '',
             });
         }
     }, [planData]);
@@ -70,8 +73,8 @@ export function PutPlanEntrenamiento ({ open, onClose, planData }) {
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Plan</DialogTitle>
-                    <DialogDescription>Edita tu plan aquí</DialogDescription>
+                    <DialogTitle>Plan de entrenamiento</DialogTitle>
+                    <DialogDescription>Edita la fecha aquí</DialogDescription>
                     <DialogDescription>
                         Haz click en Guardar cuando hayas terminado
                     </DialogDescription>
@@ -84,8 +87,35 @@ export function PutPlanEntrenamiento ({ open, onClose, planData }) {
                         <Input
                             id="nombrePlan"
                             name="nombrePlan"
+                            value={planWithEntrenador.nombrePlan}
+                            disabled
                             onChange={handleChange}
-                            value={data.nombrePlan || ''}
+                            className="col-span-3"
+                        />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="fechaInicial" className="text-right">
+                            Fecha Inicial
+                        </Label>
+                        <Input
+                            id="fechaInicial"
+                            name="fechaInicial"
+                            type="date"
+                            value={data.fechaInicio || ''}
+                            onChange={handleChange}
+                            className="col-span-3"
+                        />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="fechaFinal" className="text-right">
+                            Fecha Final
+                        </Label>
+                        <Input
+                            id="fechaFinal"
+                            name="fechaFinal"
+                            type="date"
+                            value={data.fechaFinal || ''}
+                            onChange={handleChange}
                             className="col-span-3"
                         />
                     </div>
@@ -100,4 +130,5 @@ export function PutPlanEntrenamiento ({ open, onClose, planData }) {
     );
 }
 
-export default PutPlanEntrenamiento;
+
+export default PutPlanEntrenamientoFecha;

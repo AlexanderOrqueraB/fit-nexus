@@ -14,7 +14,7 @@ import { Button } from '../../../components_ui/ui/button';
 import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
-import { toast } from 'sonner'
+import { customToast } from '../../utils/customToast'
 import { mockEntrenador, mockRoutinesBuilder } from '../../../mocks/mockData'
 
 
@@ -29,10 +29,6 @@ export function PostRutina() {
 		fechaFinal: '',
 		entrenadorEmail: ''
 	});
-
-    const confirmationToast = () => {
-        toast.success('My first toast')
-      }
 
     const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -55,17 +51,16 @@ export function PostRutina() {
 
 		apiClient
 			.post('/api/v1/rutina', userData)
-			//.put(URL, userData)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
 				if (response.status === 201) {
-					console.log('Mostrando Toast de Ejercicio Guardado...');
-					confirmationToast();
+                    customToast({message : "Rutina creada correctamente!", type : "success"});
 				}
 			})
 			.catch((error) => {
-				console.error('Error en la petición: ', error);
+                customToast({message : "Error al crear rutina!", type : "error"});
+				console.error('Error al crear rutina!', error);
 			});
 	};
 

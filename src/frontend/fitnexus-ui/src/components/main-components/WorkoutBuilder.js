@@ -6,12 +6,12 @@ import PostExercise from '../buttons-components/ejercicio/PostExercise';
 import PutExercise from '../buttons-components/ejercicio/PutExercise';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
-import { CircleMinusIcon, CirclePlusIcon, Delete, DeleteIcon, Edit, Edit2, Info, Minus, MoreHorizontal, Plus, RefreshCwIcon, Trash2Icon } from 'lucide-react';
+import { Calendar, CalendarDays, CircleMinusIcon, CirclePlusIcon, Delete, DeleteIcon, Edit, Edit2, Info, Minus, MoreHorizontal, Plus, RefreshCwIcon, Trash2Icon } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components_ui/ui/card';
 import { fetchWorkoutData } from '../utils/api';
 import PostRutina from '../buttons-components/rutina/PostRutina';
 import PostListEjerciciosInRutina from '../buttons-components/rutina/PostListEjerciciosInRutina';
-import PostPlanEntrenamientoFecha  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamientoFecha';
+import PostPlanEntrenamientoFecha, { PutPlanEntrenamientoFecha }  from '../buttons-components/plan-entrenamiento/PutPlanEntrenamientoFecha';
 import PostPlanEntrenamiento  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamiento';
 import DeleteModalExercisePost from '../buttons-components/ejercicio/DeleteModalExercisePost';
 import PutRutina from '../buttons-components/rutina/PutRutina';
@@ -28,7 +28,6 @@ const deleteTitle = "La acción de eliminar no se puede revertir"
 const deleteDescription = "Pulsa Eliminar para confirmar la acción de eliminar, cancelar para salir"
 
 export function WorkoutBuilder() {
-  const [data, setData] = useState({}); //useState to store data from server
 
   const [exercises, setExercises] = useState([]);
   const [selectedExercise, setSelectedExercise] = useState({});
@@ -61,6 +60,8 @@ export function WorkoutBuilder() {
   //plan
   const [isAddRoutineToPlanOpen, setIsAddRoutineToPlanOpen] = useState(false);
   const [isRemoveRoutineFromPlanOpen, setIsRemoveRoutineFromPlanOpen] = useState(false);
+  const [isAddDateOpen, setIsAddDateOpen] = useState(false);
+  const [isEditDateOpen, setIsEditDateOpen] = useState(false);
 
   const loadData = async () => {
     try {
@@ -127,61 +128,19 @@ export function WorkoutBuilder() {
     setSelectedRoutine(plan); // Guarda el plan que tiene rutinas seleccionadas
     setIsRemoveRoutineFromPlanOpen(true); // Abre el modal de eliminación
   };
-
-  // Handle changes on inputs
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData({
-      ...data,
-      [name]: value,
-    });
-  };
-
-  const openAddExercise = () => {
-    <PostListEjerciciosInRutina />
+  const handleAddDate = (plan) => {
+    console.log("Selected Plan:", plan);
+    setSelectedPlan(plan);
+    setIsAddDateOpen(true);
   }
-  
-  const onSubmit = (e) => {
-    e.preventDefault(); //prevent refresh on page
-    const userData = {
-      nombreEjercicio: data.nombreEjercicio,
-      repeticion: data.repeticion,
-      serie: data.serie,
-      peso: data.peso,
-      cardioRealizado: data.cardioRealizado,
-    };
-
-    console.log('Enviando los siguientes datos: ', userData);
-
-    apiClient
-      .post('/api/v1/ejercicios', userData)
-      //.put(URL, userData)
-      .then((response) => {
-        console.log('Respuesta del servidor: ', response.data);
-        console.log('Status: ', response.status);
-        if (response.status === 201) {
-          console.log('Mostrando Toast de Ejercicio Guardado...');
-          customToast({message : "Cambiar mensaje", type : "success"});
-
-        }
-      })
-      .catch((error) => {
-        console.error('Error en la petición: ', error);
-      });
-  };
+  const handleEditDate = (plan) => {
+    console.log("Selected Plan:", plan);
+    setSelectedPlan(plan);
+    setIsEditDateOpen(true);
+  }
 
   return (
     <div>
-      <div>
-        <div className="flex flex-row space-x-4"> 
-					<PostListEjerciciosInRutina/>
-				</div>
-				<div className="flex flex-row space-x-4"> 
-					<PostPlanEntrenamiento/>
-					<PostPlanEntrenamientoFecha/>
-				</div>
-      </div>
-
       <div className="flex min-h-screen w-full flex-col bg-muted/40">
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
@@ -195,7 +154,6 @@ export function WorkoutBuilder() {
                     <Button onClick={() => setIsTestMode(!isTestMode)}>
                       {isTestMode ? 'Usar Datos Reales' : 'Usar Datos de Prueba'}
                     </Button>
-                    <PostExercise />
                     <div className="ml-auto">
                       <Button onClick={() => loadData()}>
                         <RefreshCwIcon className="h-3.5 w-3.5" />
@@ -210,7 +168,6 @@ export function WorkoutBuilder() {
                       <CardTitle>Planes de entrenamiento</CardTitle>
                       <div className= "text-right">
                         <PostPlanEntrenamiento />
-                        <PostPlanEntrenamientoFecha/>
                       </div>
                       <CardDescription>
                         A continuación puedes ver tus planes de entrenamiento creados
@@ -225,6 +182,8 @@ export function WorkoutBuilder() {
                             <TableHead className="hidden md:table-cell">Fecha Final</TableHead>
                             <TableHead className="hidden md:table-cell">Rutinas</TableHead>
                             <TableHead className="hidden md:table-cell">Editar</TableHead>
+                            <TableHead className="hidden md:table-cell">Añadir fechas</TableHead>
+                            <TableHead className="hidden md:table-cell">Cambiar fechas</TableHead>
                             <TableHead className="hidden md:table-cell">Añadir</TableHead>
                             <TableHead className="hidden md:table-cell">Quitar</TableHead>
                             <TableHead className="hidden md:table-cell">Eliminar</TableHead>
@@ -249,6 +208,26 @@ export function WorkoutBuilder() {
                                     variant="ghost"
                                     onClick={() => handleEditClick(plan, 'plan')}>
                                   <Edit/>
+                                </Button>
+                              </TableCell>
+
+                              <TableCell>
+                                <Button 
+                                    aria-haspopup="true"
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={() => handleAddDate(plan, 'plan')}>
+                                  <Calendar/>
+                                </Button>
+                              </TableCell>
+
+                              <TableCell>
+                                <Button 
+                                    aria-haspopup="true"
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={() => handleEditDate(plan, 'plan')}>
+                                  <CalendarDays/>
                                 </Button>
                               </TableCell>
 
@@ -293,6 +272,20 @@ export function WorkoutBuilder() {
                           planData={selectedPlan}
                         />
                       )}
+                      {isAddDateOpen && (
+                        <PostPlanEntrenamientoFecha
+                          open={isAddDateOpen}
+                          onClose={() => setIsAddDateOpen(false)}
+                          planData={selectedPlan}
+                        />
+                      )}
+                      {isEditDateOpen && (
+                        <PutPlanEntrenamientoFecha
+                          open={isEditDateOpen}
+                          onClose={() => setIsEditDateOpen(false)}
+                          planData={selectedPlan}
+                        />
+                      )}
                       {isDeleteOpen && (
                         <DeleteModalPlanPost
                           title = {deleteTitle}
@@ -302,7 +295,6 @@ export function WorkoutBuilder() {
                           routineData={selectedRoutine}
                         />
                       )}
-
                       {isAddRoutineToPlanOpen && (
                         <PostListRoutinesInPlan
                           open={isAddRoutineToPlanOpen}

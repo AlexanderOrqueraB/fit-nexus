@@ -101,7 +101,6 @@ export function PostProfileExtra() {
             <Input
               id="nombre"
               placeholder={mockClients[0].objetivo}
-              onChange={handleChange}
               className="col-span-3"
             />
           </div>
