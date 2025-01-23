@@ -17,7 +17,7 @@ import {
   ChartContainer,
   ChartTooltip,
 } from "../../components_ui/ui/chart"
-import { CustomAlertDialog } from "./CustomAlertDialog"
+import { CustomAlertDialog } from "../utils/CustomAlertDialog"
 import { mockChartMacros, mockChartKcal } from '../../mocks/mockData'
 
 const chartConfig = {

@@ -1,27 +1,27 @@
-import { Button } from '../../components_ui/ui/button';
+import { Button } from '../../../components_ui/ui/button';
 import React, { useEffect, useState } from 'react';
-import { customToast } from '../utils/customToast'
-import { apiClient } from '../utils/client';
-import PostExercise from '../buttons-components/ejercicio/PostExercise';
-import PutExercise from '../buttons-components/ejercicio/PutExercise';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
+import { customToast } from '../../utils/customToast'
+import { apiClient } from '../../utils/client';
+import PostExercise from '../../buttons-components/ejercicio/PostExercise';
+import PutExercise from '../../buttons-components/ejercicio/PutExercise';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components_ui/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components_ui/ui/tabs';
 import { Calendar, CalendarDays, CircleMinusIcon, CirclePlusIcon, Delete, DeleteIcon, Edit, Edit2, Info, Minus, MoreHorizontal, Plus, RefreshCwIcon, Trash2Icon } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components_ui/ui/card';
-import { fetchWorkoutData } from '../utils/api';
-import PostRutina from '../buttons-components/rutina/PostRutina';
-import PostListEjerciciosInRutina from '../buttons-components/rutina/PostListEjerciciosInRutina';
-import PostPlanEntrenamientoFecha, { PutPlanEntrenamientoFecha }  from '../buttons-components/plan-entrenamiento/PutPlanEntrenamientoFecha';
-import PostPlanEntrenamiento  from '../buttons-components/plan-entrenamiento/PostPlanEntrenamiento';
-import DeleteModalExercisePost from '../buttons-components/ejercicio/DeleteModalExercisePost';
-import PutRutina from '../buttons-components/rutina/PutRutina';
-import DeleteModalRoutinePost from '../buttons-components/rutina/DeleteModalRoutinePost';
-import DeleteListEjerciciosInRutina from '../buttons-components/rutina/DeleteListEjerciciosInRutina';
-import PutPlanEntrenamiento from '../buttons-components/plan-entrenamiento/PutPlanEntrenamiento';
-import DeleteModalPlanPost from '../buttons-components/plan-entrenamiento/DeleteModalPlanPost';
-import PostListRoutinesInPlan from '../buttons-components/plan-entrenamiento/PostListRoutinesInPlan';
-import DeleteListRoutinesInPlan from '../buttons-components/plan-entrenamiento/DeleteListRoutinesInPlan';
-import { mockExercises, mockRoutinesBuilder, mockPlans } from '../../mocks/mockData'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components_ui/ui/card';
+import { fetchWorkoutData } from '../../utils/api';
+import PostRutina from '../../buttons-components/rutina/PostRutina';
+import PostListEjerciciosInRutina from '../../buttons-components/rutina/PostListEjerciciosInRutina';
+import PostPlanEntrenamientoFecha, { PutPlanEntrenamientoFecha }  from '../../buttons-components/plan-entrenamiento/PutPlanEntrenamientoFecha';
+import PostPlanEntrenamiento  from '../../buttons-components/plan-entrenamiento/PostPlanEntrenamiento';
+import DeleteModalExercisePost from '../../buttons-components/ejercicio/DeleteModalExercisePost';
+import PutRutina from '../../buttons-components/rutina/PutRutina';
+import DeleteModalRoutinePost from '../../buttons-components/rutina/DeleteModalRoutinePost';
+import DeleteListEjerciciosInRutina from '../../buttons-components/rutina/DeleteListEjerciciosInRutina';
+import PutPlanEntrenamiento from '../../buttons-components/plan-entrenamiento/PutPlanEntrenamiento';
+import DeleteModalPlanPost from '../../buttons-components/plan-entrenamiento/DeleteModalPlanPost';
+import PostListRoutinesInPlan from '../../buttons-components/plan-entrenamiento/PostListRoutinesInPlan';
+import DeleteListRoutinesInPlan from '../../buttons-components/plan-entrenamiento/DeleteListRoutinesInPlan';
+import { mockExercises, mockRoutinesBuilder, mockPlans } from '../../../mocks/mockData'
 
 const deleteMessage = "deleteMessage"
 const deleteTitle = "La acción de eliminar no se puede revertir"

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import EditProfile from "./EditProfile";
 import EditProfileExtra from './EditProfileExtra';
-import ChangePassword from './ChangePassword';
+import ChangePassword from '../users/user-actions/ChangePassword';
 import {
   Card,
   CardContent,

@@ -1,7 +1,7 @@
 import React from "react"; 
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
-import CreateExercise, { WorkoutBuilder } from './components/main-components/WorkoutBuilder';
+import CreateExercise, { WorkoutBuilder } from './components/users/trainer/WorkoutBuilder';
 
 import LoginForm from './components/main-components/LoginForm';
 import LogoutForm from './components/main-components/LogoutForm';
@@ -9,11 +9,11 @@ import SignUpForm from './components/main-components/SignUpForm';
 
 import HomePage from "./components/main-components/HomePage";
 import ClientsList from "./components/main-components/ClientsList";
-import ExercisesList, { Workout } from "./components/main-components/Workout";
+import ExercisesList, { Workout } from "./components/users/client/Workout";
 import UnauthorizedPage from "./components/main-components/UnauthorizedPage";
 import ProtectedLayout from "./components/main-components/ProtectedLayout";
 import Settings from "./components/main-components/Settings";
-import NutritionChart from "./components/to-double-check/NutritionChart";
+import NutritionChart from "./components/nutrition/NutritionChart";
 import { Toaster } from "sonner";
 
 
