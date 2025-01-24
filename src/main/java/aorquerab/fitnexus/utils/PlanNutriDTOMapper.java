@@ -1,7 +1,7 @@
 package aorquerab.fitnexus.utils;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanNutricional;
-import aorquerab.fitnexus.model.dtos.PlanNutricionalPorcenajesDTO;
+import aorquerab.fitnexus.model.dtos.PlanNutricionalDTO;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class PlanNutriDTOMapper {
 
-    public static List<PlanNutricionalPorcenajesDTO> mapperFromList (List <PlanNutricional> planes) {
+    public static List<PlanNutricionalDTO> mapperFromList (List <PlanNutricional> planes) {
         if (planes.isEmpty()) {
             return Collections.emptyList();
         } else {
@@ -19,26 +19,26 @@ public class PlanNutriDTOMapper {
         }
     }
 
-    public static PlanNutricionalPorcenajesDTO mapperFromPlanNutricional(PlanNutricional planNutricional) {
-        PlanNutricionalPorcenajesDTO planNutricionalPorcenajesDTO = new PlanNutricionalPorcenajesDTO();
-        planNutricionalPorcenajesDTO.setProteina(planNutricional.getProteina());
-        planNutricionalPorcenajesDTO.setHidratoDeCarbono(planNutricional.getHidratoDeCarbono());
-        planNutricionalPorcenajesDTO.setGrasa(planNutricional.getGrasa());
-        planNutricionalPorcenajesDTO.setKcal(planNutricional.getKcal());
-        planNutricionalPorcenajesDTO.setFechaInicio(planNutricional.getFechaInicio());
-        planNutricionalPorcenajesDTO.setFechaFinal(planNutricional.getFechaFinal());
+    public static PlanNutricionalDTO mapperFromPlanNutricional(PlanNutricional planNutricional) {
+        PlanNutricionalDTO planNutricionalDTO = new PlanNutricionalDTO();
+        planNutricionalDTO.setProteina(planNutricional.getProteina());
+        planNutricionalDTO.setHidratoDeCarbono(planNutricional.getHidratoDeCarbono());
+        planNutricionalDTO.setGrasa(planNutricional.getGrasa());
+        planNutricionalDTO.setKcal(planNutricional.getKcal());
+        planNutricionalDTO.setFechaInicio(planNutricional.getFechaInicio());
+        planNutricionalDTO.setFechaFinal(planNutricional.getFechaFinal());
 
-        return planNutricionalPorcenajesDTO;
+        return planNutricionalDTO;
     }
 
-    public static PlanNutricional mapperFromPlanNutriDTO(PlanNutricionalPorcenajesDTO planNutricionalPorcenajesDTO) {
+    public static PlanNutricional mapperFromPlanNutriDTO(PlanNutricionalDTO planNutricionalDTO) {
         PlanNutricional planNutricional = new PlanNutricional();
-        planNutricional.setProteina(planNutricionalPorcenajesDTO.getProteina());
-        planNutricional.setHidratoDeCarbono(planNutricionalPorcenajesDTO.getHidratoDeCarbono());
-        planNutricional.setGrasa(planNutricionalPorcenajesDTO.getGrasa());
-        planNutricional.setKcal(planNutricionalPorcenajesDTO.getKcal());
-        planNutricional.setFechaInicio(planNutricionalPorcenajesDTO.getFechaInicio());
-        planNutricional.setFechaFinal(planNutricionalPorcenajesDTO.getFechaFinal());
+        planNutricional.setProteina(planNutricionalDTO.getProteina());
+        planNutricional.setHidratoDeCarbono(planNutricionalDTO.getHidratoDeCarbono());
+        planNutricional.setGrasa(planNutricionalDTO.getGrasa());
+        planNutricional.setKcal(planNutricionalDTO.getKcal());
+        planNutricional.setFechaInicio(planNutricionalDTO.getFechaInicio());
+        planNutricional.setFechaFinal(planNutricionalDTO.getFechaFinal());
 
         return planNutricional;
     }
