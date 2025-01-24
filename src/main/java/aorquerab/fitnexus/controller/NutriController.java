@@ -56,6 +56,7 @@ public class NutriController {
     }
 
 
+    //TODO: THINK if maybe it is better to use as pathvariable the userId INSTEAD of planNutriId
     //TODO/CHECK:
     // @GetMapping("/porcentajes/{planNutriId}") -> 30,30,40(defi) 50,30,20(volumen) from objetivoCliente
     // apiClient.get(`/api/v1/plan-nutri/porcentajes/${planData.id}`)
