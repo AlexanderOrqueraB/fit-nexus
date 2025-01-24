@@ -33,3 +33,21 @@ export const fetchClientData = async () => {
         throw new Error('Error al cargar los datos de clientes');
     }
 };
+
+//TODO: Pending to refactor
+export const fetchNutriData = async () => {
+    try {
+        const [nutriControllerResponse] = await Promise.all([
+            apiClient.get('/api/v1/ejercicios/ejercicios-dto'),
+            apiClient.get('/api/v1/rutinas'),
+            apiClient.get('/api/v1/planes')
+        ]);
+
+        return {
+            clients: nutriControllerResponse.data
+        };
+    } catch (error) {
+        console.error('Error al cargar los datos:', error);
+        throw new Error('Error al cargar los datos de clientes');
+    }
+};

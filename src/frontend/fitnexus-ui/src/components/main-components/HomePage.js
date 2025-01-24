@@ -11,6 +11,7 @@ import { apiClient } from '../utils/client';
 import React, { useEffect, useState } from 'react';
 import { mockClients } from '../../mocks/mockData'
 import PostProfileExtra from './PostProfileExtra';
+import { BrickWall, Drumstick, EyeIcon } from 'lucide-react';
 
 export function HomePage() {
 
@@ -99,18 +100,22 @@ export function HomePage() {
             		<div className="aspect-video rounded-xl bg-muted/50" >
 					<Card>
 						<CardContent className="flex flex-col items-center justify-center p-6">
-						<span className="text-2xl font-bold mb-2">Quieres ver tu dieta?</span>
+						<span className="text-xl font-bold mb-2">Quieres ver tu plan nutricional?</span>
 						<div className="relative flex items-center justify-center">
-						Primero añade unos datos extra:
+							Accede ahora mismo pulsando el botón:
 						</div>
 						<span className="text-sm mt-2 text-center"></span>
-						<PostProfileExtra />
+						<Button className = "h-10 gap-1" onClick={()=> navigate("/nutri")}>						
+							Ver plan nutricional
+							<Drumstick className="h-3.5 w-3.5" />
+						</Button>
 						<div className="relative flex items-center justify-center">
 						O consulta tus ejercicios:
 						</div>
 						<span className="text-sm mt-2 text-center"></span>
-						<Button onClick={()=> navigate("/ejercicios")}>						
-							Let´s go!
+						<Button className = "h-10 gap-1" onClick={()=> navigate("/ejercicios")}>						
+							Ejercicios
+							<EyeIcon className="h-3.5 w-3.5" />
 						</Button>
 						<span className="text-sm mt-2 text-center"></span>
 						</CardContent>
@@ -126,7 +131,7 @@ export function HomePage() {
             		<div className="aspect-video rounded-xl bg-muted/50" >
 					<Card>
 						<CardContent className="flex flex-col items-center justify-center p-6">
-						<span className="text-2xl font-bold mb-2">Quieres crear un ejercicio?</span>
+						<span className="text-xl font-bold mb-2">Quieres crear un ejercicio?</span>
 						<div className="relative flex items-center justify-center">
 							Créalo ahora mismo pulsando el botón:
 						</div>
@@ -137,8 +142,10 @@ export function HomePage() {
 							O accede directamente al Workout Builder!
 						</div>
 						<span className="text-sm mt-2 text-center"></span>
-						<Button onClick={()=> navigate("/workout-builder")}>						
-							Let´s go!
+						
+						<Button className="h-10 gap-1" onClick={()=> navigate("/workout-builder")}>						
+							Workout builder
+							<BrickWall className="h-3.5 w-3.5" />
 						</Button>
 						</CardContent>
 					</Card>

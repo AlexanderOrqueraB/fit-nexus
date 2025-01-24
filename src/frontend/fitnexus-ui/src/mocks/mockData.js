@@ -159,18 +159,6 @@ export const planWithEntrenador  =
       }
 }
 
-export const mockChartMacros = [
-    { macronutriente: "Proteínas", porcentajes: 30, gramos:120, fill: "var(--color-chrome)" },
-    { macronutriente: "Hidratos de carbono", porcentajes: 30, gramos:150, fill: "var(--color-safari)" },
-    { macronutriente: "Grasas", porcentajes: 40, gramos:70, fill: "var(--color-firefox)" },
-  ];
-
-export const mockChartKcal = [
-    { macronutriente: "Proteínas", kcal: 800, fill: "var(--color-chrome)" },
-    { macronutriente: "Hidratos de carbono", kcal: 720, fill: "var(--color-safari)" },
-    { macronutriente: "Grasas", kcal: 520, fill: "var(--color-firefox)" },
-  ];
-
 export const NUTRI = [
     {
         "proteina": 0,

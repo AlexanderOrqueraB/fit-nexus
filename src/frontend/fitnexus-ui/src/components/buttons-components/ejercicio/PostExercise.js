@@ -73,7 +73,7 @@ export function PostExercise() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button size="sm" className="h-8 gap-1" variant="default">
+                <Button size="sm" className="h-10 gap-1" variant="default">
                     Crear ejercicio
                     <Pencil className="h-3.5 w-3.5" />
                 </Button>
