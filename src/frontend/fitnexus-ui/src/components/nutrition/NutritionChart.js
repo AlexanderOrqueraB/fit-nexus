@@ -19,6 +19,7 @@ import {
 } from "../../components_ui/ui/chart"
 import { CustomAlertDialog } from "../utils/CustomAlertDialog"
 import PostProfileExtra from "../main-components/PostProfileExtra"
+import { mockPlans } from "../../mocks/mockData"
 
 const chartConfig = {
   porcentajes: {
@@ -65,8 +66,8 @@ export function NutritionChart() {
       <div className="flex justify-center items-center space-x-4">
       <Card className="flex flex-col w-1/2">
         <CardHeader className="items-center pb-0">
-          <CardTitle>Pauta nutricional personalizada</CardTitle>
-          <CardDescription>Enero - Mayo 2024</CardDescription>
+          <CardTitle>Plan nutricional personalizado</CardTitle>
+          <CardDescription>Desde {mockPlans[0].fechaInicio} hasta {mockPlans[0].fechaFinal}</CardDescription>
         </CardHeader>
         <CardContent className="flex-1 pb-0">
           <ChartContainer
