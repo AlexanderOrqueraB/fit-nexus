@@ -1,4 +1,4 @@
-package aorquerab.fitnexus.repository;
+package aorquerab.fitnexus.repository.intermediate;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

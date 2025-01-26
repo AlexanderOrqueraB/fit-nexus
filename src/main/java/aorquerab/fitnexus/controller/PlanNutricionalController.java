@@ -2,13 +2,13 @@ package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanNutricional;
 import aorquerab.fitnexus.model.dtos.PlanNutricionalDTO;
-import aorquerab.fitnexus.model.enumerator.Genero;
 import aorquerab.fitnexus.model.enumerator.Objetivo;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.exception.PlanNutricionalNotFoundException;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.repository.ClienteRepository;
 import aorquerab.fitnexus.repository.PlanNutricionalRepository;
+import aorquerab.fitnexus.service.PlanNutricionalService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,13 +26,18 @@ import static aorquerab.fitnexus.utils.PlanNutriDTOMapper.mapperFromPlanNutriDTO
 @RestController
 @RequestMapping({FITNEXUS_BASE_URI + "/plan-nutri"})
 @Slf4j
-public class NutriController {
+public class PlanNutricionalController {
     private final PlanNutricionalRepository planNutricionalRepository;
     private final ClienteRepository clienteRepository;
 
-    public NutriController(PlanNutricionalRepository planNutricionalRepository, ClienteRepository clienteRepository) {
+    private final PlanNutricionalService planNutricionalService;
+
+    public PlanNutricionalController(PlanNutricionalRepository planNutricionalRepository,
+                                     ClienteRepository clienteRepository,
+                                     PlanNutricionalService planNutricionalService) {
         this.planNutricionalRepository = planNutricionalRepository;
         this.clienteRepository = clienteRepository;
+        this.planNutricionalService = planNutricionalService;
     }
 
     //TODO: cliente desde UI puede hacer OBTENER_PLAN_ENTRENAMIENTO
@@ -55,48 +60,60 @@ public class NutriController {
         return planNutricionalRepository.findAll();
     }
 
+    //TODO: add to react component
+    // apiClient.get(`/api/v1/plan-nutri/kcal/${cliente.id}`)
+    @GetMapping ("/kcal/{clienteEmail}")
+    public ResponseEntity <PlanNutricionalDTO> obtenerKcalDeCadaMacroParaClienteDesdePlanNutricional (
+            @PathVariable String clienteEmail) {
 
-    //TODO: THINK if maybe it is better to use as pathvariable the userId INSTEAD of planNutriId
-    //TODO/CHECK:
-    // @GetMapping("/porcentajes/{planNutriId}") -> 30,30,40(defi) 50,30,20(volumen) from objetivoCliente
-    // apiClient.get(`/api/v1/plan-nutri/porcentajes/${planData.id}`)
+        PlanNutricionalDTO planDeCliente = planNutricionalService.obtenerPlanDeClientePorSuEmail(clienteEmail);
 
-    //TODO/CHECK:
-    // @GetMapping("/gramos/{planNutriId}") -> 120,150,70 (g)
-    // apiClient.get(`/api/v1/plan-nutri/gramos/${planData.id}`)
+        if (planDeCliente.getFechaInicio() == null) {
+            log.info("Las kcal del plan nutricional no han sido calculadas aun");
+            throw new InvalidRequestException("Las kcal del plan nutricional no han sido calculadas aun");
+        }
+        else {
+            int proteinaKcal = planDeCliente.getKcal() * planDeCliente.getProteina() / 100;
+            int hidratosKcal = planDeCliente.getKcal() * planDeCliente.getHidratoDeCarbono() / 100;
+            int grasasKcal = planDeCliente.getKcal() * planDeCliente.getGrasa() / 100;
+            log.info("Kcal de cada macro: (proteina/hc/grasas): {} kcal de proteina, {} kcal de hc {} y kcal de grasa"
+                    , proteinaKcal, hidratosKcal, grasasKcal);
 
-    //TODO/CHECK:
-    // @GetMapping("/kcal/{planNutriId}") -> 800,720,520 (kcal
-    // apiClient.get(`/api/v1/plan-nutri/kcal/${planData.id}`)
+            PlanNutricionalDTO planNutricionalKcal = PlanNutricionalDTO.builder()
+                    .proteina(proteinaKcal)
+                    .grasa(grasasKcal)
+                    .hidratoDeCarbono(hidratosKcal)
+                    .build();
+            return ResponseEntity.status(HttpStatus.OK).body(planNutricionalKcal); //Ejemplo: -> 800,720,520 (kcal
+        }
+    }
 
 
-    @GetMapping("/porcentajes/{planNutriId}")
-    public ResponseEntity <PlanNutricionalDTO> obtenerPlanNutriEnPorcentajes (@PathVariable Long planNutriId) {
+    //TODO: add to react component
+    // apiClient.get(`/api/v1/plan-nutri/porcentajes/${cliente.id}`)
+    @GetMapping("/porcentajes/{clienteEmail}")
+    public ResponseEntity <PlanNutricionalDTO> obtenerPlanNutriEnPorcentajes (@PathVariable String clienteEmail) {
         PlanNutricionalDTO planNutricionalDTO;
         try {
-            if (planNutriId == null) {
+            if (clienteEmail == null) {
                 throw new InvalidRequestException("Peticion de plan nutricional en porcentajes no valida");
             } else {
-                Optional<PlanNutricional> planNutricional = planNutricionalRepository.findById(planNutriId);
-                if (planNutricional.isEmpty()) throw new InvalidRequestException("El plan nutricional en porcentajes no ha sido creado aun");
-                else {
-                    log.info("Existe un plan nutricional creado con al menos un identificador");
-                    if (planNutricional.get().getFechaInicio() == null) {
-                        log.info("El plan nutricional en porcentajes no ha sido creado aun");
-                        throw new InvalidRequestException("El plan nutricional en porcentajes no ha sido creado aun");
-                    }
-                    else {
-                        planNutricionalDTO = PlanNutricionalDTO.builder()
-                                .proteina(planNutricional.get().getProteina())
-                                .hidratoDeCarbono(planNutricional.get().getHidratoDeCarbono())
-                                .grasa(planNutricional.get().getGrasa())
-                                .kcal(planNutricional.get().getKcal())
-                                .fechaInicio(planNutricional.get().getFechaInicio())
-                                .fechaFinal(planNutricional.get().getFechaFinal())
-                                .build();
-                        log.info("El plan nutricional en porcentajes existente en BD, porcentajesDTO creado");
-                    }
+                Cliente cliente = planNutricionalService.obtenerClientePorEmail(clienteEmail)
+                        .orElseThrow(()-> {
+                            log.warn("Cliente no encontrado con el email: {}", clienteEmail);
+                            return new InvalidRequestException("Cliente no encontrado con el email:" + clienteEmail);
+                        });
+                log.info("cliente: {} encontrado con el email: {} ", cliente, clienteEmail);
+                PlanNutricionalDTO planDeCliente = planNutricionalService.obtenerPlanDeClientePorSuEmail(clienteEmail);
+
+                if (planDeCliente.getFechaInicio() == null) {
+                    log.info("El plan nutricional en porcentajes no ha sido creado aun");
+                    throw new InvalidRequestException("El plan nutricional en porcentajes no ha sido creado aun");
+                } else {
+                    planNutricionalDTO = planNutricionalService.obtenerPorcentajeMacrosPorObjetivo(cliente);
+                    log.info("El plan nutricional en porcentajes existente en BD, porcentajes DTO creado");
                 }
+                //-> 30,30,40(defi) 50,30,20(volumen)
                 return ResponseEntity.status(HttpStatus.OK).body(planNutricionalDTO);
             }
         } catch (Exception e) {
@@ -105,6 +122,10 @@ public class NutriController {
         }
     }
 
+
+    //TODO/CHECK:
+    // @GetMapping("/gramos/{clienteEmail}") -> 120,150,70 (g)
+    // apiClient.get(`/api/v1/plan-nutri/gramos/${planData.id}`)
     @GetMapping("/macros/{planNutriId}")
     public ResponseEntity <PlanNutricionalDTO> obtenerPlanNutriEnMacros (@PathVariable Long planNutriId) {
         PlanNutricionalDTO PlanNutricionalDTO;
@@ -121,7 +142,7 @@ public class NutriController {
                         throw new InvalidRequestException("El plan nutricional no ha sido creado aun");
                     }
                     else {
-                        PlanNutricionalDTO = calcularMacrosEnGramos(planNutricional.get());
+                        PlanNutricionalDTO = planNutricionalService.calcularMacrosEnGramos(planNutricional.get());
                         log.info("Plan nutricional en macros tras el calculo: {}", PlanNutricionalDTO);
                         if (PlanNutricionalDTO == null) throw new InvalidRequestException("Peticion de plan nutricional en macros no valida");
                             else log.info("El plan nutricional en macros existente en BD, macrosDTO creado");
@@ -159,17 +180,17 @@ public class NutriController {
                 PlanNutricionalDTO planNutricionalDTO;
 
                 double tasaMetabolismoBasalCliente =
-                        calcularTasaMetabolismoBasal(
+                        planNutricionalService.calcularTasaMetabolismoBasal(
                                 cliente.getPeso(),
                                 cliente.getAltura(),
                                 cliente.getEdad(),
                                 cliente.getGenero());
 
                 int kCalDiariasMantenimientoCliente =
-                        obtenerKcalDiariasParaMantenimiento(
+                        planNutricionalService.obtenerKcalDiariasParaMantenimiento(
                                 cliente.getFrecuenciaEjercicioSemanal().getFactorActividad(), tasaMetabolismoBasalCliente);
 
-                int kcalDiariasPorObjetivo = obtenerKcalDiariasPorObjetivo(cliente.getObjetivo(), kCalDiariasMantenimientoCliente);
+                int kcalDiariasPorObjetivo = planNutricionalService.obtenerKcalDiariasPorObjetivo(cliente.getObjetivo(), kCalDiariasMantenimientoCliente);
 
                 PlanNutricionalDTO.PlanNutricionalDTOBuilder planNutricionalDTOBuilder = PlanNutricionalDTO
                         .builder()
@@ -196,82 +217,4 @@ public class NutriController {
             throw new PlanNutricionalNotFoundException("Plan nutricional no encontrado en BD");
         }
     }
-
-    public PlanNutricionalDTO calcularMacrosEnGramos (PlanNutricional planNutricional) {
-        if (planNutricional != null) {
-            int kcal = planNutricional.getKcal();
-            log.info("kcal recibidas desde planNutricional en calcularMacrosEnGramos: {} kcal", kcal);
-
-            // Calcular el porcentaje de cada macronutriente en kcal
-            int proteinaKcal = kcal * planNutricional.getProteina() / 100;
-            int hidratosKcal = kcal * planNutricional.getHidratoDeCarbono() / 100;
-            int grasasKcal = kcal * planNutricional.getGrasa() / 100;
-            log.info("macros en kcal: (proteina/hc/grasas): {} kcal de proteina, {} kcal de hc {} y kcal de grasa"
-                    , proteinaKcal, hidratosKcal, grasasKcal);
-
-            // Convertir cada kcal de macronutriente en gramos
-            int proteinaGramos = proteinaKcal / 4;   // 4 kcal por gramo de proteína
-            int hidratosGramos = hidratosKcal / 4;   // 4 kcal por gramo de carbohidratos
-            int grasasGramos = grasasKcal / 9;       // 9 kcal por gramo de grasas
-
-            log.info("macros en gramos: (proteina/hc/grasas): {} gramos de proteina, {} gramos de hc {} y gramos de grasa"
-                    , proteinaGramos, hidratosGramos, grasasGramos);
-
-            return PlanNutricionalDTO.builder()
-                    .proteina(proteinaGramos)
-                    .hidratoDeCarbono(hidratosGramos)
-                    .grasa(grasasGramos)
-                    .kcal(planNutricional.getKcal())
-                    .fechaInicio(planNutricional.getFechaInicio())
-                    .fechaFinal(planNutricional.getFechaFinal())
-                    .build();
-        }
-        else return null;
-    }
-
-    //Fórmula de Harris-Benedict revisada por Mifflin y St Jeor en 1990 (utilizadas en la actualidad)
-    //INPUT: EDAD, ALTURA, PESO Y GENERO
-    public double calcularTasaMetabolismoBasal(int peso, int altura, int edad, Genero genero) {
-        double tasaMetabolismoBasal;
-        log.info("Ejecutando calculo de tasa de metabolismo basal.");
-        if (genero.equals(Genero.MUJER)) {
-            tasaMetabolismoBasal = (10 * peso) + (6.25 * altura) - (5 * edad) - 161;
-            log.info("Tasa de metabolismo basal para mujer en base a input: {}", tasaMetabolismoBasal);
-            //TMB (kcal) = (10 x peso en kg) + (6,25 × altura en cm) - (5 × edad en años) - 161
-        }
-        else {
-            tasaMetabolismoBasal = (10 * peso) + (6.25 * altura) - (5 * edad) + 5;
-            log.info("Tasa de metabolismo basal para hombre en base a input: {}", tasaMetabolismoBasal);
-            //TMB (kcal) = (10 x peso en kg) + (6,25 × altura en cm) - (5 × edad en años) + 5
-        }
-        return tasaMetabolismoBasal;
-    }
-
-    //Ingesta diaria de calorías recomendada según el principio de Harris-Benedict
-    //(dependiendo del ejercicio que realicemos semanalmente)
-    public int obtenerKcalDiariasParaMantenimiento(double factorDeActividad, double tasaMetabolismoBasal) {
-        log.info("Ejecutando calculo de kcal diarias para mantenimiento con {} de factorActividad y {} de TMB"
-                , factorDeActividad,tasaMetabolismoBasal);
-        int kCalDiariasMantenimiento;
-        //Con el metabolismo calculado sólo debemos multiplicar por el factor corrector de la actividad
-        kCalDiariasMantenimiento = ((int) (factorDeActividad * tasaMetabolismoBasal));
-        log.info("kCalDiariasMantenimiento = factor de actividad: {} * tasa de metabolismo basal: {} = {} kcalDiariasMantenimiento"
-                , factorDeActividad, tasaMetabolismoBasal, kCalDiariasMantenimiento);
-        return kCalDiariasMantenimiento;
-    }
-
-    public int obtenerKcalDiariasPorObjetivo(Objetivo objetivo, int kcalMantenimiento) {
-        int obtenerKcalDiariasPorObjetivo;
-        log.info("Obteniendo kcal diarias en base al objetivo");
-        if (objetivo.equals((Objetivo.GANAR_MUSCULO))) {
-            obtenerKcalDiariasPorObjetivo = kcalMantenimiento + objetivo.getKcalExtra();
-            log.info("Kcal diarias por objetivo = kcalMantenimiento: {} + kcalExtra para ganar musculo: {}"
-                    ,kcalMantenimiento, obtenerKcalDiariasPorObjetivo);
-        }
-        else obtenerKcalDiariasPorObjetivo = kcalMantenimiento - objetivo.getKcalExtra();
-        log.info("Kcal diarias por objetivo = kcalMantenimiento: {} + kcalExtra para ganar musculo: {}"
-                ,kcalMantenimiento, obtenerKcalDiariasPorObjetivo);
-        return  obtenerKcalDiariasPorObjetivo;
-    }
-
 }
