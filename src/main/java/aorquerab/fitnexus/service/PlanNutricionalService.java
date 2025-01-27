@@ -23,11 +23,17 @@ public class PlanNutricionalService {
         this.clientService = clientService;
     }
 
-    public Optional<PlanNutricionalDTO> obtenerPlanMasRecientePorClienteEmail(String email) {
+    public Optional<PlanNutricionalDTO> obtenerPlanDTOMasRecientePorClienteEmail(String email) {
         return clientService.findByEmail(email)
                 .map(Cliente::getPlanNutricional)
                 .flatMap(planNutricionalList -> planNutricionalList.stream().max(Comparator.comparing(PlanNutricional::getFechaInicio)))
                 .map(this::convertToDTO);
+    }
+
+    public Optional<PlanNutricional> obtenerPlanMasRecientePorClienteEmail(String email) {
+        return clientService.findByEmail(email)
+                .map(Cliente::getPlanNutricional)
+                .flatMap(planNutricionalList -> planNutricionalList.stream().max(Comparator.comparing(PlanNutricional::getFechaInicio)));
     }
 
     public PlanNutricionalDTO convertToDTO (PlanNutricional planNutricional) {
@@ -45,10 +51,29 @@ public class PlanNutricionalService {
         return clientService.findByEmail(email);
     }
 
-    public PlanNutricionalDTO obtenerPlanDeClientePorSuEmail (String clienteEmail) {
+    public PlanNutricionalDTO obtenerPlanDeClienteDTOPorSuEmail(String clienteEmail) {
         log.info("Obteniendo el plan asociado al cliente con email: {} ", clienteEmail);
         try {
             PlanNutricionalDTO planDeCliente =
+                    obtenerPlanDTOMasRecientePorClienteEmail(clienteEmail).orElseThrow(() -> {
+                        log.warn("Plan nutricional no encontrado con el email: {}", clienteEmail);
+                        return new PlanNutricionalNotFoundException("Plan no encontrado en BD: " + clienteEmail);
+                    });
+            log.info("Existe un plan nutricional creado con al menos un identificador para el cliente {}", clienteEmail);
+            return planDeCliente;
+        } catch (PlanNutricionalNotFoundException e) {
+            log.error("Error al obtener el plan {}", e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            log.error("Error al obtener el plan asociado al cliente {}", clienteEmail);
+            throw new ServiceException("Error inesperado al obtener el plan nutricional", e);
+        }
+    }
+
+    public PlanNutricional obtenerPlanDeClientePorSuEmail(String clienteEmail) {
+        log.info("Obteniendo el plan asociado al cliente con email: {} ", clienteEmail);
+        try {
+            PlanNutricional planDeCliente =
                     obtenerPlanMasRecientePorClienteEmail(clienteEmail).orElseThrow(() -> {
                         log.warn("Plan nutricional no encontrado con el email: {}", clienteEmail);
                         return new PlanNutricionalNotFoundException("Plan no encontrado en BD: " + clienteEmail);
