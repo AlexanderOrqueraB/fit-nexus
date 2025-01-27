@@ -18,7 +18,8 @@ import { Toaster } from "sonner";
 
 
 function App () {
-
+    const role = 'admin'; // TODO: or 'client', replace with role logic
+    const userEmail = 'user@example.com'; // TODO: replace with user email logic
 return (
     /*<UserProvider>*/
         <BrowserRouter>
@@ -66,7 +67,7 @@ return (
                     
                     <Route path="/nutri" element={
                         /*<ProtectedRoute>*/
-                            <NutritionChart />
+                        <NutritionChart role={role} userEmail={userEmail} />
                         /*</ProtectedRoute>*/
                     }/>
 

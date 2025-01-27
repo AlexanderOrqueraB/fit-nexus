@@ -34,15 +34,37 @@ export const fetchClientData = async () => {
     }
 };
 
-//TODO: Pending to refactor
+export const fetchExtraData = async (email) => {
+    try {
+        const response = await apiClient.get(`/api/v1/client/getExtraData/${email}`);
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return null; // No extra data found
+        }
+        console.error('Error al cargar los datos extra:', error);
+        throw new Error('Error al cargar los datos extra');
+    }
+};
+
+export const createNutritionPlan = async (email) => {
+    try {
+        const response = await apiClient.post('/api/v1/plan-nutri', { email });
+        return response.data;
+    } catch (error) {
+        console.error('Error al crear el plan nutricional:', error);
+        throw new Error('Error al crear el plan nutricional');
+    }
+};
+
 export const fetchNutriData = async () => {
     try {
+        const cliente = { id: 1 }; // TODO: Get the client id from the logged user
         const [nutriControllerResponse] = await Promise.all([
-            apiClient.get('/api/v1/ejercicios/ejercicios-dto'),
-            apiClient.get('/api/v1/rutinas'),
-            apiClient.get('/api/v1/planes')
+            apiClient.get(`/api/v1/plan-nutri/gramos/${cliente.id}`),
+            apiClient.get(`/api/v1/plan-nutri/porcentajes/${cliente.id}`),
+            apiClient.get(`/api/v1/plan-nutri/kcal/${cliente.id}`)
         ]);
-
         return {
             clients: nutriControllerResponse.data
         };

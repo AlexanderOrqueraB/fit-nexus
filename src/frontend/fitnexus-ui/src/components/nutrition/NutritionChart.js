@@ -1,9 +1,8 @@
 
 "use client"
 
-import * as React from "react"
+import React, { useState, useEffect } from "react";
 import { Label, Pie, PieChart } from "recharts"
-
 import {
   Card,
   CardContent,
@@ -19,7 +18,16 @@ import {
 } from "../../components_ui/ui/chart"
 import { CustomAlertDialog } from "../utils/CustomAlertDialog"
 import PostProfileExtra from "../main-components/PostProfileExtra"
-import { mockPlans } from "../../mocks/mockData"
+import { mockPlans, mockClients} from "../../mocks/mockData"
+import { Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue } from "../../components_ui/ui/select"
+import { Button } from "../../components_ui/ui/button"
+import { fetchClientData, fetchExtraData, createNutritionPlan } from '../utils/api'
 
 const chartConfig = {
   porcentajes: {
@@ -55,14 +63,84 @@ const mockChartNutri = [
   { macronutriente: "Grasas", porcentajes: 40, gramos:70, kcal: 520, fill: "var(--color-firefox)" },
 ];
 
-export function NutritionChart() {
+export function NutritionChart({ role, userEmail }) {
+
+  const [selectedClient, setSelectedClient] = useState(null);
+  //const [clients, setClients] = useState([]); uncomment this line and comment the next one to use backend data
+  const [clients, setClients] = useState(mockClients);
+  const [extraData, setExtraData] = useState(null);
+  const [loading, setLoading] =useState(true);
+  const [error, setError] =useState(null);
+
   const totalKcal = React.useMemo(() => {
     return mockChartNutri.reduce((acc, curr) => acc + curr.kcal, 0)
   }, [])
 
+  const fetchData = async () => {
+    try {
+      //uncomment this lines to use backend data
+      //const clientsData = await fetchClientData(); 
+      //setClients(clientsData.clients);
+      setClients(mockClients);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchExtraData = async (email) => {
+    try {
+      //uncomment this lines to use backend data
+      //const data = await fetchExtraData(email);
+      //setExtraData(data);
+      const client = mockClients.find(client => client.email === email);
+      setExtraData(client ? client : null);
+    } catch (error) {
+      setExtraData(null);
+    }
+  };
+
+  const createPlan = async (email) => {
+    try {
+      //uncomment this lines to use backend data
+      //await createNutritionPlan(email);
+      fetchData();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    if (role === 'client') {
+      fetchExtraData(userEmail);
+    }
+  }, [role, userEmail]);
+
+  if (loading) return <div>Cargando...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <div className="flex flex-col gap-4">
-      <PostProfileExtra />
+      {role === 'admin' ? (
+        <Select onValueChange={setSelectedClient}>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Selecciona un cliente" />
+        </SelectTrigger>
+        <SelectContent>
+          {clients.map(client => (
+            <SelectItem key={client.email} value={client.email}>
+              {client.nombre}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      ) : (
+        <div className="text-center">
+          <h1 className="text-2xl font-bold">Tu plan nutricional</h1>
+        </div>
+      )}
       <div className="flex justify-center items-center space-x-4">
       <Card className="flex flex-col w-1/2">
         <CardHeader className="items-center pb-0">
@@ -152,6 +230,12 @@ export function NutritionChart() {
             description = {kcalMoreInfo} 
           />
           </div>
+          {role === 'client' && !extraData && (
+            <PostProfileExtra />
+            )}
+            {role === 'admin' && selectedClient && !extraData && (
+              <Button onClick={() => createPlan(selectedClient)}>Crear Plan Nutricional</Button>
+            )}
         </CardFooter>
       </Card>
       </div>
