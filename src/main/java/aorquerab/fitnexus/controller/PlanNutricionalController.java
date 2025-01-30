@@ -60,8 +60,6 @@ public class PlanNutricionalController {
         return planNutricionalRepository.findAll();
     }
 
-    //TODO: add to react component
-    // apiClient.get(`/api/v1/plan-nutri/kcal/${cliente.id}`)
     @GetMapping ("/kcal/{clienteEmail}")
     public ResponseEntity <PlanNutricionalDTO> obtenerKcalDeCadaMacroParaClienteDesdePlanNutricional (
             @PathVariable String clienteEmail) {
@@ -89,8 +87,6 @@ public class PlanNutricionalController {
     }
 
 
-    //TODO: add to react component
-    // apiClient.get(`/api/v1/plan-nutri/porcentajes/${cliente.id}`)
     @GetMapping("/porcentajes/{clienteEmail}")
     public ResponseEntity <PlanNutricionalDTO> obtenerPlanNutriEnPorcentajes (@PathVariable String clienteEmail) {
         PlanNutricionalDTO planNutricionalDTO;
@@ -122,8 +118,6 @@ public class PlanNutricionalController {
         }
     }
 
-    //TODO: add to react component
-    // apiClient.get(`/api/v1/plan-nutri/gramos/${cliente.id}`)
     @GetMapping("/gramos/{clienteEmail}")
     public ResponseEntity <PlanNutricionalDTO> obtenerPlanNutriMacrosEnGramos (@PathVariable String clienteEmail) {
         PlanNutricionalDTO planNutricionalDTO;

@@ -36,11 +36,11 @@ export const fetchClientData = async () => {
 
 export const fetchExtraData = async (email) => {
     try {
-        const response = await apiClient.get(`/api/v1/client/getExtraData/${email}`);
+        const response = await apiClient.get(`/api/v1/clientes/extra-data/${email}`);
         return response.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
-            return null; // No extra data found
+            return null;
         }
         console.error('Error al cargar los datos extra:', error);
         throw new Error('Error al cargar los datos extra');

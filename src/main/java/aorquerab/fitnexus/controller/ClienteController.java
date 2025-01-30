@@ -2,6 +2,7 @@ package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.dtos.ClienteDtoRequest;
 import aorquerab.fitnexus.model.dtos.minimized.ClienteDTO;
+import aorquerab.fitnexus.model.exception.ClienteNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
@@ -81,7 +82,26 @@ public class ClienteController {
         }
     }
 
-    //TODO Obtener cliente por otro Atributo (FUTURE REFACTOR)
+    @GetMapping("/extra-data/{clienteEmailId}")
+    public ResponseEntity<ClienteDtoRequest> obtenerDatosExtraClientePorEmailId (@PathVariable String clienteEmailId){
+        log.info("Ejecutando obtenerDatosExtraClientePorEmailId con este emailId: {}", clienteEmailId);
+        try {
+            Cliente clienteByEmail = clienteRepository.findByEmail(clienteEmailId)
+                    .orElseThrow(() -> new ClienteNotFoundException("Cliente no encontrado con emailId: "));
+            ClienteDtoRequest datosExtraCliente = ClienteDtoRequest.builder()
+                    .objetivo(clienteByEmail.getObjetivo())
+                    .genero(clienteByEmail.getGenero())
+                    .frecuenciaEjercicioSemanal(clienteByEmail.getFrecuenciaEjercicioSemanal())
+                    .edad(clienteByEmail.getEdad())
+                    .peso(clienteByEmail.getPeso())
+                    .altura(clienteByEmail.getAltura())
+                    .build();
+            return ResponseEntity.status(HttpStatus.OK).body(datosExtraCliente);
+        } catch (Exception e) {
+            log.warn("Error al obtener cliente por emailId", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ClienteDtoRequest.builder().build());
+        }
+    }
 
     @PostMapping("/{clienteId}")
     public ResponseEntity<String> crearDatosExtraCliente(
