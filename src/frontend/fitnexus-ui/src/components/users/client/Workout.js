@@ -25,9 +25,10 @@ import {
 import ExercisesInfoImg from '../../buttons-components/ejercicio/ExercisesInfoImg';
 import { Badge } from '../../../components_ui/ui/badge';
 import { mockExercises, mockRoutine, mockPlans } from '../../../mocks/mockData'
+import { set } from 'react-hook-form';
 
 
-export function Workout() {
+export function Workout ({ role, userEmail })  {
 	const [data, setData] = useState({}); //useState to store data from server
 
 	const [exercises, setExercises] = useState([]);
@@ -71,25 +72,39 @@ export function Workout() {
 		});
 	};
 
-	// Cargar datos desde varias fuentes simultáneamente
-	const loadData = async () => {
+	const loadData = async (email) => {
 		try {
 		// Ejecutar todas las solicitudes en paralelo
-		const { exercises, routines, plans } = await fetchWorkoutData();
 
+		//uncomment this lines to use backend data
+		//const { exercises, routines, plans } = await fetchWorkoutData(userEmail);
+		const exercises = mockExercises.map((exercise) => ({...exercise}));
+		const routines = mockRoutine.map((routine) => ({...routine}));
+		const plans = mockPlans.map((plan) => ({...plan}));
 		// Actualizar los estados con los datos obtenidos
-		setExercises(exercises);
-		setRoutines(routines);
-		setPlans(plans);
+		//setExercises(exercises);
+		//setRoutines(routines);
+		//setPlans(plans);
+		setExercises(exercises ? exercises : null);
+		setRoutines(routines ? routines : null);
+		setPlans(plans ? plans : null);
+
 		} catch (error) {
+		setExercises(null);
+		setRoutines(null);
+		setPlans(null);
+
 		console.error('Error al cargar datos:', error);
 		customToast({message : "Hubo un error al cargar los datos de planes/rutinas/ejercicios", type : "error"});
 		}
 	};
 	
+
 	useEffect(() => {
-	loadData();
-	}, []); // Llama a loadData solo al montar el componente
+		loadData(userEmail);
+
+	}, [role, userEmail]);
+
 
 	const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page

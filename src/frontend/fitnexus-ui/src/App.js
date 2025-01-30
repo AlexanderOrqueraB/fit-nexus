@@ -55,7 +55,7 @@ return (
                 
                     <Route path="/ejercicios" element={
                     /*<ProtectedRoute>*/
-                            <Workout />
+                            <Workout role={role} userEmail={userEmail}/>
                     /*</ProtectedRoute>*/
                     }/>
                     
