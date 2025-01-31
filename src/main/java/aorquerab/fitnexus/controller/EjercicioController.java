@@ -115,28 +115,24 @@ public class EjercicioController {
         log.info("Ejecutando obtenerEjercicioPorUsuario...");
         try {
             List<Ejercicio> ejercicios = Collections.emptyList();
-            Optional<Role> rolUsuario = Optional.ofNullable(obtenerRolePorEmailId(emailId).orElseThrow(() -> {
-                log.warn("Error al obtener rol para el email: {}", emailId);
-                return new RuntimeException("Error al obtener el rol");
-            }));
-            if (rolUsuario.isPresent()) {
-                if (rolUsuario.get().equals(Role.ADMIN)) {
-                    log.info("Obteniendo ejercicios para entrenador con email: {}", emailId);
-                    ejercicios = entrenadorRepository.findByEmail(emailId)
-                            .map(Entrenador::getEjercicios)
-                            .orElseThrow(() -> new EntrenadorNotFoundException("Entrenador no encontrado con el email: " + emailId));
-                } else if (rolUsuario.get().equals(Role.USER)) {
-                    log.info("Obteniendo ejercicios para cliente con email: {}", emailId);
-                    ejercicios = clienteRepository.findByEmail(emailId)
-                            .map(Cliente::getEjercicios)
-                            .orElseThrow(() -> new ClienteNotFoundException("Cliente no encontrado con el email: " + emailId));
-                } else {
-                    throw new IllegalArgumentException("El usuario no tiene un rol valido");
-                }
+            Optional<Cliente> clienteOptional = clienteRepository.findByEmail(emailId);
+            Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByEmail(emailId);
+            if (clienteOptional.isEmpty() && entrenadorOptional.isEmpty()) {
+                log.warn("Usuario no encontrado con el email: {}", emailId);
+                throw new ClienteNotFoundException("Usuario no encontrado en BD: " + emailId);
+            }
 
-                if (ejercicios.isEmpty()) {
-                    throw new EjercicioNotFoundException("No se encontraron ejercicios.");
-                }
+            if(clienteOptional.isPresent()) {
+                Cliente cliente = clienteOptional.get();
+                ejercicios = cliente.getEjercicios();
+            } else {
+                Entrenador entrenador = entrenadorOptional.get();
+                ejercicios = entrenador.getEjercicios();
+            }
+
+            if (ejercicios.isEmpty()) {
+                log.warn("Ejercicios no encontrados para el usuario con el email: {}", emailId);
+                throw new EjercicioNotFoundException("Ejercicios no encontrados para el usuario con el email: {}"+ emailId);
             }
 
             List<EjercicioDtoRequest> ejercicioDtoRequestList = ejercicios.stream()
@@ -148,10 +144,6 @@ public class EjercicioController {
                             .cardio(ejercicio.getCardio())
                             .build()).toList();
 
-            if (ejercicioDtoRequestList.isEmpty()) {
-                log.warn("Ejercicios no encontrados en base de datos...");
-                throw new EjercicioNotFoundException("Ejercicios no encontrados...");
-            }
             return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoRequestList);
         } catch (Exception e) {
             log.warn("Error al obtener ejerciciosDTO: ", e);

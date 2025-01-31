@@ -3,12 +3,10 @@ import { apiClient } from '../utils/client';
 export const fetchWorkoutData = async (userEmail) => {
     try {
         const [exercisesResponse, routinesResponse, plansResponse] = await Promise.all([
-            apiClient.get('/api/v1/ejercicios/ejercicios-dto'),
-            apiClient.get('/api/v1/rutinas'),
-            apiClient.get('/api/v1/planes')
+            apiClient.get('/api/v1/ejercicios/ejercicio/usuario/${userEmail}'),
+            apiClient.get('/api/v1/rutinas/rutina/usuario/${userEmail}'),
+            apiClient.get('/api/v1/planes/plan/usuario/${userEmail}'),
         ]);
-
-        //TODO: Change URL to use pathvariable email and change it also in the backend
 
         return {
             exercises: exercisesResponse.data,

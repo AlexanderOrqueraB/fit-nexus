@@ -4,11 +4,12 @@ import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoCrearRequest;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoFechasRequest;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoResponse;
-import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
-import aorquerab.fitnexus.model.exception.InvalidRequestException;
-import aorquerab.fitnexus.model.exception.PlanDeEntrenamientoNotFoundException;
+import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoGetDTO;
+import aorquerab.fitnexus.model.exception.*;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
+import aorquerab.fitnexus.repository.ClienteRepository;
+import aorquerab.fitnexus.repository.EntrenadorRepository;
 import aorquerab.fitnexus.repository.PlanDeEntrenamientoRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
@@ -25,9 +28,13 @@ import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 @Slf4j
 public class PlanDeEntrenamientoController {
     private final PlanDeEntrenamientoRepository planDeEntrenamientoRepository;
+    private final ClienteRepository clienteRepository;
+    private final EntrenadorRepository entrenadorRepository;
 
-    public PlanDeEntrenamientoController(PlanDeEntrenamientoRepository planDeEntrenamientoRepository) {
+    public PlanDeEntrenamientoController(PlanDeEntrenamientoRepository planDeEntrenamientoRepository, ClienteRepository clienteRepository, EntrenadorRepository entrenadorRepository) {
         this.planDeEntrenamientoRepository = planDeEntrenamientoRepository;
+        this.clienteRepository = clienteRepository;
+        this.entrenadorRepository = entrenadorRepository;
     }
 
     //TODO: Testear con postman
@@ -88,6 +95,50 @@ public class PlanDeEntrenamientoController {
             return ResponseEntity.status(HttpStatus.OK).body(planEntrenamientoDtoResponseList);
         } catch (Exception e) {
             log.warn("Error al obtener planesEntrenamientoDTO: ", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
+    }
+
+    //TODO: Testear en Postman
+    //TODO: Testear en React
+    @GetMapping("/plan/usuario/{emailId}")
+    public ResponseEntity<List<PlanEntrenamientoGetDTO>> obtenerPlanPorUsuario(@PathVariable String emailId) {
+        log.info("Ejecutando obtenerPlanPorUsuario...");
+        try {
+            List<PlanDeEntrenamiento> planes = Collections.emptyList();
+            Optional<Cliente> clienteOptional = clienteRepository.findByEmail(emailId);
+            Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByEmail(emailId);
+            if (clienteOptional.isEmpty() && entrenadorOptional.isEmpty()) {
+                log.warn("Usuario no encontrado con el email: {}", emailId);
+                throw new ClienteNotFoundException("Usuario no encontrado en BD: " + emailId);
+            }
+
+            if(clienteOptional.isPresent()) {
+                Cliente cliente = clienteOptional.get();
+                planes = cliente.getPlanDeEntrenamiento();
+            } else {
+                Entrenador entrenador = entrenadorOptional.get();
+                planes = entrenador.getPlanesDeEntrenamiento();
+            }
+
+            if (planes.isEmpty()) {
+                log.warn("Planes no encontrados para el usuario con el email: {}", emailId);
+                throw new RutinaNotFoundException("Planes no encontrados para el usuario con el email: {}"+ emailId);
+            }
+
+            List<PlanEntrenamientoGetDTO> planDtoRequestList = planes.stream()
+                    .map(plan -> PlanEntrenamientoGetDTO.builder()
+                            .nombrePlan(plan.getNombrePlan())
+                            .fechaInicio(plan.getFechaInicio())
+                            .fechaFinal(plan.getFechaFinal())
+                            .rutinas(plan.getRutinas().stream()
+                                    .map(rutina -> PlanEntrenamientoGetDTO.RutinaDTO.builder()
+                                            .nombreRutina(rutina.getNombreRutina()).build()).collect(Collectors.toList()))
+                            .build()).toList();
+
+            return ResponseEntity.status(HttpStatus.OK).body(planDtoRequestList);
+        } catch (Exception e) {
+            log.warn("Error al obtener RutinaGetDTO: ", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
     }

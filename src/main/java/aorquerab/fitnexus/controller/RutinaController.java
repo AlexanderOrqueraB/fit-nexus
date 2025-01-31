@@ -5,13 +5,17 @@ import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.RutinaDTO;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.EjerciciosListDTO;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.RutinaDtoRequest;
+import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.RutinaGetDTO;
+import aorquerab.fitnexus.model.exception.ClienteNotFoundException;
 import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.exception.RutinaNotFoundException;
+import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
+import aorquerab.fitnexus.repository.ClienteRepository;
 import aorquerab.fitnexus.repository.EntrenadorRepository;
-import aorquerab.fitnexus.repository.intermediate.RutinaEjercicioRepository;
 import aorquerab.fitnexus.repository.RutinaRepository;
+import aorquerab.fitnexus.repository.intermediate.RutinaEjercicioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,12 +35,14 @@ import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 public class RutinaController {
     private final RutinaRepository rutinaRepository;
     private final EntrenadorRepository entrenadorRepository;
+    private final ClienteRepository clienteRepository;
     private final RutinaEjercicioRepository rutinaEjercicioRepository;
 
-    public RutinaController(RutinaRepository rutinaRepository, EntrenadorRepository entrenadorRepository,
+    public RutinaController(RutinaRepository rutinaRepository, EntrenadorRepository entrenadorRepository, ClienteRepository clienteRepository,
                             RutinaEjercicioRepository rutinaEjercicioRepository) {
         this.rutinaRepository = rutinaRepository;
         this.entrenadorRepository = entrenadorRepository;
+        this.clienteRepository = clienteRepository;
         this.rutinaEjercicioRepository = rutinaEjercicioRepository;
     }
 
@@ -126,6 +132,50 @@ public class RutinaController {
                         .build())
                 .toList();
         return ResponseEntity.status(HttpStatus.OK).body(rutinaDTOList);
+    }
+
+    //TODO: Testear en Postman
+    //TODO: Testear en React
+    @GetMapping("/rutina/usuario/{emailId}")
+    public ResponseEntity<List<RutinaGetDTO>> obtenerRutinaPorUsuario(@PathVariable String emailId) {
+        log.info("Ejecutando obtenerRutinaPorUsuario...");
+        try {
+            List<Rutina> rutinas = Collections.emptyList();
+            Optional<Cliente> clienteOptional = clienteRepository.findByEmail(emailId);
+            Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByEmail(emailId);
+            if (clienteOptional.isEmpty() && entrenadorOptional.isEmpty()) {
+                log.warn("Usuario no encontrado con el email: {}", emailId);
+                throw new ClienteNotFoundException("Usuario no encontrado en BD: " + emailId);
+            }
+
+            if(clienteOptional.isPresent()) {
+                Cliente cliente = clienteOptional.get();
+                rutinas = cliente.getRutinas();
+            } else {
+                Entrenador entrenador = entrenadorOptional.get();
+                rutinas = entrenador.getRutinas();
+            }
+
+            if (rutinas.isEmpty()) {
+                log.warn("Rutinas no encontradas para el usuario con el email: {}", emailId);
+                throw new RutinaNotFoundException("Rutinas no encontradas para el usuario con el email: {}"+ emailId);
+            }
+
+            List<RutinaGetDTO> rutinaDtoRequestList = rutinas.stream()
+                    .map(rutina -> RutinaGetDTO.builder()
+                            .nombreRutina(rutina.getNombreRutina())
+                            .fechaInicio(rutina.getFechaInicio())
+                            .fechaFinal(rutina.getFechaFinal())
+                            .ejercicios(rutina.getEjercicios().stream()
+                                    .map(ejercicio -> RutinaGetDTO.EjercicioDTO.builder()
+                                            .nombreEjercicio(ejercicio.getNombreEjercicio()).build()).collect(Collectors.toList()))
+                            .build()).toList();
+
+            return ResponseEntity.status(HttpStatus.OK).body(rutinaDtoRequestList);
+        } catch (Exception e) {
+            log.warn("Error al obtener RutinaGetDTO: ", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+        }
     }
 
     //Testeado Postman + SB
