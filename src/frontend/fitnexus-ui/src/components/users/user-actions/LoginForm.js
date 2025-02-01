@@ -54,12 +54,13 @@ export function LoginForm() {
         console.log("Respuesta del servidor: ", response.data);
         console.log("Status: ", response.status);
         
-        const { role } = response.data;
+        const { role, email } = response.data;
         
-        //Guardamos y rol en el contexto
-        setUser({ role });
-        //Guardamos  rol 
+        //Guardamos email y rol en el contexto
+        setUser({ role, email });
+        //Guardamos  rol y mail en local storage
         localStorage.setItem("userRole", role);
+        localStorage.setItem("userEmail", email);
 
         if((response.status === 401)){
           customToast({message : "Error 401 usuario no autorizado", type : "error"});
@@ -107,7 +108,7 @@ export function LoginForm() {
     // Simula la validación de credenciales y asigna el rol
     if (role === "admin") {
       if (data.email === validCredentials.admin.email && data.password === validCredentials.admin.password) {
-        setUser({ role: "ADMIN" });
+        setUser({ role: "admin" });
         localStorage.setItem("userRole", "ADMIN");
         customToast({message : "Login efectuado correctamente como administrador!", type : "success"});
         navigate('/dashboard', { state: { isAdminProp: true } });
@@ -116,7 +117,7 @@ export function LoginForm() {
       }
     } else if (role === "user") {
       if (data.email === validCredentials.user.email && data.password === validCredentials.user.password) {
-        setUser({ role: "USER" });
+        setUser({ role: "user" });
         localStorage.setItem("userRole", "USER");
         customToast({message : "Login efectuado correctamente como usuario!", type : "success"});
         navigate('/dashboard', { state: { isAdminProp: false } });

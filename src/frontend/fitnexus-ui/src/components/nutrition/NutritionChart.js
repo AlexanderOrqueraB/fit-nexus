@@ -113,7 +113,7 @@ export function NutritionChart({ role, userEmail }) {
 
   useEffect(() => {
     fetchData();
-    if (role === 'client') {
+    if (role === 'user') {
       fetchExtraData(userEmail);
     }
   }, [role, userEmail]);
