@@ -153,7 +153,8 @@ public class AuthHomeController {
             // Si la autenticación es exitosa, cargamos el usuario
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(loginDTO.getEmail());
 
-            String userRole = "";
+            String userEmail = loginDTO.getEmail();
+            String userRole = null;
             if (userDetails instanceof CustomUserDetails) {
                 log.info("Obteniendo rol: {}", ((CustomUserDetails) userDetails).getRole());
                 Role role = ((CustomUserDetails) userDetails).getRole();
@@ -161,8 +162,11 @@ public class AuthHomeController {
                 userRole = role.name();
             }
             Map<String, Object> response = new HashMap<>();
-            response.put("message", "Login exitoso. Bienvenidx: " + userDetails.getUsername());
-            response.put("role", userRole);
+
+            if (userRole != null) {
+                response.put("message", "Login exitoso. Bienvenidx: " + userEmail);
+                response.put("role", userRole);
+            }
 
             return ResponseEntity.ok(response);
 
