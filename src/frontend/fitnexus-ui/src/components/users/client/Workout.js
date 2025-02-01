@@ -1,13 +1,13 @@
 import { Info, ListFilter, RefreshCcwIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Button } from '../../../components_ui/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../../components_ui/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components_ui/ui/card';
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components_ui/ui/tabs';
 import { apiClient } from '../../utils/client';
 import { customToast } from '../../utils/customToast'
-import { fetchWorkoutData } from '../../utils/api';
+
 import {
 	Sheet,
 	SheetContent,
@@ -22,11 +22,9 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuTrigger
 } from '../../../components_ui/ui/dropdown-menu';
-import ExercisesInfoImg from '../../buttons-components/ejercicio/ExercisesInfoImg';
+import ExercisesInfoImg from '../../workout-components/ejercicio/ExercisesInfoImg';
 import { Badge } from '../../../components_ui/ui/badge';
 import { mockExercises, mockRoutine, mockPlans } from '../../../mocks/mockData'
-import { set } from 'react-hook-form';
-
 
 export function Workout ({ role, userEmail })  {
 	const [data, setData] = useState({}); //useState to store data from server

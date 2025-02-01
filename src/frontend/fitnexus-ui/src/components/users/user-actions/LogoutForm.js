@@ -6,7 +6,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../../components_ui/ui/card"
+} from "../../../components_ui/ui/card"
 
 export function LogoutForm() {
   return (

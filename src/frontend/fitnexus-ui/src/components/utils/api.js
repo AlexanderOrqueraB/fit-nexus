@@ -3,9 +3,9 @@ import { apiClient } from '../utils/client';
 export const fetchWorkoutData = async (userEmail) => {
     try {
         const [exercisesResponse, routinesResponse, plansResponse] = await Promise.all([
-            apiClient.get('/api/v1/ejercicios/ejercicio/usuario/${userEmail}'),
-            apiClient.get('/api/v1/rutinas/rutina/usuario/${userEmail}'),
-            apiClient.get('/api/v1/planes/plan/usuario/${userEmail}'),
+            apiClient.get(`/api/v1/ejercicios/ejercicio/usuario/${userEmail}`),
+            apiClient.get(`/api/v1/rutinas/rutina/usuario/${userEmail}`),
+            apiClient.get(`/api/v1/planes/plan/usuario/${userEmail}`),
         ]);
 
         return {

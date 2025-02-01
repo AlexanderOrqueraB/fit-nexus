@@ -1,22 +1,19 @@
 import { useNavigate } from 'react-router-dom'
-import { Button } from "../../components_ui/ui/button"
-import fitNexusLogo from "../../images/fit-nexus-logo.jpeg"
+import { Button } from "../../../components_ui/ui/button"
+import fitNexusLogo from "../../../images/fit-nexus-logo.jpeg"
 import React, { useContext, useState } from "react"; 
 
-import { UserContext } from "./UserContext";
+import { UserContext } from "../../main-components/UserContext";
 
 
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../../components_ui/ui/card"
-import { Input } from "../../components_ui/ui/input"
-import { Label } from "../../components_ui/ui/label"
-import {apiClient, FITNEXUS_URL} from "../utils/client";
-import { customToast } from '../utils/customToast'
+} from "../../../components_ui/ui/card"
+import { Input } from "../../../components_ui/ui/input"
+import { Label } from "../../../components_ui/ui/label"
+import { apiClient } from "../../utils/client";
+import { customToast } from '../../utils/customToast'
 
 export function LoginForm() {
 
@@ -94,6 +91,8 @@ export function LoginForm() {
       return;
     }
 
+    console.log("El rol del usuario es:", role);
+
     const validCredentials = {
       admin: {
         email: "admin",
@@ -135,11 +134,8 @@ export function LoginForm() {
       <div className="p-6 md:p-8">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
-              <h1 className="text-2xl font-bold">Iniciar sesión</h1>
-                <p className="text-muted-foreground">
-                  Introduce tu email para acceder a tu cuenta
-                </p>
-                </div>
+                <h1 className="text-2xl font-bold">Iniciar sesión</h1>
+              </div>
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -199,16 +195,6 @@ export function LoginForm() {
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
       </div>
-    </div>
-    <div className="mt-4 text-center text-xs text-muted-foreground">
-      Al continuar, aceptas nuestros{" "}
-          <a href="#" className="underline underline-offset-4 hover:text-primary">
-            Términos de servicio
-          </a>{" "}
-      y nuestra{" "}
-      <a href="#" className="underline underline-offset-4 hover:text-primary">
-        Política de privacidad
-      </a>.
     </div>
   </div>
   );

@@ -1,4 +1,4 @@
-import { Button } from "../../components_ui/ui/button"
+import { Button } from "../../../components_ui/ui/button"
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -8,16 +8,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../../components_ui/ui/dialog"
-import { Input } from "../../components_ui/ui/input"
-import { Label } from "../../components_ui/ui/label"
-import { mockClients } from '../../mocks/mockData'
-import { fetchClientData } from '../utils/api';
-import { customToast } from '../utils/customToast'
-import {apiClient} from "../utils/client";
+} from "../../../components_ui/ui/dialog"
+import { Input } from "../../../components_ui/ui/input"
+import { Label } from "../../../components_ui/ui/label"
+import { mockClients } from '../../../mocks/mockData'
+import { customToast } from '../../utils/customToast'
+import { fetchClientData } from '../../utils/api';
+import {apiClient} from "../../utils/client";
 
-export function EditProfileExtra() {
+export function EditProfile() {
   const [clients, setClients] = useState([]);
+  	// Cargar datos desde varias fuentes simultáneamente
 	const loadData = async () => {
 		try {
 		// Ejecutar todas las solicitudes en paralelo
@@ -36,14 +37,11 @@ export function EditProfileExtra() {
 	useEffect(() => {
 	loadData();
 	}, []); // Llama a loadData solo al montar el componente
- 	
+
   const [data, setData] = useState({
-    objetivo: '',
-    genero: '',
-    frecuenciaEjercicioSemanal: '',
-    edad: '',
-    peso: '',
-    altura: '',
+    nombre: '',
+    apellido: '',
+    email: '',
   });
 
   const handleChange = (e) => {
@@ -57,12 +55,9 @@ export function EditProfileExtra() {
   const onSubmit = (e) => {
     e.preventDefault();
     const userData = {
-			objetivo: data.objetivo,
-      genero: data.genero,
-      frecuenciaEjercicioSemanal: data.frecuenciaEjercicioSemanal,
-      edad: data.edad,
-      peso: data.peso,
-      altura: data.altura,
+			nombre: data.nombre,
+      apellido: data.apellido,
+      email: data.email,
 		};
 
     console.log('Datos del usuario: ', userData);
@@ -84,79 +79,46 @@ export function EditProfileExtra() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default">Editar datos</Button>
+        <Button variant="default">Editar perfil</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Editar datos extra</DialogTitle>
+          <DialogTitle>Editar perfil</DialogTitle>
           <DialogDescription>
-           Haz click en Guardar cuando hayas terminado.
+            Haz cambios a tu perfil aquí.
+          </DialogDescription>
+          <DialogDescription>
+            Haz click en Guardar cuando hayas terminado.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-2 py-4">
+        <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="nombre" className="text-right">
-              Objetivo
+              Nombre
             </Label>
             <Input
               id="nombre"
-              placeholder={mockClients[0].objetivo}
-              onChange={handleChange}
+              placeholder={mockClients[0].nombre}
               className="col-span-3"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="apellido" className="text-right">
-              Genero
+              Apellido
             </Label>
             <Input
               id="apellido"
-              placeholder={mockClients[0].genero}
-              onChange={handleChange}
+              placeholder={mockClients[0].apellido}
               className="col-span-3"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="frecuencia" className="text-right">
-                Frecuencia Ejercicio
+              <Label htmlFor="email" className="text-right">
+                Email
               </Label>
               <Input
-                id="text"
-                placeholder={mockClients[0].frecuenciaEjercicioSemanal}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="edad" className="text-right">
-                Edad
-              </Label>
-              <Input
-                id="text"
-                placeholder={mockClients[0].edad}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="peso" className="text-right">
-                Peso
-              </Label>
-              <Input
-                id="text"
-                placeholder={mockClients[0].peso}
-                onChange={handleChange}
-                className="col-span-3"
-              />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="altura" className="text-right">
-                Altura
-              </Label>
-              <Input
-                id="text"
-                placeholder={mockClients[0].altura}
-                onChange={handleChange}
+                id="email"
+                placeholder={mockClients[0].email}
                 className="col-span-3"
               />
           </div>
@@ -170,4 +132,4 @@ export function EditProfileExtra() {
   )
 }
 
-export default EditProfileExtra
+export default EditProfile

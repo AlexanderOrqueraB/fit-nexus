@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import EditProfile from "./EditProfile";
-import EditProfileExtra from './EditProfileExtra';
-import ChangePassword from '../users/user-actions/ChangePassword';
+import EditProfileExtra from '../client/EditProfileExtra';
+import ChangePassword from './ChangePassword';
 import {
   Card,
   CardContent,
@@ -9,9 +9,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../components_ui/ui/card";
-import { Label } from '../../components_ui/ui/label';
-import { mockClients } from '../../mocks/mockData';
+} from "../../../components_ui/ui/card";
+import { Label } from '../../../components_ui/ui/label';
+import { mockClients } from '../../../mocks/mockData';
 
 export function Settings() {
   const [selectedSection, setSelectedSection] = useState("general");

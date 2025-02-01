@@ -17,7 +17,7 @@ import {
   ChartTooltip,
 } from "../../components_ui/ui/chart"
 import { CustomAlertDialog } from "../utils/CustomAlertDialog"
-import PostProfileExtra from "../main-components/PostProfileExtra"
+import PostProfileExtra from "../users/client/PostProfileExtra"
 import { mockPlans, mockClients} from "../../mocks/mockData"
 import { Select,
   SelectContent,

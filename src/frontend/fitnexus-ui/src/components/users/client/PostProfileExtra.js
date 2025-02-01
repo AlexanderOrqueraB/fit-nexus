@@ -1,4 +1,4 @@
-import { Button } from "../../components_ui/ui/button"
+import { Button } from "../../../components_ui/ui/button"
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -8,13 +8,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../../components_ui/ui/dialog"
-import { Input } from "../../components_ui/ui/input"
-import { Label } from "../../components_ui/ui/label"
-import { mockClients } from '../../mocks/mockData'
-import { fetchClientData } from '../utils/api';
-import { customToast } from '../utils/customToast'
-import {apiClient} from "../utils/client";
+} from "../../../components_ui/ui/dialog"
+import { Input } from "../../../components_ui/ui/input"
+import { Label } from "../../../components_ui/ui/label"
+import { mockClients } from '../../../mocks/mockData'
+import { fetchClientData } from '../../utils/api';
+import { customToast } from '../../utils/customToast'
+import {apiClient} from "../../utils/client";
 
 export function PostProfileExtra() {
   const [clients, setClients] = useState([]);

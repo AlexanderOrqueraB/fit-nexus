@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import {
 	ListFilter, LucideRefreshCcw, RefreshCcw, RefreshCcwDotIcon, RefreshCcwIcon
 } from 'lucide-react';
-import { Badge } from '../../components_ui/ui/badge';
-import { Button } from '../../components_ui/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components_ui/ui/card';
+import { Badge } from '../../../components_ui/ui/badge';
+import { Button } from '../../../components_ui/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../../components_ui/ui/card';
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -14,12 +14,12 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
-} from '../../components_ui/ui/dropdown-menu';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components_ui/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components_ui/ui/tabs';
-import { customToast } from '../utils/customToast'
-import { fetchClientData } from '../utils/api';
-import { mockClients } from '../../mocks/mockData'
+} from '../../../components_ui/ui/dropdown-menu';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components_ui/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components_ui/ui/tabs';
+import { customToast } from '../../utils/customToast'
+import { fetchClientData } from '../../utils/api';
+import { mockClients } from '../../../mocks/mockData'
 
 export function ClientsList() {
 

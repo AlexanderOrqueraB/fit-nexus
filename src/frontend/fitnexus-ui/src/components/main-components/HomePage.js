@@ -1,8 +1,8 @@
-import EditProfileExtra from './EditProfileExtra';
+import EditProfileExtra from '../users/client/EditProfileExtra';
 import { customToast } from '../utils/customToast'
 import { Button } from "../../components_ui/ui/button"
 import { useNavigate } from 'react-router-dom'
-import PostExercise from '../buttons-components/ejercicio/PostExercise';
+import PostExercise from '../workout-components/ejercicio/PostExercise';
 
 import fitNexusLogo from "../../images/fit-nexus-logo.jpeg"
 
@@ -10,7 +10,7 @@ import { Card, CardContent } from '../../components_ui/ui/card';
 import { apiClient } from '../utils/client';
 import React, { useEffect, useState } from 'react';
 import { mockClients } from '../../mocks/mockData'
-import PostProfileExtra from './PostProfileExtra';
+import PostProfileExtra from '../users/client/PostProfileExtra';
 import { BrickWall, Drumstick, EyeIcon } from 'lucide-react';
 
 export function HomePage() {
