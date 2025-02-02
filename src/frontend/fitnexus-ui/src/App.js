@@ -1,4 +1,4 @@
-import React, { useContext } from "react"; 
+import React, { lazy, Suspense, useContext } from "react"; 
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 import { WorkoutBuilder } from './components/users/trainer/WorkoutBuilder';
@@ -7,7 +7,6 @@ import LoginForm from './components/users/user-actions/LoginForm';
 import LogoutForm from './components/users/user-actions/LogoutForm';
 import SignUpForm from './components/users/user-actions/SignUpForm';
 
-import HomePage from "./components/main-components/HomePage";
 import ClientsList from "./components/users/trainer/ClientsList";
 import { Workout } from "./components/users/client/Workout";
 import UnauthorizedPage from "./components/main-components/UnauthorizedPage";
@@ -16,6 +15,8 @@ import Settings from "./components/users/user-actions/Settings";
 import NutritionChart from "./components/nutrition/NutritionChart";
 import { Toaster } from "sonner";
 import { UserContext } from "./components/main-components/UserContext";
+const HomePage = lazy (() =>import ("./components/main-components/HomePage"));
+
 
 
 function App () {
@@ -40,7 +41,9 @@ return (
                 <Route element = {<ProtectedLayout role={userRole}  />}>
                     <Route path="/dashboard" element={
                         /*<ProtectedRoute>*/
+                        <Suspense fallback={<div>Cargando...</div>}>
                                 <HomePage role={userRole} userEmail={userEmail}/>
+                        </Suspense>
                         /*</ProtectedRoute>*/
                     }/>
                     <Route path="/settings" element={
