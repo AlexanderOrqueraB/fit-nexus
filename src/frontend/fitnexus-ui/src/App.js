@@ -20,8 +20,8 @@ import { UserContext } from "./components/main-components/UserContext";
 
 function App () {
     const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
-    const userRole = user?.role || 'admin'; // DESARROLLO cambiar entre user o admin
-    const userEmail = user?.email || 'admin@email.com'; // DESARROLLO cambiar entre admin@email.com o user@admin.com
+    const userRole = user?.role;
+    const userEmail = user?.email;
     
     console.log("User Role en App.js: ", userRole);
     console.log("User Email en App.js: ", userEmail);

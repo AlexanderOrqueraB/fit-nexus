@@ -46,6 +46,15 @@ export function LoginForm() {
       customToast({message : "Introduce ambos campos!", type : "warning"});
     }
 
+    //Lógica de autenticación de prueba. Comentar para usar la API
+    if (userData.email && userData.password) {
+      customToast({message : "Gracias por introducir ambos campos!", type : "warning"});
+      const rolUser = "admin"; //Cambiar a "user" para probar como usuario
+      const emailUser = "admin@email.com"; //Cambiar a "user" para probar como usuario
+      onSubmitTest(rolUser, emailUser);
+    }    
+    //Lógica de autenticación de prueba. Comentar para usar la API
+
     else {
       console.log("Datos de login: ", userData);
 
@@ -86,21 +95,21 @@ export function LoginForm() {
     }
     };
 
-  const onSubmitTest = (role) => {
+  const onSubmitTest = (role, email) => {
     if (!data.email || !data.password) {
       customToast({message : "Por favor introduce ambos campos...", type : "success"});
       return;
     }
 
-    console.log("El rol del usuario es:", role);
+    console.log("El rol del usuario es:", role + "y su email es:" , email);
 
     const validCredentials = {
       admin: {
-        email: "admin",
+        email: "admin@email.com",
         password: "1234",
       },
       user: {
-        email: "user",
+        email: "user@email.com",
         password: "5678",
       },
     };
@@ -108,8 +117,13 @@ export function LoginForm() {
     // Simula la validación de credenciales y asigna el rol
     if (role === "admin") {
       if (data.email === validCredentials.admin.email && data.password === validCredentials.admin.password) {
-        setUser({ role: "admin" });
-        localStorage.setItem("userRole", "ADMIN");
+        
+        //Guardamos email y rol en el contexto
+        setUser({ role, email });
+        //Guardamos  rol y mail en local storage
+        localStorage.setItem("userRole", role);
+        localStorage.setItem("userEmail", email);
+
         customToast({message : "Login efectuado correctamente como administrador!", type : "success"});
         navigate('/dashboard', { state: { isAdminProp: true } });
       } else {
@@ -117,8 +131,13 @@ export function LoginForm() {
       }
     } else if (role === "user") {
       if (data.email === validCredentials.user.email && data.password === validCredentials.user.password) {
-        setUser({ role: "user" });
-        localStorage.setItem("userRole", "USER");
+
+        //Guardamos email y rol en el contexto
+        setUser({ role, email });
+        //Guardamos  rol y mail en local storage
+        localStorage.setItem("userRole", role);
+        localStorage.setItem("userEmail", email);
+
         customToast({message : "Login efectuado correctamente como usuario!", type : "success"});
         navigate('/dashboard', { state: { isAdminProp: false } });
       } else {
@@ -167,16 +186,6 @@ export function LoginForm() {
               Iniciar sesión
           </Button>
           
-          <div className="mt-2 text-center text-sm">
-            <Button onClick={() => onSubmitTest('admin')}>
-              Iniciar como Admin
-            </Button>
-          </div>
-          <div className="mt-2 text-center text-sm">
-            <Button onClick={() => onSubmitTest('user')}>
-              Iniciar como Usuario
-            </Button>
-          </div>
           <div className="text-center text-sm">
             No tienes una cuenta? {" "}
             <Button onClick={()=> navigate("/signup")}  className="w-full">
