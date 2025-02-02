@@ -45,7 +45,7 @@ return (
                     }/>
                     <Route path="/settings" element={
                         /*<ProtectedRoute>*/
-                            <Settings />
+                            <Settings role={userRole} userEmail={userEmail} />
                         /*</ProtectedRoute>*/
                     }/>
 

@@ -13,7 +13,7 @@ import {
 import { Label } from '../../../components_ui/ui/label';
 import { mockClients } from '../../../mocks/mockData';
 
-export function Settings() {
+export function Settings ({ role, userEmail }) {
   const [selectedSection, setSelectedSection] = useState("general");
   //TODO: GET para poder pasarle a EditProfileExtra un prop con el clientId
   const objetivoMap = {
