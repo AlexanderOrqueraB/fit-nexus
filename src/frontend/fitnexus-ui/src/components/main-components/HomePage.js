@@ -93,7 +93,7 @@ export function HomePage({ role, userEmail }) {
 
 
 	return (
-		<div>
+		<React.Fragment>
 		  <h1>Bienvenido: {mockClients[0].nombre} :)</h1>
 		  <div className="flex flex-1 flex-col gap-4 p-4">
 			{role === 'admin' ?  (
@@ -171,7 +171,7 @@ export function HomePage({ role, userEmail }) {
 				</div>
 			  )}
 		  </div>
-		</div>
+		</React.Fragment>
 	  );
 }
 

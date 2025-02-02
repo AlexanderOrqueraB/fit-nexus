@@ -20,6 +20,7 @@ export function ExercisesInfoImg ({exercise}) {
               src={exerciseImages.notFound.image}
               width="1920"
               height="1080"
+              alt= {nombreEjercicio}
               className="h-50 w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
           </div>
