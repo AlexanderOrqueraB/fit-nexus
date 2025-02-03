@@ -1,7 +1,6 @@
 package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.dtos.EntrenadorDTORequest;
-import aorquerab.fitnexus.model.dtos.SignupDTO;
 import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.users.Entrenador;
@@ -58,25 +57,6 @@ public class EntrenadorController {
         }
     }
 
-    @PostMapping("/{idEntrenador}")
-    public ResponseEntity<String> crearEntrenador (
-            @PathVariable Long idEntrenador,
-            @RequestBody SignupDTO signupDTO) {
-        log.info("Ejecutando crearEntrenador con este idEntrenador: {}", idEntrenador);
-        log.info("Ejecutando crearEntrenador con el campo asesorNutricional: {}", signupDTO);
-        if(signupDTO == null) {
-            throw new InvalidRequestException("Peticion de entrenador no valida");
-        }
-        Optional<Entrenador> entrenador = entrenadorRepository.findById(idEntrenador);
-        log.info("Entrenador a actualizar:" + entrenador);
-        entrenador.ifPresent(entr -> {
-            entr.setAsesorNutricional(signupDTO.getAsesorNutricional());
-        });
-        log.info("Entrenador creado tras el mappeo: {}", entrenador);
-        entrenador.ifPresent(entrenadorRepository::save);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Entrenador actualizado con campo asesorNutricional");
-    }
-
     //TODO: Testear con postman and check exception
     @PutMapping("/{idEntrenador}")
     public ResponseEntity<EntrenadorDTORequest> actualizarEntrenador (
@@ -95,16 +75,12 @@ public class EntrenadorController {
         if(entrenadorDTORequest.getApellido() != null)
             entrenadorById.setApellido(entrenadorDTORequest.getApellido());
 
-        if(entrenadorDTORequest.getAsesorNutricional() != null)
-            entrenadorById.setAsesorNutricional(entrenadorDTORequest.getAsesorNutricional());
-
         Entrenador entrenadorActualizado = entrenadorRepository.save(entrenadorById);
         log.info("Entrenador actualizado: {}", entrenadorActualizado);
 
         EntrenadorDTORequest entrenadorActualizadoDto = EntrenadorDTORequest.builder()
                 .nombre(entrenadorActualizado.getNombre())
                 .apellido(entrenadorActualizado.getApellido())
-                .asesorNutricional(entrenadorActualizado.getAsesorNutricional())
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(entrenadorActualizadoDto);

@@ -44,9 +44,7 @@ export const mockEntrenador =
     "nombre": "Luke",
     "apellido": "Skywalker",
     "email": "luke@skywalker.com",
-    "asesorNutricional": "false"
 }
-
 
 export const mockExercises = [
 	{

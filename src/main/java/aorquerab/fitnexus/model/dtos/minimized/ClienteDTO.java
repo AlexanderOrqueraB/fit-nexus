@@ -26,6 +26,5 @@ public class ClienteDTO {
     @Builder
     public static class Entrenador {
         private String email;
-        private Boolean asesorNutricional;
     }
 }

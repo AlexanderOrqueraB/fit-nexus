@@ -45,8 +45,7 @@ public class Entrenador {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-    private Boolean asesorNutricional;
-    private LocalDate clienteDesde;
+    private LocalDate usuarioDesde;
 
     public void setPassword (String password) {
         this.password = PASSWORD_ENCODER.encode(password);

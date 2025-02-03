@@ -50,7 +50,6 @@ public class ClienteController {
                     Entrenador entrenador = cliente.getEntrenador();
                     entrenadorDTO = ClienteDTO.Entrenador.builder()
                             .email(entrenador.getEmail())
-                            .asesorNutricional(entrenador.getAsesorNutricional())
                             .build();
                 }
                 return ClienteDTO.builder()

@@ -8,16 +8,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
 public class SignupDTO {
+
     //Setteados por el sistema
-    private UUID fitNexusId;
-    private LocalDate clienteDesde;
+    private LocalDate usuarioDesde;
 
     private String nombre;
     private String apellido;
@@ -27,6 +26,6 @@ public class SignupDTO {
 
     //Cliente
     private Entrenador entrenador;
-    //Entrenador
-    private Boolean asesorNutricional;
+    private String fitNexusId;
+
 }

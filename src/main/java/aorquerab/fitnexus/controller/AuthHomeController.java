@@ -12,7 +12,6 @@ import aorquerab.fitnexus.repository.ClienteRepository;
 import aorquerab.fitnexus.repository.EntrenadorRepository;
 import aorquerab.fitnexus.security.CustomUserDetails;
 import aorquerab.fitnexus.security.CustomUserDetailsService;
-import aorquerab.fitnexus.utils.UsuarioAuthDTOMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -73,40 +73,61 @@ public class AuthHomeController {
 //    }
 
     @PostMapping("/api/v1/signup")
-    public ResponseEntity<SignupDTOResponse> postSignup(
+    public ResponseEntity<SignupDTOResponse> registrarUsuario(
         @RequestBody SignupDTO signupDTO) {
-        log.info("Ejecutando postSignup con estos datos: {}", signupDTO);
+        log.info("Ejecutando registro postSignUp con estos datos: {}", signupDTO);
         log.info("Rol recibido: {}", signupDTO.getRole());
         ResponseEntity<SignupDTOResponse> responseEntity = null;
 
         try {
             if ("USER".equalsIgnoreCase(String.valueOf(signupDTO.getRole()))) {
-                UUID entrenadorFitNexusId = signupDTO.getEntrenador().getFitNexusId();
+                UUID entrenadorFitNexusId = UUID.fromString(signupDTO.getFitNexusId());
+                log.info ("FitNexusId de entrenador: {}", entrenadorFitNexusId);
                 Entrenador entrenador = entrenadorRepository.findByFitNexusId(entrenadorFitNexusId)
                         .orElseThrow(()-> {
                             log.warn("Entrenador no encontrado con el FitNexusId: {}", entrenadorFitNexusId);
                             return new InvalidRequestException("Entrenador no encontrado con el FitNexusId: " +
                                     entrenadorFitNexusId.toString());
                         });
-                Cliente clienteActualizado = UsuarioAuthDTOMapper.clienteMapperFromSignupDTO(signupDTO, entrenador);
+                UUID fitNexusId = generateFitNexusId();
+                log.info ("FitNexusId de cliente: {}", entrenadorFitNexusId);
+                Cliente clienteActualizado = Cliente.builder()
+                        .usuarioDesde(LocalDate.now())
+                        .fitNexusId(fitNexusId)
+                        .nombre(signupDTO.getNombre())
+                        .apellido(signupDTO.getApellido())
+                        .email(signupDTO.getEmail())
+                        .password(signupDTO.getPassword())
+                        .role(signupDTO.getRole())
+                        .entrenador(entrenador)
+                        .build();
                 log.info("Datos del cliente a guardar: {}", clienteActualizado);
                 clienteRepository.save(clienteActualizado);
                 log.info("postSignup Cliente ejecutado y registrado correctamente.");
                 SignupDTOResponse responsePayload = SignupDTOResponse.builder()
                         .email(clienteActualizado.getEmail())
-                        .clienteDesde(clienteActualizado.getClienteDesde())
+                        .usuarioDesde(clienteActualizado.getUsuarioDesde())
                         .build();
                 responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(responsePayload);
             } else if ("ADMIN".equalsIgnoreCase(String.valueOf(signupDTO.getRole()))) {
-                String fitNexusId = generateFitNexusId();
-                Entrenador entrenadorActualizado = UsuarioAuthDTOMapper.entrenadorMapperFromSignupDTO(signupDTO, fitNexusId);
+                UUID fitNexusId = generateFitNexusId();
+                Entrenador entrenadorActualizado = Entrenador.builder()
+                        .usuarioDesde(LocalDate.now())
+                        .fitNexusId(fitNexusId)
+                        .nombre(signupDTO.getNombre())
+                        .apellido(signupDTO.getApellido())
+                        .email(signupDTO.getEmail())
+                        .password(signupDTO.getPassword())
+                        .role(signupDTO.getRole())
+                        .build();
+
                 log.info("Datos del entrenador a guardar: {}", entrenadorActualizado);
                 entrenadorRepository.save(entrenadorActualizado);
                 log.info("postSignup Entrenador ejecutado y registrado correctamente.");
                 SignupDTOResponse responsePayload = SignupDTOResponse.builder()
                         .email(entrenadorActualizado.getEmail())
-                        .fitNexusId(fitNexusId)
-                        .clienteDesde(entrenadorActualizado.getClienteDesde())
+                        .fitNexusId(fitNexusId.toString())
+                        .usuarioDesde(entrenadorActualizado.getUsuarioDesde())
                         .build();
                 responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(responsePayload);
             }
@@ -117,9 +138,8 @@ public class AuthHomeController {
         return responseEntity;
     }
 
-    private String generateFitNexusId() {
-        UUID fitNexusId = UUID.randomUUID();
-        return fitNexusId.toString();
+    private UUID generateFitNexusId() {
+        return UUID.randomUUID();
     }
 
     @GetMapping("/api/v1/roles/{userEmailId}")

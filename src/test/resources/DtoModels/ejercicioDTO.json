@@ -15,8 +15,7 @@
   },
   "EntrenadorDTORequest": {
     "nombre": "Nombre nuevo",
-    "apellido": null,
-    "asesorNutricional": null
+    "apellido": null
   },
   "PlanEntrenamientoDtoAsociarRequest": {
     "nombrePlan": "Plan X",

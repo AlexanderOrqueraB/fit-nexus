@@ -15,5 +15,5 @@ public class SignupDTOResponse {
 
     private String fitNexusId;
     private String email;
-    private LocalDate clienteDesde;
+    private LocalDate usuarioDesde;
 }

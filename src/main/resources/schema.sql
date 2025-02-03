@@ -27,7 +27,6 @@ CREATE TABLE IF NOT EXISTS entrenador (
     email VARCHAR (100) NOT NULL,
     password VARCHAR (100) NOT NULL,
     role VARCHAR (100) NOT NULL,
-    asesor_nutricional BOOLEAN,
     version INT
 );
 

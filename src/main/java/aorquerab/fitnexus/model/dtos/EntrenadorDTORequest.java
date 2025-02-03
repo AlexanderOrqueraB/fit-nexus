@@ -13,6 +13,5 @@ public class EntrenadorDTORequest {
 
     private String nombre;
     private String apellido;
-    private Boolean asesorNutricional;
 
 }

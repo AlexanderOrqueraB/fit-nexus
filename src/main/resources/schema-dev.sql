@@ -29,7 +29,6 @@ CREATE TABLE IF NOT EXISTS entrenador (
     email VARCHAR (100) NOT NULL,
     password VARCHAR (100) NOT NULL,
     role VARCHAR (100) NOT NULL,
-    asesor_nutricional BOOLEAN,
     version INT
 );
 
@@ -108,11 +107,11 @@ CREATE TABLE IF NOT EXISTS ejercicio (
     version INT
 );
 
-INSERT INTO entrenador (fit_nexus_id, nombre, apellido, email, password, role, asesor_nutricional, version)
+INSERT INTO entrenador (fit_nexus_id, nombre, apellido, email, password, role, version)
 VALUES
-    ('550e8400-e29b-41d4-a716-446655440000', 'Obi-Wan', 'Kenobi', 'obiwan@jedi.com', 'blue123', 'ADMIN', TRUE, 1),
-    ('550e8400-e29b-41d4-a716-446655440001', 'Mace', 'Windu', 'mace@jedi.com', 'purple123', 'ADMIN', TRUE, 1),
-    ('550e8400-e29b-41d4-a716-446655440002', 'Yoda', 'Desconocido', 'yoda@jedi.com', 'green123', 'ADMIN', TRUE, 1);
+    ('550e8400-e29b-41d4-a716-446655440000', 'Obi-Wan', 'Kenobi', 'obiwan@jedi.com', 'blue123', 'ADMIN', 1),
+    ('550e8400-e29b-41d4-a716-446655440001', 'Mace', 'Windu', 'mace@jedi.com', 'purple123', 'ADMIN', 1),
+    ('550e8400-e29b-41d4-a716-446655440002', 'Yoda', 'Desconocido', 'yoda@jedi.com', 'green123', 'ADMIN', 1);
 
 INSERT INTO cliente (fit_nexus_id, nombre, apellido, email, password, role, objetivo, genero, frecuenciaEjercicioSemanal, edad, peso, altura, cliente_desde, entrenador_id, version)
 VALUES

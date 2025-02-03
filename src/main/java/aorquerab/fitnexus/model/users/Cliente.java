@@ -60,7 +60,7 @@ public class Cliente {
     private Integer edad;
     private Integer peso;
     private Integer altura;
-    private LocalDate clienteDesde;
+    private LocalDate usuarioDesde;
 
     public void setPassword (String password) {
         this.password = PASSWORD_ENCODER.encode(password);

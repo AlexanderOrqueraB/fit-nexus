@@ -55,7 +55,7 @@ export function SignUpForm() {
 			customToast({message : "Las contraseñas no coinciden!", type : "warning"});
 		}
 
-		console.log('Datos de signup: ', userData);
+		console.log('Datos de registro: ', userData);
 
 		apiClient
 			.post('/api/v1/signup', userData)
