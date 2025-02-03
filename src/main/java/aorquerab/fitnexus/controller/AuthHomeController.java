@@ -142,27 +142,10 @@ public class AuthHomeController {
         return UUID.randomUUID();
     }
 
-    @GetMapping("/api/v1/roles/{userEmailId}")
-    @ResponseBody
-    public Optional<Role> obtenerRolePorEmailId (@PathVariable String userEmailId){
-        log.info("Ejecutando obtenerRolePorEmailId con este emailId: {} ", userEmailId);
-        Optional<Cliente> clienteByEmailId = clienteRepository.findByEmail(userEmailId);
-        if(clienteByEmailId.isPresent()) {
-            return Optional.of(clienteByEmailId.get().getRole());
-        }
-
-        Optional<Entrenador> entrenadorByEmailId = entrenadorRepository.findByEmail(userEmailId);
-        if (entrenadorByEmailId.isPresent()) {
-            return Optional.of(entrenadorByEmailId.get().getRole());
-        }
-        log.info("Email no encontrado en base de datos");
-        return Optional.empty();
-    }
-
     @PostMapping("/api/v1/login")
     public ResponseEntity<Map<String, Object>> postLogin(
             @RequestBody LoginDTO loginDTO) {
-        log.info("Ejecutando postLogin con los datos: {}", loginDTO);
+        log.info("Ejecutando iniciar sesión con los datos: {}", loginDTO);
 
         if(loginDTO == null) {
             throw new InvalidRequestException("Peticion de inicio de sesión no valida");
@@ -176,10 +159,12 @@ public class AuthHomeController {
             String userEmail = loginDTO.getEmail();
             String userRole = null;
             if (userDetails instanceof CustomUserDetails) {
-                log.info("Obteniendo rol: {}", ((CustomUserDetails) userDetails).getRole());
                 Role role = ((CustomUserDetails) userDetails).getRole();
-                log.info("userRole= {}", role.name());
-                userRole = role.name();
+                log.info("Obteniendo rol: {}", role);
+                if(role != null) {
+                    userRole = role.name();
+                    log.info("Rol del usuario: {}", userRole);
+                }
             }
             Map<String, Object> response = new HashMap<>();
 
@@ -195,6 +180,23 @@ public class AuthHomeController {
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(Collections.singletonMap("message", "Credenciales inválidas: " + e.getMessage()));
         }
+    }
+
+    @GetMapping("/api/v1/roles/{userEmailId}")
+    @ResponseBody
+    public Optional<Role> obtenerRolePorEmailId (@PathVariable String userEmailId){
+        log.info("Ejecutando obtenerRolePorEmailId con este emailId: {} ", userEmailId);
+        Optional<Cliente> clienteByEmailId = clienteRepository.findByEmail(userEmailId);
+        if(clienteByEmailId.isPresent()) {
+            return Optional.of(clienteByEmailId.get().getRole());
+        }
+
+        Optional<Entrenador> entrenadorByEmailId = entrenadorRepository.findByEmail(userEmailId);
+        if (entrenadorByEmailId.isPresent()) {
+            return Optional.of(entrenadorByEmailId.get().getRole());
+        }
+        log.info("Email no encontrado en base de datos");
+        return Optional.empty();
     }
 
     //TODO: How to do a put using Spring Security, do I need to use CustomUserDetails and so on?
