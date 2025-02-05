@@ -21,7 +21,7 @@ import { customToast } from '../../utils/customToast'
 import { fetchClientData } from '../../utils/api';
 import { mockClients } from '../../../mocks/mockData'
 
-export function ClientsList() {
+export function ClientsList ({ role, entrenadorEmail }) {
 
 	const [clients, setClients] = useState([]);
 	const [selectedClient, setselectedClient] = useState(null);
@@ -49,10 +49,10 @@ export function ClientsList() {
 	);
 
 	// Cargar datos desde varias fuentes simultáneamente
-	const loadData = async () => {
+	const loadData = async (entrenadorEmail) => {
 		try {
 		// Ejecutar todas las solicitudes en paralelo
-		const clients = await fetchClientData();
+		const clients = await fetchClientData(entrenadorEmail);
 
 		// Actualizar los estados con los datos obtenidos
 		setClients(clients);

@@ -4,7 +4,7 @@ import fitNexusLogo from "../../../images/fit-nexus-logo.jpeg"
 import React, { useContext, useState } from "react"; 
 
 import { UserContext } from "../../main-components/UserContext";
-
+import isEmailValid  from "../../utils/utilsMethod";
 
 import {
   Card,
@@ -44,14 +44,24 @@ export function LoginForm() {
 
     if (!userData.email || !userData.password) {
       customToast({message : "Introduce ambos campos!", type : "warning"});
+      if (!isEmailValid(userData.email)) {
+        customToast({message : "El email no tiene un formato válido", type : "warning"});
+      }
     }
 
     //Lógica de autenticación de prueba. Comentar para usar la API
     if (userData.email && userData.password) {
-      customToast({message : "Gracias por introducir ambos campos!", type : "warning"});
-      const rolUser = "admin"; //Cambiar a "user" para probar como usuario
-      const emailUser = "admin@email.com"; //Cambiar a "user" para probar como usuario
-      onSubmitTest(rolUser, emailUser);
+      if (userData.email === "admin@email.com") {
+        const rolUser = "admin";
+        const emailUser = userData.email;
+        onSubmitTest(rolUser, emailUser);
+      }
+
+      if (userData.email === "user@email.com") {
+        const rolUser = "user";
+        const emailUser = userData.email;
+        onSubmitTest(rolUser, emailUser);
+      }
     }    
     //Lógica de autenticación de prueba. Comentar para usar la API
 

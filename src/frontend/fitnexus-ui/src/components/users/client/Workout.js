@@ -70,7 +70,7 @@ export function Workout ({ role, userEmail })  {
 		});
 	};
 
-	const loadData = async (email) => {
+	const loadData = async (userEmail) => {
 		try {
 		// Ejecutar todas las solicitudes en paralelo
 

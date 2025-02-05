@@ -19,10 +19,10 @@ export const fetchWorkoutData = async (userEmail) => {
     }
 };
 
-export const fetchClientData = async () => {
+export const fetchClientData = async (entrenadorEmail) => {
     try {
         const [clientResponse] = await Promise.all([
-            apiClient.get('/api/v1/clientes')
+            apiClient.get(`/api/v1/entrenadores/${entrenadorEmail}`)
         ]);
 
         return {

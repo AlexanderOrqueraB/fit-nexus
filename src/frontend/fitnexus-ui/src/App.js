@@ -66,7 +66,7 @@ return (
                     
                     <Route path="/clients" element={
                         /*<ProtectedRoute roleRequired="ADMIN">*/
-                            <ClientsList />
+                            <ClientsList role={userRole} entrenadorEmail={userEmail}/>
                         /*</ProtectedRoute>*/
                     }/>
                     

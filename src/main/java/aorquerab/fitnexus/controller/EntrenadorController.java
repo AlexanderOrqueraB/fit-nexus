@@ -3,6 +3,7 @@ package aorquerab.fitnexus.controller;
 import aorquerab.fitnexus.model.dtos.EntrenadorDTORequest;
 import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
+import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
 import aorquerab.fitnexus.repository.EntrenadorRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,17 @@ public class EntrenadorController {
         this.entrenadorRepository = entrenadorRepository;
     }
 
+    @GetMapping("/{entrenadorEmailId}")
+    public ResponseEntity<List<Cliente>> obtenerClientesDeEntrenador (@PathVariable String entrenadorEmailId) {
+        log.info("Ejecutando obtenerClientesDeEntrenador...");
+        Entrenador entrenador = entrenadorRepository.findByEmail(entrenadorEmailId).orElseThrow( () -> {
+            log.warn("Entrenador no encontrado con el email: {}", entrenadorEmailId);
+            return new EntrenadorNotFoundException("Entrenador no encontrado con el email" + entrenadorEmailId);
+        });
+        List<Cliente> clientes = entrenador.getClientes();
+        return ResponseEntity.status(HttpStatus.OK).body(clientes);
+    }
+
     @GetMapping
     public ResponseEntity<List<Entrenador>> obtenerEntrenadores(){
         log.info("Ejecutando obtenerEntrenadores...");
@@ -35,14 +47,6 @@ public class EntrenadorController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(entrenador);
     }
-
-    @GetMapping("/{entrenadorEmailId}")
-    public Optional<Entrenador> obtenerEntrenadorPorEmailId (@PathVariable String entrenadorEmailId) {
-        log.info("Ejecutando obtenerEntrenadorPorEmailId con este emailId: {}", entrenadorEmailId);
-        return entrenadorRepository.findByEmail(entrenadorEmailId);
-    }
-
-    //TODO Obtener entrenador por otro Atributo (FUTURE REFACTOR)
 
     @GetMapping("/fitnexus-id/{idEntrenadorEmail}")
     public String obtenerFitNexusIdDeEntrenador (@PathVariable String idEntrenadorEmail) {
