@@ -63,7 +63,7 @@ const mockChartNutri = [
   { macronutriente: "Grasas", porcentajes: 40, gramos:70, kcal: 520, fill: "var(--color-firefox)" },
 ];
 
-export function NutritionChart({ role, userEmail }) {
+export function NutritionChart({ role, userEmail, fitNexusId }) {
 
   const [selectedClient, setSelectedClient] = useState(null);
   //const [clients, setClients] = useState([]); uncomment this line and comment the next one to use backend data

@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.UUID;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -17,12 +18,15 @@ public class CustomUserDetails implements UserDetails {
     private final String password;
     @Getter
     private final Role role;
+    @Getter
+    private final UUID fitNexusId;
     private final boolean isEntrenador;
 
     public CustomUserDetails(Entrenador entrenador) {
         this.username = entrenador.getEmail();
         this.password = entrenador.getPassword();
         this.role = entrenador.getRole();
+        this.fitNexusId = entrenador.getFitNexusId();
         this.isEntrenador = true;
     }
 
@@ -30,6 +34,7 @@ public class CustomUserDetails implements UserDetails {
         this.username = cliente.getEmail();
         this.password = cliente.getPassword();
         this.role = cliente.getRole();
+        this.fitNexusId = cliente.getFitNexusId();
         this.isEntrenador = false;
     }
 

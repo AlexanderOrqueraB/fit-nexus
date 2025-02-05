@@ -106,6 +106,7 @@ public class AuthHomeController {
                 log.info("postSignup Cliente ejecutado y registrado correctamente.");
                 SignupDTOResponse responsePayload = SignupDTOResponse.builder()
                         .email(clienteActualizado.getEmail())
+                        .fitNexusId(fitNexusId.toString())
                         .usuarioDesde(clienteActualizado.getUsuarioDesde())
                         .build();
                 responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(responsePayload);
@@ -158,12 +159,17 @@ public class AuthHomeController {
 
             String userEmail = loginDTO.getEmail();
             String userRole = null;
+            UUID fitNexusId = null;
             if (userDetails instanceof CustomUserDetails) {
                 Role role = ((CustomUserDetails) userDetails).getRole();
+                fitNexusId = ((CustomUserDetails) userDetails).getFitNexusId();
                 log.info("Obteniendo rol: {}", role);
                 if(role != null) {
                     userRole = role.name();
                     log.info("Rol del usuario: {}", userRole);
+                }
+                if(fitNexusId != null) {
+                    log.info("FitNexusId del usuario: {}", fitNexusId);
                 }
             }
             Map<String, Object> response = new HashMap<>();
@@ -171,6 +177,7 @@ public class AuthHomeController {
             if (userRole != null) {
                 response.put("message", "Login exitoso. Bienvenidx: " + userEmail);
                 response.put("role", userRole);
+                response.put("fitNexusId", fitNexusId);
             }
 
             return ResponseEntity.ok(response);

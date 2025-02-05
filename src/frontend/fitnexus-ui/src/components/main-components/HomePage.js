@@ -13,7 +13,7 @@ import { mockClients } from '../../mocks/mockData'
 import PostProfileExtra from '../users/client/PostProfileExtra';
 import { BrickWall, Drumstick, EyeIcon } from 'lucide-react';
 
-export function HomePage({ role, userEmail }) {
+export function HomePage({ role, userEmail, fitNexusId }) {
 
 	useState({});
 	const [data, setData] = useState({});

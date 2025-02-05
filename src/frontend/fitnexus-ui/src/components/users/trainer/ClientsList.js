@@ -21,7 +21,7 @@ import { customToast } from '../../utils/customToast'
 import { fetchClientData } from '../../utils/api';
 import { mockClients } from '../../../mocks/mockData'
 
-export function ClientsList ({ role, entrenadorEmail }) {
+export function ClientsList ({ role, entrenadorEmail, fitNexusId }) {
 
 	const [clients, setClients] = useState([]);
 	const [selectedClient, setselectedClient] = useState(null);

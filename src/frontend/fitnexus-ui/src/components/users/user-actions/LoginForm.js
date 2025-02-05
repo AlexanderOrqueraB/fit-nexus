@@ -55,11 +55,13 @@ export function LoginForm() {
       if (userData.email === "admin@email.com") {
         const rolUser = "admin";
         const emailUser = userData.email;
-        onSubmitTest(rolUser, emailUser);
+        const fitNexusId = "123456789";
+        onSubmitTest(rolUser, emailUser, fitNexusId);
       } else if (userData.email === "user@email.com") {
         const rolUser = "user";
         const emailUser = userData.email;
-        onSubmitTest(rolUser, emailUser);
+        const fitNexusId = "987654321";
+        onSubmitTest(rolUser, emailUser, fitNexusId);
       } else {
         customToast({message : "Usuario no encontrado", type : "error"});
       }
@@ -74,13 +76,14 @@ export function LoginForm() {
         console.log("Respuesta del servidor: ", response.data);
         console.log("Status: ", response.status);
         
-        const { role, email } = response.data;
+        const { role, email, fitNexusId } = response.data;
         
         //Guardamos email y rol en el contexto
-        setUser({ role, email });
-        //Guardamos  rol y mail en local storage
+        setUser({ role, email, fitNexusId });
+        //Guardamos  rol, fitNexusId y email en local storage
         localStorage.setItem("userRole", role);
         localStorage.setItem("userEmail", email);
+        localStorage.setItem("fitNexusId", fitNexusId);
 
         if((response.status === 401)){
           customToast({message : "Error 401 usuario no autorizado", type : "error"});
@@ -106,13 +109,13 @@ export function LoginForm() {
     }
     };
 
-  const onSubmitTest = (role, email) => {
+  const onSubmitTest = (role, email, fitNexusId) => {
     if (!data.email || !data.password) {
       customToast({message : "Por favor introduce ambos campos...", type : "success"});
       return;
     }
 
-    console.log("El rol del usuario es:", role + "y su email es:" , email);
+    console.log("El rol del usuario es:", role + "y su email es:" , email+ "y su fitNexusId es:" , fitNexusId);
 
     const validCredentials = {
       admin: {
@@ -130,10 +133,11 @@ export function LoginForm() {
       if (data.email === validCredentials.admin.email && data.password === validCredentials.admin.password) {
         
         //Guardamos email y rol en el contexto
-        setUser({ role, email });
-        //Guardamos  rol y mail en local storage
+        setUser({ role, email, fitNexusId });
+        //Guardamos  rol, fitNexusId y email en local storage
         localStorage.setItem("userRole", role);
         localStorage.setItem("userEmail", email);
+        localStorage.setItem("fitNexusId", fitNexusId);
 
         customToast({message : "Login efectuado correctamente como administrador!", type : "success"});
         navigate('/dashboard', { state: { isAdminProp: true } });
@@ -144,10 +148,11 @@ export function LoginForm() {
       if (data.email === validCredentials.user.email && data.password === validCredentials.user.password) {
 
         //Guardamos email y rol en el contexto
-        setUser({ role, email });
-        //Guardamos  rol y mail en local storage
+        setUser({ role, email, fitNexusId });
+        //Guardamos  rol, fitNexusId y email en local storage
         localStorage.setItem("userRole", role);
         localStorage.setItem("userEmail", email);
+        localStorage.setItem("fitNexusId", fitNexusId);
 
         customToast({message : "Login efectuado correctamente como usuario!", type : "success"});
         navigate('/dashboard', { state: { isAdminProp: false } });

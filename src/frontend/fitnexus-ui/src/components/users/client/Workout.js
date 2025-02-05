@@ -26,7 +26,7 @@ import ExercisesInfoImg from '../../workout-components/ejercicio/ExercisesInfoIm
 import { Badge } from '../../../components_ui/ui/badge';
 import { mockExercises, mockRoutine, mockPlans } from '../../../mocks/mockData'
 
-export function Workout ({ role, userEmail })  {
+export function Workout ({ role, userEmail, fitNexusId }) { {
 	const [data, setData] = useState({}); //useState to store data from server
 
 	const [exercises, setExercises] = useState([]);

@@ -23,9 +23,11 @@ function App () {
     const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
     const userRole = user?.role;
     const userEmail = user?.email;
+    const fitNexusId = user?.fitNexusId;
     
     console.log("User Role en App.js: ", userRole);
     console.log("User Email en App.js: ", userEmail);
+    console.log("FitNexusId en App.js: ", fitNexusId);
 
 return (
     <BrowserRouter>
@@ -42,37 +44,37 @@ return (
                     <Route path="/dashboard" element={
                         /*<ProtectedRoute>*/
                         <Suspense fallback={<div>Cargando...</div>}>
-                                <HomePage role={userRole} userEmail={userEmail}/>
+                                <HomePage role={userRole} userEmail={userEmail} fitNexusId={fitNexusId} />
                         </Suspense>
                         /*</ProtectedRoute>*/
                     }/>
                     <Route path="/settings" element={
                         /*<ProtectedRoute>*/
-                            <Settings role={userRole} userEmail={userEmail} />
+                            <Settings role={userRole} userEmail={userEmail} fitNexusId={fitNexusId} />
                         /*</ProtectedRoute>*/
                     }/>
 
                     <Route path="/workout-builder" element={
                         /*<ProtectedRoute roleRequired="ADMIN">*/
-                            <WorkoutBuilder />
+                            <WorkoutBuilder role={userRole} userEmail={userEmail} fitNexusId={fitNexusId}  />
                         /*</ProtectedRoute>*/
                     }/>
                 
                     <Route path="/ejercicios" element={
                         /*<ProtectedRoute>*/
-                            <Workout role={userRole} userEmail={userEmail}/>
+                            <Workout role={userRole} userEmail={userEmail} fitNexusId={fitNexusId} />
                         /*</ProtectedRoute>*/
                     }/>
                     
                     <Route path="/clients" element={
                         /*<ProtectedRoute roleRequired="ADMIN">*/
-                            <ClientsList role={userRole} entrenadorEmail={userEmail}/>
+                            <ClientsList role={userRole} entrenadorEmail={userEmail} fitNexusId={fitNexusId} />
                         /*</ProtectedRoute>*/
                     }/>
                     
                     <Route path="/nutri" element={
                         /*<ProtectedRoute>*/
-                            <NutritionChart role={userRole} userEmail={userEmail} />
+                            <NutritionChart role={userRole} userEmail={userEmail} fitNexusId={fitNexusId} />
                         /*</ProtectedRoute>*/
                     }/>
 
