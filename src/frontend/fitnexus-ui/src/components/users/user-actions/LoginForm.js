@@ -44,9 +44,10 @@ export function LoginForm() {
 
     if (!userData.email || !userData.password) {
       customToast({message : "Introduce ambos campos!", type : "warning"});
-      if (!isEmailValid(userData.email)) {
-        customToast({message : "El email no tiene un formato válido", type : "warning"});
-      }
+    }
+
+    if (!isEmailValid(userData.email)) {
+      customToast({message : "El email no tiene un formato válido nombre@email.com", type : "warning"});
     }
 
     //Lógica de autenticación de prueba. Comentar para usar la API
@@ -55,12 +56,12 @@ export function LoginForm() {
         const rolUser = "admin";
         const emailUser = userData.email;
         onSubmitTest(rolUser, emailUser);
-      }
-
-      if (userData.email === "user@email.com") {
+      } else if (userData.email === "user@email.com") {
         const rolUser = "user";
         const emailUser = userData.email;
         onSubmitTest(rolUser, emailUser);
+      } else {
+        customToast({message : "Usuario no encontrado", type : "error"});
       }
     }    
     //Lógica de autenticación de prueba. Comentar para usar la API
@@ -174,7 +175,7 @@ export function LoginForm() {
               type="email"
               value={data.email}
               onChange={handleChange}
-              placeholder="mi.email@ejemplo.com"
+              placeholder="email@ejemplo.com"
               required
             />
           </div>
