@@ -4,9 +4,10 @@ import Header from '../navbars/Header';
 import { Outlet } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
-const ProtectedLayout = ({ role }) => {
+const ProtectedLayout = () => {
 
-  const isAdmin = role === 'admin';
+  const { user } = useContext(UserContext);
+  const isAdmin = user.role === 'admin';
 
   return (
       <div className="flex min-h-screen">

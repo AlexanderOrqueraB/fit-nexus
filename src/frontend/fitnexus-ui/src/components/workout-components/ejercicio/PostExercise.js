@@ -67,9 +67,6 @@ export function PostExercise() {
 			});
 	};
 
-    useEffect(() => {
-	}, []);
-
     return (
         <Dialog>
             <DialogTrigger asChild>

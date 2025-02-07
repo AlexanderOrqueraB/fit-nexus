@@ -1,5 +1,5 @@
 import { Button } from "../../../components_ui/ui/button"
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Dialog,
   DialogContent,
@@ -15,14 +15,19 @@ import { mockClients } from '../../../mocks/mockData'
 import { customToast } from '../../utils/customToast'
 import { fetchClientData } from '../../utils/api';
 import {apiClient} from "../../utils/client";
+import { UserContext } from "../../main-components/UserContext";
 
 export function EditProfile() {
+
+  const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+  const { email, role, fitNexusId } = user; // Desestructurar el objeto user
+
   const [clients, setClients] = useState([]);
   	// Cargar datos desde varias fuentes simultáneamente
-	const loadData = async () => {
+	const loadData = async (fitNexusId) => {
 		try {
 		// Ejecutar todas las solicitudes en paralelo
-		const clients = await fetchClientData();
+		const clients = await fetchClientData(fitNexusId);
 
 		// Actualizar los estados con los datos obtenidos
 		setClients(clients);
@@ -35,7 +40,7 @@ export function EditProfile() {
 	};
 	
 	useEffect(() => {
-	loadData();
+	loadData(fitNexusId);
 	}, []); // Llama a loadData solo al montar el componente
 
   const [data, setData] = useState({

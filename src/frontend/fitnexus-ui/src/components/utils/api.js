@@ -1,11 +1,11 @@
 import { apiClient } from '../utils/client';
 
-export const fetchWorkoutData = async (userEmail) => {
+export const fetchWorkoutData = async (fitNexusId) => {
     try {
         const [exercisesResponse, routinesResponse, plansResponse] = await Promise.all([
-            apiClient.get(`/api/v1/ejercicios/ejercicio/usuario/${userEmail}`),
-            apiClient.get(`/api/v1/rutinas/rutina/usuario/${userEmail}`),
-            apiClient.get(`/api/v1/planes/plan/usuario/${userEmail}`),
+            apiClient.get(`/api/v1/ejercicios/ejercicio/usuario/${fitNexusId}`),
+            apiClient.get(`/api/v1/rutinas/rutina/usuario/${fitNexusId}`),
+            apiClient.get(`/api/v1/planes/plan/usuario/${fitNexusId}`),
         ]);
 
         return {
@@ -19,10 +19,10 @@ export const fetchWorkoutData = async (userEmail) => {
     }
 };
 
-export const fetchClientData = async (entrenadorEmail) => {
+export const fetchClientData = async (fitNexusId) => {
     try {
         const [clientResponse] = await Promise.all([
-            apiClient.get(`/api/v1/entrenadores/${entrenadorEmail}`)
+            apiClient.get(`/api/v1/entrenadores/${fitNexusId}`)
         ]);
 
         return {
@@ -34,9 +34,9 @@ export const fetchClientData = async (entrenadorEmail) => {
     }
 };
 
-export const fetchExtraData = async (email) => {
+export const fetchExtraData = async (fitNexusId) => {
     try {
-        const response = await apiClient.get(`/api/v1/clientes/extra-data/${email}`);
+        const response = await apiClient.get(`/api/v1/clientes/extra-data/${fitNexusId}`);
         return response.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -47,9 +47,9 @@ export const fetchExtraData = async (email) => {
     }
 };
 
-export const createNutritionPlan = async (email) => {
+export const createNutritionPlan = async (fitNexusId) => {
     try {
-        const response = await apiClient.post('/api/v1/plan-nutri', { email });
+        const response = await apiClient.post('/api/v1/plan-nutri', { fitNexusId });
         return response.data;
     } catch (error) {
         console.error('Error al crear el plan nutricional:', error);
@@ -57,13 +57,13 @@ export const createNutritionPlan = async (email) => {
     }
 };
 
-export const fetchNutriData = async () => {
+export const fetchNutriData = async (fitNexusId) => {
     try {
-        const cliente = { id: 1 }; // TODO: Get the client id from the logged user
+        const cliente = { fitNexusId };
         const [nutriControllerResponse] = await Promise.all([
-            apiClient.get(`/api/v1/plan-nutri/gramos/${cliente.id}`),
-            apiClient.get(`/api/v1/plan-nutri/porcentajes/${cliente.id}`),
-            apiClient.get(`/api/v1/plan-nutri/kcal/${cliente.id}`)
+            apiClient.get(`/api/v1/plan-nutri/gramos/${cliente.fitNexusId}`),
+            apiClient.get(`/api/v1/plan-nutri/porcentajes/${cliente.fitNexusId}`),
+            apiClient.get(`/api/v1/plan-nutri/kcal/${cliente.fitNexusId}`)
         ]);
         return {
             clients: nutriControllerResponse.data

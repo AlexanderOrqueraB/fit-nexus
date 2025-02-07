@@ -66,9 +66,6 @@ export function PostPlanEntrenamiento() {
 			});
 	};
 
-    useEffect(() => {
-	}, []);
-
     return (
         <Dialog>
             <DialogTrigger asChild>

@@ -175,7 +175,7 @@ public class AuthHomeController {
             Map<String, Object> response = new HashMap<>();
 
             if (userRole != null) {
-                response.put("message", "Login exitoso. Bienvenidx: " + userEmail);
+                response.put("email", userEmail);
                 response.put("role", userRole);
                 response.put("fitNexusId", fitNexusId);
             }

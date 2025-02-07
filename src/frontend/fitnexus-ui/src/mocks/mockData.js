@@ -3,6 +3,7 @@ export const mockClients = [
         "nombre": "Luke",
         "apellido": "Skywalker",
         "email": "luke@skywalker.com",
+        "fitNexusId": "123456789",
         "objetivo": "PERDER_GRASA",
         "genero": "HOMBRE",
         "frecuenciaEjercicioSemanal": "LIGERO",
@@ -15,6 +16,7 @@ export const mockClients = [
         "nombre": "Leia",
         "apellido": "Skywalker",
         "email": "leia@skywalker.com",
+        "fitNexusId": "987654321",
         "objetivo": "GANAR_MUSCULO",
         "genero": "MUJER",
         "frecuenciaEjercicioSemanal": "LIGERO",
@@ -30,6 +32,7 @@ export const CLIENTE =
     "nombre": "Luke",
     "apellido": "Skywalker",
     "email": "luke@skywalker.com",
+    "fitNexusId": "123456789",
     "objetivo": "PERDER_GRASA",
     "genero": "HOMBRE",
     "frecuenciaEjercicioSemanal": "LIGERO",
@@ -44,6 +47,7 @@ export const mockEntrenador =
     "nombre": "Luke",
     "apellido": "Skywalker",
     "email": "luke@skywalker.com",
+    "fitNexusId": "123456789",
 }
 
 export const mockExercises = [
@@ -153,7 +157,7 @@ export const planWithEntrenador  =
   "fechaFinal": "2025-12-13",
   "entrenador": 
       {
-          "email": "entrenador@email.com"
+          "fitNexusId": "123456789"
       }
 }
 

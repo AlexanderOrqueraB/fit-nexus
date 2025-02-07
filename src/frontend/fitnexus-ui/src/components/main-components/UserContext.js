@@ -8,10 +8,13 @@ export const UserProvider = ({ children }) => {
     // Persistencia opcional al recargar
     useEffect(() => {
       const storedEmail = localStorage.getItem("userEmail");
-      const storedFitNexusId = localStorage.getItem("fitNexusId");
-      console.log("FitNexusId tras refresh (to doublecheck): ", storedFitNexusId);
+      console.log("Email tras refresh (to doublecheck): ", storedEmail);
+
       const storedRole = localStorage.getItem("userRole");
       console.log("Rol tras refresh (to doublecheck): ", storedRole);
+
+      const storedFitNexusId = localStorage.getItem("fitNexusId");
+      console.log("FitNexusId tras refresh (to doublecheck): ", storedFitNexusId);
       
       if (storedEmail && storedRole && storedFitNexusId) {
         setUser({ email: storedEmail, role: storedRole, fitNexusId: storedFitNexusId });

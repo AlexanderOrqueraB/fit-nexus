@@ -1,7 +1,7 @@
 
 "use client"
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Label, Pie, PieChart } from "recharts"
 import {
   Card,
@@ -28,6 +28,7 @@ import { Select,
   SelectValue } from "../../components_ui/ui/select"
 import { Button } from "../../components_ui/ui/button"
 import { fetchClientData, fetchExtraData, createNutritionPlan } from '../utils/api'
+import { UserContext } from "../main-components/UserContext";
 
 const chartConfig = {
   porcentajes: {
@@ -63,7 +64,10 @@ const mockChartNutri = [
   { macronutriente: "Grasas", porcentajes: 40, gramos:70, kcal: 520, fill: "var(--color-firefox)" },
 ];
 
-export function NutritionChart({ role, userEmail, fitNexusId }) {
+export function NutritionChart() {
+
+    const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+    const { role, fitNexusId } = user; // Desestructurar el objeto user
 
   const [selectedClient, setSelectedClient] = useState(null);
   //const [clients, setClients] = useState([]); uncomment this line and comment the next one to use backend data
@@ -76,10 +80,10 @@ export function NutritionChart({ role, userEmail, fitNexusId }) {
     return mockChartNutri.reduce((acc, curr) => acc + curr.kcal, 0)
   }, [])
 
-  const fetchData = async () => {
+  const fetchData = async (fitNexusId) => {
     try {
       //uncomment this lines to use backend data
-      //const clientsData = await fetchClientData(); 
+      //const clientsData = await fetchClientData(fitNexusId); 
       //setClients(clientsData.clients);
       setClients(mockClients);
     } catch (error) {
@@ -89,22 +93,22 @@ export function NutritionChart({ role, userEmail, fitNexusId }) {
     }
   };
 
-  const fetchExtraData = async (email) => {
+  const fetchExtraData = async (fitNexusId) => {
     try {
       //uncomment this lines to use backend data
-      //const data = await fetchExtraData(email);
+      //const data = await fetchExtraData(fitNexusId);
       //setExtraData(data);
-      const client = mockClients.find(client => client.email === email);
+      const client = mockClients.find(client => client.fitNexusId === fitNexusId);
       setExtraData(client ? client : null);
     } catch (error) {
       setExtraData(null);
     }
   };
 
-  const createPlan = async (email) => {
+  const createPlan = async () => {
     try {
       //uncomment this lines to use backend data
-      //await createNutritionPlan(email);
+      //await createNutritionPlan(fitNexusId);
       fetchData();
     } catch (error) {
       setError(error.message);
@@ -112,11 +116,11 @@ export function NutritionChart({ role, userEmail, fitNexusId }) {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchData(fitNexusId);
     if (role === 'user') {
-      fetchExtraData(userEmail);
+      fetchExtraData(fitNexusId);
     }
-  }, [role, userEmail]);
+  }, []);
 
   if (loading) return <div>Cargando...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -130,7 +134,7 @@ export function NutritionChart({ role, userEmail, fitNexusId }) {
         </SelectTrigger>
         <SelectContent>
           {clients.map(client => (
-            <SelectItem key={client.email} value={client.email}>
+            <SelectItem key={client.fitNexusId} value={client.fitNexusId}>
               {client.nombre}
             </SelectItem>
           ))}

@@ -64,9 +64,6 @@ export function PostRutina() {
 			});
 	};
 
-    useEffect(() => {
-	}, []);
-
     return (
         <Dialog>
             <DialogTrigger asChild>

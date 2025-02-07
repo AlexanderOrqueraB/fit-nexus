@@ -26,7 +26,7 @@ import ExercisesInfoImg from '../../workout-components/ejercicio/ExercisesInfoIm
 import { Badge } from '../../../components_ui/ui/badge';
 import { mockExercises, mockRoutine, mockPlans } from '../../../mocks/mockData'
 
-export function Workout ({ role, userEmail, fitNexusId }) { {
+export function Workout ({ role, fitNexusId })  {
 	const [data, setData] = useState({}); //useState to store data from server
 
 	const [exercises, setExercises] = useState([]);
@@ -70,12 +70,12 @@ export function Workout ({ role, userEmail, fitNexusId }) { {
 		});
 	};
 
-	const loadData = async (userEmail) => {
+	const loadData = async (fitNexusId) => {
 		try {
 		// Ejecutar todas las solicitudes en paralelo
 
 		//uncomment this lines to use backend data
-		//const { exercises, routines, plans } = await fetchWorkoutData(userEmail);
+		//const { exercises, routines, plans } = await fetchWorkoutData(fitNexusId);
 		const exercises = mockExercises.map((exercise) => ({...exercise}));
 		const routines = mockRoutine.map((routine) => ({...routine}));
 		const plans = mockPlans.map((plan) => ({...plan}));
@@ -99,9 +99,8 @@ export function Workout ({ role, userEmail, fitNexusId }) { {
 	
 
 	useEffect(() => {
-		loadData(userEmail);
-
-	}, [role, userEmail]);
+		loadData(fitNexusId);
+	}, []);
 
 
 	const onSubmit = (e) => {

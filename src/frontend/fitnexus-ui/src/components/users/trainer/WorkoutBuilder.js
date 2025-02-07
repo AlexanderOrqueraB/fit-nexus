@@ -1,5 +1,5 @@
 import { Button } from '../../../components_ui/ui/button';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { customToast } from '../../utils/customToast'
 import { apiClient } from '../../utils/client';
 import PostExercise from '../../workout-components/ejercicio/PostExercise';
@@ -22,12 +22,16 @@ import DeleteModalPlanPost from '../../workout-components/plan-entrenamiento/Del
 import PostListRoutinesInPlan from '../../workout-components/plan-entrenamiento/PostListRoutinesInPlan';
 import DeleteListRoutinesInPlan from '../../workout-components/plan-entrenamiento/DeleteListRoutinesInPlan';
 import { mockExercises, mockRoutinesBuilder, mockPlans } from '../../../mocks/mockData'
+import { UserContext } from '../../main-components/UserContext';
 
 const deleteMessage = "deleteMessage"
 const deleteTitle = "La acción de eliminar no se puede revertir"
 const deleteDescription = "Pulsa Eliminar para confirmar la acción de eliminar, cancelar para salir"
 
 export function WorkoutBuilder() {
+
+  const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+  const { email, role, fitNexusId } = user; // Desestructurar el objeto user
 
   const [exercises, setExercises] = useState([]);
   const [selectedExercise, setSelectedExercise] = useState({});
@@ -63,9 +67,9 @@ export function WorkoutBuilder() {
   const [isAddDateOpen, setIsAddDateOpen] = useState(false);
   const [isEditDateOpen, setIsEditDateOpen] = useState(false);
 
-  const loadData = async () => {
+  const loadData = async (fitNexusId) => {
     try {
-      const { exercises, routines, plans } = await fetchWorkoutData();
+      const { exercises, routines, plans } = await fetchWorkoutData(fitNexusId);
 
       // Actualizar los estados con los datos obtenidos
       setExercises(exercises);
@@ -78,7 +82,7 @@ export function WorkoutBuilder() {
   };
 
   useEffect(() => {
-    loadData();
+    loadData(fitNexusId);
   }, []); // Llama a loadData solo al montar el componente
 
   const handleEditClick = (item, type) => {

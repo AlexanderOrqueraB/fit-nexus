@@ -8,12 +8,15 @@ import fitNexusLogo from "../../images/fit-nexus-logo.jpeg"
 
 import { Card, CardContent } from '../../components_ui/ui/card';
 import { apiClient } from '../utils/client';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { mockClients } from '../../mocks/mockData'
 import PostProfileExtra from '../users/client/PostProfileExtra';
 import { BrickWall, Drumstick, EyeIcon } from 'lucide-react';
+import { UserContext } from './UserContext';
 
-export function HomePage({ role, userEmail, fitNexusId }) {
+export function HomePage() {	
+
+	const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
 
 	useState({});
 	const [data, setData] = useState({});
@@ -96,7 +99,7 @@ export function HomePage({ role, userEmail, fitNexusId }) {
 		<React.Fragment>
 		  <h1>Bienvenido: {mockClients[0].nombre} :)</h1>
 		  <div className="flex flex-1 flex-col gap-4 p-4">
-			{role === 'admin' ?  (
+			{user.role === 'admin' ?  (
 			  <div className="grid auto-rows-min gap-4 md:grid-cols-2">
 				<div className="aspect-video rounded-xl bg-muted/50">
 				  <Card className="h-full">
