@@ -61,21 +61,21 @@ export function PostProfileExtra() {
   const onSubmit = (e) => {
     e.preventDefault();
     const userData = {
-			objetivo: data.objetivo,
+	  objetivo: data.objetivo,
       genero: data.genero,
       frecuenciaEjercicioSemanal: data.frecuenciaEjercicioSemanal,
       edad: data.edad,
       peso: data.peso,
       altura: data.altura,
-		};
+    };
 
     console.log('Datos del usuario: ', userData);
 
     apiClient
-      .post(`/api/v1/cliente/addClienteIdFromProps`, userData)
+      .post(`/api/v1/clientes/${fitNexusId}`, userData)
       .then((response) => {
-        if (response.status === 200) {
-          console.log("Datos actualizados correctamente:", response.data);
+        if (response.status === 201) {
+          console.log("Datos creados correctamente:", response.data);
           customToast({message : "Datos actualizados correctamente", type : "success"});
         }
     })

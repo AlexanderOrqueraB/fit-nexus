@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
@@ -69,31 +70,31 @@ public class ClienteController {
         }
     }
 
-    @GetMapping("/{clienteEmailId}")
-    public ResponseEntity<Optional<Cliente>> obtenerClientePorEmailId(@PathVariable String clienteEmailId){
-        log.info("Ejecutando obtenerClientePorEmailId con este emailId: {}", clienteEmailId);
+    @GetMapping("/{fitNexusId}")
+    public ResponseEntity<Optional<Cliente>> obtenerClientePorFitNexusId(@PathVariable String fitNexusId){
+        log.info("Ejecutando obtenerClientePorFitNexusId con este fitNexusId: {}", fitNexusId);
         try {
-            Optional<Cliente> clienteByEmail = clienteRepository.findByEmail(clienteEmailId);
-            return ResponseEntity.status(HttpStatus.OK).body(clienteByEmail);
+            Optional<Cliente> clienteByFitNexusId = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+            return ResponseEntity.status(HttpStatus.OK).body(clienteByFitNexusId);
         } catch (Exception e) {
             log.warn("Error al obtener cliente por emailId", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Optional.empty());
         }
     }
 
-    @GetMapping("/extra-data/{clienteEmailId}")
-    public ResponseEntity<ClienteDtoRequest> obtenerDatosExtraClientePorEmailId (@PathVariable String clienteEmailId){
-        log.info("Ejecutando obtenerDatosExtraClientePorEmailId con este emailId: {}", clienteEmailId);
+    @GetMapping("/extra-data/{fitNexusId}")
+    public ResponseEntity<ClienteDtoRequest> obtenerDatosExtraClientePorFitNexusId (@PathVariable String fitNexusId){
+        log.info("Ejecutando obtenerDatosExtraClientePorFitNexusId con este fitNexusId: {}", fitNexusId);
         try {
-            Cliente clienteByEmail = clienteRepository.findByEmail(clienteEmailId)
+            Cliente clienteByFitNexusId = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId))
                     .orElseThrow(() -> new ClienteNotFoundException("Cliente no encontrado con emailId: "));
             ClienteDtoRequest datosExtraCliente = ClienteDtoRequest.builder()
-                    .objetivo(clienteByEmail.getObjetivo())
-                    .genero(clienteByEmail.getGenero())
-                    .frecuenciaEjercicioSemanal(clienteByEmail.getFrecuenciaEjercicioSemanal())
-                    .edad(clienteByEmail.getEdad())
-                    .peso(clienteByEmail.getPeso())
-                    .altura(clienteByEmail.getAltura())
+                    .objetivo(clienteByFitNexusId.getObjetivo())
+                    .genero(clienteByFitNexusId.getGenero())
+                    .frecuenciaEjercicioSemanal(clienteByFitNexusId.getFrecuenciaEjercicioSemanal())
+                    .edad(clienteByFitNexusId.getEdad())
+                    .peso(clienteByFitNexusId.getPeso())
+                    .altura(clienteByFitNexusId.getAltura())
                     .build();
             return ResponseEntity.status(HttpStatus.OK).body(datosExtraCliente);
         } catch (Exception e) {
@@ -102,19 +103,19 @@ public class ClienteController {
         }
     }
 
-    @PostMapping("/{clienteId}")
+    @PostMapping("/{fitNexusId}")
     public ResponseEntity<String> crearDatosExtraCliente(
-            @PathVariable Long clienteId,
+            @PathVariable String fitNexusId,
             @RequestBody ClienteDtoRequest clienteDTORequest) {
-        log.info("Ejecutando crearCliente con este clienteId: {}", clienteId);
+        log.info("Ejecutando crearCliente con este fitNexusId: {}", fitNexusId);
         log.info("ClienteDTORequest: {}", clienteDTORequest);
         if(clienteDTORequest == null) {
             throw new InvalidRequestException("Peticion de cliente no valida");
         }
-        Optional<Cliente> cliente = clienteRepository.findById(clienteId);
+        Optional<Cliente> cliente = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
         log.info("Cliente a actualizar: {}", cliente);
         if (cliente.isEmpty()) {
-            log.error("Cliente no encontrado con ID: {}", clienteId);
+            log.error("Cliente no encontrado con fitNexusId: {}", fitNexusId);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado");
         }
 
@@ -131,16 +132,16 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Cliente con datos extra creados correctamente");
     }
 
-    @PutMapping("/{clienteId}")
+    @PutMapping("/{fitNexusId}")
     public ResponseEntity<String> actualizarDatosExtraCliente(
-            @PathVariable Long clienteId,
+            @PathVariable String fitNexusId,
             @RequestBody ClienteDtoRequest clienteDTORequest) {
-        log.info("Ejecutando actualizarCliente con este clienteId: {}", clienteId);
+        log.info("Ejecutando actualizarCliente con este fitNexusId: {}", fitNexusId);
         log.info("ClienteDTORequest recibido: {}", clienteDTORequest);
 
-        Optional<Cliente> clienteOptional = clienteRepository.findById(clienteId);
+        Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
         if (clienteOptional.isEmpty()) {
-            log.error("Cliente no encontrado con ID: {}", clienteId);
+            log.error("Cliente no encontrado con fitNexusId: {}", fitNexusId);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado");
         }
 

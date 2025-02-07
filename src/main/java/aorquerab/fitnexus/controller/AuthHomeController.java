@@ -189,23 +189,6 @@ public class AuthHomeController {
         }
     }
 
-    @GetMapping("/api/v1/roles/{userEmailId}")
-    @ResponseBody
-    public Optional<Role> obtenerRolePorEmailId (@PathVariable String userEmailId){
-        log.info("Ejecutando obtenerRolePorEmailId con este emailId: {} ", userEmailId);
-        Optional<Cliente> clienteByEmailId = clienteRepository.findByEmail(userEmailId);
-        if(clienteByEmailId.isPresent()) {
-            return Optional.of(clienteByEmailId.get().getRole());
-        }
-
-        Optional<Entrenador> entrenadorByEmailId = entrenadorRepository.findByEmail(userEmailId);
-        if (entrenadorByEmailId.isPresent()) {
-            return Optional.of(entrenadorByEmailId.get().getRole());
-        }
-        log.info("Email no encontrado en base de datos");
-        return Optional.empty();
-    }
-
     //TODO: How to do a put using Spring Security, do I need to use CustomUserDetails and so on?
     @PutMapping("/api/v1/login/{userId}")
     public ResponseEntity<Object> actualizarLogin (@PathVariable Long id, @RequestBody ChangeLoginDTO changeLoginDTO) {
