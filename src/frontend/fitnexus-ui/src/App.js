@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useContext } from "react"; 
+import React, { lazy, Suspense } from "react"; 
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 import { WorkoutBuilder } from './components/users/trainer/WorkoutBuilder';
@@ -14,7 +14,6 @@ import ProtectedLayout from "./components/main-components/ProtectedLayout";
 import Settings from "./components/users/user-actions/Settings";
 import NutritionChart from "./components/nutrition/NutritionChart";
 import { Toaster } from "sonner";
-import { UserContext } from "./components/main-components/UserContext";
 const HomePage = lazy (() =>import ("./components/main-components/HomePage"));
 
 

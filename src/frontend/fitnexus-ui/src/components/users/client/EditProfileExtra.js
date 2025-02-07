@@ -23,7 +23,7 @@ export function EditProfileExtra() {
   const { email, role, fitNexusId } = user; // Desestructurar el objeto user
 
   const [clients, setClients] = useState([]);
-	const loadData = async (fitNexusId) => {
+	const loadData = async () => {
 		try {
 		// Ejecutar todas las solicitudes en paralelo
 		const clients = await fetchClientData(fitNexusId);
@@ -39,7 +39,7 @@ export function EditProfileExtra() {
 	};
 	
 	useEffect(() => {
-	loadData(fitNexusId);
+	loadData();
 	}, []); // Llama a loadData solo al montar el componente
  	
   const [data, setData] = useState({

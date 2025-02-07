@@ -1,5 +1,5 @@
 import { Button } from "../../../components_ui/ui/button"
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Dialog,
   DialogContent,
@@ -11,8 +11,7 @@ import {
 } from "../../../components_ui/ui/dialog"
 import { Input } from "../../../components_ui/ui/input"
 import { Label } from "../../../components_ui/ui/label"
-import { customToast } from '../../utils/customToast'
-import { fetchClientData } from '../../utils/api';
+
 
 export function EditProfile() {
 

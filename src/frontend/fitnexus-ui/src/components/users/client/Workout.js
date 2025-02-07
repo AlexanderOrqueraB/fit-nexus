@@ -70,7 +70,7 @@ export function Workout ({ role, fitNexusId })  {
 		});
 	};
 
-	const loadData = async (fitNexusId) => {
+	const loadData = async () => {
 		try {
 		// Ejecutar todas las solicitudes en paralelo
 
@@ -99,7 +99,7 @@ export function Workout ({ role, fitNexusId })  {
 	
 
 	useEffect(() => {
-		loadData(fitNexusId);
+		loadData();
 	}, []);
 
 

@@ -1,12 +1,11 @@
 import { Button } from '../../../components_ui/ui/button';
 import React, { useContext, useEffect, useState } from 'react';
 import { customToast } from '../../utils/customToast'
-import { apiClient } from '../../utils/client';
 import PostExercise from '../../workout-components/ejercicio/PostExercise';
 import PutExercise from '../../workout-components/ejercicio/PutExercise';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components_ui/ui/tabs';
-import { Calendar, CalendarDays, CircleMinusIcon, CirclePlusIcon, Delete, DeleteIcon, Edit, Edit2, Info, Minus, MoreHorizontal, Plus, RefreshCwIcon, Trash2Icon } from 'lucide-react';
+import { Calendar, CalendarDays, CircleMinusIcon, CirclePlusIcon, Edit, RefreshCwIcon, Trash2Icon } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components_ui/ui/card';
 import { fetchWorkoutData } from '../../utils/api';
 import PostRutina from '../../workout-components/rutina/PostRutina';
@@ -67,7 +66,7 @@ export function WorkoutBuilder() {
   const [isAddDateOpen, setIsAddDateOpen] = useState(false);
   const [isEditDateOpen, setIsEditDateOpen] = useState(false);
 
-  const loadData = async (fitNexusId) => {
+  const loadData = async () => {
     try {
       const { exercises, routines, plans } = await fetchWorkoutData(fitNexusId);
 
@@ -82,7 +81,7 @@ export function WorkoutBuilder() {
   };
 
   useEffect(() => {
-    loadData(fitNexusId);
+    loadData();
   }, []); // Llama a loadData solo al montar el componente
 
   const handleEditClick = (item, type) => {

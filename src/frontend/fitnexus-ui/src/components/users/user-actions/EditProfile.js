@@ -24,7 +24,7 @@ export function EditProfile() {
 
   const [clients, setClients] = useState([]);
   	// Cargar datos desde varias fuentes simultáneamente
-	const loadData = async (fitNexusId) => {
+	const loadData = async () => {
 		try {
 		// Ejecutar todas las solicitudes en paralelo
 		const clients = await fetchClientData(fitNexusId);
@@ -40,7 +40,7 @@ export function EditProfile() {
 	};
 	
 	useEffect(() => {
-	loadData(fitNexusId);
+	loadData();
 	}, []); // Llama a loadData solo al montar el componente
 
   const [data, setData] = useState({

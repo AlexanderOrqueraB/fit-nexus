@@ -21,13 +21,10 @@ import PostProfileExtra from "../users/client/PostProfileExtra"
 import { mockPlans, mockClients} from "../../mocks/mockData"
 import { Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue } from "../../components_ui/ui/select"
 import { Button } from "../../components_ui/ui/button"
-import { fetchClientData, fetchExtraData, createNutritionPlan } from '../utils/api'
 import { UserContext } from "../main-components/UserContext";
 
 const chartConfig = {
@@ -80,7 +77,7 @@ export function NutritionChart() {
     return mockChartNutri.reduce((acc, curr) => acc + curr.kcal, 0)
   }, [])
 
-  const fetchData = async (fitNexusId) => {
+  const fetchData = async () => {
     try {
       //uncomment this lines to use backend data
       //const clientsData = await fetchClientData(fitNexusId); 
@@ -93,7 +90,7 @@ export function NutritionChart() {
     }
   };
 
-  const fetchExtraData = async (fitNexusId) => {
+  const fetchExtraData = async () => {
     try {
       //uncomment this lines to use backend data
       //const data = await fetchExtraData(fitNexusId);
@@ -116,9 +113,9 @@ export function NutritionChart() {
   };
 
   useEffect(() => {
-    fetchData(fitNexusId);
+    fetchData();
     if (role === 'user') {
-      fetchExtraData(fitNexusId);
+      fetchExtraData();
     }
   }, []);
 

@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import {
   ListFilter,
-  LucideRefreshCcw,
-  RefreshCcw,
-  RefreshCcwDotIcon,
   RefreshCcwIcon,
 } from "lucide-react";
 import { Badge } from "../../../components_ui/ui/badge";
@@ -12,7 +9,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "../../../components_ui/ui/card";
@@ -76,7 +72,7 @@ export function ClientsList() {
   );
 
   // Cargar datos desde varias fuentes simultáneamente
-  const loadData = async (fitNexusId) => {
+  const loadData = async () => {
     try {
       // Ejecutar todas las solicitudes en paralelo
       const clients = await fetchClientData(fitNexusId);
@@ -96,7 +92,7 @@ export function ClientsList() {
   };
 
   useEffect(() => {
-    loadData(fitNexusId);
+    loadData();
   }, []); // Llama a loadData solo al montar el componente
 
   return (

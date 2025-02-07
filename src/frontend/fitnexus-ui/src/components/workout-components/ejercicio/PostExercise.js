@@ -154,7 +154,7 @@ export function PostExercise() {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button type="submit" onClick={onSubmit} type="submit">
+                    <Button type="submit" onClick={onSubmit}>
                         Guardar cambios
                     </Button>
                 </DialogFooter>
