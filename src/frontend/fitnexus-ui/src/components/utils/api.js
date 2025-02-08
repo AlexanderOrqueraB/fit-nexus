@@ -34,6 +34,19 @@ export const fetchClientData = async (fitNexusId) => {
     }
 };
 
+export const fetchMyData = async (fitNexusId) => {
+    try {
+        const response = await apiClient.get(`/api/v1/data/${fitNexusId}`);
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return null;
+        }
+        console.error('Error al cargar los datos extra:', error);
+        throw new Error('Error al cargar los datos extra');
+    }
+};
+
 export const fetchExtraData = async (fitNexusId) => {
     try {
         const response = await apiClient.get(`/api/v1/clientes/extra-data/${fitNexusId}`);

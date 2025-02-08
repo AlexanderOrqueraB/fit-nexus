@@ -139,24 +139,32 @@ public class ClienteController {
         log.info("Ejecutando actualizarCliente con este fitNexusId: {}", fitNexusId);
         log.info("ClienteDTORequest recibido: {}", clienteDTORequest);
 
-        Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
-        if (clienteOptional.isEmpty()) {
-            log.error("Cliente no encontrado con fitNexusId: {}", fitNexusId);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado");
+        try {
+            if(clienteDTORequest == null) {
+                throw new InvalidRequestException("Peticion de cliente no valida");
+            } else {
+                Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+                if (clienteOptional.isEmpty()) {
+                    log.error("Cliente no encontrado con fitNexusId: {}", fitNexusId);
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado");
+                }
+        
+                Cliente cliente = clienteOptional.get();
+                cliente.setObjetivo(clienteDTORequest.getObjetivo());
+                cliente.setGenero(clienteDTORequest.getGenero());
+                cliente.setFrecuenciaEjercicioSemanal(clienteDTORequest.getFrecuenciaEjercicioSemanal());
+                cliente.setEdad(clienteDTORequest.getEdad());
+                cliente.setPeso(clienteDTORequest.getPeso());
+                cliente.setAltura(clienteDTORequest.getAltura());
+        
+                clienteRepository.save(cliente);
+                log.info("Cliente actualizado correctamente: {}", cliente);
+                return ResponseEntity.status(HttpStatus.OK).body("Cliente actualizado correctamente");
+            }
+        } catch (Exception e) {
+            log.error("Error al actualizar cliente", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Peticion de cliente no valida");
         }
-
-        Cliente cliente = clienteOptional.get();
-        cliente.setObjetivo(clienteDTORequest.getObjetivo());
-        cliente.setGenero(clienteDTORequest.getGenero());
-        cliente.setFrecuenciaEjercicioSemanal(clienteDTORequest.getFrecuenciaEjercicioSemanal());
-        cliente.setEdad(clienteDTORequest.getEdad());
-        cliente.setPeso(clienteDTORequest.getPeso());
-        cliente.setAltura(clienteDTORequest.getAltura());
-
-        clienteRepository.save(cliente);
-        log.info("Cliente actualizado correctamente: {}", cliente);
-        return ResponseEntity.status(HttpStatus.OK).body("Cliente actualizado correctamente");
-
     }
 
     //TODO: DELETE all (In case entrenador want to delete their account, maybe this one could be delete the reference

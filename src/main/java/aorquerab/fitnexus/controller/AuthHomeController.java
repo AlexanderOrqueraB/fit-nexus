@@ -1,10 +1,13 @@
 package aorquerab.fitnexus.controller;
 
+import aorquerab.fitnexus.model.dtos.ClienteDtoRequest;
 import aorquerab.fitnexus.model.dtos.LoginDTO;
 import aorquerab.fitnexus.model.dtos.SignupDTO;
 import aorquerab.fitnexus.model.dtos.auth.ChangeLoginDTO;
+import aorquerab.fitnexus.model.dtos.minimized.DatosUsuarioDTO;
 import aorquerab.fitnexus.model.dtos.minimized.SignupDTOResponse;
 import aorquerab.fitnexus.model.enumerator.Role;
+import aorquerab.fitnexus.model.exception.ClienteNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
@@ -188,6 +191,92 @@ public class AuthHomeController {
                     .body(Collections.singletonMap("message", "Credenciales inválidas: " + e.getMessage()));
         }
     }
+
+    @GetMapping("/api/v1/data/{fitNexusId}")
+    public ResponseEntity<DatosUsuarioDTO> obtenerMisDatosPorFitNexusId (@PathVariable String fitNexusId){
+        log.info("Ejecutando obtenerMisDatosPorFitNexusId con este fitNexusId: {}", fitNexusId);
+        try {
+            Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+            Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
+            if (clienteOptional.isEmpty() && entrenadorOptional.isEmpty()) {
+                log.warn("Usuario no encontrado con el fitNexusId: {}", fitNexusId);
+                throw new ClienteNotFoundException("Usuario no encontrado en BD: " + fitNexusId);
+            }
+            if(clienteOptional.isPresent()) {
+                Cliente cliente = clienteOptional.get();
+                DatosUsuarioDTO datosExtraUsuario = DatosUsuarioDTO.builder()
+                    .nombre(cliente.getNombre())
+                    .apellido(cliente.getApellido())
+                    .email(cliente.getEmail())
+                    .fitNexusId(cliente.getFitNexusId().toString())
+                    .build();
+                return ResponseEntity.status(HttpStatus.OK).body(datosExtraUsuario);
+            } else {
+                Entrenador entrenador = entrenadorOptional.get();
+                DatosUsuarioDTO datosExtraUsuario = DatosUsuarioDTO.builder()
+                    .nombre(entrenador.getNombre())
+                    .apellido(entrenador.getApellido())
+                    .email(entrenador.getEmail())
+                    .fitNexusId(entrenador.getFitNexusId().toString())
+                    .build();
+                return ResponseEntity.status(HttpStatus.OK).body(datosExtraUsuario);
+            }
+
+        } catch (Exception e) {
+            log.warn("Error al obtener cliente por emailId", e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(DatosUsuarioDTO.builder().build());
+        }
+    }
+
+    @PutMapping("api/v1/data/{fitNexusId}")
+    public ResponseEntity<DatosUsuarioDTO> actualizarMisDatosPorFitNexusId (
+                                                                @PathVariable String fitNexusId,
+                                                                @RequestBody DatosUsuarioDTO datosUsuarioDTO) {
+        log.info("Ejecutando actualizarMisDatosPorFitNexusId con este fitNexusId: {}", fitNexusId);
+        log.info("Datos recibidos: {}", datosUsuarioDTO);
+        try {
+            DatosUsuarioDTO datosUsuarioActualizado = null;
+            Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+            Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
+
+            if (clienteOptional.isEmpty() && entrenadorOptional.isEmpty()) {
+                log.warn("Usuario no encontrado con el fitNexusId: {}", fitNexusId);
+                throw new ClienteNotFoundException("Usuario no encontrado en BD: " + fitNexusId);
+            }
+            if(clienteOptional.isPresent()) {
+                Cliente cliente = clienteOptional.get();
+                cliente.setNombre(datosUsuarioDTO.getNombre());
+                cliente.setApellido(datosUsuarioDTO.getApellido());
+                cliente.setEmail(datosUsuarioDTO.getEmail());
+                clienteRepository.save(cliente);
+                datosUsuarioActualizado = DatosUsuarioDTO.builder()
+                    .nombre(cliente.getNombre())
+                    .apellido(cliente.getApellido())
+                    .email(cliente.getEmail())
+                    .build();
+                return ResponseEntity.status(HttpStatus.OK).body(datosUsuarioActualizado);
+            } else {
+                Entrenador entrenador = entrenadorOptional.get();
+                entrenador.setNombre(datosUsuarioDTO.getNombre());
+                entrenador.setApellido(datosUsuarioDTO.getApellido());
+                entrenador.setEmail(datosUsuarioDTO.getEmail());
+                entrenadorRepository.save(entrenador);
+                datosUsuarioActualizado = DatosUsuarioDTO.builder()
+                    .nombre(entrenador.getNombre())
+                    .apellido(entrenador.getApellido())
+                    .email(entrenador.getEmail())
+                    .build();
+                return ResponseEntity.status(HttpStatus.OK).body(datosUsuarioActualizado);
+            }
+
+        } catch (Exception e) {
+            log.warn("Error al actualizar cliente por emailId", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(DatosUsuarioDTO.builder().build());
+        }
+    }
+
+
+
 
     //TODO: How to do a put using Spring Security, do I need to use CustomUserDetails and so on?
     @PutMapping("/api/v1/login/{userId}")

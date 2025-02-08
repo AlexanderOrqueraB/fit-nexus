@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import EditProfile from "./EditProfile";
 import EditProfileExtra from '../client/EditProfileExtra';
 import ChangePassword from './ChangePassword';
@@ -12,14 +12,47 @@ import {
 } from "../../../components_ui/ui/card";
 import { Label } from '../../../components_ui/ui/label';
 import { mockClients } from '../../../mocks/mockData';
+import { UserContext } from '../../main-components/UserContext';
+import customToast from '../../utils/customToast';
+import { fetchMyData } from '../../utils/api';
 
 export function Settings () {
+  const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+  console.log('Datos del usuario:', user);
+  console.log('Datos del usuario2:', user.fitNexusId);
+  const { fitNexusId } = user; // Desestructurar el objeto user
+
   const [selectedSection, setSelectedSection] = useState("general");
-  //TODO: GET para poder pasarle a EditProfileExtra un prop con el clientId
+  const [data, setData] = useState({
+    nombre: user.nombre || mockClients[0].nombre,
+    apellido: user.apellido || mockClients[0].apellido,
+    email: user.email || mockClients[0].email,
+    fitNexusId: user.fitNexusId || mockClients[0].fitNexusId,
+  });
+
   const objetivoMap = {
     PERDER_GRASA: "Perder grasa",
     GANAR_MUSCULO: "Ganar músculo"
   };
+
+  const loadData = async () => {
+    try {
+      const myData = await fetchMyData(fitNexusId);
+      setData(myData);
+      customToast({ message: "Datos cargados correctamente", type: "success" });
+
+    } catch (error) {
+      console.error("Error al cargar datos:", error);
+      customToast({
+        message: "Hubo un error al cargar los datos de cliente",
+        type: "error",
+      });
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []); // Llama a loadData solo al montar el componente
 
   const renderSection = () => {
     switch (selectedSection) {
@@ -29,7 +62,7 @@ export function Settings () {
             <CardHeader>
               <CardTitle>Datos generales</CardTitle>
               <CardDescription>
-                Comprueba aquí tu nombre, apellido, email, además de tu FitNexusId:
+                Comprueba aquí tus datos principales, además de tu FitNexusId:
               </CardDescription>
 
             </CardHeader>
@@ -53,7 +86,7 @@ export function Settings () {
               </div>
             </CardContent>
             <CardFooter className="border-t px-6 py-4">
-              <EditProfile />
+              <EditProfile clientData={data} />
             </CardFooter>
           </Card>
         );
