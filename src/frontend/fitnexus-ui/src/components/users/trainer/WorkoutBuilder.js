@@ -22,6 +22,7 @@ import PostListRoutinesInPlan from '../../workout-components/plan-entrenamiento/
 import DeleteListRoutinesInPlan from '../../workout-components/plan-entrenamiento/DeleteListRoutinesInPlan';
 import { mockExercises, mockRoutinesBuilder, mockPlans } from '../../../mocks/mockData'
 import { UserContext } from '../../main-components/UserContext';
+import { formatDateToDDMMYYYY } from '../../utils/utilsMethod';
 
 const deleteMessage = "deleteMessage"
 const deleteTitle = "La acción de eliminar no se puede revertir"
@@ -42,12 +43,6 @@ export function WorkoutBuilder() {
   const [selectedPlan, setSelectedPlan] = useState(null);
 
   const [isTestMode, setIsTestMode] = useState(false);
-
-  const formatDateToDDMMYYYY = (isoDate) => {
-    if (!isoDate) return '';
-    const [year, month, day] = isoDate.split('-');
-    return `${day}/${month}/${year}`;
-  };
 
   const displayedExercises = (isTestMode ? mockExercises : exercises) || [];
   const displayedRoutines = (isTestMode ? mockRoutinesBuilder : routines) || [];
@@ -197,12 +192,14 @@ export function WorkoutBuilder() {
                           {displayedPlans.map((plan) => (
                             <TableRow key={plan.id}>
                               <TableCell className="font-medium">{plan.nombrePlan}</TableCell>
-                              <TableCell className="font-medium">{plan.fechaInicio}</TableCell>
-                              <TableCell className="font-medium">{plan.fechaFinal}</TableCell>
+                              <TableCell className="font-medium">{plan.fechaInicio ? formatDateToDDMMYYYY(plan.fechaFinal) : ''}</TableCell>
+                              <TableCell className="font-medium">{plan.fechaFinal ? formatDateToDDMMYYYY(plan.fechaFinal) : ''}</TableCell>
                               <TableCell className="font-medium">
+                              <ul className="list-disc pl-4">
                                 {plan.rutinas.map((rutina, index) => (
-                                  <div key={index}>{rutina.nombreRutina}</div>
+                                  <li key={index}>{rutina.nombreRutina}</li>
                                 ))}
+                              </ul>
                               </TableCell>
                               <TableCell>
                                 <Button 
@@ -351,9 +348,11 @@ export function WorkoutBuilder() {
                               <TableCell className="font-medium">{routine.fechaInicio ? formatDateToDDMMYYYY(routine.fechaInicio) : ''}</TableCell>
                               <TableCell className="font-medium">{routine.fechaFinal ? formatDateToDDMMYYYY(routine.fechaFinal) : ''}</TableCell>
                               <TableCell className="font-medium">
+                              <ul className="list-disc pl-4">
                                 {routine.ejercicios.map((ejercicio, index) => (
-                                  <div key={index}>{ejercicio.nombreEjercicio}</div>
+                                  <li key={index}>{ejercicio.nombreEjercicio}</li>
                                 ))}
+                              </ul>
                               </TableCell>
                               <TableCell>
                                 <Button 

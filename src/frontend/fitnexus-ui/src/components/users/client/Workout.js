@@ -25,6 +25,7 @@ import {
 import ExercisesInfoImg from '../../workout-components/ejercicio/ExercisesInfoImg';
 import { Badge } from '../../../components_ui/ui/badge';
 import { mockExercises, mockRoutine, mockPlans } from '../../../mocks/mockData'
+import { formatDateToDDMMYYYY } from '../../utils/utilsMethod';
 
 export function Workout ({ role, fitNexusId })  {
 	const [data, setData] = useState({}); //useState to store data from server
@@ -205,10 +206,10 @@ export function Workout ({ role, fitNexusId })  {
 									{plan.nombrePlan}
 								  </TableCell>
 								  <TableCell className="font-medium">
-									{plan.fechaInicio}
+									{plan.fechaInicio ? formatDateToDDMMYYYY(plan.fechaFinal) : ''}
 								  </TableCell>
 								  <TableCell className="font-medium">
-									{plan.fechaFinal}
+									{plan.fechaFinal ? formatDateToDDMMYYYY(plan.fechaFinal) : ''}
 								  </TableCell>
 								  <TableCell className="font-medium">
 								  	<ul className="list-disc pl-4">
@@ -255,10 +256,10 @@ export function Workout ({ role, fitNexusId })  {
 									{routine.nombreRutina}
 								  </TableCell>
 								  <TableCell className="font-medium">
-									{routine.fechaInicio}
+									{routine.fechaInicio ? formatDateToDDMMYYYY(routine.fechaInicio) : ''}
 								  </TableCell>
 								  <TableCell className="font-medium">
-									{routine.fechaFinal}
+									{routine.fechaFinal ? formatDateToDDMMYYYY(routine.fechaFinal) : ''}
 								  </TableCell>
 								  <TableCell className="font-medium">
 								  	<ul className="list-disc pl-4">

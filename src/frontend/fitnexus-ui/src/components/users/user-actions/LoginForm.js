@@ -4,7 +4,7 @@ import fitNexusLogo from "../../../images/fit-nexus-logo.jpeg"
 import React, { useContext, useState } from "react"; 
 
 import { UserContext } from "../../main-components/UserContext";
-import isEmailValid  from "../../utils/utilsMethod";
+import { isEmailValid }  from "../../utils/utilsMethod";
 
 import {
   Card,

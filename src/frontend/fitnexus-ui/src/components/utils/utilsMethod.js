@@ -1,4 +1,4 @@
-export function isEmailValid(email)  {
+export const isEmailValid = (email) => {
     const validEmailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
     if (!email) return false;
 
@@ -19,4 +19,11 @@ export function isEmailValid(email)  {
     return validEmailRegex.test(email);
 };
 
-export default isEmailValid
+export const formatDateToDDMMYYYY = (isoDate) => {
+    if (!isoDate) return '';
+    const [year, month, day] = isoDate.split('-');
+    return `${day}/${month}/${year}`;
+};
+
+
+

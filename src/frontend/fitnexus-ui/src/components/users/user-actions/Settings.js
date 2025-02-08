@@ -29,8 +29,9 @@ export function Settings () {
             <CardHeader>
               <CardTitle>Datos generales</CardTitle>
               <CardDescription>
-                Comprueba aquí tu nombre, apellido o email. Pulsa el botón para editar.
+                Comprueba aquí tu nombre, apellido, email, además de tu FitNexusId:
               </CardDescription>
+
             </CardHeader>
             <CardContent>
               <div className="grid w-full items-center gap-4">
@@ -39,6 +40,7 @@ export function Settings () {
                     { label: "Nombre", value: mockClients[0].nombre },
                     { label: "Apellido", value: mockClients[0].apellido },
                     { label: "Email", value: mockClients[0].email },
+                    { label: "FitNexusId", value: mockClients[0].fitNexusId },
                   ].map((item, index) => (
                     <div key={index} className="flex items-center">
                       <Label className="w-1/4">{item.label}</Label>
