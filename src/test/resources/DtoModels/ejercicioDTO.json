@@ -46,8 +46,8 @@
     }
   },
   "ChangeLoginDTO": {
-    "email": "Apellido nuevo",
-    "password": "2024-06-18"
+    "passwordVieja": "passwordVieja",
+    "passwordNueva": "passwordNueva"
   },
   "RutinaDtoRequest" : {
     "nombreRutina": "Rutina A",

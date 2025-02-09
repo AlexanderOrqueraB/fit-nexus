@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ChangeLoginDTO {
 
-    private String email;
-    private String password;
+    private String passwordVieja;
+    private String passwordNueva;
 
 }

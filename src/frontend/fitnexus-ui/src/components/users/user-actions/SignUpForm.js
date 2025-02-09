@@ -154,7 +154,6 @@ export function SignUpForm() {
 							<Input
 								id="password"
 								name="password"
-								type="password"
 								value={data.password}
 								onChange={handleChange}
 								required
@@ -165,7 +164,6 @@ export function SignUpForm() {
 							<Input
 								id="confirmPassword"
 								name="confirmPassword"
-								type="password"
 								value={data.confirmPassword}
 								onChange={handleChange}
 								required

@@ -21,6 +21,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -275,12 +278,56 @@ public class AuthHomeController {
         }
     }
 
-
-
-
     //TODO: How to do a put using Spring Security, do I need to use CustomUserDetails and so on?
-    @PutMapping("/api/v1/login/{userId}")
-    public ResponseEntity<Object> actualizarLogin (@PathVariable Long id, @RequestBody ChangeLoginDTO changeLoginDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(new Object());
+    @PutMapping("/api/v1/user/password/{fitNexusId}")
+    public ResponseEntity<String> cambiarPassword (
+        @PathVariable String fitNexusId, @RequestBody ChangeLoginDTO changeLoginDTO) {
+        log.info("Ejecutando cambiarPassword con este fitNexusId: {}", fitNexusId);
+
+        PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
+
+        try {
+            Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+            Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
+            
+            if(clienteOptional.isPresent()) {
+                Cliente cliente = clienteOptional.get();
+                String emailCliente = cliente.getEmail();
+
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(emailCliente);
+                if (userDetails == null || !PASSWORD_ENCODER.matches(changeLoginDTO.getPasswordVieja(), userDetails.getPassword())) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña actual incorrecta");
+                }
+
+                if (userDetails instanceof CustomUserDetails) {
+                    CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
+                    if (customUserDetails.getRole().equals(Role.USER)) {
+                        cliente.setPassword(PASSWORD_ENCODER.encode(changeLoginDTO.getPasswordNueva()));
+                        clienteRepository.save(cliente);
+                    }
+                }
+            return ResponseEntity.status(HttpStatus.OK).body("Contraseña cambiada correctamente");
+        } else if (entrenadorOptional.isPresent()) {
+            Entrenador entrenador = entrenadorOptional.get();
+            String emailEntrenador = entrenador.getEmail();
+
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(emailEntrenador);
+            if (userDetails == null || !PASSWORD_ENCODER.matches(changeLoginDTO.getPasswordVieja(), userDetails.getPassword())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña actual incorrecta");
+            }
+
+            if (userDetails instanceof CustomUserDetails) {
+                CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
+                if (customUserDetails.getRole().equals(Role.ADMIN)) {
+                    entrenador.setPassword(PASSWORD_ENCODER.encode(changeLoginDTO.getPasswordNueva()));
+                    entrenadorRepository.save(entrenador);
+                }
+            }
+            return ResponseEntity.status(HttpStatus.OK).body("Contraseña cambiada correctamente");
+        }
+    }
+    catch (Exception e) {
+        log.error("Error al cambiar la contraseña", e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al cambiar la contraseña");
     }
 }

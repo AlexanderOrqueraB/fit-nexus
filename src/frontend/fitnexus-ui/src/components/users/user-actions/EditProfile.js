@@ -63,9 +63,9 @@ export function EditProfile({ clientData }) {
   const onSubmit = (e) => {
     e.preventDefault();
     const userData = {
-			nombre: data.nombre,
-      apellido: data.apellido,
-      email: data.email,
+			nombre: myData.nombre,
+      apellido: myData.apellido,
+      email: myData.email,
 		};
 
     console.log('Datos del usuario: ', userData);
