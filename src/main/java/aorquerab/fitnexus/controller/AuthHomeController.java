@@ -324,10 +324,11 @@ public class AuthHomeController {
                 }
             }
             return ResponseEntity.status(HttpStatus.OK).body("Contraseña cambiada correctamente");
+            }
         }
-    }
-    catch (Exception e) {
-        log.error("Error al cambiar la contraseña", e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al cambiar la contraseña");
+        catch (Exception e) {
+            log.error("Error al cambiar la contraseña", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al cambiar la contraseña");
+        }
     }
 }
