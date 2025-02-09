@@ -13,7 +13,7 @@ import { Input } from "../../../components_ui/ui/input"
 import { Label } from "../../../components_ui/ui/label"
 
 
-export function EditProfile() {
+export function ChangePassword() {
 
   return (
     <Dialog>
@@ -50,4 +50,4 @@ export function EditProfile() {
   )
 }
 
-export default EditProfile
+export default ChangePassword

@@ -18,8 +18,6 @@ import { fetchMyData } from '../../utils/api';
 
 export function Settings () {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
-  console.log('Datos del usuario:', user);
-  console.log('Datos del usuario2:', user.fitNexusId);
   const { fitNexusId } = user; // Desestructurar el objeto user
 
   const [selectedSection, setSelectedSection] = useState("general");
@@ -86,7 +84,7 @@ export function Settings () {
               </div>
             </CardContent>
             <CardFooter className="border-t px-6 py-4">
-              <EditProfile clientData={data} />
+              <EditProfile />
             </CardFooter>
           </Card>
         );

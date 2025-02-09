@@ -13,34 +13,49 @@ import { Input } from "../../../components_ui/ui/input"
 import { Label } from "../../../components_ui/ui/label"
 import { mockClients } from '../../../mocks/mockData'
 import { customToast } from '../../utils/customToast'
-import { fetchClientData } from '../../utils/api';
+import { fetchMyData } from '../../utils/api';
 import {apiClient} from "../../utils/client";
 import { UserContext } from "../../main-components/UserContext";
 
 export function EditProfile({ clientData }) {
 
   console.log('Datos del cliente:', clientData);
-  const { nombre, apellido, email, fitNexusId } = clientData; // Desestructurar el objeto user
 
-  const [data, setData] = useState({
-    nombre: nombre || '',
-    apellido: apellido || '',
-    email: email || '',
+  const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+  const { fitNexusId } = user; // Desestructurar el objeto user
+
+  const [data, setData] = useState([]);
+
+  const loadData = async () => {
+      try {
+        const userData = await fetchMyData(fitNexusId);
+        setData(userData);
+        customToast({ message: "Datos cargados correctamente", type: "success" });
+  
+      } catch (error) {
+        console.error("Error al cargar datos:", error);
+        customToast({
+          message: "Hubo un error al cargar los datos de cliente",
+          type: "error",
+        });
+      }
+    };
+  
+  useEffect(() => {
+    loadData();
+  }, []); // Llama a loadData solo al montar el componente
+
+  const [myData, setMyData] = useState({
+    nombre: '',
+    apellido: '',
+    email: '',
+    fitNexusId: '',
   });
-
-	useEffect(() => {
-    setData({
-      nombre: clientData.nombre|| '',
-      apellido: clientData.apellido|| '',
-      email: clientData.email|| '',
-    });
-  }, [clientData]);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setData({
-      ...data,
+    setMyData({
+      ...myData,
       [name]: value,
     });
   };
@@ -78,10 +93,10 @@ export function EditProfile({ clientData }) {
         <DialogHeader>
           <DialogTitle>Editar perfil</DialogTitle>
           <DialogDescription>
-            Haz cambios a tu perfil aquí.
+            Haz cambios a tu perfil aquí
           </DialogDescription>
           <DialogDescription>
-            Haz click en Guardar cuando hayas terminado.
+            Haz click en "Guardar cambios" cuando hayas terminado
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
