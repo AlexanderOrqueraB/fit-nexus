@@ -60,72 +60,17 @@ public class PlanNutricionalController {
         return planNutricionalRepository.findAll();
     }
 
-    @GetMapping ("/kcal/{clienteEmail}")
-    public ResponseEntity <PlanNutricionalDTO> obtenerKcalDeCadaMacroParaClienteDesdePlanNutricional (
-            @PathVariable String clienteEmail) {
-
-        PlanNutricionalDTO planDeCliente = planNutricionalService.obtenerPlanDeClienteDTOPorSuEmail(clienteEmail);
-
-        if (planDeCliente.getFechaInicio() == null) {
-            log.info("Las kcal del plan nutricional no han sido calculadas aun");
-            throw new InvalidRequestException("Las kcal del plan nutricional no han sido calculadas aun");
-        }
-        else {
-            int proteinaKcal = planDeCliente.getKcal() * planDeCliente.getProteina() / 100;
-            int hidratosKcal = planDeCliente.getKcal() * planDeCliente.getHidratoDeCarbono() / 100;
-            int grasasKcal = planDeCliente.getKcal() * planDeCliente.getGrasa() / 100;
-            log.info("Kcal de cada macro: (proteina/hc/grasas): {} kcal de proteina, {} kcal de hc {} y kcal de grasa"
-                    , proteinaKcal, hidratosKcal, grasasKcal);
-
-            PlanNutricionalDTO planNutricionalKcal = PlanNutricionalDTO.builder()
-                    .proteina(proteinaKcal)
-                    .grasa(grasasKcal)
-                    .hidratoDeCarbono(hidratosKcal)
-                    .build();
-            return ResponseEntity.status(HttpStatus.OK).body(planNutricionalKcal); //Ejemplo: -> 800,720,520 (kcal
-        }
-    }
-
-
-    @GetMapping("/porcentajes/{clienteEmail}")
-    public ResponseEntity <PlanNutricionalDTO> obtenerPlanNutriEnPorcentajes (@PathVariable String clienteEmail) {
-        PlanNutricionalDTO planNutricionalDTO;
-        try {
-            if (clienteEmail == null) {
-                throw new InvalidRequestException("Peticion de plan nutricional en porcentajes no valida");
-            } else {
-                Cliente cliente = planNutricionalService.obtenerClientePorEmail(clienteEmail)
-                        .orElseThrow(()-> {
-                            log.warn("Cliente no encontrado con el email: {}", clienteEmail);
-                            return new InvalidRequestException("Cliente no encontrado con el email:" + clienteEmail);
-                        });
-                log.info("cliente: {} encontrado con el email: {} ", cliente, clienteEmail);
-                PlanNutricionalDTO planDeCliente = planNutricionalService.obtenerPlanDeClienteDTOPorSuEmail(clienteEmail);
-
-                if (planDeCliente.getFechaInicio() == null) {
-                    log.info("El plan nutricional en porcentajes no ha sido creado aun");
-                    throw new InvalidRequestException("El plan nutricional en porcentajes no ha sido creado aun");
-                } else {
-                    planNutricionalDTO = planNutricionalService.obtenerPorcentajeMacrosPorObjetivo(cliente);
-                    log.info("El plan nutricional en porcentajes existente en BD, porcentajes DTO creado");
-                }
-                //-> 30,30,40(defi) 50,30,20(volumen)
-                return ResponseEntity.status(HttpStatus.OK).body(planNutricionalDTO);
-            }
-        } catch (Exception e) {
-            log.warn("Excepcion obtenerPlanNutriEnPorcentajes: ", e);
-            throw new PlanNutricionalNotFoundException("Plan nutricional en porcentajes no encontrada en BD");
-        }
-    }
-
     @GetMapping("/gramos/{clienteEmail}")
-    public ResponseEntity <PlanNutricionalDTO> obtenerPlanNutriMacrosEnGramos (@PathVariable String clienteEmail) {
+    public ResponseEntity <PlanNutricionalDTO> obtenerPlanNutriMacrosEnGramos (@PathVariable String fitNexusId) {
         PlanNutricionalDTO planNutricionalDTO;
+
+        log.info("Ejecutando obtenerPlanNutriMacrosEnGramos con este fitNexusId: {}", fitNexusId);
+
         try {
-            if (clienteEmail == null) {
-                throw new ClienteNotFoundException("Cliente no encontrado con el email");
+            if (fitNexusId == null) {
+                throw new ClienteNotFoundException("Cliente no encontrado con el fitNexusId");
             } else {
-                PlanNutricional planDeCliente = planNutricionalService.obtenerPlanDeClientePorSuEmail(clienteEmail);
+                PlanNutricional planDeCliente = planNutricionalService.obtenerPlanDeClientePorSuFitNexusId(fitNexusId);
 
                 if (planDeCliente.getFechaInicio() == null) {
                     log.info("El plan nutricional en macros no ha sido creado aun");
@@ -142,7 +87,71 @@ public class PlanNutricionalController {
             }
         } catch (Exception e) {
             log.warn("Excepcion obtenerPlanNutriEnMacros: ", e);
-            throw new PlanNutricionalNotFoundException("Plan nutricional en macros no encontrada en BD");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(PlanNutricionalDTO.builder().build());
+        }
+    }
+
+    @GetMapping("/porcentajes/{fitNexusId}")
+    public ResponseEntity <PlanNutricionalDTO> obtenerPlanNutriEnPorcentajes (@PathVariable String fitNexusId) {
+        
+        PlanNutricionalDTO planNutricionalDTO;
+        
+        log.info("Ejecutando obtenerPlanNutriEnPorcentajes con este fitNexusId: {}", fitNexusId);
+       
+        try {
+            if (fitNexusId == null) {
+                throw new InvalidRequestException("Peticion de plan nutricional en porcentajes no valida");
+            } else {
+                Cliente cliente = planNutricionalService.obtenerClientePorFitNexusId(fitNexusId)
+                        .orElseThrow(()-> {
+                            log.warn("Cliente no encontrado con el fitNexusId: {}", fitNexusId);
+                            return new InvalidRequestException("Cliente no encontrado con el fitNexusId:" + fitNexusId);
+                        });
+                log.info("cliente: {} encontrado con el fitNexusId: {} ", cliente, fitNexusId);
+                PlanNutricionalDTO planDeCliente = planNutricionalService.obtenerPlanDeClienteDTOPorSuFitNexusId(fitNexusId);
+
+                if (planDeCliente.getFechaInicio() == null) {
+                    log.info("El plan nutricional en porcentajes no ha sido creado aun");
+                    throw new InvalidRequestException("El plan nutricional en porcentajes no ha sido creado aun");
+                } else {
+                    planNutricionalDTO = planNutricionalService.obtenerPorcentajeMacrosPorObjetivo(cliente);
+                    log.info("El plan nutricional en porcentajes existente en BD, porcentajes DTO creado");
+                }
+                //-> 30,30,40(defi) 50,30,20(volumen)
+                return ResponseEntity.status(HttpStatus.OK).body(planNutricionalDTO);
+            }
+        } catch (Exception e) {
+            log.warn("Excepcion obtenerPlanNutriEnPorcentajes: ", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(PlanNutricionalDTO.builder().build());
+        }
+    }
+
+    @GetMapping ("/kcal/{clienteEmail}")
+    public ResponseEntity <PlanNutricionalDTO> obtenerKcalDeCadaMacroParaClienteDesdePlanNutricional (
+            @PathVariable String fitNexusId) {
+        
+        log.info("Ejecutando obtenerKcalDeCadaMacroParaClienteDesdePlanNutricional con este fitNexusId: {}", fitNexusId);
+
+        PlanNutricionalDTO planDeCliente = planNutricionalService.obtenerPlanDeClienteDTOPorSuFitNexusId(fitNexusId);
+
+        if (planDeCliente.getFechaInicio() == null) {
+            log.info("Las kcal del plan nutricional no han sido calculadas aun");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PlanNutricionalDTO.builder().build());
+
+        }
+        else {
+            int proteinaKcal = planDeCliente.getKcal() * planDeCliente.getProteina() / 100;
+            int hidratosKcal = planDeCliente.getKcal() * planDeCliente.getHidratoDeCarbono() / 100;
+            int grasasKcal = planDeCliente.getKcal() * planDeCliente.getGrasa() / 100;
+            log.info("Kcal de cada macro: (proteina/hc/grasas): {} kcal de proteina, {} kcal de hc {} y kcal de grasa"
+                    , proteinaKcal, hidratosKcal, grasasKcal);
+
+            PlanNutricionalDTO planNutricionalKcal = PlanNutricionalDTO.builder()
+                    .proteina(proteinaKcal)
+                    .grasa(grasasKcal)
+                    .hidratoDeCarbono(hidratosKcal)
+                    .build();
+            return ResponseEntity.status(HttpStatus.OK).body(planNutricionalKcal); //Ejemplo: -> 800,720,520 (kcal
         }
     }
 
@@ -202,7 +211,7 @@ public class PlanNutricionalController {
             return ResponseEntity.status(HttpStatus.CREATED).body("Plan nutricional en porcentajes creada correctamente.");
         } catch (Exception e) {
             log.info("Excepcion crearPlanNutriEnPorcentajes: ", e);
-            throw new PlanNutricionalNotFoundException("Plan nutricional no encontrado en BD");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear el plan nutricional.");
         }
     }
 }

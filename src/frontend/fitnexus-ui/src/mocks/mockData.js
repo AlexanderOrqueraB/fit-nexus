@@ -21,10 +21,17 @@ export const mockClients = [
         "genero": "MUJER",
         "frecuenciaEjercicioSemanal": "LIGERO",
         "edad": 25,
-        "peso": 80,
-        "altura": 175,
+        "peso": 60,
+        "altura": 155,
         "clienteDesde": "2023-07-12",
     },
+    {
+      "nombre": "Han Solo Data1",
+      "apellido": "Skywalker",
+      "email": "leia@skywalker.com",
+      "fitNexusId": "13579",
+      "clienteDesde": "2023-07-12",
+  }
 ];
 
 export const CLIENTE = 

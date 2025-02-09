@@ -26,6 +26,7 @@ import { Select,
   SelectValue } from "../../components_ui/ui/select"
 import { Button } from "../../components_ui/ui/button"
 import { UserContext } from "../main-components/UserContext";
+import { fetchNutriData } from "../utils/api";
 
 const chartConfig = {
   porcentajes: {
@@ -77,7 +78,7 @@ export function NutritionChart() {
     return mockChartNutri.reduce((acc, curr) => acc + curr.kcal, 0)
   }, [])
 
-  const fetchData = async () => {
+  const fetchData = async (fitNexusId) => {
     try {
       //uncomment this lines to use backend data
       //const clientsData = await fetchClientData(fitNexusId); 
@@ -90,7 +91,7 @@ export function NutritionChart() {
     }
   };
 
-  const fetchExtraData = async () => {
+  const fetchExtraData = async (fitNexusId) => {
     try {
       //uncomment this lines to use backend data
       //const data = await fetchExtraData(fitNexusId);
@@ -102,10 +103,10 @@ export function NutritionChart() {
     }
   };
 
-  const createPlan = async () => {
+  const createPlan = async (email) => {
     try {
       //uncomment this lines to use backend data
-      //await createNutritionPlan(fitNexusId);
+      //await createNutritionPlan(email);
       fetchData();
     } catch (error) {
       setError(error.message);
@@ -113,9 +114,12 @@ export function NutritionChart() {
   };
 
   useEffect(() => {
-    fetchData();
+    if (role === 'admin') {
+      fetchData(fitNexusId); //Cargar datos de clientes (para mostrar en el select)
+      fetchNutriData(fitNexusId); //Cargar datos del plan nutricional
+    }
     if (role === 'user') {
-      fetchExtraData();
+      fetchExtraData(fitNexusId); //Cargar datos extra del cliente (para mostrar Crear Plan Nutricional)
     }
   }, []);
 
@@ -125,7 +129,10 @@ export function NutritionChart() {
   return (
     <div className="flex flex-col gap-4">
       {role === 'admin' ? (
-        <Select onValueChange={setSelectedClient}>
+        <Select onValueChange={(value) => {
+          const client = clients.find(client => client.fitNexusId === value);
+          setSelectedClient(client);
+        }}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Selecciona un cliente" />
         </SelectTrigger>
@@ -142,6 +149,7 @@ export function NutritionChart() {
           <h1 className="text-2xl font-bold">Tu plan nutricional</h1>
         </div>
       )}
+      {selectedClient ? (
       <div className="flex justify-center items-center space-x-4">
       <Card className="flex flex-col w-1/2">
         <CardHeader className="items-center pb-0">
@@ -235,12 +243,24 @@ export function NutritionChart() {
             <PostProfileExtra />
             )}
             {role === 'admin' && selectedClient && !extraData && (
-              <Button onClick={() => createPlan(selectedClient)}>Crear Plan Nutricional</Button>
+              <Button onClick={() => createPlan(selectedClient.email)}>Crear Plan Nutricional</Button>
             )}
         </CardFooter>
       </Card>
       </div>
-      
+      ) : 
+      (
+        <div className="flex justify-center items-center space-x-4">
+        <Card className="flex flex-col w-1/2">
+          <CardHeader className="items-center pb-0">
+            <CardTitle>Plan nutricional personalizado</CardTitle>
+            <CardDescription>Selecciona un cliente para visualizar</CardDescription>
+          </CardHeader>
+          <CardContent className="flex-1 pb-0">
+          </CardContent>
+          </Card>
+          </div>
+      )}
     </div>
   )
 }

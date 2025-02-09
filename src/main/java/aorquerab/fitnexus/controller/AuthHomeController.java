@@ -278,7 +278,6 @@ public class AuthHomeController {
         }
     }
 
-    //TODO: How to do a put using Spring Security, do I need to use CustomUserDetails and so on?
     @PutMapping("/api/v1/user/password/{fitNexusId}")
     public ResponseEntity<String> cambiarPassword (
         @PathVariable String fitNexusId, @RequestBody ChangeLoginDTO changeLoginDTO) {
@@ -324,6 +323,8 @@ public class AuthHomeController {
                 }
             }
             return ResponseEntity.status(HttpStatus.OK).body("Contraseña cambiada correctamente");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
             }
         }
         catch (Exception e) {

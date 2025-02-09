@@ -23,15 +23,15 @@ public class PlanNutricionalService {
         this.clientService = clientService;
     }
 
-    public Optional<PlanNutricionalDTO> obtenerPlanDTOMasRecientePorClienteEmail(String email) {
-        return clientService.findByEmail(email)
+    public Optional<PlanNutricionalDTO> obtenerPlanDTOMasRecientePorFitNexusId(String fitNexusId) {
+        return clientService.findByFitNexusId(fitNexusId)
                 .map(Cliente::getPlanNutricional)
                 .flatMap(planNutricionalList -> planNutricionalList.stream().max(Comparator.comparing(PlanNutricional::getFechaInicio)))
                 .map(this::convertToDTO);
     }
 
-    public Optional<PlanNutricional> obtenerPlanMasRecientePorClienteEmail(String email) {
-        return clientService.findByEmail(email)
+    public Optional<PlanNutricional> obtenerPlanMasRecientePorFitNexusId(String fitNexusId) {
+        return clientService.findByFitNexusId(fitNexusId)
                 .map(Cliente::getPlanNutricional)
                 .flatMap(planNutricionalList -> planNutricionalList.stream().max(Comparator.comparing(PlanNutricional::getFechaInicio)));
     }
@@ -47,44 +47,44 @@ public class PlanNutricionalService {
                 .build();
     }
 
-    public Optional<Cliente> obtenerClientePorEmail (String email) {
-        return clientService.findByEmail(email);
+    public Optional<Cliente> obtenerClientePorFitNexusId (String fitNexusId) {
+        return clientService.findByFitNexusId(fitNexusId);
     }
 
-    public PlanNutricionalDTO obtenerPlanDeClienteDTOPorSuEmail(String clienteEmail) {
-        log.info("Obteniendo el plan asociado al cliente con email: {} ", clienteEmail);
+    public PlanNutricionalDTO obtenerPlanDeClienteDTOPorSuFitNexusId(String fitNexusId) {
+        log.info("Obteniendo el plan asociado al cliente con email: {} ", fitNexusId);
         try {
             PlanNutricionalDTO planDeCliente =
-                    obtenerPlanDTOMasRecientePorClienteEmail(clienteEmail).orElseThrow(() -> {
-                        log.warn("Plan nutricional no encontrado con el email: {}", clienteEmail);
-                        return new PlanNutricionalNotFoundException("Plan no encontrado en BD: " + clienteEmail);
+                    obtenerPlanDTOMasRecientePorFitNexusId(fitNexusId).orElseThrow(() -> {
+                        log.warn("Plan nutricional no encontrado con el fitNexusId: {}", fitNexusId);
+                        return new PlanNutricionalNotFoundException("Plan no encontrado en BD: " + fitNexusId);
                     });
-            log.info("Existe un plan nutricional creado con al menos un identificador para el cliente {}", clienteEmail);
+            log.info("Existe un plan nutricional creado con al menos un identificador para el cliente con el fitNexusId: {}", fitNexusId);
             return planDeCliente;
         } catch (PlanNutricionalNotFoundException e) {
             log.error("Error al obtener el plan {}", e.getMessage());
             throw e;
         } catch (Exception e) {
-            log.error("Error al obtener el plan asociado al cliente {}", clienteEmail);
+            log.error("Error al obtener el plan asociado al cliente con el fitNexusId: {}", fitNexusId);
             throw new ServiceException("Error inesperado al obtener el plan nutricional", e);
         }
     }
 
-    public PlanNutricional obtenerPlanDeClientePorSuEmail(String clienteEmail) {
-        log.info("Obteniendo el plan asociado al cliente con email: {} ", clienteEmail);
+    public PlanNutricional obtenerPlanDeClientePorSuFitNexusId(String fitNexusId) {
+        log.info("Obteniendo el plan asociado al cliente con fitNexusId: {} ", fitNexusId);
         try {
             PlanNutricional planDeCliente =
-                    obtenerPlanMasRecientePorClienteEmail(clienteEmail).orElseThrow(() -> {
-                        log.warn("Plan nutricional no encontrado con el email: {}", clienteEmail);
-                        return new PlanNutricionalNotFoundException("Plan no encontrado en BD: " + clienteEmail);
+                    obtenerPlanMasRecientePorFitNexusId(fitNexusId).orElseThrow(() -> {
+                        log.warn("Plan nutricional no encontrado con el fitNexusId: {}", fitNexusId);
+                        return new PlanNutricionalNotFoundException("Plan no encontrado en BD: " + fitNexusId);
                     });
-            log.info("Existe un plan nutricional creado con al menos un identificador para el cliente {}", clienteEmail);
+            log.info("Existe un plan nutricional creado con al menos un identificador para el cliente con el fitNexusId: {}", fitNexusId);
             return planDeCliente;
         } catch (PlanNutricionalNotFoundException e) {
             log.error("Error al obtener el plan {}", e.getMessage());
             throw e;
         } catch (Exception e) {
-            log.error("Error al obtener el plan asociado al cliente {}", clienteEmail);
+            log.error("Error al obtener el plan asociado al cliente con el fitNexusId: {}", fitNexusId);
             throw new ServiceException("Error inesperado al obtener el plan nutricional", e);
         }
     }
