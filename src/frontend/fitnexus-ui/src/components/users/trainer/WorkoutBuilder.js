@@ -5,7 +5,7 @@ import PostExercise from '../../workout-components/ejercicio/PostExercise';
 import PutExercise from '../../workout-components/ejercicio/PutExercise';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components_ui/ui/tabs';
-import { Calendar, CalendarDays, CircleMinusIcon, CirclePlusIcon, Edit, RefreshCwIcon, Trash2Icon } from 'lucide-react';
+import { Calendar, CalendarDays, CircleMinusIcon, CirclePlusIcon, Edit, RefreshCwIcon, ScanFace, Trash2Icon } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components_ui/ui/card';
 import { fetchWorkoutData } from '../../utils/api';
 import PostRutina from '../../workout-components/rutina/PostRutina';
@@ -23,6 +23,18 @@ import DeleteListRoutinesInPlan from '../../workout-components/plan-entrenamient
 import { mockExercises, mockRoutinesBuilder, mockPlans } from '../../../mocks/mockData'
 import { UserContext } from '../../main-components/UserContext';
 import { formatDateToDDMMYYYY } from '../../utils/utilsMethod';
+import {   DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger, } from '../../../components_ui/ui/dropdown-menu';
+  import {
+    ListFilter,
+  } from "lucide-react";
+import { PostSetPlanACliente } from '../../workout-components/plan-entrenamiento/PostSetPlanACliente';
 
 const deleteMessage = "deleteMessage"
 const deleteTitle = "La acción de eliminar no se puede revertir"
@@ -60,6 +72,16 @@ export function WorkoutBuilder() {
   const [isRemoveRoutineFromPlanOpen, setIsRemoveRoutineFromPlanOpen] = useState(false);
   const [isAddDateOpen, setIsAddDateOpen] = useState(false);
   const [isEditDateOpen, setIsEditDateOpen] = useState(false);
+  const [isSetPlanToClientOpen, setIsSetPlanToClientOpen] = useState(false);	
+
+  const [visibleColumns, setVisibleColumns] = useState([
+      "fecha Inicio",
+      "fecha Final",
+      "cliente",
+  ]);
+
+  // Estado para rastrear la pestaña activa
+  const [activeTab, setActiveTab] = useState('planes'); 
 
   const loadData = async () => {
     try {
@@ -136,6 +158,12 @@ export function WorkoutBuilder() {
     setSelectedPlan(plan);
     setIsEditDateOpen(true);
   }
+  const handleSetPlanToClient = (plan) => {
+    console.log("Selected Plan:", plan);
+    setSelectedPlan(plan);
+    setIsSetPlanToClientOpen(true);
+  }
+  
 
   return (
     <React.Fragment>
@@ -143,7 +171,7 @@ export function WorkoutBuilder() {
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
             <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
-              <Tabs defaultValue="plan">
+              <Tabs defaultValue="ejercicio" onValueChange={(value) => setActiveTab(value)}>
                 <div className="flex items-center">
                   <TabsList className="flex items-center space-x-4">
                     <TabsTrigger value="plan">Planes</TabsTrigger>
@@ -159,7 +187,47 @@ export function WorkoutBuilder() {
                       </Button>
                     </div>
                   </TabsList>
+                  {activeTab === 'plan' && (
+                  <div className="ml-auto flex items-center gap-2">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm" className="h-8 gap-1">
+                        <ListFilter className="h-3.5 w-3.5" />
+                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                          Filtro
+                        </span>
+                      </Button>
+                    </DropdownMenuTrigger>
+
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>Mostrar columnas</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      {[
+                        "fecha Inicio",
+                        "fecha Final",
+                      ].map((column) => (
+                        <DropdownMenuCheckboxItem
+                          key={column}
+                          checked={visibleColumns.includes(column)}
+                          onCheckedChange={() => {
+                            setVisibleColumns((prev) =>
+                              prev.includes(column)
+                                ? prev.filter((col) => col !== column)
+                                : [...prev, column]
+                            );
+                          }}
+                        >
+                          {column.charAt(0).toUpperCase() + column.slice(1)}
+                        </DropdownMenuCheckboxItem>
+                      ))}
+                      <DropdownMenuSeparator />
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
+              )}
+                </div>
+
+
                 <TabsContent value="plan">
                   <Card x-chunk="dashboard-06-chunk-0">
                     <CardHeader>
@@ -176,9 +244,17 @@ export function WorkoutBuilder() {
                         <TableHeader>
                           <TableRow>
                             <TableHead>Nombre del plan</TableHead>
-                            <TableHead>Fecha Inicio</TableHead>
+                            {visibleColumns.includes("cliente") && (
+                            <TableHead className="hidden md:table-cell">Cliente</TableHead>
+                            )}
+                            {visibleColumns.includes("fecha Inicio") && (
+                            <TableHead className="hidden md:table-cell">Fecha Inicio</TableHead>
+                            )}
+                            {visibleColumns.includes("fecha Final") && (
                             <TableHead className="hidden md:table-cell">Fecha Final</TableHead>
+                            )}
                             <TableHead className="hidden md:table-cell">Rutinas</TableHead>
+                            <TableHead className="hidden md:table-cell">SET</TableHead>
                             <TableHead className="hidden md:table-cell">Editar</TableHead>
                             <TableHead className="hidden md:table-cell">Añadir fechas</TableHead>
                             <TableHead className="hidden md:table-cell">Cambiar fechas</TableHead>
@@ -192,14 +268,30 @@ export function WorkoutBuilder() {
                           {displayedPlans.map((plan) => (
                             <TableRow key={plan.id}>
                               <TableCell className="font-medium">{plan.nombrePlan}</TableCell>
-                              <TableCell className="font-medium">{plan.fechaInicio ? formatDateToDDMMYYYY(plan.fechaFinal) : ''}</TableCell>
+                              {visibleColumns.includes("cliente") && (
+                              <TableCell className="font-medium">{plan.cliente}</TableCell>
+                              )}
+                              {visibleColumns.includes("fecha Inicio") && (
+                              <TableCell className="font-medium">{plan.fechaInicio ? formatDateToDDMMYYYY(plan.fechaInicio) : ''}</TableCell>
+                              )}
+                              {visibleColumns.includes("fecha Final") && (
                               <TableCell className="font-medium">{plan.fechaFinal ? formatDateToDDMMYYYY(plan.fechaFinal) : ''}</TableCell>
+                              )}
                               <TableCell className="font-medium">
                               <ul className="list-disc pl-4">
                                 {plan.rutinas.map((rutina, index) => (
                                   <li key={index}>{rutina.nombreRutina}</li>
                                 ))}
                               </ul>
+                              </TableCell>
+                              <TableCell>
+                                <Button 
+                                    aria-haspopup="true"
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={() => handleSetPlanToClient(plan, 'plan')}>
+                                  <ScanFace/>
+                                </Button>
                               </TableCell>
                               <TableCell>
                                 <Button 
@@ -269,6 +361,13 @@ export function WorkoutBuilder() {
                         <PutPlanEntrenamiento
                           open={isEditOpen}
                           onClose={() => setIsEditOpen(false)}
+                          planData={selectedPlan}
+                        />
+                      )}
+                      {isAddDateOpen && (
+                        <PostSetPlanACliente
+                          open={isAddDateOpen}
+                          onClose={() => setIsAddDateOpen(false)}
                           planData={selectedPlan}
                         />
                       )}
