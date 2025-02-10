@@ -6,10 +6,7 @@ import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.RutinaDTO;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.EjerciciosListDTO;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.RutinaDtoRequest;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.RutinaGetDTO;
-import aorquerab.fitnexus.model.exception.ClienteNotFoundException;
-import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
-import aorquerab.fitnexus.model.exception.InvalidRequestException;
-import aorquerab.fitnexus.model.exception.RutinaNotFoundException;
+import aorquerab.fitnexus.model.exception.*;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
 import aorquerab.fitnexus.repository.ClienteRepository;
@@ -25,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
@@ -136,40 +134,42 @@ public class RutinaController {
 
     //TODO: Testear en Postman
     //TODO: Testear en React
-    @GetMapping("/rutina/usuario/{emailId}")
-    public ResponseEntity<List<RutinaGetDTO>> obtenerRutinaPorUsuario(@PathVariable String emailId) {
-        log.info("Ejecutando obtenerRutinaPorUsuario...");
+    @GetMapping("/rutina/usuario/{fitNexusId}")
+    public ResponseEntity<List<RutinaGetDTO>> obtenerRutinaPorFitNexusId(@PathVariable String fitNexusId) {
+        log.info("Ejecutando obtenerEjerciciosPorFitNexusId con el FitNexusId: {}...", fitNexusId);
         try {
             List<Rutina> rutinas = Collections.emptyList();
-            Optional<Cliente> clienteOptional = clienteRepository.findByEmail(emailId);
-            Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByEmail(emailId);
+            Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+            Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             if (clienteOptional.isEmpty() && entrenadorOptional.isEmpty()) {
-                log.warn("Usuario no encontrado con el email: {}", emailId);
-                throw new ClienteNotFoundException("Usuario no encontrado en BD: " + emailId);
+                log.warn("Usuario no encontrado con el fitNexusId: {}", fitNexusId);
+                throw new UsuarioNotFoundException("Usuario no encontrado en BD: " + fitNexusId);
             }
 
             if(clienteOptional.isPresent()) {
                 Cliente cliente = clienteOptional.get();
                 rutinas = cliente.getRutinas();
-            } else {
+            }
+            if (entrenadorOptional.isPresent()){
                 Entrenador entrenador = entrenadorOptional.get();
                 rutinas = entrenador.getRutinas();
             }
 
             if (rutinas.isEmpty()) {
-                log.warn("Rutinas no encontradas para el usuario con el email: {}", emailId);
-                throw new RutinaNotFoundException("Rutinas no encontradas para el usuario con el email: {}"+ emailId);
+                log.warn("Rutinas no encontradas para el usuario con el fitNexusId: {}", fitNexusId);
+                throw new RutinaNotFoundException("Rutinas no encontradas para el usuario con el fitNexusId: {}"
+                        + fitNexusId);
             }
 
             List<RutinaGetDTO> rutinaDtoRequestList = rutinas.stream()
                     .map(rutina -> RutinaGetDTO.builder()
-                            .nombreRutina(rutina.getNombreRutina())
-                            .fechaInicio(rutina.getFechaInicio())
-                            .fechaFinal(rutina.getFechaFinal())
-                            .ejercicios(rutina.getEjercicios().stream()
-                                    .map(ejercicio -> RutinaGetDTO.EjercicioDTO.builder()
-                                            .nombreEjercicio(ejercicio.getNombreEjercicio()).build()).collect(Collectors.toList()))
-                            .build()).toList();
+                        .nombreRutina(rutina.getNombreRutina())
+                        .fechaInicio(rutina.getFechaInicio())
+                        .fechaFinal(rutina.getFechaFinal())
+                        .ejercicios(rutina.getEjercicios().stream()
+                            .map(ejercicio -> RutinaGetDTO.EjercicioDTO.builder()
+                                .nombreEjercicio(ejercicio.getNombreEjercicio()).build()).collect(Collectors.toList()))
+                        .build()).toList();
 
             return ResponseEntity.status(HttpStatus.OK).body(rutinaDtoRequestList);
         } catch (Exception e) {

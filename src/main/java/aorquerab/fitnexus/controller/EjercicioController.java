@@ -3,10 +3,7 @@ package aorquerab.fitnexus.controller;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.EjercicioDtoRequest;
 import aorquerab.fitnexus.model.enumerator.Role;
-import aorquerab.fitnexus.model.exception.ClienteNotFoundException;
-import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
-import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
-import aorquerab.fitnexus.model.exception.InvalidRequestException;
+import aorquerab.fitnexus.model.exception.*;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
 import aorquerab.fitnexus.repository.ClienteRepository;
@@ -22,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
@@ -110,29 +108,31 @@ public class EjercicioController {
 
     //TODO: Testear en Postman
     //TODO: Testear en React
-    @GetMapping("/ejercicio/usuario/{emailId}")
-    public ResponseEntity<List<EjercicioDtoRequest>> obtenerEjercicioPorUsuario(@PathVariable String emailId) {
-        log.info("Ejecutando obtenerEjercicioPorUsuario...");
+    @GetMapping("/ejercicio/usuario/{fitNexusId}")
+    public ResponseEntity<List<EjercicioDtoRequest>> obtenerEjerciciosPorFitNexusId(@PathVariable String fitNexusId) {
+        log.info("Ejecutando obtenerEjerciciosPorFitNexusId con el FitNexusId: {}...", fitNexusId);
         try {
             List<Ejercicio> ejercicios = Collections.emptyList();
-            Optional<Cliente> clienteOptional = clienteRepository.findByEmail(emailId);
-            Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByEmail(emailId);
+            Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+            Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             if (clienteOptional.isEmpty() && entrenadorOptional.isEmpty()) {
-                log.warn("Usuario no encontrado con el email: {}", emailId);
-                throw new ClienteNotFoundException("Usuario no encontrado en BD: " + emailId);
+                log.warn("Usuario no encontrado con el fitNexusId: {}", fitNexusId);
+                throw new UsuarioNotFoundException("Usuario no encontrado en BD: " + fitNexusId);
             }
 
             if(clienteOptional.isPresent()) {
                 Cliente cliente = clienteOptional.get();
                 ejercicios = cliente.getEjercicios();
-            } else {
+            }
+            if (entrenadorOptional.isPresent()){
                 Entrenador entrenador = entrenadorOptional.get();
                 ejercicios = entrenador.getEjercicios();
             }
 
             if (ejercicios.isEmpty()) {
-                log.warn("Ejercicios no encontrados para el usuario con el email: {}", emailId);
-                throw new EjercicioNotFoundException("Ejercicios no encontrados para el usuario con el email: {}"+ emailId);
+                log.warn("Ejercicios no encontrados para el usuario con el fitNexusId: {}", fitNexusId);
+                throw new EjercicioNotFoundException("Ejercicios no encontrados para el usuario con el fitNexusId: {}"
+                        + fitNexusId);
             }
 
             List<EjercicioDtoRequest> ejercicioDtoRequestList = ejercicios.stream()
@@ -146,7 +146,7 @@ public class EjercicioController {
 
             return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoRequestList);
         } catch (Exception e) {
-            log.warn("Error al obtener ejerciciosDTO: ", e);
+            log.warn("Error al obtener EjercicioDtoRequest: ", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
     }

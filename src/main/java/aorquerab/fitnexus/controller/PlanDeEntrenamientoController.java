@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
@@ -101,29 +102,31 @@ public class PlanDeEntrenamientoController {
 
     //TODO: Testear en Postman
     //TODO: Testear en React
-    @GetMapping("/plan/usuario/{emailId}")
-    public ResponseEntity<List<PlanEntrenamientoGetDTO>> obtenerPlanPorUsuario(@PathVariable String emailId) {
-        log.info("Ejecutando obtenerPlanPorUsuario...");
+    @GetMapping("/plan/usuario/{fitNexusId}")
+    public ResponseEntity<List<PlanEntrenamientoGetDTO>> obtenerPlanPorFitNexusId(@PathVariable String fitNexusId) {
+        log.info("Ejecutando obtenerEjerciciosPorFitNexusId con el FitNexusId: {}...", fitNexusId);
         try {
             List<PlanDeEntrenamiento> planes = Collections.emptyList();
-            Optional<Cliente> clienteOptional = clienteRepository.findByEmail(emailId);
-            Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByEmail(emailId);
+            Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+            Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             if (clienteOptional.isEmpty() && entrenadorOptional.isEmpty()) {
-                log.warn("Usuario no encontrado con el email: {}", emailId);
-                throw new ClienteNotFoundException("Usuario no encontrado en BD: " + emailId);
+                log.warn("Usuario no encontrado con el fitNexusId: {}", fitNexusId);
+                throw new UsuarioNotFoundException("Usuario no encontrado en BD: " + fitNexusId);
             }
 
             if(clienteOptional.isPresent()) {
                 Cliente cliente = clienteOptional.get();
                 planes = cliente.getPlanDeEntrenamiento();
-            } else {
+            }
+            if (entrenadorOptional.isPresent()){
                 Entrenador entrenador = entrenadorOptional.get();
                 planes = entrenador.getPlanesDeEntrenamiento();
             }
 
             if (planes.isEmpty()) {
-                log.warn("Planes no encontrados para el usuario con el email: {}", emailId);
-                throw new RutinaNotFoundException("Planes no encontrados para el usuario con el email: {}"+ emailId);
+                log.warn("Planes no encontrados para el usuario con el fitNexusId: {}", fitNexusId);
+                throw new RutinaNotFoundException("Planes no encontrados para el usuario con el fitNexusId: {}"
+                        + fitNexusId);
             }
 
             List<PlanEntrenamientoGetDTO> planDtoRequestList = planes.stream()
@@ -138,7 +141,7 @@ public class PlanDeEntrenamientoController {
 
             return ResponseEntity.status(HttpStatus.OK).body(planDtoRequestList);
         } catch (Exception e) {
-            log.warn("Error al obtener RutinaGetDTO: ", e);
+            log.warn("Error al obtener PlanEntrenamientoGetDTO: ", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
     }
