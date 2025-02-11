@@ -155,6 +155,15 @@ export const mockPlans = [
         "fechaFinal": '2024-11-30',
         "rutinas": [{ "nombreRutina": 'Rutina de Pecho' }],
     },
+    {
+      "id": 2 ,
+      "nombrePlan": 'Plan Verano',
+      "fechaInicio": '2024-11-01',
+      "fechaFinal": '2024-11-30',
+      "rutinas": [{ "nombreRutina": 'Rutina fuerza' }
+        , { "nombreRutina": 'Rutina HIIT' }
+      ],
+  },
 ];
 
 export const planWithEntrenador  = 

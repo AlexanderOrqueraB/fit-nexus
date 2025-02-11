@@ -1,8 +1,10 @@
 package aorquerab.fitnexus.controller;
 
+import aorquerab.fitnexus.model.exception.ClienteNotFoundException;
 import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
 import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
+import aorquerab.fitnexus.model.exception.PlanDeEntrenamientoNotFoundException;
 import aorquerab.fitnexus.model.exception.RutinaNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,14 +21,13 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({EjercicioNotFoundException.class, RutinaNotFoundException.class})
+    @ExceptionHandler({EjercicioNotFoundException.class, RutinaNotFoundException.class, PlanDeEntrenamientoNotFoundException.class})
     public ResponseEntity<String> handleComponenteEntrenamientoNotFoundException (RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    //TODO: Refactor this, maybe we can handle the same exception not-found by using the same method
-    @ExceptionHandler(EntrenadorNotFoundException.class)
-    public ResponseEntity<String> handleEntrenadorNotFoundException (EntrenadorNotFoundException ex) {
+    @ExceptionHandler({EntrenadorNotFoundException.class, ClienteNotFoundException.class})
+    public ResponseEntity<String> handleUsuarioNotFoundException (RuntimeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 

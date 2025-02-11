@@ -57,6 +57,7 @@ export function ClientsList() {
   const [visibleColumns, setVisibleColumns] = useState([
     "nombre",
     "apellido",
+    "fitNexusId",
     "email",
     "objetivo",
     "genero",
@@ -130,6 +131,7 @@ export function ClientsList() {
                       {[
                         "nombre",
                         "apellido",
+                        "fitNexusId",
                         "email",
                         "objetivo",
                         "genero",
@@ -193,6 +195,11 @@ export function ClientsList() {
                           {visibleColumns.includes("apellido") && (
                             <TableHead>Apellido</TableHead>
                           )}
+                          {visibleColumns.includes("fitNexusId") && (
+                            <TableHead className="hidden md:table-cell">
+                              FitNexusID
+                            </TableHead>
+                          )}
                           {visibleColumns.includes("email") && (
                             <TableHead className="hidden md:table-cell">
                               Email
@@ -242,6 +249,11 @@ export function ClientsList() {
                             {visibleColumns.includes("apellido") && (
                               <TableCell className="font-medium">
                                 {client.apellido}
+                              </TableCell>
+                            )}
+                            {visibleColumns.includes("fitNexusId") && (
+                              <TableCell className="font-medium">
+                                {client.fitNexusId}
                               </TableCell>
                             )}
                             {visibleColumns.includes("email") && (

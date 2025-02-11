@@ -17,11 +17,15 @@
     "nombre": "Nombre nuevo",
     "apellido": null
   },
-  "PlanEntrenamientoDtoAsociarRequest": {
+  "PlanEntrenamientoAsignarRequest": {
     "nombrePlan": "Plan X",
     "cliente": {
       "email": "emailCliente"
     }
+  },
+  "PlanEntrenamientoDtoAsociarRequest": {
+    "nombrePlan": "Plan X",
+    "clienteFitNexusId": "123456789"
   },
   "PlanEntrenamientoDtoFechasRequest": {
     "nombrePlan": "Plan X",

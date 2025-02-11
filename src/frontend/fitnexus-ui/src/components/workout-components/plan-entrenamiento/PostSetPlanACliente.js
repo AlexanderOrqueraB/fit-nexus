@@ -14,11 +14,10 @@ import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
 import { customToast } from '../../utils/customToast'
 
-//TODO: Cambiar la lógica de este componente para que enlace el plan a un cliente
 export function PostSetPlanACliente ({ open, onClose, planData }) {
     const [data, setData] = useState({
         nombrePlan: planData?.nombrePlan || '',
-        entrenadorEmail: planData?.entrenadorEmail || '',
+        clienteFitNexusId: '',
       });
 
     const handleChange = (e) => {
@@ -31,26 +30,36 @@ export function PostSetPlanACliente ({ open, onClose, planData }) {
 
     const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
-		const updatedPlan = {
+		const assignedPlan = {
 			nombrePlan: data.nombrePlan,
-			entrenadorEmail: data.entrenadorEmail,
+			clienteFitNexusId: data.clienteFitNexusId,
 		};
 
-		console.log('Enviando los siguientes datos: ', updatedPlan);
+		console.log('Enviando los siguientes datos: ', assignedPlan);
 
 		apiClient
-			.put('/api/v1/plan/${planData.id}', updatedPlan)
+			.post('/api/v1/planes/asignar-plan', assignedPlan)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
 				if (response.status === 200) {
-                    customToast({message : "Plan actualizado correctamente!", type : "success"});
+                    customToast({message : "Plan asignado correctamente!", type : "success"});
 				}
+                if (response.status === 404) {
+                    customToast({message : "Plan o cliente no encontrado!", type : "error"});
+                }
+                if (response.status === 409) {
+                    customToast({message : "El cliente ya tiene ese plan asignado!", type : "error"});
+                }
+                if (response.status === 500) {
+                    customToast({message : "Error al asignar el plan de entrenamiento!", type : "error"});
+                }
+                
                 onClose(); // Cerrar el modal
 			})
 			.catch((error) => {
-                customToast({message : "Error al actualizar el plan de entrenamiento!", type : "error"});
-				console.error('Error al actualizar el plan de entrenamiento', error);
+                customToast({message : "Error al asignar el plan de entrenamiento!", type : "error"});
+				console.error('Error al asignar el plan de entrenamiento', error);
 			});
             console.log('Datos actualizados:', data);
             //onClose(); // Cerrar el modal después de guardar
@@ -61,7 +70,7 @@ export function PostSetPlanACliente ({ open, onClose, planData }) {
         if (planData) {
             setData({
                 nombrePlan: planData?.nombrePlan || '',
-                entrenadorEmail: planData?.entrenadorEmail || '',
+                clienteFitNexusId: planData?.clienteFitNexusId || '',
             });
         }
     }, [planData]);
@@ -71,9 +80,8 @@ export function PostSetPlanACliente ({ open, onClose, planData }) {
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Plan</DialogTitle>
-                    <DialogDescription>Edita tu plan aquí</DialogDescription>
                     <DialogDescription>
-                        Haz click en Guardar cuando hayas terminado
+                        Haz click en Asignar plan cuando hayas terminado
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
@@ -85,14 +93,27 @@ export function PostSetPlanACliente ({ open, onClose, planData }) {
                             id="nombrePlan"
                             name="nombrePlan"
                             onChange={handleChange}
+                            disabled
                             value={data.nombrePlan || ''}
+                            className="col-span-3"
+                        />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="nombrePlan" className="text-right">
+                            FitNexusID del cliente
+                        </Label>
+                        <Input
+                            id="fitNexusId"
+                            name="clienteFitNexusId"
+                            onChange={handleChange}
+                            value={data.clienteFitNexusId || ''}
                             className="col-span-3"
                         />
                     </div>
                 </div>
                 <DialogFooter>
                     <Button onClick={onSubmit} type="submit">
-                        Guardar cambios
+                        Asignar plan
                     </Button>
                 </DialogFooter>
             </DialogContent>

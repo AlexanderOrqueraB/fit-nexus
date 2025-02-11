@@ -1,6 +1,7 @@
 package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
+import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoAsignarRequest;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoCrearRequest;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoFechasRequest;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoResponse;
@@ -196,8 +197,44 @@ public class PlanDeEntrenamientoController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    //TODO: POST Controller
-    // para asociar cliente a un plan/asignar un plan a un cliente concreto
+
+    @PostMapping("/asignar-plan")
+    public ResponseEntity<String> asignarPlanACliente(
+        @RequestBody PlanEntrenamientoAsignarRequest planEntrenamientoAsignarRequest) {
+        log.info("Ejecutando asignarPlanACliente con el DTO: {}", planEntrenamientoAsignarRequest);
+
+        try {
+            PlanDeEntrenamiento plan = planDeEntrenamientoRepository.findByNombrePlan(planEntrenamientoAsignarRequest.getNombrePlan())
+                    .orElseThrow(() -> {
+                        log.warn("Plan no encontrado con el nombre: {}", planEntrenamientoAsignarRequest.getNombrePlan());
+                        return new PlanDeEntrenamientoNotFoundException("Plan no encontrado con el nombre: " + planEntrenamientoAsignarRequest.getNombrePlan());
+                    });
+
+            Cliente cliente = clienteRepository.findByFitnexusId(UUID.fromString(planEntrenamientoAsignarRequest.getClienteFitNexusId()))
+                    .orElseThrow(() -> {
+                        log.warn("Cliente no encontrado con el fitNexusId: {}", planEntrenamientoAsignarRequest.getClienteFitNexusId());
+                        return new ClienteNotFoundException("Cliente no encontrado con el fitNexusId: " + planEntrenamientoAsignarRequest.getClienteFitNexusId());
+                    });
+
+            if (cliente.getPlanDeEntrenamiento().stream().anyMatch(p -> p.getNombrePlan().equals(planEntrenamientoAsignarRequest.getNombrePlan()))) {
+                log.warn("El cliente ya tiene el plan asignado con el nombre: {}", planEntrenamientoAsignarRequest.getNombrePlan());
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("El cliente ya tiene el plan asignado con el nombre: " + planEntrenamientoAsignarRequest.getNombrePlan());
+            }
+
+            //Usamos la tabla intermedia para asignar el plan al cliente
+            cliente.getPlanDeEntrenamiento().add(plan);
+
+            clienteRepository.save(cliente);
+
+            return ResponseEntity.status(HttpStatus.OK).body("Plan asignado correctamente al cliente");
+
+        } catch (Exception e) {
+            log.error("Error al asignar el plan al cliente", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al asignar el plan al cliente");
+        }
+    }
+
+
     //TODO: DELETE controller
     // Para eliminar la asignacion de un plan a un cliente concreto
 

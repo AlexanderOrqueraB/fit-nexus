@@ -5,7 +5,7 @@ import PostExercise from '../../workout-components/ejercicio/PostExercise';
 import PutExercise from '../../workout-components/ejercicio/PutExercise';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components_ui/ui/tabs';
-import { Calendar, CalendarDays, CircleMinusIcon, CirclePlusIcon, Edit, RefreshCwIcon, ScanFace, Trash2Icon } from 'lucide-react';
+import { Calendar, CalendarDays, CircleMinusIcon, CirclePlusIcon, Edit, RefreshCwIcon, ScanFace, Trash2Icon, UserRoundPlus } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components_ui/ui/card';
 import { fetchWorkoutData } from '../../utils/api';
 import PostRutina from '../../workout-components/rutina/PostRutina';
@@ -20,7 +20,7 @@ import PutPlanEntrenamiento from '../../workout-components/plan-entrenamiento/Pu
 import DeleteModalPlanPost from '../../workout-components/plan-entrenamiento/DeleteModalPlanPost';
 import PostListRoutinesInPlan from '../../workout-components/plan-entrenamiento/PostListRoutinesInPlan';
 import DeleteListRoutinesInPlan from '../../workout-components/plan-entrenamiento/DeleteListRoutinesInPlan';
-import { mockExercises, mockRoutinesBuilder, mockPlans } from '../../../mocks/mockData'
+import { mockExercises, mockRoutinesBuilder, mockPlans, mockClients } from '../../../mocks/mockData'
 import { UserContext } from '../../main-components/UserContext';
 import { formatDateToDDMMYYYY } from '../../utils/utilsMethod';
 import {   DropdownMenu,
@@ -75,9 +75,18 @@ export function WorkoutBuilder() {
   const [isSetPlanToClientOpen, setIsSetPlanToClientOpen] = useState(false);	
 
   const [visibleColumns, setVisibleColumns] = useState([
-      "fecha Inicio",
-      "fecha Final",
-      "cliente",
+    "nombrePlan",
+    "cliente",
+    "fecha Inicio",
+    "fecha Final",
+    "rutinas",
+    "Asignar",
+    "Editar",
+    "Añadir fechas",
+    "Cambiar fechas",
+    "Añadir",
+    "Quitar",
+    "Eliminar",
   ]);
 
   // Estado para rastrear la pestaña activa
@@ -163,6 +172,13 @@ export function WorkoutBuilder() {
     setSelectedPlan(plan);
     setIsSetPlanToClientOpen(true);
   }
+
+  // Creamos un mapper para mapear el fitNexusId con el nombre del cliente
+  // Posiblemente util para mapear el plan con el id del plan
+  const clientNameMap = mockClients.reduce((map, client) => {
+    map[client.fitNexusId] = client.nombre;
+    return map;
+  }, {});
   
 
   return (
@@ -203,8 +219,18 @@ export function WorkoutBuilder() {
                       <DropdownMenuLabel>Mostrar columnas</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       {[
+                        "nombrePlan",
+                        "cliente",
                         "fecha Inicio",
                         "fecha Final",
+                        "rutinas",
+                        "Asignar",
+                        "Editar",
+                        "Añadir fechas",
+                        "Cambiar fechas",
+                        "Añadir",
+                        "Quitar",
+                        "Eliminar",
                       ].map((column) => (
                         <DropdownMenuCheckboxItem
                           key={column}
@@ -243,7 +269,9 @@ export function WorkoutBuilder() {
                       <Table>
                         <TableHeader>
                           <TableRow>
+                          {visibleColumns.includes("nombrePlan") && (
                             <TableHead>Nombre del plan</TableHead>
+                          )}
                             {visibleColumns.includes("cliente") && (
                             <TableHead className="hidden md:table-cell">Cliente</TableHead>
                             )}
@@ -253,23 +281,43 @@ export function WorkoutBuilder() {
                             {visibleColumns.includes("fecha Final") && (
                             <TableHead className="hidden md:table-cell">Fecha Final</TableHead>
                             )}
+                            {visibleColumns.includes("rutinas") && (
                             <TableHead className="hidden md:table-cell">Rutinas</TableHead>
-                            <TableHead className="hidden md:table-cell">SET</TableHead>
+                          )}
+                            {visibleColumns.includes("Asignar") && (
+                            <TableHead className="hidden md:table-cell">Asignar</TableHead>
+                          )}
+                            {visibleColumns.includes("Editar") && (
                             <TableHead className="hidden md:table-cell">Editar</TableHead>
+                          )}
+                            {visibleColumns.includes("Añadir fechas") && (
                             <TableHead className="hidden md:table-cell">Añadir fechas</TableHead>
+                          )}
+                            {visibleColumns.includes("Cambiar fechas") && (
                             <TableHead className="hidden md:table-cell">Cambiar fechas</TableHead>
+                          )}
+                            {visibleColumns.includes("Añadir") && (
                             <TableHead className="hidden md:table-cell">Añadir</TableHead>
+                          )}
+                            {visibleColumns.includes("Quitar") && (
                             <TableHead className="hidden md:table-cell">Quitar</TableHead>
+                          )}
+                            {visibleColumns.includes("Eliminar") && (
                             <TableHead className="hidden md:table-cell">Eliminar</TableHead>
+                          )}
                           </TableRow>
                         </TableHeader>
 
                         <TableBody>
                           {displayedPlans.map((plan) => (
                             <TableRow key={plan.id}>
+                              {visibleColumns.includes("nombrePlan") && (
+                                /*<TableCell className="font-medium">{clientNameMap[plan.fitNexusId] || plan.fitNexusId}</TableCell>*/
                               <TableCell className="font-medium">{plan.nombrePlan}</TableCell>
+                            )}
                               {visibleColumns.includes("cliente") && (
-                              <TableCell className="font-medium">{plan.cliente}</TableCell>
+                              <TableCell className="font-medium">{mockClients[0].fitNexusId || ''
+                              }</TableCell>
                               )}
                               {visibleColumns.includes("fecha Inicio") && (
                               <TableCell className="font-medium">{plan.fechaInicio ? formatDateToDDMMYYYY(plan.fechaInicio) : ''}</TableCell>
@@ -277,6 +325,7 @@ export function WorkoutBuilder() {
                               {visibleColumns.includes("fecha Final") && (
                               <TableCell className="font-medium">{plan.fechaFinal ? formatDateToDDMMYYYY(plan.fechaFinal) : ''}</TableCell>
                               )}
+                              {visibleColumns.includes("rutinas") && (
                               <TableCell className="font-medium">
                               <ul className="list-disc pl-4">
                                 {plan.rutinas.map((rutina, index) => (
@@ -284,15 +333,19 @@ export function WorkoutBuilder() {
                                 ))}
                               </ul>
                               </TableCell>
+                              )}
+                              {visibleColumns.includes("Asignar") && (
                               <TableCell>
                                 <Button 
                                     aria-haspopup="true"
                                     size="icon"
                                     variant="ghost"
                                     onClick={() => handleSetPlanToClient(plan, 'plan')}>
-                                  <ScanFace/>
+                                  <UserRoundPlus/>
                                 </Button>
                               </TableCell>
+                              )}
+                              {visibleColumns.includes("Editar") && (
                               <TableCell>
                                 <Button 
                                     aria-haspopup="true"
@@ -302,7 +355,8 @@ export function WorkoutBuilder() {
                                   <Edit/>
                                 </Button>
                               </TableCell>
-
+                              )}
+                              {visibleColumns.includes("Añadir fechas") && (
                               <TableCell>
                                 <Button 
                                     aria-haspopup="true"
@@ -312,7 +366,8 @@ export function WorkoutBuilder() {
                                   <Calendar/>
                                 </Button>
                               </TableCell>
-
+                              )}
+                              {visibleColumns.includes("Cambiar fechas") && (
                               <TableCell>
                                 <Button 
                                     aria-haspopup="true"
@@ -322,7 +377,8 @@ export function WorkoutBuilder() {
                                   <CalendarDays/>
                                 </Button>
                               </TableCell>
-
+                              )}
+                              {visibleColumns.includes("Añadir") && (
                               <TableCell>
                                 <Button 
                                     aria-haspopup="true"
@@ -332,7 +388,8 @@ export function WorkoutBuilder() {
                                   <CirclePlusIcon/>
                                 </Button>
                               </TableCell>
-
+                            )}
+                              {visibleColumns.includes("Quitar") && (
                               <TableCell>
                                 <Button 
                                     aria-haspopup="true"
@@ -342,7 +399,8 @@ export function WorkoutBuilder() {
                                   <CircleMinusIcon />
                                 </Button>
                               </TableCell>
-                              
+                            )}
+                              {visibleColumns.includes("Eliminar") && (
                               <TableCell>
                                 <Button 
                                   aria-haspopup="true"
@@ -352,7 +410,7 @@ export function WorkoutBuilder() {
                                 <Trash2Icon color="red"/>
                                 </Button>
                               </TableCell>
-
+                            )}
                             </TableRow>
                           ))}
                         </TableBody>
@@ -364,10 +422,10 @@ export function WorkoutBuilder() {
                           planData={selectedPlan}
                         />
                       )}
-                      {isAddDateOpen && (
+                      {isSetPlanToClientOpen && (
                         <PostSetPlanACliente
-                          open={isAddDateOpen}
-                          onClose={() => setIsAddDateOpen(false)}
+                          open={isSetPlanToClientOpen}
+                          onClose={() => setIsSetPlanToClientOpen(false)}
                           planData={selectedPlan}
                         />
                       )}
