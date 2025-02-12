@@ -6,6 +6,7 @@ import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.exception.PlanDeEntrenamientoNotFoundException;
 import aorquerab.fitnexus.model.exception.RutinaNotFoundException;
+import aorquerab.fitnexus.model.exception.UsuarioNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class ExceptionHandlerController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler({EntrenadorNotFoundException.class, ClienteNotFoundException.class})
+    @ExceptionHandler({EntrenadorNotFoundException.class, ClienteNotFoundException.class, UsuarioNotFoundException.class})
     public ResponseEntity<String> handleUsuarioNotFoundException (RuntimeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }

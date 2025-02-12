@@ -143,7 +143,7 @@ public class PlanDeEntrenamientoController {
             return ResponseEntity.status(HttpStatus.OK).body(planDtoRequestList);
         } catch (Exception e) {
             log.warn("Error al obtener PlanEntrenamientoGetDTO: ", e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
         }
     }
 

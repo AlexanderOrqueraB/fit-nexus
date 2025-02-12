@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Pencil } from 'lucide-react';
 import {
 	Dialog,
@@ -15,14 +15,16 @@ import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
 import { customToast } from '../../utils/customToast'
+import { UserContext } from '../../main-components/UserContext';
 
 
 
 export function PostExercise() {
-    useState({});
-	const [data, setData] = useState({});
 
-	const [dataEx, setDataEx] = useState({
+    const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+    const { fitNexusId } = user; // Desestructurar el objeto user
+    
+	const [data, setData] = useState({
 		//useState to store data from server
 		nombreEjercicio: '',
 		repeticion: '',
@@ -41,7 +43,7 @@ export function PostExercise() {
 
     const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
-		const userData = {
+		const newExercise = {
 			nombreEjercicio: data.nombreEjercicio,
 			repeticion: data.repeticion,
 			serie: data.serie,
@@ -49,17 +51,22 @@ export function PostExercise() {
 			cardioRealizado: data.cardioRealizado,
 		};
 
-		console.log('Enviando los siguientes datos: ', userData);
+		console.log('Enviando los siguientes datos: ', newExercise);
 
 		apiClient
-			.post('/api/v1/ejercicios', userData)
-			//.put(URL, userData)
+			.post(`/api/v1/ejercicios/${fitNexusId}`, newExercise)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
 				if (response.status === 201) {
 					customToast({message : "Ejercicio creado correctamente!", type : "success"});
 				}
+                if (response.status === 500) {
+                    customToast({message : "Error al crear el ejercicio!", type : "error"});
+                }
+                if (response.status === 404) {
+                    customToast({message : "Ejercicio no encontrado", type : "error"});
+                }
 			})
 			.catch((error) => {
                 customToast({message : "Error al crear el ejercicio!", type : "error"});
@@ -91,7 +98,7 @@ export function PostExercise() {
                         <Input
                             id="nombreEjercicio"
                             name="nombreEjercicio"
-                            /*value={dataEx.nombreEjercicio}*/
+                            value={data.nombreEjercicio}
                             onChange={handleChange}
                             placeholder="Press banca"
                             className="col-span-3"
@@ -105,7 +112,7 @@ export function PostExercise() {
                             id="repeticion"
                             name="repeticion"
                             type="number"
-                            /*value={dataEx.repeticion}*/
+                            value={data.repeticion}
                             onChange={handleChange}
                             placeholder="5"
                             className="col-span-3"
@@ -119,7 +126,7 @@ export function PostExercise() {
                             id="serie"
                             name="serie"
                             type="number"
-                            /*value={dataEx.serie}*/
+                            value={data.serie}
                             onChange={handleChange}
                             placeholder="5"
                             className="col-span-3"
@@ -133,7 +140,7 @@ export function PostExercise() {
                             id="peso"
                             name="peso"
                             type="number"
-                            /*value={dataEx.peso}*/
+                            value={data.peso}
                             onChange={handleChange}
                             placeholder="30"
                             className="col-span-3"
@@ -146,7 +153,7 @@ export function PostExercise() {
                         <Input
                             id="cardioRealizado"
                             name="cardioRealizado"
-                            /*value={dataEx.cardioRealizado}*/
+                            value={data.cardioRealizado}
                             onChange={handleChange}
                             placeholder="false"
                             className="col-span-3"

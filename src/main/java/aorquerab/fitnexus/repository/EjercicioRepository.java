@@ -10,4 +10,5 @@ import java.util.List;
 public interface EjercicioRepository extends JpaRepository<Ejercicio,Long> {
 
     List<Ejercicio> findAllByNombreEjercicio (String nombreEjercicio);
+    Ejercicio findByNombreEjercicio (String nombreEjercicio);
 }

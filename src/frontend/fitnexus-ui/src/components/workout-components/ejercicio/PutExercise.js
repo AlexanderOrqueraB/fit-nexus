@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
 	Dialog,
 	DialogContent,
@@ -13,9 +13,14 @@ import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
 import { customToast } from '../../utils/customToast'
+import { UserContext } from '../../main-components/UserContext';
 
 
 export function PutExercise ({ open, onClose, exerciseData }) {
+
+    const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+    const { fitNexusId } = user; // Desestructurar el objeto user
+
     const [data, setData] = useState({
         nombreEjercicio: exerciseData?.nombreEjercicio || '',
         repeticion: exerciseData?.repeticion || '',
@@ -24,16 +29,6 @@ export function PutExercise ({ open, onClose, exerciseData }) {
         cardioRealizado: exerciseData?.cardioRealizado || '',
         });
 
-    const [dataEx, setDataEx] = useState({
-        //useState to store data from server
-        nombreEjercicio: '',
-        repeticion: '',
-        serie: '',
-        peso: '',
-        cardioRealizado: '',
-    });
-
-{/*EJERCICIO LOGICL: istar ejercicios en tabla + Put Exercise*/}
     const handleChange = (e) => {
 		const { name, value } = e.target;
 		setData({
@@ -54,14 +49,20 @@ const onSubmit = (e) => {
 
     console.log('Enviando los siguientes datos: ', updatedExercise);
 
-    // Enviar la solicitud PUT para actualizar el ejercicio
-    apiClient.put(`/api/v1/ejercicios/${exerciseData.id}`, updatedExercise)
+    apiClient.put(`/api/v1/ejercicios/${fitNexusId}`, updatedExercise)
         .then(response => {
             console.log('Respuesta del servidor: ', response.data);
             console.log('Status: ', response.status);
             if (response.status ===200) {
                 customToast({message : "Ejercicio actualizado correctamente!", type : "success"});
             }
+            if (response.status === 404) {
+                customToast({message : "Ejercicio no encontrado", type : "error"});
+            }
+            if (response.status === 500) {
+                customToast({message : "Error al actualizar el ejercicio", type : "error"});
+            }
+
             onClose(); // Cerrar el modal
         })
         .catch(error => {
@@ -175,6 +176,5 @@ useEffect(() => {
         </Dialog>
     );
 }
-
 
 export default PutExercise;

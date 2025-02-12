@@ -174,7 +174,7 @@ public class RutinaController {
             return ResponseEntity.status(HttpStatus.OK).body(rutinaDtoRequestList);
         } catch (Exception e) {
             log.warn("Error al obtener RutinaGetDTO: ", e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
         }
     }
 

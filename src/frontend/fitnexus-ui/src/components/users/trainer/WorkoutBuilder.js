@@ -5,7 +5,7 @@ import PostExercise from '../../workout-components/ejercicio/PostExercise';
 import PutExercise from '../../workout-components/ejercicio/PutExercise';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components_ui/ui/tabs';
-import { Calendar, CalendarDays, CircleMinusIcon, CirclePlusIcon, Edit, RefreshCwIcon, ScanFace, Trash2Icon, UserRoundPlus } from 'lucide-react';
+import { Calendar, CalendarDays, CircleMinusIcon, CirclePlusIcon, Edit, RefreshCwIcon, Trash2Icon, UserRoundPlus } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components_ui/ui/card';
 import { fetchWorkoutData } from '../../utils/api';
 import PostRutina from '../../workout-components/rutina/PostRutina';
@@ -26,8 +26,6 @@ import { formatDateToDDMMYYYY } from '../../utils/utilsMethod';
 import {   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger, } from '../../../components_ui/ui/dropdown-menu';
@@ -43,7 +41,7 @@ const deleteDescription = "Pulsa Eliminar para confirmar la acción de eliminar,
 export function WorkoutBuilder() {
 
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
-  const { email, role, fitNexusId } = user; // Desestructurar el objeto user
+  const { fitNexusId } = user; // Desestructurar el objeto user
 
   const [exercises, setExercises] = useState([]);
   const [selectedExercise, setSelectedExercise] = useState({});
@@ -180,7 +178,6 @@ export function WorkoutBuilder() {
     return map;
   }, {});
   
-
   return (
     <React.Fragment>
       <div className="flex min-h-screen w-full flex-col bg-muted/40">

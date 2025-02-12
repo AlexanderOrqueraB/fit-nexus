@@ -21,59 +21,36 @@ export function DeleteModalExercisePost ({
   description = "descripcion",
   open, onClose, exerciseData }) {
 
-    const [data, setData] = useState({
-      nombreEjercicio: exerciseData?.nombreEjercicio || '',
-      repeticion: exerciseData?.repeticion || '',
-      serie: exerciseData?.serie || '',
-      peso: exerciseData?.peso || '',
-      cardioRealizado: exerciseData?.cardioRealizado || '',
-    });
-{/*EJERCICIO LOGICL: istar ejercicios en tabla + Put Exercise*/}
-
-const [dataEx, setDataEx] = useState({
-  //useState to store data from server
-  nombreEjercicio: '',
-  repeticion: '',
-  serie: '',
-  peso: '',
-  cardioRealizado: '',
-});
-
-
-{/*EJERCICIO LOGICL: istar ejercicios en tabla + Put Exercise*/}
-  const handleChange = (e) => {
-  const { name, value } = e.target;
-  setData({
-    ...data,
-    [name]: value,
+  const [data, setData] = useState({
+    nombreEjercicio: exerciseData?.nombreEjercicio || '',
   });
-};
+
 
 const onSubmit = (e) => {
   e.preventDefault();
-  const deletedExercise = {
-      nombreEjercicio: data.nombreEjercicio,
-      repeticion: data.repeticion,
-      serie: data.serie,
-      peso: data.peso,
-      cardioRealizado: data.cardioRealizado,
-  };
 
-  console.log('Enviando los siguientes datos: ', deletedExercise);
+  console.log('Eliminando el ejercicio: ', data.nombreEjercicio);
 
   // Enviar la solicitud PUT para actualizar el ejercicio
-  apiClient.delete(`/api/v1/ejercicios/${exerciseData.id}`, deletedExercise)
+  apiClient.delete(`/api/v1/ejercicios/${exerciseData.nombreEjercicio}`)
       .then(response => {
-          customToast({message : "Ejercicio eliminado correctamente!", type : "success"});
+          console.log('Respuesta del servidor:', response.data);
+          console.log('Status: ', response.status);
+          if (response.status === 200) {
+              customToast({message : "Ejercicio eliminado correctamente!", type : "success"});
+          }
+          if (response.status === 404) {
+              customToast({message : "Ejercicio no encontrado", type : "error"});
+          }
+          if (response.status === 500) {
+              customToast({message : "Error al eliminar el ejercicio", type : "error"});
+          }
           onClose(); // Cerrar el modal
       })
       .catch(error => {
           customToast({message : "Error al eliminar el ejercicio", type : "error"});
           console.error('Error al eliminar el ejercicio:', error);
       });
-
-  console.log('Datos actualizados:', data);
-  //onClose(); // Cerrar el modal después de guardar
 };
 
 useEffect(() => {
@@ -81,10 +58,6 @@ useEffect(() => {
   if (exerciseData) {
       setData({
           nombreEjercicio: exerciseData.nombreEjercicio || '',
-          repeticion: exerciseData.repeticion || '',
-          serie: exerciseData.serie || '',
-          peso: exerciseData.peso || '',
-          cardioRealizado: exerciseData.cardioRealizado || '',
       });
   }
 }, [exerciseData]);
@@ -109,10 +82,6 @@ useEffect(() => {
             onClose();
             setData({
               nombreEjercicio: exerciseData?.nombreEjercicio || '',
-              repeticion: exerciseData?.repeticion || '',
-              serie: exerciseData?.serie || '',
-              peso: exerciseData?.peso || '',
-              cardioRealizado: exerciseData?.cardioRealizado || '',
             });
           }}>
             Cancelar

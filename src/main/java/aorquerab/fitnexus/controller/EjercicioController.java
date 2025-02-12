@@ -147,7 +147,7 @@ public class EjercicioController {
             return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoRequestList);
         } catch (Exception e) {
             log.warn("Error al obtener EjercicioDtoRequest: ", e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
         }
     }
 
@@ -165,11 +165,6 @@ public class EjercicioController {
         return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoRequest);
     }
 
-    //TODO: Table cliente_ejercicio
-    //TODO: Table cliente_rutina
-    //TODO: Table cliente_plan_de_entrenamiento
-
-
     //Testeado Postman + SB
     @GetMapping ("/ejercicio/{nombreEjercicio}")
     public ResponseEntity<List<EjercicioDtoRequest>> obtenerEjerciciosPorNombre(@PathVariable String nombreEjercicio) {
@@ -186,81 +181,122 @@ public class EjercicioController {
     }
 
     //Testeado Postman + SB
-    @PostMapping
-    public ResponseEntity<String> crearEjercicio(@RequestBody EjercicioDtoRequest ejercicioDtoRequest) {
+    @PostMapping("{fitNexusId}")
+    public ResponseEntity<String> crearEjercicio(@PathVariable String fitNexusId,
+        @RequestBody EjercicioDtoRequest ejercicioDtoRequest) {
+        
         log.info("Ejecutando crearEjercicio con este ejercicioDTO: {}", ejercicioDtoRequest);
+        
+        Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
+        if (entrenadorOptional.isEmpty()) {
+            log.warn("Entrenador no encontrado en base de datos con el fitNexusId: {}", fitNexusId);
+            throw new EntrenadorNotFoundException("Entrenador no encontrado en BD: " + fitNexusId);
+        }
+
         if(ejercicioDtoRequest == null) {
             throw new InvalidRequestException("Peticion de ejercicio no valida");
         }
-        Ejercicio ejercicioCreado = Ejercicio.builder()
-                .nombreEjercicio(ejercicioDtoRequest.getNombreEjercicio())
-                .repeticion(ejercicioDtoRequest.getRepeticion())
-                .serie(ejercicioDtoRequest.getSerie())
-                .peso(ejercicioDtoRequest.getPeso())
-                .cardio(ejercicioDtoRequest.getCardio())
-                .build();
 
-        ejercicioRepository.save(ejercicioCreado);
-        log.info("crearEjercicio ejecutado con: {}", ejercicioCreado);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Ejercicio creado correctamente en BD");
+        if(entrenadorOptional.isPresent()) {
+            Entrenador entrenador = entrenadorOptional.get();
+            Ejercicio ejercicioCreado = Ejercicio.builder()
+                    .nombreEjercicio(ejercicioDtoRequest.getNombreEjercicio())
+                    .repeticion(ejercicioDtoRequest.getRepeticion())
+                    .serie(ejercicioDtoRequest.getSerie())
+                    .peso(ejercicioDtoRequest.getPeso())
+                    .cardio(ejercicioDtoRequest.getCardio())
+                    .entrenador(entrenador)
+                    .build();
+            log.info("crearEjercicio ejecutado con: {}", ejercicioCreado);
+
+            Ejercicio ejercicioGuardado = ejercicioRepository.save(ejercicioCreado);
+
+            if (ejercicioGuardado != null) {
+                log.info("Ejercicio guardado: {}", ejercicioGuardado);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Ejercicio creado correctamente en BD");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear el ejercicio");
     }
 
     //Testeado Postman + SB
-    @PutMapping("/{idEjercicio}")
-    public ResponseEntity<EjercicioDtoRequest> actualizarEjercicio (
-            @PathVariable Long idEjercicio,
+    @PutMapping("/{fitNexusId}")
+    public ResponseEntity<String> actualizarEjercicio (@PathVariable String fitNexusId,
             @RequestBody EjercicioDtoRequest ejercicioDtoRequest) {
-        log.info("Ejecutando actualizarEjercicio con la request: {}", ejercicioDtoRequest);
-        Ejercicio ejercicioById = ejercicioRepository.findById(idEjercicio)
-                .orElseThrow(()-> {
-                    log.warn("Ejercicio no encontrado en base de datos: {}", idEjercicio);
-                    return new ResponseStatusException( HttpStatus.NOT_FOUND,
-                                    "Ejercicio no encontrado con el id: " + idEjercicio);
-                });
+        
+        log.info("Ejecutando crearEjercicio con este ejercicioDTO: {}", ejercicioDtoRequest);
 
-        //Actualizas solo los campos enviados (distintos de null)
-        if(ejercicioDtoRequest.getNombreEjercicio() != null)
+        Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
+        if (entrenadorOptional.isEmpty()) {
+            log.warn("Entrenador no encontrado en base de datos con el fitNexusId: {}", fitNexusId);
+            throw new EntrenadorNotFoundException("Entrenador no encontrado en BD: " + fitNexusId);
+        }
+
+        Ejercicio ejercicioById = ejercicioRepository.findByNombreEjercicio(ejercicioDtoRequest.getNombreEjercicio());
+        
+        if(ejercicioById == null) {
+            log.warn("Ejercicio no encontrado en base de datos con el nombre: {}", ejercicioDtoRequest.getNombreEjercicio());
+            throw new EjercicioNotFoundException("Ejercicio no encontrado en BD: " + ejercicioDtoRequest.getNombreEjercicio());
+        }
+
+        if(entrenadorOptional.isPresent()) {
+            Entrenador entrenador = entrenadorOptional.get();
+            ejercicioById.setEntrenador(entrenador);
+
+            //Actualizas solo los campos enviados (distintos de null)
+            if(ejercicioDtoRequest.getNombreEjercicio() != null)
             ejercicioById.setNombreEjercicio(ejercicioDtoRequest.getNombreEjercicio());
 
-        if(ejercicioDtoRequest.getRepeticion() != null)
-            ejercicioById.setRepeticion(ejercicioDtoRequest.getRepeticion());
+            if(ejercicioDtoRequest.getRepeticion() != null)
+                ejercicioById.setRepeticion(ejercicioDtoRequest.getRepeticion());
 
-        if(ejercicioDtoRequest.getSerie() != null)
-            ejercicioById.setSerie(ejercicioDtoRequest.getSerie());
+            if(ejercicioDtoRequest.getSerie() != null)
+                ejercicioById.setSerie(ejercicioDtoRequest.getSerie());
 
-        if(ejercicioDtoRequest.getPeso() != null)
-            ejercicioById.setPeso(ejercicioDtoRequest.getPeso());
+            if(ejercicioDtoRequest.getPeso() != null)
+                ejercicioById.setPeso(ejercicioDtoRequest.getPeso());
 
-        if (ejercicioDtoRequest.getCardio() != null)
+            if (ejercicioDtoRequest.getCardio() != null)
             ejercicioById.setCardio(ejercicioDtoRequest.getCardio());
 
-        Ejercicio ejercicioActualizado = ejercicioRepository.save(ejercicioById);
-        log.info("Ejercicio actualizado: {}", ejercicioActualizado);
+            log.info("Ejercicio actualizado: {}", ejercicioById);
 
-        EjercicioDtoRequest ejercicioDtoActualizado = EjercicioDtoRequest.builder()
-                .nombreEjercicio(ejercicioActualizado.getNombreEjercicio())
-                .repeticion(ejercicioActualizado.getRepeticion())
-                .serie(ejercicioActualizado.getSerie())
-                .peso(ejercicioActualizado.getPeso())
-                .cardio(ejercicioActualizado.getCardio())
-                    .build();
+            Ejercicio ejercicioActualizado = ejercicioRepository.save(ejercicioById);
 
-        return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoActualizado);
+            if (ejercicioActualizado != null) {
+                log.info("Ejercicio actualizado: {}", ejercicioActualizado);
+                return ResponseEntity.status(HttpStatus.OK).body("Ejercicio actualizado correctamente en BD");
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el ejercicio");
     }
 
     //Testeado Postman + SB
-    @DeleteMapping("/{idEjercicio}")
-    public ResponseEntity<String> eliminarEjercicio (@PathVariable Long idEjercicio) {
-        log.info("Ejecutando eliminarEjercicio con el id: {}", idEjercicio);
-        Ejercicio ejerciciobyId = ejercicioRepository.findById(idEjercicio)
-                .orElseThrow(()-> {
-                    log.warn("Ejercicio no encontrado en base de datos: {}", idEjercicio);
-                    return new ResponseStatusException( HttpStatus.NOT_FOUND,
-                            "Ejercicio no encontrado con el id: " + idEjercicio);
-                });
-        log.info("Ejercicio a eliminar: {}", ejerciciobyId);
-        ejercicioRepository.delete(ejerciciobyId);
+    @DeleteMapping("/{nombreEjercicio}")
+    public ResponseEntity<String> eliminarEjercicio (@PathVariable String nombreEjercicio) {
+        
+        log.info("Ejecutando eliminarEjercicio con el nombre: {}", nombreEjercicio);
 
-        return ResponseEntity.status(HttpStatus.OK).body("Ejercicio borrado correctamente");
+        try {
+            if (nombreEjercicio == null) {
+                throw new InvalidRequestException("Petición de ejercicio no válida");
+            }
+            Ejercicio ejerciciobyId = ejercicioRepository.findByNombreEjercicio(nombreEjercicio);
+
+            if (ejerciciobyId == null) {
+                log.warn("Ejercicio no encontrado en base de datos con el nombre: {}", nombreEjercicio);
+                throw new EjercicioNotFoundException("Ejercicio no encontrado en BD: " + nombreEjercicio);
+            }
+    
+            log.info("Ejercicio a eliminar: {}", ejerciciobyId);
+            ejercicioRepository.delete(ejerciciobyId);
+    
+            return ResponseEntity.status(HttpStatus.OK).body("Ejercicio borrado correctamente");
+
+        } catch (Exception e) {
+            log.warn("Error al eliminar el ejercicio", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al eliminar el ejercicio");
+        }
     }
 }
