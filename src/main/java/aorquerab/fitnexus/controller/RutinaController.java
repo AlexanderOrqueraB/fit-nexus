@@ -213,6 +213,55 @@ public class RutinaController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al guardar la rutina en BD");
     }
 
+    //TODO: Testear en Postman y React NEW UI
+    @PutMapping("/{fitNexusId}")
+    public ResponseEntity<String> actualizarRutina (@PathVariable String fitNexusId, 
+            @RequestBody RutinaDtoRequest rutinaDtoRequest) {
+        log.info("Ejecutando actualizarRutina con esta rutinaDtoRequest: {}", rutinaDtoRequest);
+
+        Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
+        if (entrenadorOptional.isEmpty()) {
+            log.warn("Entrenador no encontrado en base de datos con el fitNexusId: {}", fitNexusId);
+            throw new EntrenadorNotFoundException("Entrenador no encontrado en BD: " + fitNexusId);
+        }
+
+        Rutina rutinaById = rutinaRepository.findByNombreRutina(rutinaDtoRequest.getNombreRutina());
+
+        if(rutinaById == null) {
+            log.warn("Rutina no encontrada en base de datos con el nombre: {}", rutinaDtoRequest.getNombreRutina());
+            throw new RutinaNotFoundException("Rutina no encontrada en BD: " + rutinaDtoRequest.getNombreRutina());
+        }
+
+        if(entrenadorOptional.isPresent()) {
+            Entrenador entrenador = entrenadorOptional.get();
+            rutinaById.setEntrenador(entrenador);
+
+            //Actualizas solo los campos enviados (distintos de null)
+            if(rutinaDtoRequest.getNombreRutina() != null)
+                rutinaById.setNombreRutina(rutinaDtoRequest.getNombreRutina());
+
+            if(rutinaDtoRequest.getFechaInicio() != null)
+                rutinaById.setFechaInicio(rutinaDtoRequest.getFechaInicio());
+
+            if(rutinaDtoRequest.getFechaFinal() != null)
+                rutinaById.setFechaFinal(rutinaDtoRequest.getFechaFinal());
+
+            log.info("Rutina actualizada: {}", rutinaById);
+
+            Rutina rutinaActualizada = rutinaRepository.save(rutinaById);
+
+            if (rutinaActualizada != null) {
+                log.info("Rutina actualizada: {}", rutinaActualizada);
+                return ResponseEntity.status(HttpStatus.OK).body("Rutina actualizada correctamente en BD");
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar la rutina");
+    }
+
+    //TODO: Testear en Postman y React NEW UI
+    @DeleteMapping("/{nombreRutina}")
+
     //TODO: Testear con postman
     // Agregar un ejercicio que ya existe: Debe evitar duplicados.
     // Agregar y eliminar listas de ejercicios: Verifica que todas las relaciones se procesen correctamente.
@@ -319,12 +368,5 @@ public class RutinaController {
         // Respuesta de éxito
         return ResponseEntity.status(HttpStatus.OK).body("Lista de ejercicios borrada correctamente");
     }
-
-    //TODO: PUT Controller
-    // para modificar datos de una rutina (nombre o fechas)
-
-
-    //TODO: DELETE controller
-    // Para borrar una rutina
 
 }
