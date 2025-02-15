@@ -59,7 +59,7 @@ const onSubmit = (e) => {
             if (response.status === 404) {
                 customToast({message : "Ejercicio no encontrado", type : "error"});
             }
-            if (response.status === 500) {
+            if (response.status === 400) {
                 customToast({message : "Error al actualizar el ejercicio", type : "error"});
             }
 

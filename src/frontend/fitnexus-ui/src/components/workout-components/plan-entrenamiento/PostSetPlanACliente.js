@@ -51,7 +51,7 @@ export function PostSetPlanACliente ({ open, onClose, planData }) {
                 if (response.status === 409) {
                     customToast({message : "El cliente ya tiene ese plan asignado!", type : "error"});
                 }
-                if (response.status === 500) {
+                if (response.status === 400) {
                     customToast({message : "Error al asignar el plan de entrenamiento!", type : "error"});
                 }
                 

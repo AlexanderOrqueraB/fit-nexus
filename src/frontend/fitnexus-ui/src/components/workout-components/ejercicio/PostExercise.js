@@ -61,7 +61,7 @@ export function PostExercise() {
 				if (response.status === 201) {
 					customToast({message : "Ejercicio creado correctamente!", type : "success"});
 				}
-                if (response.status === 500) {
+                if (response.status === 400) {
                     customToast({message : "Error al crear el ejercicio!", type : "error"});
                 }
                 if (response.status === 404) {
