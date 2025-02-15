@@ -106,8 +106,7 @@ public class EjercicioController {
         return Optional.empty();
     }
 
-    //TODO: Testear en Postman
-    //TODO: Testear en React
+    //TODO: Testear en Postman y React NEW UI
     @GetMapping("/ejercicio/usuario/{fitNexusId}")
     public ResponseEntity<List<EjercicioDtoRequest>> obtenerEjerciciosPorFitNexusId(@PathVariable String fitNexusId) {
         log.info("Ejecutando obtenerEjerciciosPorFitNexusId con el FitNexusId: {}...", fitNexusId);
@@ -180,7 +179,7 @@ public class EjercicioController {
         return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoRequestList);
     }
 
-    //Testeado Postman + SB
+    //TODO: Testear en Postman y React NEW UI
     @PostMapping("{fitNexusId}")
     public ResponseEntity<String> crearEjercicio(@PathVariable String fitNexusId,
         @RequestBody EjercicioDtoRequest ejercicioDtoRequest) {
@@ -198,21 +197,20 @@ public class EjercicioController {
         }
 
         if(entrenadorOptional.isPresent()) {
-            Entrenador entrenador = entrenadorOptional.get();
             Ejercicio ejercicioCreado = Ejercicio.builder()
                     .nombreEjercicio(ejercicioDtoRequest.getNombreEjercicio())
                     .repeticion(ejercicioDtoRequest.getRepeticion())
                     .serie(ejercicioDtoRequest.getSerie())
                     .peso(ejercicioDtoRequest.getPeso())
                     .cardio(ejercicioDtoRequest.getCardio())
-                    .entrenador(entrenador)
+                    .entrenador(entrenadorOptional.get())
                     .build();
             log.info("crearEjercicio ejecutado con: {}", ejercicioCreado);
 
             Ejercicio ejercicioGuardado = ejercicioRepository.save(ejercicioCreado);
 
             if (ejercicioGuardado != null) {
-                log.info("Ejercicio guardado: {}", ejercicioGuardado);
+                log.info("Ejercicio guardado correctamente en BD: {}", ejercicioGuardado);
                 return ResponseEntity.status(HttpStatus.CREATED).body("Ejercicio creado correctamente en BD");
             }
         }

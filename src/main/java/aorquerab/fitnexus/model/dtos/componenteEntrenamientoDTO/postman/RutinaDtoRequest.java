@@ -16,14 +16,5 @@ public class RutinaDtoRequest {
     private String nombreRutina;
     private LocalDate fechaInicio;
     private LocalDate fechaFinal;
-    private Entrenador entrenador;
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Entrenador {
-        private String email;
-    }
 
 }

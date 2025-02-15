@@ -101,8 +101,7 @@ public class PlanDeEntrenamientoController {
         }
     }
 
-    //TODO: Testear en Postman
-    //TODO: Testear en React
+    //TODO: Testear en Postman y React NEW UI
     @GetMapping("/plan/usuario/{fitNexusId}")
     public ResponseEntity<List<PlanEntrenamientoGetDTO>> obtenerPlanPorFitNexusId(@PathVariable String fitNexusId) {
         log.info("Ejecutando obtenerEjerciciosPorFitNexusId con el FitNexusId: {}...", fitNexusId);
@@ -147,30 +146,38 @@ public class PlanDeEntrenamientoController {
         }
     }
 
-    //TODO: Testear con postman
-    @PostMapping
-    public ResponseEntity<String> crearPlanEntrenamiento (
+    //TODO: Testear en Postman y React NEW UI
+    @PostMapping("{fitNexusId}")
+    public ResponseEntity<String> crearPlanEntrenamiento (@PathVariable String fitNexusId,
             @RequestBody PlanEntrenamientoDtoCrearRequest planEntrenamientoDto) {
+
         log.info("Ejecutando crearPlanEntrenamiento con el DTO: {}", planEntrenamientoDto);
-        if(planEntrenamientoDto == null)
+
+        Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
+        if (entrenadorOptional.isEmpty()) {
+            log.warn("Entrenador no encontrado en base de datos con el fitNexusId: {}", fitNexusId);
+            throw new EntrenadorNotFoundException("Entrenador no encontrado en BD: " + fitNexusId);
+        }
+
+        if(planEntrenamientoDto == null) {
             throw new InvalidRequestException("Peticion para plan de entrenamiento no valida");
-        String entrenadorEmail = planEntrenamientoDto.getEntrenador().getEmail();
-        Entrenador entrenador = planDeEntrenamientoRepository.findByEntrenador_Email(entrenadorEmail)
-                .orElseThrow(() -> {
-                    log.warn("Entrenador no encontrado por el email: {}", entrenadorEmail);
-                    return new EntrenadorNotFoundException("Entrenador no encontrado con el email: " + entrenadorEmail);
-                });
-        PlanEntrenamientoDtoCrearRequest.Entrenador entrenadorDTO = PlanEntrenamientoDtoCrearRequest.Entrenador.builder()
-                .email(entrenador.getEmail())
-                .build();
+        }
 
-        PlanDeEntrenamiento planDeEntrenamiento = PlanDeEntrenamiento.builder()
+        if (entrenadorOptional.isPresent()) {
+        PlanDeEntrenamiento planDeEntrenamientoCreado = PlanDeEntrenamiento.builder()
                 .nombrePlan(planEntrenamientoDto.getNombrePlan())
-                .entrenador(entrenador)
+                .entrenador(entrenadorOptional.get())
                 .build();
+        log.info("crearPlanEntrenamiento ejecutado con: {}", planDeEntrenamientoCreado);
+        planDeEntrenamientoRepository.save(planDeEntrenamientoCreado);
 
-        planDeEntrenamientoRepository.save(planDeEntrenamiento);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+            if(planDeEntrenamientoCreado != null) {
+                log.info("Plan de entrenamiento guardado correctamente en BD: {}", planDeEntrenamientoCreado);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Plan de entrenamiento guardado correctamente en BD:" 
+                + planDeEntrenamientoCreado);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al guardar el plan de entrenamiento en BD");
     }
 
     //TODO: POST Controller

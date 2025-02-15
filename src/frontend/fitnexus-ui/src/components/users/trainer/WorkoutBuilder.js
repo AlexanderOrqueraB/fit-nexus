@@ -518,7 +518,6 @@ export function WorkoutBuilder() {
                                 </Button>
                               </TableCell>
 
-
                               <TableCell>
                                 <Button 
                                     aria-haspopup="true"

@@ -56,10 +56,7 @@
   "RutinaDtoRequest" : {
     "nombreRutina": "Rutina A",
     "fechaInicio": "2024-06-18",
-    "fechaFinal": "2025-06-18",
-    "entrenador": {
-      "email": "emailEntrenador"
-    }
+    "fechaFinal": "2025-06-18"
   },
   "EjerciciosListDTO": {
     "ejercicios": [

@@ -12,12 +12,5 @@ import lombok.NoArgsConstructor;
 public class PlanEntrenamientoDtoCrearRequest {
 
     private String nombrePlan;
-    private Entrenador entrenador;
-
-    @Data
-    @Builder
-    public static class Entrenador {
-        private String email;
-    }
 
 }

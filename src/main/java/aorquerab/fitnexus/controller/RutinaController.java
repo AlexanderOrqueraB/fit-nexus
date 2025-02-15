@@ -132,8 +132,7 @@ public class RutinaController {
         return ResponseEntity.status(HttpStatus.OK).body(rutinaDTOList);
     }
 
-    //TODO: Testear en Postman
-    //TODO: Testear en React
+    //TODO: Testear en Postman y React NEW UI
     @GetMapping("/rutina/usuario/{fitNexusId}")
     public ResponseEntity<List<RutinaGetDTO>> obtenerRutinaPorFitNexusId(@PathVariable String fitNexusId) {
         log.info("Ejecutando obtenerEjerciciosPorFitNexusId con el FitNexusId: {}...", fitNexusId);
@@ -178,27 +177,40 @@ public class RutinaController {
         }
     }
 
-    //Testeado Postman + SB
-    @PostMapping
-    public ResponseEntity<String> crearRutina(@RequestBody RutinaDtoRequest rutinaDtoRequest) {
+
+    //TODO: Testear en Postman y React NEW UI
+    @PostMapping("{fitNexusId}")
+    public ResponseEntity<String> crearRutina (@PathVariable String fitNexusId,
+        @RequestBody RutinaDtoRequest rutinaDtoRequest) {
+
         log.info("Ejecutando crearRutina con este rutinaDtoRequest: {}", rutinaDtoRequest);
-        if(rutinaDtoRequest == null)
+
+        Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
+        if (entrenadorOptional.isEmpty()) {
+            log.warn("Entrenador no encontrado en base de datos con el fitNexusId: {}", fitNexusId);
+            throw new EntrenadorNotFoundException("Entrenador no encontrado en BD: " + fitNexusId);
+        }
+
+        if(rutinaDtoRequest == null) {
             throw new InvalidRequestException("Peticion de rutina no valida");
-        String entrenadorEmail = rutinaDtoRequest.getEntrenador().getEmail();
-        Optional <Entrenador> entrenadorFromRepository = entrenadorRepository.findByEmail(entrenadorEmail);
-        Rutina rutinaCreada;
-        if (entrenadorFromRepository.isPresent()) {
-            rutinaCreada = Rutina.builder()
+        }
+
+        if (entrenadorOptional.isPresent()) {
+            Rutina rutinaCreada = Rutina.builder()
                     .nombreRutina(rutinaDtoRequest.getNombreRutina())
                     .fechaInicio(rutinaDtoRequest.getFechaInicio())
                     .fechaFinal(rutinaDtoRequest.getFechaFinal())
-                    .entrenador(entrenadorFromRepository.get())
+                    .entrenador(entrenadorOptional.get())
                     .build();
-        } else throw new EntrenadorNotFoundException("El entrenador no se ha encontrado en BD");
-
-        rutinaRepository.save(rutinaCreada);
-        log.info("crearRutina ejecutada con: " + rutinaCreada);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Rutina creada correctamente en BD");
+            log.info("crearRutina ejecutado con: {}", rutinaCreada);
+            Rutina rutinaGuardada = rutinaRepository.save(rutinaCreada);
+            
+            if (rutinaGuardada != null) {
+                log.info("Rutina guardada correctamente en BD: {}", rutinaGuardada);
+                return ResponseEntity.status(HttpStatus.CREATED).body("Rutina creada correctamente en BD: " + rutinaGuardada);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al guardar la rutina en BD");
     }
 
     //TODO: Testear con postman
