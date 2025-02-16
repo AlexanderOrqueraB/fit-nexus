@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class PlanEntrenamientoDtoCrearRequest {
+public class PlanEntrenamientoDtoRequest {
 
     private String nombrePlan;
 

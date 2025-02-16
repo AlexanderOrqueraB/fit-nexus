@@ -1,11 +1,13 @@
 package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
+import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoAsignarRequest;
-import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoCrearRequest;
+import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoRequest;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoFechasRequest;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoResponse;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoGetDTO;
+import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.RutinaDtoRequest;
 import aorquerab.fitnexus.model.exception.*;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
@@ -149,9 +151,9 @@ public class PlanDeEntrenamientoController {
     //TODO: Testear en Postman y React NEW UI
     @PostMapping("{fitNexusId}")
     public ResponseEntity<String> crearPlanEntrenamiento (@PathVariable String fitNexusId,
-            @RequestBody PlanEntrenamientoDtoCrearRequest planEntrenamientoDto) {
+            @RequestBody PlanEntrenamientoDtoRequest planEntrenamientoDtoCrearRequest) {
 
-        log.info("Ejecutando crearPlanEntrenamiento con el DTO: {}", planEntrenamientoDto);
+        log.info("Ejecutando crearPlanEntrenamiento con el DTO: {}", planEntrenamientoDtoCrearRequest);
 
         Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
         if (entrenadorOptional.isEmpty()) {
@@ -159,13 +161,13 @@ public class PlanDeEntrenamientoController {
             throw new EntrenadorNotFoundException("Entrenador no encontrado en BD: " + fitNexusId);
         }
 
-        if(planEntrenamientoDto == null) {
+        if(planEntrenamientoDtoCrearRequest == null) {
             throw new InvalidRequestException("Peticion para plan de entrenamiento no valida");
         }
 
         if (entrenadorOptional.isPresent()) {
         PlanDeEntrenamiento planDeEntrenamientoCreado = PlanDeEntrenamiento.builder()
-                .nombrePlan(planEntrenamientoDto.getNombrePlan())
+                .nombrePlan(planEntrenamientoDtoCrearRequest.getNombrePlan())
                 .entrenador(entrenadorOptional.get())
                 .build();
         log.info("crearPlanEntrenamiento ejecutado con: {}", planDeEntrenamientoCreado);
@@ -179,6 +181,49 @@ public class PlanDeEntrenamientoController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al guardar el plan de entrenamiento en BD");
     }
+
+    //TODO: Testear en Postman y React NEW UI
+    @PutMapping("/{fitNexusId}")
+        public ResponseEntity<String> actualizarPlan (@PathVariable String fitNexusId, 
+            @RequestBody PlanEntrenamientoDtoRequest planEntrenamientoDtoRequest) {
+        log.info("Ejecutando actualizarPlan con esta planEntrenamientoDtoRequest: {}", planEntrenamientoDtoRequest);
+
+        Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
+        if (entrenadorOptional.isEmpty()) {
+            log.warn("Entrenador no encontrado en base de datos con el fitNexusId: {}", fitNexusId);
+            throw new EntrenadorNotFoundException("Entrenador no encontrado en BD: " + fitNexusId);
+        }
+
+        PlanDeEntrenamiento planById = planDeEntrenamientoRepository.findByNombrePlan(planEntrenamientoDtoRequest.getNombrePlan());
+
+        if(planById == null) {
+            log.warn("Plan de entrenamiento no encontrado en base de datos con el nombre: {}", planEntrenamientoDtoRequest.getNombrePlan());
+            throw new PlanDeEntrenamientoNotFoundException("Plan de entrenamiento no encontrado en BD: " + planEntrenamientoDtoRequest.getNombrePlan());
+        }
+
+        if(entrenadorOptional.isPresent()) {
+            Entrenador entrenador = entrenadorOptional.get();
+            planById.setEntrenador(entrenador);
+
+            //Actualizas solo los campos enviados (distintos de null)
+            if(planEntrenamientoDtoRequest.getNombrePlan() != null)
+                planById.setNombrePlan(planEntrenamientoDtoRequest.getNombrePlan());
+
+            log.info("Plan de entrenamiento actualizado: {}", planById);
+
+            PlanDeEntrenamiento planActualizado = planDeEntrenamientoRepository.save(planById);
+
+            if (planActualizado != null) {
+                log.info("Plan de entrenamiento actualizad: {}", planActualizado);
+                return ResponseEntity.status(HttpStatus.OK).body("Plan de entrenamiento actualizad correctamente en BD");
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el plan de entrenamiento");
+    }
+
+    //TODO: Testear en Postman y React NEW UI
+    @DeleteMapping("/{nombrePlan}")
 
     //TODO: POST Controller
     // para añadir fechas un plan
@@ -240,29 +285,5 @@ public class PlanDeEntrenamientoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al asignar el plan al cliente");
         }
     }
-
-
-    //TODO: DELETE controller
-    // Para eliminar la asignacion de un plan a un cliente concreto
-
-    //TODO: DELETE controller
-    // Para borrar un plan
-
-
-
-
-    //TODO: POST Controller
-    // para añadir una rutina a un plan por idRutina o nombreRutina
-    //TODO: POST Controller
-    // para añadir una lista de rutinas
-
-    //TODO: DELETE Controller
-    // para eliminar una lista de rutinas
-
-    //TODO: PUT Controller
-    // para modificar datos de un plan (nombre o fechas o ??)
-
-    //TODO: DELETE controller
-    // para eliminar una rutina de un plan
 
 }
