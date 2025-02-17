@@ -1,12 +1,6 @@
 package aorquerab.fitnexus.controller;
 
-import aorquerab.fitnexus.model.exception.ClienteNotFoundException;
-import aorquerab.fitnexus.model.exception.EjercicioNotFoundException;
-import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
-import aorquerab.fitnexus.model.exception.InvalidRequestException;
-import aorquerab.fitnexus.model.exception.PlanDeEntrenamientoNotFoundException;
-import aorquerab.fitnexus.model.exception.RutinaNotFoundException;
-import aorquerab.fitnexus.model.exception.UsuarioNotFoundException;
+import aorquerab.fitnexus.model.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

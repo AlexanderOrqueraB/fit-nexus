@@ -9,9 +9,11 @@ import aorquerab.fitnexus.model.users.Entrenador;
 import aorquerab.fitnexus.repository.ClienteRepository;
 import aorquerab.fitnexus.repository.EntrenadorRepository;
 import aorquerab.fitnexus.repository.PlanDeEntrenamientoRepository;
+import aorquerab.fitnexus.repository.intermediate.PlanRutinaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -29,11 +31,13 @@ public class PlanDeEntrenamientoController {
     private final PlanDeEntrenamientoRepository planDeEntrenamientoRepository;
     private final ClienteRepository clienteRepository;
     private final EntrenadorRepository entrenadorRepository;
+    private final PlanRutinaRepository planRutinaRepository;
 
-    public PlanDeEntrenamientoController(PlanDeEntrenamientoRepository planDeEntrenamientoRepository, ClienteRepository clienteRepository, EntrenadorRepository entrenadorRepository) {
+    public PlanDeEntrenamientoController(PlanDeEntrenamientoRepository planDeEntrenamientoRepository, ClienteRepository clienteRepository, EntrenadorRepository entrenadorRepository, PlanRutinaRepository planRutinaRepository) {
         this.planDeEntrenamientoRepository = planDeEntrenamientoRepository;
         this.clienteRepository = clienteRepository;
         this.entrenadorRepository = entrenadorRepository;
+        this.planRutinaRepository = planRutinaRepository;
     }
 
     //TODO: Testear con postman
@@ -246,6 +250,63 @@ public class PlanDeEntrenamientoController {
         } catch (Exception e) {
             log.warn("Error al eliminar el plan de entrenamiento", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al eliminar el plan de entrenamiento");
+        }
+    }
+
+    //TODO: Testear en Postman y React NEW UI
+    // Al agregar y eliminar listas de rutinas: Verificar que todas las relaciones se procesen correctamente.
+    @Transactional
+    @PutMapping ("/plan/rutinas/{idPlan}")
+    public ResponseEntity<String> addRutinasToPlan (@PathVariable Long idPlan,
+                                                    @RequestBody RutinasListDTO rutinasListDTO) {
+        log.info("Ejecutando addRutinasToPlan con esta lista de rutinasListDTO: {} y este plan con el id: {}"
+                ,rutinasListDTO, idPlan);
+
+        if (!planDeEntrenamientoRepository.existsById(idPlan)) {
+            throw new PlanDeEntrenamientoNotFoundException("Plan de entrenamiento no encontrado: " + idPlan);
+        }
+
+        List <RutinasListDTO.RutinaDTO> rutinasFromDto = rutinasListDTO.getRutinas();
+        List <Long> idRutinasList = rutinasFromDto.stream().map(RutinasListDTO.RutinaDTO::getId).toList();
+
+        try {
+            idRutinasList.forEach(
+                    rutinaId -> planRutinaRepository.addRutinaToPlan(idPlan,rutinaId)
+            );
+
+            return ResponseEntity.status(HttpStatus.OK).body("Rutinas añadidas correctamente al plan de entrenamiento");
+
+        } catch (RuntimeException e) {
+            log.warn("Error al intentar añadir una rutina al plan de entrenamiento", e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al intentar añadir una rutina al plan de entrenamiento");
+        }
+    }
+
+    //TODO: Testear en Postman y React NEW UI
+    // Agregar y eliminar listas de rutinas: Verifica que todas las relaciones se procesen correctamente.
+    @Transactional
+    @DeleteMapping("/plan/rutinas/{idPlan}")
+    public ResponseEntity<String> deleteRutinasFromPlan (@PathVariable Long idPlan,
+                                                         @RequestBody RutinasListDTO rutinasListDTO) {
+        log.info("Ejecutando deleteRutinasFromPlan con esta lista de rutinasListDTO: {} y este plan con el id: {}"
+                ,rutinasListDTO, idPlan);
+
+        if(!planDeEntrenamientoRepository.existsById(idPlan)) {
+            throw new PlanDeEntrenamientoNotFoundException("Plan de entrenamiento no encontrado: " + idPlan);
+        }
+
+        List <RutinasListDTO.RutinaDTO> rutinasFromDto = rutinasListDTO.getRutinas();
+        List <Long> idRutinasList = rutinasFromDto.stream().map(RutinasListDTO.RutinaDTO::getId).toList();
+
+        try {
+            // Eliminar cada rutina del plan usando la tabla intermedia (plan_de_entrenamiento_rutina)
+            idRutinasList.forEach(rutinaId -> planRutinaRepository.deleteRutinaFromPlan(idPlan, rutinaId));
+                return ResponseEntity.status(HttpStatus.OK).body("Rutinas eliminadas correctamente del plan de entrenamiento");
+        } catch (RuntimeException e) {
+            log.warn("Error al intentar eliminar una rutina del plan de entrenamiento", e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al intentar eliminar una rutina del plan de entrenamiento");
         }
     }
 

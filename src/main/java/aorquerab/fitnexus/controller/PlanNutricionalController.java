@@ -5,7 +5,6 @@ import aorquerab.fitnexus.model.dtos.PlanNutricionalDTO;
 import aorquerab.fitnexus.model.enumerator.Objetivo;
 import aorquerab.fitnexus.model.exception.ClienteNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
-import aorquerab.fitnexus.model.exception.PlanNutricionalNotFoundException;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.repository.ClienteRepository;
 import aorquerab.fitnexus.repository.PlanNutricionalRepository;
