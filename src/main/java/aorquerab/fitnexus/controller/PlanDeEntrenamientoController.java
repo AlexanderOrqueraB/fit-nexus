@@ -168,7 +168,6 @@ public class PlanDeEntrenamientoController {
             throw new InvalidRequestException("Peticion para plan de entrenamiento no valida");
         }
 
-        if (entrenadorOptional.isPresent()) {
         PlanDeEntrenamiento planDeEntrenamientoCreado = PlanDeEntrenamiento.builder()
                 .nombrePlan(planEntrenamientoDtoCrearRequest.getNombrePlan())
                 .entrenador(entrenadorOptional.get())
@@ -176,13 +175,9 @@ public class PlanDeEntrenamientoController {
         log.info("crearPlanEntrenamiento ejecutado con: {}", planDeEntrenamientoCreado);
         planDeEntrenamientoRepository.save(planDeEntrenamientoCreado);
 
-            if(planDeEntrenamientoCreado != null) {
-                log.info("Plan de entrenamiento guardado correctamente en BD: {}", planDeEntrenamientoCreado);
-                return ResponseEntity.status(HttpStatus.CREATED).body("Plan de entrenamiento guardado correctamente en BD:" 
-                + planDeEntrenamientoCreado);
-            }
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al guardar el plan de entrenamiento en BD");
+        log.info("Plan de entrenamiento guardado correctamente en BD: {}", planDeEntrenamientoCreado);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Plan de entrenamiento guardado correctamente en BD:"
+        + planDeEntrenamientoCreado);
     }
 
     //TODO: Testear en Postman y React NEW UI
@@ -204,25 +199,20 @@ public class PlanDeEntrenamientoController {
             throw new PlanDeEntrenamientoNotFoundException("Plan de entrenamiento no encontrado en BD: " + planEntrenamientoDtoRequest.getNombrePlan());
         }
 
-        if(entrenadorOptional.isPresent()) {
-            Entrenador entrenador = entrenadorOptional.get();
-            planById.setEntrenador(entrenador);
+        Entrenador entrenador = entrenadorOptional.get();
+        planById.setEntrenador(entrenador);
 
-            //Actualizas solo los campos enviados (distintos de null)
-            if(planEntrenamientoDtoRequest.getNombrePlan() != null)
-                planById.setNombrePlan(planEntrenamientoDtoRequest.getNombrePlan());
+        //Actualizas solo los campos enviados (distintos de null)
+        if(planEntrenamientoDtoRequest.getNombrePlan() != null)
+            planById.setNombrePlan(planEntrenamientoDtoRequest.getNombrePlan());
 
-            log.info("Plan de entrenamiento actualizado: {}", planById);
+        log.info("Plan de entrenamiento actualizado: {}", planById);
 
-            PlanDeEntrenamiento planActualizado = planDeEntrenamientoRepository.save(planById);
+        PlanDeEntrenamiento planActualizado = planDeEntrenamientoRepository.save(planById);
 
-            if (planActualizado != null) {
-                log.info("Plan de entrenamiento actualizad: {}", planActualizado);
-                return ResponseEntity.status(HttpStatus.OK).body("Plan de entrenamiento actualizad correctamente en BD");
-            }
-        }
+        log.info("Plan de entrenamiento actualizado: {}", planActualizado);
+        return ResponseEntity.status(HttpStatus.OK).body("Plan de entrenamiento actualizad correctamente en BD");
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el plan de entrenamiento");
     }
 
     //TODO: Testear en Postman y React NEW UI
@@ -310,12 +300,12 @@ public class PlanDeEntrenamientoController {
         }
     }
 
-    //TODO: POST Controller
-    // para añadir fechas un plan
-    @PostMapping ("/fecha")
-    public ResponseEntity<String> addFechaPlanEntrenamiento (
+    //TODO: Testear en Postman y React NEW UI
+    @PutMapping ("/plan/fecha")
+    public ResponseEntity<String> editarFechaEnPlanEntrenamiento (
             @RequestBody PlanEntrenamientoDtoFechasRequest planEntrenamientoDto) {
-        log.info("Ejecutando addFechaPlanEntrenamiento con el DTO: {}", planEntrenamientoDto);
+
+        log.info("Ejecutando editarFechaEnPlanEntrenamiento con el DTO: {}", planEntrenamientoDto);
         if(planEntrenamientoDto == null)
             throw new InvalidRequestException("Peticion para plan de entrenamiento no valida");
         String nombrePlan = planEntrenamientoDto.getNombrePlan();
@@ -324,18 +314,18 @@ public class PlanDeEntrenamientoController {
 
         if (byNombrePlan == null) {
             log.warn("Plan no encontrado con el nombre: {}", nombrePlan);
-            throw new PlanDeEntrenamientoNotFoundException ("Plan no encontrado con el nombre: "
-                    + nombrePlan);
+            throw new PlanDeEntrenamientoNotFoundException ("Plan no encontrado con el nombre: " + nombrePlan);
         }
 
         byNombrePlan.setFechaInicio(planEntrenamientoDto.getFechaInicio());
         byNombrePlan.setFechaFinal(planEntrenamientoDto.getFechaFinal());
 
         planDeEntrenamientoRepository.save(byNombrePlan);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Fecha añadida correctamente al plan: {}"
+                + planEntrenamientoDto.getNombrePlan());
     }
 
-
+    //TODO: Testear en Postman y React NEW UI
     @PostMapping("/asignar-plan")
     public ResponseEntity<String> asignarPlanACliente(
         @RequestBody PlanEntrenamientoAsignarRequest planEntrenamientoAsignarRequest) {
@@ -361,7 +351,6 @@ public class PlanDeEntrenamientoController {
 
             //Usamos la tabla intermedia para asignar el plan al cliente
             cliente.getPlanDeEntrenamiento().add(plan);
-
             clienteRepository.save(cliente);
 
             return ResponseEntity.status(HttpStatus.OK).body("Plan asignado correctamente al cliente");
@@ -371,5 +360,4 @@ public class PlanDeEntrenamientoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al asignar el plan al cliente");
         }
     }
-
 }
