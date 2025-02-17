@@ -197,25 +197,20 @@ public class EjercicioController {
             throw new InvalidRequestException("Peticion de ejercicio no valida");
         }
 
-        if(entrenadorOptional.isPresent()) {
-            Ejercicio ejercicioCreado = Ejercicio.builder()
-                    .nombreEjercicio(ejercicioDtoRequest.getNombreEjercicio())
-                    .repeticion(ejercicioDtoRequest.getRepeticion())
-                    .serie(ejercicioDtoRequest.getSerie())
-                    .peso(ejercicioDtoRequest.getPeso())
-                    .cardio(ejercicioDtoRequest.getCardio())
-                    .entrenador(entrenadorOptional.get())
-                    .build();
-            log.info("crearEjercicio ejecutado con: {}", ejercicioCreado);
+        Ejercicio ejercicioCreado = Ejercicio.builder()
+                .nombreEjercicio(ejercicioDtoRequest.getNombreEjercicio())
+                .repeticion(ejercicioDtoRequest.getRepeticion())
+                .serie(ejercicioDtoRequest.getSerie())
+                .peso(ejercicioDtoRequest.getPeso())
+                .cardio(ejercicioDtoRequest.getCardio())
+                .entrenador(entrenadorOptional.get())
+                .build();
+        log.info("crearEjercicio ejecutado con: {}", ejercicioCreado);
 
-            Ejercicio ejercicioGuardado = ejercicioRepository.save(ejercicioCreado);
+        Ejercicio ejercicioGuardado = ejercicioRepository.save(ejercicioCreado);
 
-            if (ejercicioGuardado != null) {
-                log.info("Ejercicio guardado correctamente en BD: {}", ejercicioGuardado);
-                return ResponseEntity.status(HttpStatus.CREATED).body("Ejercicio creado correctamente en BD");
-            }
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear el ejercicio");
+        log.info("Ejercicio guardado correctamente en BD: {}", ejercicioGuardado);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Ejercicio creado correctamente en BD");
     }
 
     //TODO: Testear en Postman y React NEW UI
@@ -238,37 +233,32 @@ public class EjercicioController {
             throw new EjercicioNotFoundException("Ejercicio no encontrado en BD: " + ejercicioDtoRequest.getNombreEjercicio());
         }
 
-        if(entrenadorOptional.isPresent()) {
-            Entrenador entrenador = entrenadorOptional.get();
-            ejercicioByName.setEntrenador(entrenador);
+        Entrenador entrenador = entrenadorOptional.get();
+        ejercicioByName.setEntrenador(entrenador);
 
-            //Actualizas solo los campos enviados (distintos de null)
-            if(ejercicioDtoRequest.getNombreEjercicio() != null)
-                ejercicioByName.setNombreEjercicio(ejercicioDtoRequest.getNombreEjercicio());
+        //Actualizas solo los campos enviados (distintos de null)
+        if(ejercicioDtoRequest.getNombreEjercicio() != null)
+            ejercicioByName.setNombreEjercicio(ejercicioDtoRequest.getNombreEjercicio());
 
-            if(ejercicioDtoRequest.getRepeticion() != null)
-                ejercicioByName.setRepeticion(ejercicioDtoRequest.getRepeticion());
+        if(ejercicioDtoRequest.getRepeticion() != null)
+            ejercicioByName.setRepeticion(ejercicioDtoRequest.getRepeticion());
 
-            if(ejercicioDtoRequest.getSerie() != null)
-                ejercicioByName.setSerie(ejercicioDtoRequest.getSerie());
+        if(ejercicioDtoRequest.getSerie() != null)
+            ejercicioByName.setSerie(ejercicioDtoRequest.getSerie());
 
-            if(ejercicioDtoRequest.getPeso() != null)
-                ejercicioByName.setPeso(ejercicioDtoRequest.getPeso());
+        if(ejercicioDtoRequest.getPeso() != null)
+            ejercicioByName.setPeso(ejercicioDtoRequest.getPeso());
 
-            if (ejercicioDtoRequest.getCardio() != null)
-                ejercicioByName.setCardio(ejercicioDtoRequest.getCardio());
+        if (ejercicioDtoRequest.getCardio() != null)
+            ejercicioByName.setCardio(ejercicioDtoRequest.getCardio());
 
-            log.info("Ejercicio actualizado: {}", ejercicioByName);
+        log.info("Ejercicio actualizado: {}", ejercicioByName);
 
-            Ejercicio ejercicioActualizado = ejercicioRepository.save(ejercicioByName);
+        Ejercicio ejercicioActualizado = ejercicioRepository.save(ejercicioByName);
 
-            if (ejercicioActualizado != null) {
-                log.info("Ejercicio actualizado: {}", ejercicioActualizado);
-                return ResponseEntity.status(HttpStatus.OK).body("Ejercicio actualizado correctamente en BD");
-            }
-        }
+        log.info("Ejercicio actualizado: {}", ejercicioActualizado);
+        return ResponseEntity.status(HttpStatus.OK).body("Ejercicio actualizado correctamente en BD");
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el ejercicio");
     }
 
     //TODO: Testear en Postman y React NEW UI

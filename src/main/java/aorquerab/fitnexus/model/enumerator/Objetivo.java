@@ -1,5 +1,8 @@
 package aorquerab.fitnexus.model.enumerator;
 
+import lombok.Getter;
+
+@Getter
 public enum Objetivo {
     PERDER_GRASA (400), GANAR_MUSCULO (300);
 
@@ -9,7 +12,4 @@ public enum Objetivo {
         this.kcalExtra = kcalExtra;
     }
 
-    public int getKcalExtra () {
-        return kcalExtra;
-    }
 }

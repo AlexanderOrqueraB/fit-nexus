@@ -202,22 +202,17 @@ public class RutinaController {
             throw new InvalidRequestException("Peticion de rutina no valida");
         }
 
-        if (entrenadorOptional.isPresent()) {
-            Rutina rutinaCreada = Rutina.builder()
-                    .nombreRutina(rutinaDtoRequest.getNombreRutina())
-                    .fechaInicio(rutinaDtoRequest.getFechaInicio())
-                    .fechaFinal(rutinaDtoRequest.getFechaFinal())
-                    .entrenador(entrenadorOptional.get())
-                    .build();
-            log.info("crearRutina ejecutado con: {}", rutinaCreada);
-            Rutina rutinaGuardada = rutinaRepository.save(rutinaCreada);
-            
-            if (rutinaGuardada != null) {
-                log.info("Rutina guardada correctamente en BD: {}", rutinaGuardada);
-                return ResponseEntity.status(HttpStatus.CREATED).body("Rutina creada correctamente en BD: " + rutinaGuardada);
-            }
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al guardar la rutina en BD");
+        Rutina rutinaCreada = Rutina.builder()
+                .nombreRutina(rutinaDtoRequest.getNombreRutina())
+                .fechaInicio(rutinaDtoRequest.getFechaInicio())
+                .fechaFinal(rutinaDtoRequest.getFechaFinal())
+                .entrenador(entrenadorOptional.get())
+                .build();
+        log.info("crearRutina ejecutado con: {}", rutinaCreada);
+        Rutina rutinaGuardada = rutinaRepository.save(rutinaCreada);
+
+        log.info("Rutina guardada correctamente en BD: {}", rutinaGuardada);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Rutina creada correctamente en BD: " + rutinaGuardada);
     }
 
     //TODO: Testear en Postman y React NEW UI
@@ -239,31 +234,26 @@ public class RutinaController {
             throw new RutinaNotFoundException("Rutina no encontrada en BD: " + rutinaDtoRequest.getNombreRutina());
         }
 
-        if(entrenadorOptional.isPresent()) {
-            Entrenador entrenador = entrenadorOptional.get();
-            rutinaByNombre.setEntrenador(entrenador);
+        Entrenador entrenador = entrenadorOptional.get();
+        rutinaByNombre.setEntrenador(entrenador);
 
-            //Actualizas solo los campos enviados (distintos de null)
-            if(rutinaDtoRequest.getNombreRutina() != null)
-                rutinaByNombre.setNombreRutina(rutinaDtoRequest.getNombreRutina());
+        //Actualizas solo los campos enviados (distintos de null)
+        if(rutinaDtoRequest.getNombreRutina() != null)
+            rutinaByNombre.setNombreRutina(rutinaDtoRequest.getNombreRutina());
 
-            if(rutinaDtoRequest.getFechaInicio() != null)
-                rutinaByNombre.setFechaInicio(rutinaDtoRequest.getFechaInicio());
+        if(rutinaDtoRequest.getFechaInicio() != null)
+            rutinaByNombre.setFechaInicio(rutinaDtoRequest.getFechaInicio());
 
-            if(rutinaDtoRequest.getFechaFinal() != null)
-                rutinaByNombre.setFechaFinal(rutinaDtoRequest.getFechaFinal());
+        if(rutinaDtoRequest.getFechaFinal() != null)
+            rutinaByNombre.setFechaFinal(rutinaDtoRequest.getFechaFinal());
 
-            log.info("Rutina actualizada: {}", rutinaByNombre);
+        log.info("Rutina actualizada: {}", rutinaByNombre);
 
-            Rutina rutinaActualizada = rutinaRepository.save(rutinaByNombre);
+        Rutina rutinaActualizada = rutinaRepository.save(rutinaByNombre);
 
-            if (rutinaActualizada != null) {
-                log.info("Rutina actualizada: {}", rutinaActualizada);
-                return ResponseEntity.status(HttpStatus.OK).body("Rutina actualizada correctamente en BD");
-            }
-        }
+        log.info("Rutina actualizada: {}", rutinaActualizada);
+        return ResponseEntity.status(HttpStatus.OK).body("Rutina actualizada correctamente en BD");
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar la rutina");
     }
 
     //TODO: Testear en Postman y React NEW UI

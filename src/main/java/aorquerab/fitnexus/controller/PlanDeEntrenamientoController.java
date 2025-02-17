@@ -329,7 +329,7 @@ public class PlanDeEntrenamientoController {
     }
 
     //TODO: Testear en Postman y React NEW UI
-    @PostMapping("/asignar-plan")
+    @PostMapping("/plan/asignar-plan")
     public ResponseEntity<String> asignarPlanACliente(
         @RequestBody PlanEntrenamientoAsignarRequest planEntrenamientoAsignarRequest) {
         log.info("Ejecutando asignarPlanACliente con el DTO: {}", planEntrenamientoAsignarRequest);

@@ -123,7 +123,7 @@ public class PlanNutricionalService {
     }
 
     //Fórmula de Harris-Benedict revisada por Mifflin y St Jeor en 1990 (utilizadas en la actualidad)
-    //INPUT: EDAD, ALTURA, PESO Y GENERO
+    //INPUT: EDAD, ALTURA, PESO Y GÉNERO
     public double calcularTasaMetabolismoBasal(int peso, int altura, int edad, Genero genero) {
         double tasaMetabolismoBasal;
         log.info("Ejecutando calculo de tasa de metabolismo basal.");
@@ -146,7 +146,7 @@ public class PlanNutricionalService {
         log.info("Ejecutando calculo de kcal diarias para mantenimiento con {} de factorActividad y {} de TMB"
                 , factorDeActividad,tasaMetabolismoBasal);
         int kCalDiariasMantenimiento;
-        //Con el metabolismo calculado sólo debemos multiplicar por el factor corrector de la actividad
+        //Con el metabolismo calculado solo debemos multiplicar por el factor corrector de la actividad
         kCalDiariasMantenimiento = ((int) (factorDeActividad * tasaMetabolismoBasal));
         log.info("kCalDiariasMantenimiento = factor de actividad: {} * tasa de metabolismo basal: {} = {} kcalDiariasMantenimiento"
                 , factorDeActividad, tasaMetabolismoBasal, kCalDiariasMantenimiento);

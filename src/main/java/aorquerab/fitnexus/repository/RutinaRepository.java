@@ -8,13 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface RutinaRepository extends JpaRepository <Rutina,Long> {
 
     List<Rutina> findAllByNombreRutina (String nombreRutina);
-    Optional<Rutina> findById (Long idRutina);
-
     Rutina findByNombreRutina(String nombreRutina);
 
     //Opcion con consulta SQL Nativa

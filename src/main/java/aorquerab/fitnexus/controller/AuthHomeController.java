@@ -33,7 +33,7 @@ import java.util.*;
 public class AuthHomeController {
 
     /** Este método redirige todas las rutas que no son recursos estáticos a index.html
-     * El controlador interceptará cualquier ruta que no contenga un punto (.) ->Ej: /login
+     * El controlador interceptará cualquier ruta que no contenga un punto (.) →Ej: /login
      * y redirigirá a index.html. Luego, React Router manejará el enrutamiento del lado del cliente.
      */
 
@@ -51,7 +51,7 @@ public class AuthHomeController {
     }
 
 //    @GetMapping("/{path:^(?!api|favicon.ico|static).*}")
-//    //expresion que da por valida /endpointA/endpointB/... -> ("/**/{path:^(?!.*\\.).*$}")
+//    //expresión que da por valida /endpointA/endpointB/... -> ("/**/{path:^(?!.*\\.).*$}")
 //    public String redirectToReact(@PathVariable String path) {
 //        log.info("Redireccionando a React. React-Router enrutará a partir de aquí...");
 //
@@ -91,7 +91,7 @@ public class AuthHomeController {
                         .orElseThrow(()-> {
                             log.warn("Entrenador no encontrado con el FitNexusId: {}", entrenadorFitNexusId);
                             return new InvalidRequestException("Entrenador no encontrado con el FitNexusId: " +
-                                    entrenadorFitNexusId.toString());
+                                    entrenadorFitNexusId);
                         });
                 UUID fitNexusId = generateFitNexusId();
                 log.info ("FitNexusId de cliente: {}", entrenadorFitNexusId);
@@ -236,7 +236,7 @@ public class AuthHomeController {
         log.info("Ejecutando actualizarMisDatosPorFitNexusId con este fitNexusId: {}", fitNexusId);
         log.info("Datos recibidos: {}", datosUsuarioDTO);
         try {
-            DatosUsuarioDTO datosUsuarioActualizado = null;
+            DatosUsuarioDTO datosUsuarioActualizado;
             Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
             Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
 
@@ -244,6 +244,7 @@ public class AuthHomeController {
                 log.warn("Usuario no encontrado con el fitNexusId: {}", fitNexusId);
                 throw new ClienteNotFoundException("Usuario no encontrado en BD: " + fitNexusId);
             }
+
             if(clienteOptional.isPresent()) {
                 Cliente cliente = clienteOptional.get();
                 cliente.setNombre(datosUsuarioDTO.getNombre());
@@ -255,7 +256,6 @@ public class AuthHomeController {
                     .apellido(cliente.getApellido())
                     .email(cliente.getEmail())
                     .build();
-                return ResponseEntity.status(HttpStatus.OK).body(datosUsuarioActualizado);
             } else {
                 Entrenador entrenador = entrenadorOptional.get();
                 entrenador.setNombre(datosUsuarioDTO.getNombre());
@@ -267,8 +267,8 @@ public class AuthHomeController {
                     .apellido(entrenador.getApellido())
                     .email(entrenador.getEmail())
                     .build();
-                return ResponseEntity.status(HttpStatus.OK).body(datosUsuarioActualizado);
             }
+            return ResponseEntity.status(HttpStatus.OK).body(datosUsuarioActualizado);
 
         } catch (Exception e) {
             log.warn("Error al actualizar cliente por emailId", e);

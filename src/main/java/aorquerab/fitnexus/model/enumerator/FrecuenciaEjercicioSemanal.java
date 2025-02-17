@@ -1,5 +1,8 @@
 package aorquerab.fitnexus.model.enumerator;
 
+import lombok.Getter;
+
+@Getter
 public enum FrecuenciaEjercicioSemanal {
 
     POCO_NADA(1.2), LIGERO(1.375),
@@ -11,7 +14,4 @@ public enum FrecuenciaEjercicioSemanal {
         this.factorActividad = factorActividad;
     }
 
-    public double getFactorActividad() {
-        return factorActividad;
-    }
 }

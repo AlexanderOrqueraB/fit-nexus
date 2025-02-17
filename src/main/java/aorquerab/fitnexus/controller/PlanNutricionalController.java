@@ -45,12 +45,12 @@ public class PlanNutricionalController {
     // 1. El cliente solicita un PLAN (SOLICITAR PLAN), un POST con: emailId y entrenadorId (sacados por get?)
     // que crea en BBDD el plan con su id_plan_nutri
     // si el cliente no ha rellenado clienteDTO no se podrá pedir la creación de un plan (en porcentajes o en macros)
-    // Necesitamos para ello asociar el entrenador con el cliente QUIZAS EN UN CAMPO de signupDTO
+    // Necesitamos para ello asociar el entrenador con el cliente QUIZÁS EN UN CAMPO de signupDTO
     // del form inicial
 
     //TODO: El entrenador observa en la lista de clientes una tarea pendiente en una columna
-    // con el boton desplegable o algo asi de ver tareas pendientes.
-    // hace un POST en un boton(CrearPlan) con los datos clienteDTO del cliente concreto y su Email
+    // con el botón desplegable o algo asi de ver tareas pendientes.
+    // hace un POST en un botón(CrearPlan) con los datos clienteDTO del cliente concreto y su Email
     // El resultado es un 201 plan creado (o por porcentajes o por macros)
 
     @GetMapping
@@ -85,7 +85,7 @@ public class PlanNutricionalController {
                 return ResponseEntity.status(HttpStatus.OK).body(planNutricionalDTO); //-> 120,150,70 (g)
             }
         } catch (Exception e) {
-            log.warn("Excepcion obtenerPlanNutriEnMacros: ", e);
+            log.warn("Excepción obtenerPlanNutriEnMacros: ", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(PlanNutricionalDTO.builder().build());
         }
     }
@@ -116,11 +116,11 @@ public class PlanNutricionalController {
                     planNutricionalDTO = planNutricionalService.obtenerPorcentajeMacrosPorObjetivo(cliente);
                     log.info("El plan nutricional en porcentajes existente en BD, porcentajes DTO creado");
                 }
-                //-> 30,30,40(defi) 50,30,20(volumen)
+                //→ 30,30,40(definición) 50,30,20(volumen)
                 return ResponseEntity.status(HttpStatus.OK).body(planNutricionalDTO);
             }
         } catch (Exception e) {
-            log.warn("Excepcion obtenerPlanNutriEnPorcentajes: ", e);
+            log.warn("Excepción obtenerPlanNutriEnPorcentajes: ", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(PlanNutricionalDTO.builder().build());
         }
     }
