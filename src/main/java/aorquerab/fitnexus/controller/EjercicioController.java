@@ -218,7 +218,7 @@ public class EjercicioController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear el ejercicio");
     }
 
-    //Testeado Postman + SB
+    //TODO: Testear en Postman y React NEW UI
     @PutMapping("/{fitNexusId}")
     public ResponseEntity<String> actualizarEjercicio (@PathVariable String fitNexusId,
             @RequestBody EjercicioDtoRequest ejercicioDtoRequest) {
@@ -271,7 +271,7 @@ public class EjercicioController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar el ejercicio");
     }
 
-    //Testeado Postman + SB
+    //TODO: Testear en Postman y React NEW UI
     @DeleteMapping("/{nombreEjercicio}")
     public ResponseEntity<String> eliminarEjercicio (@PathVariable String nombreEjercicio) {
         

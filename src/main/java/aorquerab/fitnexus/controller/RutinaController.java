@@ -292,15 +292,13 @@ public class RutinaController {
     }
 
 
-    //TODO: Testear con postman
-    // Agregar un ejercicio que ya existe: Debe evitar duplicados.
-    // Agregar y eliminar listas de ejercicios: Verifica que todas las relaciones se procesen correctamente.
+    //TODO: Testear en Postman y React NEW UI
+    // Al agregar y eliminar listas de ejercicios: Verificar que todas las relaciones se procesen correctamente.
     @Transactional
-    @PostMapping ("/rutina/{idRutina}/ejercicios")
-    public ResponseEntity<String> addEjerciciosToRutina (
-            @PathVariable Long idRutina,
+    @PutMapping ("/rutina/ejercicios/{idRutina}")
+    public ResponseEntity<String> addEjerciciosToRutina (@PathVariable Long idRutina,
             @RequestBody EjerciciosListDTO ejerciciosListDTO) {
-        log.info("Ejecutando addEjerciciosToRutina con esta lista de ejerciciosDTO: {} y esta rutina: {}"
+        log.info("Ejecutando addEjerciciosToRutina con esta lista de ejerciciosDTO: {} y esta rutina con el id: {}"
                 ,ejerciciosListDTO, idRutina);
 
         if(!rutinaRepository.existsById(idRutina)) {
@@ -310,19 +308,25 @@ public class RutinaController {
         List<EjerciciosListDTO.EjercicioDTO> ejerciciosFromDto = ejerciciosListDTO.getEjercicios();
         List<Long> idExerciseList = ejerciciosFromDto.stream().map(EjerciciosListDTO.EjercicioDTO::getId).toList();
 
-        //Añade cada ejercicio a la rutina usando la tabla intermedia (rutina_ejercicio)
-        idExerciseList.forEach(
-                ejercicioId -> rutinaEjercicioRepository.addEjercicioToRutina(idRutina,ejercicioId)
-        );
+        try {
+            //Añade cada ejercicio a la rutina usando la tabla intermedia (rutina_ejercicio)
+            idExerciseList.forEach(
+                    ejercicioId -> rutinaEjercicioRepository.addEjercicioToRutina(idRutina,ejercicioId)
+            );
+                return ResponseEntity.status(HttpStatus.OK).body("Ejercicios añadidos correctamente a la rutina");
+        } catch (RuntimeException e) {
+            log.warn("Error al intentar añadir un ejercicio a la rutina", e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al intentar añadir un ejercicio a la rutina");
 
-        return ResponseEntity.status(HttpStatus.OK).body("Ejercicios añadidos correctamente a la rutina");
+        }
     }
 
-    //TODO: Testear con postman
+    //TODO: Testear en Postman y React NEW UI
     // Eliminar un ejercicio que no está en la rutina: No debe lanzar errores.
     // Agregar y eliminar listas de ejercicios: Verifica que todas las relaciones se procesen correctamente.
     @Transactional
-    @DeleteMapping("/rutina/{idRutina}/ejercicios")
+    @DeleteMapping("/rutina/ejercicios/{idRutina}")
     public ResponseEntity<String> deleteEjerciciosFromRutina(
             @PathVariable Long idRutina,
             @RequestBody EjerciciosListDTO ejerciciosListDTO) {
@@ -337,12 +341,20 @@ public class RutinaController {
         List<EjerciciosListDTO.EjercicioDTO> ejerciciosFromDto = ejerciciosListDTO.getEjercicios();
         List<Long> idExerciseList = ejerciciosFromDto.stream().map(EjerciciosListDTO.EjercicioDTO::getId).toList();
 
-        // Eliminar cada ejercicio de la rutina usando la tabla intermedia (rutina_ejercicio)
-        idExerciseList.forEach(ejercicioId ->
-                rutinaEjercicioRepository.deleteEjercicioFromRutina(idRutina, ejercicioId)
-        );
+        try {
+            // Eliminar cada ejercicio de la rutina usando la tabla intermedia (rutina_ejercicio)
+            idExerciseList.forEach(ejercicioId ->
+                    rutinaEjercicioRepository.deleteEjercicioFromRutina(idRutina, ejercicioId)
+            );
+                return ResponseEntity.status(HttpStatus.OK).body("Ejercicios eliminados correctamente de la rutina");
+        } catch (RuntimeException e) {
+            log.warn("Error al intentar eliminar un ejercicio a la rutina", e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al intentar eliminar un ejercicio a la rutina");
 
-        return ResponseEntity.status(HttpStatus.OK).body("Ejercicios eliminados correctamente de la rutina");
+        }
+
+
     }
 
 
