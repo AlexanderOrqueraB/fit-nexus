@@ -1,13 +1,8 @@
 package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
-import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
-import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoAsignarRequest;
-import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoRequest;
-import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoFechasRequest;
-import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoDtoResponse;
-import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.PlanEntrenamientoGetDTO;
-import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.RutinaDtoRequest;
+import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.*;
+import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.response.PlanEntrenamientoGetDTO;
 import aorquerab.fitnexus.model.exception.*;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
@@ -133,12 +128,16 @@ public class PlanDeEntrenamientoController {
 
             List<PlanEntrenamientoGetDTO> planDtoRequestList = planes.stream()
                     .map(plan -> PlanEntrenamientoGetDTO.builder()
+                            .id(plan.getId())
                             .nombrePlan(plan.getNombrePlan())
                             .fechaInicio(plan.getFechaInicio())
                             .fechaFinal(plan.getFechaFinal())
-                            .rutinas(plan.getRutinas().stream()
-                                    .map(rutina -> PlanEntrenamientoGetDTO.RutinaDTO.builder()
-                                            .nombreRutina(rutina.getNombreRutina()).build()).collect(Collectors.toList()))
+                                .rutinas(plan.getRutinas().stream()
+                                        .map(rutina -> PlanEntrenamientoGetDTO.RutinaDTO.builder()
+                                                .id(rutina.getId())
+                                                .nombreRutina(rutina.getNombreRutina())
+                                                    .build())
+                                .collect(Collectors.toList()))
                             .build()).toList();
 
             return ResponseEntity.status(HttpStatus.OK).body(planDtoRequestList);
@@ -260,12 +259,13 @@ public class PlanDeEntrenamientoController {
             throw new InvalidRequestException("Peticion para plan de entrenamiento no valida");
         String nombrePlan = planEntrenamientoDto.getNombrePlan();
         PlanDeEntrenamiento byNombrePlan =
-                planDeEntrenamientoRepository.findByNombrePlan(nombrePlan)
-                        .orElseThrow(()-> {
-                            log.warn("Plan no encontrado con el nombre: {}", nombrePlan);
-                            return new PlanDeEntrenamientoNotFoundException ("Plan no encontrado con el nombre: "
-                                    + nombrePlan);
-                        });
+                planDeEntrenamientoRepository.findByNombrePlan(nombrePlan);
+
+        if (byNombrePlan == null) {
+            log.warn("Plan no encontrado con el nombre: {}", nombrePlan);
+            throw new PlanDeEntrenamientoNotFoundException ("Plan no encontrado con el nombre: "
+                    + nombrePlan);
+        }
 
         byNombrePlan.setFechaInicio(planEntrenamientoDto.getFechaInicio());
         byNombrePlan.setFechaFinal(planEntrenamientoDto.getFechaFinal());
@@ -281,11 +281,11 @@ public class PlanDeEntrenamientoController {
         log.info("Ejecutando asignarPlanACliente con el DTO: {}", planEntrenamientoAsignarRequest);
 
         try {
-            PlanDeEntrenamiento plan = planDeEntrenamientoRepository.findByNombrePlan(planEntrenamientoAsignarRequest.getNombrePlan())
-                    .orElseThrow(() -> {
-                        log.warn("Plan no encontrado con el nombre: {}", planEntrenamientoAsignarRequest.getNombrePlan());
-                        return new PlanDeEntrenamientoNotFoundException("Plan no encontrado con el nombre: " + planEntrenamientoAsignarRequest.getNombrePlan());
-                    });
+            PlanDeEntrenamiento plan = planDeEntrenamientoRepository.findByNombrePlan(planEntrenamientoAsignarRequest.getNombrePlan());
+            if (plan == null) {
+                log.warn("Plan no encontrado con el nombre: {}", planEntrenamientoAsignarRequest.getNombrePlan());
+                throw new PlanDeEntrenamientoNotFoundException("Plan no encontrado con el nombre: " + planEntrenamientoAsignarRequest.getNombrePlan());
+            }
 
             Cliente cliente = clienteRepository.findByFitnexusId(UUID.fromString(planEntrenamientoAsignarRequest.getClienteFitNexusId()))
                     .orElseThrow(() -> {

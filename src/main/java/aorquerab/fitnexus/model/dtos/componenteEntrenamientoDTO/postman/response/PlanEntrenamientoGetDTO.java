@@ -1,4 +1,4 @@
-package aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman;
+package aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 public class PlanEntrenamientoGetDTO {
 
+    private Long id;
     private String nombrePlan;
     private LocalDate fechaInicio;
     private LocalDate fechaFinal;
@@ -23,6 +24,7 @@ public class PlanEntrenamientoGetDTO {
     @Builder
     public static class RutinaDTO {
         private String nombreRutina;
+        private Long id;
     }
 
 }

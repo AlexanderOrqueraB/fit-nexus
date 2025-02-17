@@ -2,6 +2,7 @@ package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.EjercicioDtoRequest;
+import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.response.EjercicioGetDTO;
 import aorquerab.fitnexus.model.enumerator.Role;
 import aorquerab.fitnexus.model.exception.*;
 import aorquerab.fitnexus.model.users.Cliente;
@@ -107,7 +108,7 @@ public class EjercicioController {
 
     //TODO: Testear en Postman y React NEW UI
     @GetMapping("/ejercicio/usuario/{fitNexusId}")
-    public ResponseEntity<List<EjercicioDtoRequest>> obtenerEjerciciosPorFitNexusId(@PathVariable String fitNexusId) {
+    public ResponseEntity<List<EjercicioGetDTO>> obtenerEjerciciosPorFitNexusId(@PathVariable String fitNexusId) {
         log.info("Ejecutando obtenerEjerciciosPorFitNexusId con el FitNexusId: {}...", fitNexusId);
         try {
             List<Ejercicio> ejercicios = Collections.emptyList();
@@ -133,8 +134,9 @@ public class EjercicioController {
                         + fitNexusId);
             }
 
-            List<EjercicioDtoRequest> ejercicioDtoRequestList = ejercicios.stream()
-                    .map(ejercicio -> EjercicioDtoRequest.builder()
+            List<EjercicioGetDTO> ejercicioDtoRequestList = ejercicios.stream()
+                    .map(ejercicio -> EjercicioGetDTO.builder()
+                            .id(ejercicio.getId())
                             .nombreEjercicio(ejercicio.getNombreEjercicio())
                             .repeticion(ejercicio.getRepeticion())
                             .serie(ejercicio.getSerie())
@@ -144,7 +146,7 @@ public class EjercicioController {
 
             return ResponseEntity.status(HttpStatus.OK).body(ejercicioDtoRequestList);
         } catch (Exception e) {
-            log.warn("Error al obtener EjercicioDtoRequest: ", e);
+            log.warn("Error al obtener EjercicioGetDTO: ", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
         }
     }

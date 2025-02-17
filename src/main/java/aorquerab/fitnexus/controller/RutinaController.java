@@ -5,7 +5,7 @@ import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.RutinaDTO;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.EjerciciosListDTO;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.RutinaDtoRequest;
-import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.RutinaGetDTO;
+import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.response.RutinaGetDTO;
 import aorquerab.fitnexus.model.exception.*;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
@@ -162,12 +162,16 @@ public class RutinaController {
 
             List<RutinaGetDTO> rutinaDtoRequestList = rutinas.stream()
                     .map(rutina -> RutinaGetDTO.builder()
+                        .id(rutina.getId())
                         .nombreRutina(rutina.getNombreRutina())
                         .fechaInicio(rutina.getFechaInicio())
                         .fechaFinal(rutina.getFechaFinal())
-                        .ejercicios(rutina.getEjercicios().stream()
-                            .map(ejercicio -> RutinaGetDTO.EjercicioDTO.builder()
-                                .nombreEjercicio(ejercicio.getNombreEjercicio()).build()).collect(Collectors.toList()))
+                            .ejercicios(rutina.getEjercicios().stream()
+                                .map(ejercicio -> RutinaGetDTO.EjercicioDTO.builder()
+                                    .id(ejercicio.getId())
+                                    .nombreEjercicio(ejercicio.getNombreEjercicio())
+                                        .build())
+                            .collect(Collectors.toList()))
                         .build()).toList();
 
             return ResponseEntity.status(HttpStatus.OK).body(rutinaDtoRequestList);
