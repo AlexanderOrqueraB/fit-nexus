@@ -280,15 +280,15 @@ public class EjercicioController {
             if (nombreEjercicio == null) {
                 throw new InvalidRequestException("Petición de ejercicio no válida");
             }
-            Ejercicio ejerciciobyId = ejercicioRepository.findByNombreEjercicio(nombreEjercicio);
+            Ejercicio ejercicioByNombre = ejercicioRepository.findByNombreEjercicio(nombreEjercicio);
 
-            if (ejerciciobyId == null) {
+            if (ejercicioByNombre == null) {
                 log.warn("Ejercicio no encontrado en base de datos con el nombre: {}", nombreEjercicio);
                 throw new EjercicioNotFoundException("Ejercicio no encontrado en BD: " + nombreEjercicio);
             }
     
-            log.info("Ejercicio a eliminar: {}", ejerciciobyId);
-            ejercicioRepository.delete(ejerciciobyId);
+            log.info("Ejercicio a eliminar: {}", ejercicioByNombre);
+            ejercicioRepository.delete(ejercicioByNombre);
     
             return ResponseEntity.status(HttpStatus.OK).body("Ejercicio borrado correctamente");
 

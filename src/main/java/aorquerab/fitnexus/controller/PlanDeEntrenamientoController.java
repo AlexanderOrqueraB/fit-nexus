@@ -224,6 +224,31 @@ public class PlanDeEntrenamientoController {
 
     //TODO: Testear en Postman y React NEW UI
     @DeleteMapping("/{nombrePlan}")
+    public ResponseEntity<String> eliminarPlanDeEntrenamiento (@PathVariable String nombrePlan) {
+        
+        log.info("Ejecutando eliminarPlanDeEntrenamiento con el nombre: {}", nombrePlan);
+
+        try {
+            if (nombrePlan == null) {
+                throw new InvalidRequestException("Petición de plan de entrenamiento no válida");
+            }
+            PlanDeEntrenamiento planDeEntrenamientoByNombre = planDeEntrenamientoRepository.findByNombrePlan(nombrePlan);
+
+            if (planDeEntrenamientoByNombre == null) {
+                log.warn("Plan de entrenamiento no encontrado en base de datos con el nombre: {}", nombrePlan);
+                throw new PlanDeEntrenamientoNotFoundException("Plan de entrenamiento no encontrado en BD: " + nombrePlan);
+            }
+    
+            log.info("Plan de entrenamiento a eliminar: {}", planDeEntrenamientoByNombre);
+            planDeEntrenamientoRepository.delete(planDeEntrenamientoByNombre);
+    
+            return ResponseEntity.status(HttpStatus.OK).body("Plan de entrenamiento borrado correctamente");
+
+        } catch (Exception e) {
+            log.warn("Error al eliminar el plan de entrenamiento", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al eliminar el plan de entrenamiento");
+        }
+    }
 
     //TODO: POST Controller
     // para añadir fechas un plan

@@ -261,6 +261,32 @@ public class RutinaController {
 
     //TODO: Testear en Postman y React NEW UI
     @DeleteMapping("/{nombreRutina}")
+    public ResponseEntity<String> eliminarRutina (@PathVariable String nombreRutina) {
+        
+        log.info("Ejecutando eliminarRutina con el nombre: {}", nombreRutina);
+
+        try {
+            if (nombreRutina == null) {
+                throw new InvalidRequestException("Petición de rutina no válida");
+            }
+            Rutina rutinaByNombre = rutinaRepository.findByNombreRutina(nombreRutina);
+
+            if (rutinaByNombre == null) {
+                log.warn("Rutina no encontrada en base de datos con el nombre: {}", nombreRutina);
+                throw new RutinaNotFoundException("Rutina no encontrada en BD: " + nombreRutina);
+            }
+    
+            log.info("Rutina a eliminar: {}", rutinaByNombre);
+            rutinaRepository.delete(rutinaByNombre);
+    
+            return ResponseEntity.status(HttpStatus.OK).body("Rutina borrada correctamente");
+
+        } catch (Exception e) {
+            log.warn("Error al eliminar la rutina", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al eliminar la rutina");
+        }
+    }
+
 
     //TODO: Testear con postman
     // Agregar un ejercicio que ya existe: Debe evitar duplicados.
@@ -316,6 +342,14 @@ public class RutinaController {
     }
 
 
+
+
+
+
+
+
+
+    
 
     //TODO: Testear con postman
     // opcion con JPQL
