@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
@@ -230,36 +229,36 @@ public class EjercicioController {
             throw new EntrenadorNotFoundException("Entrenador no encontrado en BD: " + fitNexusId);
         }
 
-        Ejercicio ejercicioById = ejercicioRepository.findByNombreEjercicio(ejercicioDtoRequest.getNombreEjercicio());
+        Ejercicio ejercicioByName = ejercicioRepository.findByNombreEjercicio(ejercicioDtoRequest.getNombreEjercicio());
         
-        if(ejercicioById == null) {
+        if(ejercicioByName == null) {
             log.warn("Ejercicio no encontrado en base de datos con el nombre: {}", ejercicioDtoRequest.getNombreEjercicio());
             throw new EjercicioNotFoundException("Ejercicio no encontrado en BD: " + ejercicioDtoRequest.getNombreEjercicio());
         }
 
         if(entrenadorOptional.isPresent()) {
             Entrenador entrenador = entrenadorOptional.get();
-            ejercicioById.setEntrenador(entrenador);
+            ejercicioByName.setEntrenador(entrenador);
 
             //Actualizas solo los campos enviados (distintos de null)
             if(ejercicioDtoRequest.getNombreEjercicio() != null)
-            ejercicioById.setNombreEjercicio(ejercicioDtoRequest.getNombreEjercicio());
+                ejercicioByName.setNombreEjercicio(ejercicioDtoRequest.getNombreEjercicio());
 
             if(ejercicioDtoRequest.getRepeticion() != null)
-                ejercicioById.setRepeticion(ejercicioDtoRequest.getRepeticion());
+                ejercicioByName.setRepeticion(ejercicioDtoRequest.getRepeticion());
 
             if(ejercicioDtoRequest.getSerie() != null)
-                ejercicioById.setSerie(ejercicioDtoRequest.getSerie());
+                ejercicioByName.setSerie(ejercicioDtoRequest.getSerie());
 
             if(ejercicioDtoRequest.getPeso() != null)
-                ejercicioById.setPeso(ejercicioDtoRequest.getPeso());
+                ejercicioByName.setPeso(ejercicioDtoRequest.getPeso());
 
             if (ejercicioDtoRequest.getCardio() != null)
-            ejercicioById.setCardio(ejercicioDtoRequest.getCardio());
+                ejercicioByName.setCardio(ejercicioDtoRequest.getCardio());
 
-            log.info("Ejercicio actualizado: {}", ejercicioById);
+            log.info("Ejercicio actualizado: {}", ejercicioByName);
 
-            Ejercicio ejercicioActualizado = ejercicioRepository.save(ejercicioById);
+            Ejercicio ejercicioActualizado = ejercicioRepository.save(ejercicioByName);
 
             if (ejercicioActualizado != null) {
                 log.info("Ejercicio actualizado: {}", ejercicioActualizado);

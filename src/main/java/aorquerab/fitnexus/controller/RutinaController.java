@@ -225,30 +225,30 @@ public class RutinaController {
             throw new EntrenadorNotFoundException("Entrenador no encontrado en BD: " + fitNexusId);
         }
 
-        Rutina rutinaById = rutinaRepository.findByNombreRutina(rutinaDtoRequest.getNombreRutina());
+        Rutina rutinaByNombre = rutinaRepository.findByNombreRutina(rutinaDtoRequest.getNombreRutina());
 
-        if(rutinaById == null) {
+        if(rutinaByNombre == null) {
             log.warn("Rutina no encontrada en base de datos con el nombre: {}", rutinaDtoRequest.getNombreRutina());
             throw new RutinaNotFoundException("Rutina no encontrada en BD: " + rutinaDtoRequest.getNombreRutina());
         }
 
         if(entrenadorOptional.isPresent()) {
             Entrenador entrenador = entrenadorOptional.get();
-            rutinaById.setEntrenador(entrenador);
+            rutinaByNombre.setEntrenador(entrenador);
 
             //Actualizas solo los campos enviados (distintos de null)
             if(rutinaDtoRequest.getNombreRutina() != null)
-                rutinaById.setNombreRutina(rutinaDtoRequest.getNombreRutina());
+                rutinaByNombre.setNombreRutina(rutinaDtoRequest.getNombreRutina());
 
             if(rutinaDtoRequest.getFechaInicio() != null)
-                rutinaById.setFechaInicio(rutinaDtoRequest.getFechaInicio());
+                rutinaByNombre.setFechaInicio(rutinaDtoRequest.getFechaInicio());
 
             if(rutinaDtoRequest.getFechaFinal() != null)
-                rutinaById.setFechaFinal(rutinaDtoRequest.getFechaFinal());
+                rutinaByNombre.setFechaFinal(rutinaDtoRequest.getFechaFinal());
 
-            log.info("Rutina actualizada: {}", rutinaById);
+            log.info("Rutina actualizada: {}", rutinaByNombre);
 
-            Rutina rutinaActualizada = rutinaRepository.save(rutinaById);
+            Rutina rutinaActualizada = rutinaRepository.save(rutinaByNombre);
 
             if (rutinaActualizada != null) {
                 log.info("Rutina actualizada: {}", rutinaActualizada);
