@@ -317,8 +317,11 @@ public class PlanDeEntrenamientoController {
             throw new PlanDeEntrenamientoNotFoundException ("Plan no encontrado con el nombre: " + nombrePlan);
         }
 
-        byNombrePlan.setFechaInicio(planEntrenamientoDto.getFechaInicio());
-        byNombrePlan.setFechaFinal(planEntrenamientoDto.getFechaFinal());
+        //Actualizas solo los campos enviados (distintos de null)
+        if(planEntrenamientoDto.getFechaInicio() != null)
+            byNombrePlan.setFechaInicio(planEntrenamientoDto.getFechaInicio());
+        if (planEntrenamientoDto.getFechaFinal() != null)
+            byNombrePlan.setFechaFinal(planEntrenamientoDto.getFechaFinal());
 
         planDeEntrenamientoRepository.save(byNombrePlan);
         return ResponseEntity.status(HttpStatus.CREATED).body("Fecha añadida correctamente al plan: {}"
