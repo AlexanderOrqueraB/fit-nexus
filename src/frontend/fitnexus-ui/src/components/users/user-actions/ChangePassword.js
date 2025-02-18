@@ -14,6 +14,7 @@ import { Label } from "../../../components_ui/ui/label"
 import { UserContext } from "../../main-components/UserContext";
 import customToast from "../../utils/customToast";
 import { apiClient } from "../../utils/client";
+import { GUARDAR_MENSAJE } from "../../utils/env";
 
 
 export function ChangePassword() {
@@ -75,7 +76,7 @@ export function ChangePassword() {
             Cambia tu contraseña aquí.
           </DialogDescription>
           <DialogDescription>
-            Haz click en Guardar cuando hayas terminado.
+            {GUARDAR_MENSAJE}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

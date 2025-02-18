@@ -22,15 +22,15 @@ export const fetchWorkoutData = async (fitNexusId) => {
         }
 
         if (exercisesResponse.status === 404) {
-            customToast({ message: 'Ejercicios no encontrados', type: 'error' }); 
+            customToast({ message: 'Datos no encontrados (FitNexusId o ejercicio)', type: 'error' }); 
         }
 
         if (routinesResponse.status === 404) {
-            customToast({ message: 'Rutinas no encontradas', type: 'error' }); 
+            customToast({ message: 'Datos no encontrados (FitNexusId o rutina)', type: 'error' }); 
         }
 
         if (plansResponse.status === 404) {
-            customToast({ message: 'Planes no encontrados', type: 'error' }); 
+            customToast({ message: 'Datos no encontrados (FitNexusId o plan)', type: 'error' }); 
         }
 
         if (exercisesResponse.status === 200 && routinesResponse.status === 200 && plansResponse.status === 200) {

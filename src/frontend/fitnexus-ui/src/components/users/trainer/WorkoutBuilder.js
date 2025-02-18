@@ -35,8 +35,8 @@ import {   DropdownMenu,
 import { PostSetPlanACliente } from '../../workout-components/plan-entrenamiento/PostSetPlanACliente';
 
 const deleteMessage = "deleteMessage"
-const deleteTitle = "La acción de eliminar no se puede revertir"
-const deleteDescription = "Pulsa Eliminar para confirmar la acción de eliminar, cancelar para salir"
+const deleteTitle = "¡¡ Esta acción NO se puede revertir !!"
+const deleteDescription = "Pulsa Eliminar para confirmar la acción de eliminar, Cancelar para salir"
 
 export function WorkoutBuilder() {
 

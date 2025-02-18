@@ -16,6 +16,7 @@ import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
 import { planWithEntrenador } from '../../../mocks/mockData'
 import { customToast } from '../../utils/customToast'
+import { GUARDAR_MENSAJE } from '../../utils/env';
 
 export function PostPlanEntrenamientoFecha ({ open, onClose, planData }) {
     const [data, setData] = useState({
@@ -76,7 +77,7 @@ export function PostPlanEntrenamientoFecha ({ open, onClose, planData }) {
                     <DialogTitle>Plan de entrenamiento</DialogTitle>
                     <DialogDescription>Añade la fecha aquí</DialogDescription>
                     <DialogDescription>
-                        Haz click en Guardar cuando hayas terminado
+                        {GUARDAR_MENSAJE}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">

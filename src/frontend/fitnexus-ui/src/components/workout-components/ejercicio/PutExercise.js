@@ -14,6 +14,7 @@ import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
 import { customToast } from '../../utils/customToast'
 import { UserContext } from '../../main-components/UserContext';
+import { GUARDAR_MENSAJE } from '../../utils/env';
 
 
 export function PutExercise ({ open, onClose, exerciseData }) {
@@ -57,17 +58,13 @@ const onSubmit = (e) => {
                 customToast({message : "Ejercicio actualizado correctamente!", type : "success"});
             }
             if (response.status === 404) {
-                customToast({message : "Ejercicio no encontrado", type : "error"});
+                customToast({message : "FitNexusID de entrenador o ejercicio no encontrado", type : "error"});
             }
-            if (response.status === 400) {
-                customToast({message : "Error al actualizar el ejercicio", type : "error"});
-            }
-
             onClose(); // Cerrar el modal
         })
         .catch(error => {
             customToast({message : "Error al actualizar el ejercicio!", type : "error"});
-            console.error('Error al actualizar el ejercicio:', error);
+            console.error('Error al actualizar el ejercicio: ', error);
         });
     console.log('Datos actualizados:', data);
     //onClose(); // Cerrar el modal después de guardar
@@ -94,7 +91,7 @@ useEffect(() => {
                     <DialogTitle>Ejercicio</DialogTitle>
                     <DialogDescription>Edita tu ejercicio</DialogDescription>
                     <DialogDescription>
-                        Haz click en Guardar cuando hayas terminado
+                        {GUARDAR_MENSAJE}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
@@ -107,7 +104,6 @@ useEffect(() => {
                             name="nombreEjercicio"
                             value={data.nombreEjercicio || ''}
                             onChange={handleChange}
-                            placeholder="Press banca"
                             className="col-span-3"
                         />
                     </div>
@@ -121,7 +117,6 @@ useEffect(() => {
                             type="number"
                             value={data.repeticion || ''}
                             onChange={handleChange}
-                            placeholder="5"
                             className="col-span-3"
                         />
                     </div>
@@ -135,7 +130,6 @@ useEffect(() => {
                             type="number"
                             value={data.serie || ''}
                             onChange={handleChange}
-                            placeholder="5"
                             className="col-span-3"
                         />
                     </div>
@@ -149,7 +143,6 @@ useEffect(() => {
                             type="number"
                             value={data.peso || ''}
                             onChange={handleChange}
-                            placeholder="30"
                             className="col-span-3"
                         />
                     </div>
@@ -162,7 +155,6 @@ useEffect(() => {
                             name="cardioRealizado"
                             value={data.cardioRealizado || ''}
                             onChange={handleChange}
-                            placeholder="false"
                             className="col-span-3"
                         />
                     </div>

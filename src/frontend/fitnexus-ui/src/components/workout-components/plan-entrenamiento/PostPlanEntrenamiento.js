@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Pencil, UserCheck } from 'lucide-react';
+import React, { useContext, useState } from 'react';
+import { Pencil } from 'lucide-react';
 import {
 	Dialog,
 	DialogContent,
@@ -15,19 +15,17 @@ import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
 import { customToast } from '../../utils/customToast'
-import { planWithEntrenador, mockEntrenador } from '../../../mocks/mockData'
-
-
+import { UserContext } from '../../main-components/UserContext';
+import { GUARDAR_MENSAJE } from '../../utils/env';
 
 export function PostPlanEntrenamiento() {
-    useState({});
-	const [data, setData] = useState({});
 
-	const [dataEx, setDataEx] = useState({
-		//useState to store data from server
-		nombrePlan: '',
-		entrenadorEmail: ''
-	});
+    const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+    const { fitNexusId } = user; // Desestructurar el objeto user
+
+	const [data, setData] = useState({
+        nombrePlan: '',
+    });
 
     const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -37,28 +35,28 @@ export function PostPlanEntrenamiento() {
 		});
 	};
 
-        //TODO: AÑADIR GET para obtener el email del entrenador
-
-
     const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
-		const userData = {
+		const newPlan = {
 			nombrePlan: data.nombrePlan,
-			entrenadorEmail: data.entrenadorEmail
 		};
 
-		console.log('Enviando los siguientes datos: ', userData);
+		console.log('Enviando los siguientes datos: ', newPlan);
 
 		apiClient
-			.post('/api/v1/plan', userData)
-			//.put(URL, userData)
+            .post(`/api/v1/planes/${fitNexusId}`, newPlan)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
 				if (response.status === 201) {
                     customToast({message : "Plan de entrenamiento creado correctamente!", type : "success"});
-					console.log('Plan de entrenamiento creado correctamente!');
 				}
+                if (response.status === 400) {
+                    customToast({message : "Error al crear el plan!", type : "error"});
+                }
+                if (response.status === 404) {
+                    customToast({message : "FitNexusID de entrenador no encontrado", type : "error"});
+                }
 			})
 			.catch((error) => {
                 customToast({message : "Error al crear el plan de entrenamiento!", type : "error"});
@@ -79,7 +77,7 @@ export function PostPlanEntrenamiento() {
                     <DialogTitle>Plan de entrenamiento </DialogTitle>
                     <DialogDescription>Crea un plan de entrenamiento aquí</DialogDescription>
                     <DialogDescription>
-                        Haz click en Guardar cuando hayas terminado
+                        {GUARDAR_MENSAJE}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
@@ -90,23 +88,9 @@ export function PostPlanEntrenamiento() {
                         <Input
                             id="nombrePlan"
                             name="nombrePlan"
-                            /*value={planWithEntrenador.nombrePlan}*/
+                            value={data.nombrePlan}
                             onChange={handleChange}
-                            placeholder={planWithEntrenador.nombrePlan}
-                            className="col-span-3"
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="entrenador" className="text-right">
-                            Entrenador
-                        </Label>
-                        <Input
-                            id="entrenador"
-                            name="entrenador"
-                            type="email"
-                            /*value={mockEntrenador.email}*/
-                            onChange={handleChange}
-                            placeholder={mockEntrenador.email}
+                            placeholder="Reto Verano 2025"
                             className="col-span-3"
                         />
                     </div>
@@ -120,6 +104,5 @@ export function PostPlanEntrenamiento() {
         </Dialog>
     );
 }
-
 
 export default PostPlanEntrenamiento;

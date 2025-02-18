@@ -14,50 +14,39 @@ import { apiClient } from '../../utils/client';
 
 
 export function DeleteModalRoutinePost ({ 
-  messageButton = "Eliminar", 
-  title = "Titulo ejemplo",
-  description = "descripcion",
+  title, description,
   open, onClose, routineData }) {
 
     const [data, setData] = useState({
       nombreRutina: routineData?.nombreRutina || '',
-      fechaInicio: routineData?.fechaInicio || '',
-      fechaFinal: routineData?.fechaFinal || '',
-      entrenadorEmail: routineData?.entrenadorEmail || '',
     });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-      setData({
-        ...data,
-        [name]: value,
-      });
-};
 
 const onSubmit = (e) => {
   e.preventDefault();
-  const deletedRoutine = {
-    nombreRutina: data.nombreRutina,
-    fechaInicio: data.fechaInicio,
-    fechaFinal: data.fechaFinal,
-    entrenadorEmail: data.entrenadorEmail
-  };
 
-  console.log('Enviando los siguientes datos: ', deletedRoutine);
+  console.log('Eliminando la rutina: ', data.nombreRutina);
 
-  // Enviar la solicitud PUT para actualizar el ejercicio
-  apiClient.delete(`/api/v1/rutinas/${routineData.id}`, deletedRoutine)
+  apiClient.delete(`/api/v1/rutinas/${routineData.nombreEjercicio}`)
       .then(response => {
-          customToast({message : "Rutina eliminada correctamente!", type : "success"});
+          console.log('Respuesta del servidor:', response.data);
+          console.log('Status: ', response.status);
+
+          if (response.status === 200) {
+              customToast({message : "Rutina eliminada correctamente!", type : "success"});
+          }
+          if (response.status === 404) {
+              customToast({message : "Rutina no encontrado", type : "error"});
+          }
+          if (response.status === 400) {
+              customToast({message : "Error al eliminar la rutina", type : "error"});
+          }
           onClose(); // Cerrar el modal
       })
       .catch(error => {
           customToast({message : "Error al eliminar la rutina", type : "error"});
-          console.error('Error al eliminar la rutina:', error);
+          console.error('Error al eliminar la rutina: ', error);
       });
-
-  console.log('Datos actualizados:', data);
-  //onClose(); // Cerrar el modal después de guardar
+      //onClose(); // Cerrar el modal después de guardar
 };
 
 useEffect(() => {
@@ -65,9 +54,6 @@ useEffect(() => {
   if (routineData) {
       setData({
           nombreRutina: routineData.nombreRutina || '',
-          fechaInicio: routineData.fechaInicio || '',
-          fechaFinal: routineData.fechaFinal || '',
-          entrenadorEmail: routineData.entrenadorEmail || '',
       });
   }
 }, [routineData]);
@@ -87,9 +73,6 @@ useEffect(() => {
             onClose();
             setData({
               nombreRutina: routineData?.nombreRutina || '',
-              fechaInicio: routineData?.fechaInicio || '',
-              fechaFinal: routineData?.fechaFinal || '',
-              entrenadorEmail: routineData?.entrenadorEmail || '',
             });
           }}>
             Cancelar

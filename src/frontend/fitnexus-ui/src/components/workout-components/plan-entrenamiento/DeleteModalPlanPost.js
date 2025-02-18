@@ -14,44 +14,39 @@ import { apiClient } from '../../utils/client';
 
 
 export function DeleteModalPlanPost ({ 
-  title = "Titulo ejemplo",
-  description = "descripcion",
+  title, description,
   open, onClose, planData }) {
 
     const [data, setData] = useState({
       nombrePlan: planData?.nombrePlan || '',
-      entrenadorEmail: planData?.entrenadorEmail || '',
     });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-      setData({
-        ...data,
-        [name]: value,
-      });
-};
 
 const onSubmit = (e) => {
   e.preventDefault();
-  const deletedPlan = {
-    nombrePlan: data.nombrePlan,
-    entrenadorEmail: data.entrenadorEmail,
-  };
 
-  console.log('Enviando los siguientes datos: ', deletedPlan);
+  console.log('Eliminando el plan de entrenamiento: ', data.nombrePlan);
 
-  apiClient.delete(`/api/v1/plan/${planData.id}`, deletedPlan)
+  apiClient.delete(`/api/v1/rutinas/${planData.nombrePlan}`)
       .then(response => {
+          console.log('Respuesta del servidor:', response.data);
+          console.log('Status: ', response.status);
+
+          if (response.status === 200) {
           customToast({message : "Plan eliminado correctamente!", type : "success"});
+          }
+          if (response.status === 404) {
+              customToast({message : "Plan no encontrado", type : "error"});
+          }
+          if (response.status === 400) {
+              customToast({message : "Error al eliminar el plan", type : "error"});
+          }
           onClose(); // Cerrar el modal
       })
       .catch(error => {
           customToast({message : "Error al eliminar el plan", type : "error"});
           console.error('Error al eliminar el plan:', error);
       });
-
-  console.log('Datos actualizados:', data);
-  //onClose(); // Cerrar el modal después de guardar
+    //onClose(); // Cerrar el modal después de guardar
 };
 
 useEffect(() => {
@@ -59,7 +54,6 @@ useEffect(() => {
   if (planData) {
       setData({
         nombrePlan: planData?.nombrePlan || '',
-        entrenadorEmail: planData?.entrenadorEmail || '',
       });
   }
 }, [planData]);
@@ -79,7 +73,6 @@ useEffect(() => {
             onClose();
             setData({
               nombrePlan: planData?.nombrePlan || '',
-              entrenadorEmail: planData?.entrenadorEmail || '',
             });
           }}>
             Cancelar

@@ -16,6 +16,7 @@ import { customToast } from '../../utils/customToast'
 import { fetchMyData } from '../../utils/api';
 import {apiClient} from "../../utils/client";
 import { UserContext } from "../../main-components/UserContext";
+import { GUARDAR_MENSAJE } from "../../utils/env";
 
 export function EditProfile({ clientData }) {
 
@@ -96,7 +97,7 @@ export function EditProfile({ clientData }) {
             Haz cambios a tu perfil aquí
           </DialogDescription>
           <DialogDescription>
-            Haz click en "Guardar cambios" cuando hayas terminado
+            {GUARDAR_MENSAJE}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

@@ -16,8 +16,7 @@ import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
 import { customToast } from '../../utils/customToast'
 import { UserContext } from '../../main-components/UserContext';
-
-
+import { GUARDAR_MENSAJE } from '../../utils/env';
 
 export function PostExercise() {
 
@@ -65,12 +64,12 @@ export function PostExercise() {
                     customToast({message : "Error al crear el ejercicio!", type : "error"});
                 }
                 if (response.status === 404) {
-                    customToast({message : "Ejercicio no encontrado", type : "error"});
+                    customToast({message : "FitNexusID de entrenador no encontrado", type : "error"});
                 }
 			})
 			.catch((error) => {
                 customToast({message : "Error al crear el ejercicio!", type : "error"});
-				console.error('Error en la petición: ', error);
+				console.error('Error al crear el ejercicio: ', error);
 			});
 	};
 
@@ -87,12 +86,12 @@ export function PostExercise() {
                     <DialogTitle>Ejercicio</DialogTitle>
                     <DialogDescription>Crea un ejercicio aquí</DialogDescription>
                     <DialogDescription>
-                        Haz click en Guardar cuando hayas terminado
+                        {GUARDAR_MENSAJE}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
+                        <Label htmlFor="nombreEjercicio" className="text-right">
                             Nombre del ejercicio
                         </Label>
                         <Input
@@ -169,6 +168,5 @@ export function PostExercise() {
         </Dialog>
     );
 }
-
 
 export default PostExercise;

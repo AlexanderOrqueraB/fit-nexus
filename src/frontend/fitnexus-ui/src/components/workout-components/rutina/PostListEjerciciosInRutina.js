@@ -14,6 +14,7 @@ import {
 } from "../../../components_ui/ui/dialog";
 
 import { mockAddExercises } from '../../../mocks/mockData'
+import { GUARDAR_MENSAJE } from '../../utils/env';
 
 export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
     const [data, setData] = useState({
@@ -98,7 +99,7 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
           <DialogTitle>Modificar Rutina</DialogTitle>
           <DialogDescription>Selecciona los ejercicios que quieres añadir a la rutina</DialogDescription>
           <DialogDescription>
-            Haz click en Guardar cuando hayas terminado
+            {GUARDAR_MENSAJE}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

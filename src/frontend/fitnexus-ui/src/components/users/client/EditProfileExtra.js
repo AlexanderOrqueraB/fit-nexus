@@ -16,6 +16,7 @@ import { fetchClientData } from '../../utils/api';
 import { customToast } from '../../utils/customToast'
 import {apiClient} from "../../utils/client";
 import { UserContext } from "../../main-components/UserContext";
+import { GUARDAR_MENSAJE } from "../../utils/env";
 
 export function EditProfileExtra() {
 
@@ -95,7 +96,7 @@ export function EditProfileExtra() {
         <DialogHeader>
           <DialogTitle>Editar datos extra</DialogTitle>
           <DialogDescription>
-           Haz click en Guardar cuando hayas terminado.
+           {GUARDAR_MENSAJE}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-2 py-4">

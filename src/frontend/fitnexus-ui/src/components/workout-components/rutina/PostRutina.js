@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Building, Pencil, UserCheck } from 'lucide-react';
+import React, { useContext, useState } from 'react';
+import { Pencil } from 'lucide-react';
 import {
 	Dialog,
 	DialogContent,
@@ -15,20 +15,19 @@ import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
 import { customToast } from '../../utils/customToast'
-import { mockEntrenador, mockRoutinesBuilder } from '../../../mocks/mockData'
-
+import { UserContext } from '../../main-components/UserContext';
+import { GUARDAR_MENSAJE } from '../../utils/env';
 
 export function PostRutina() {
-    useState({});
-	const [data, setData] = useState({});
 
-	const [dataEx, setDataEx] = useState({
-		//useState to store data from server
-		nombreRutina: '',
+    const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+    const { fitNexusId } = user; // Desestructurar el objeto user
+
+	const [data, setData] = useState({
+        nombreRutina: '',
 		fechaInicio: '',
 		fechaFinal: '',
-		entrenadorEmail: ''
-	});
+    });
 
     const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -40,23 +39,28 @@ export function PostRutina() {
 
     const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
-		const userData = {
+		const newRoutine = {
 			nombreRutina: data.nombreRutina,
 			fechaInicio: data.fechaInicio,
 			fechaFinal: data.fechaFinal,
-			entrenadorEmail: data.entrenadorEmail
 		};
 
-		console.log('Enviando los siguientes datos: ', userData);
+		console.log('Enviando los siguientes datos: ', newRoutine);
 
 		apiClient
-			.post('/api/v1/rutina', userData)
+            .post(`/api/v1/rutinas/${fitNexusId}`, newRoutine)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
 				if (response.status === 201) {
                     customToast({message : "Rutina creada correctamente!", type : "success"});
 				}
+                if (response.status === 400) {
+                    customToast({message : "Error al crear la rutina!", type : "error"});
+                }
+                if (response.status === 404) {
+                    customToast({message : "FitNexusID de entrenador no encontrado", type : "error"});
+                }
 			})
 			.catch((error) => {
                 customToast({message : "Error al crear rutina!", type : "error"});
@@ -77,7 +81,7 @@ export function PostRutina() {
                     <DialogTitle>Rutina</DialogTitle>
                     <DialogDescription>Crea tu rutina aquí</DialogDescription>
                     <DialogDescription>
-                        Haz click en Guardar cuando hayas terminado
+                        {GUARDAR_MENSAJE}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
@@ -88,23 +92,22 @@ export function PostRutina() {
                         <Input
                             id="nombreRutina"
                             name="nombreRutina"
-                            /*value={mockRoutinesBuilder.nombreRutina}*/
+                            value={data.nombreRutina}
                             onChange={handleChange}
-                            placeholder={mockRoutinesBuilder.nombreRutina}
+                            placeholder="Rutina de torso"
                             className="col-span-3"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="fechaFinal" className="text-right">
+                        <Label htmlFor="fechaInicio" className="text-right">
                             Fecha Inicio
                         </Label>
                         <Input
                             id="fechaInicio"
                             name="fechaInicio"
                             type="date"
-                            /*value={mockRoutinesBuilder.fechaInicio}*/
+                            value={data.fechaInicio}
                             onChange={handleChange}
-                            placeholder={mockRoutinesBuilder.fechaInicio}
                             className="col-span-3"
                         />
                     </div>
@@ -116,23 +119,8 @@ export function PostRutina() {
                             id="fechaFinal"
                             name="fechaFinal"
                             type="date"
-                            /*value={dataEx.repeticion}*/
+                            value={data.fechaFinal}
                             onChange={handleChange}
-                            placeholder={mockRoutinesBuilder.fechaFinal}
-                            className="col-span-3"
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="entrenador" className="text-right">
-                            Entrenador
-                        </Label>
-                        <Input
-                            id="entrenador"
-                            name="entrenador"
-                            type="email"
-                            /*value={dataEx.peso}*/
-                            onChange={handleChange}
-                            placeholder={mockEntrenador.email}
                             className="col-span-3"
                         />
                     </div>

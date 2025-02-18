@@ -8,17 +8,13 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "../../../components_ui/ui/alert-dialog"
-import { Button } from "../../../components_ui/ui/button"
 import { customToast } from '../../utils/customToast'
 import { apiClient } from '../../utils/client';
 
 
 export function DeleteModalExercisePost ({ 
-  messageButton = "Eliminar", 
-  title = "Titulo ejemplo",
-  description = "descripcion",
+  title, description,
   open, onClose, exerciseData }) {
 
   const [data, setData] = useState({
@@ -49,8 +45,9 @@ const onSubmit = (e) => {
       })
       .catch(error => {
           customToast({message : "Error al eliminar el ejercicio", type : "error"});
-          console.error('Error al eliminar el ejercicio:', error);
+          console.error('Error al eliminar el ejercicio: ', error);
       });
+      //onClose(); // Cerrar el modal después de guardar
 };
 
 useEffect(() => {
@@ -65,11 +62,6 @@ useEffect(() => {
 
   return (
   <AlertDialog open= {open} onOpenChange={onClose}>
-  <AlertDialogTrigger asChild>
-    <Button variant="outline">
-      {messageButton}
-    </Button>
-  </AlertDialogTrigger>
   <AlertDialogContent>
     <AlertDialogHeader>
       <AlertDialogTitle>{title}</AlertDialogTitle>

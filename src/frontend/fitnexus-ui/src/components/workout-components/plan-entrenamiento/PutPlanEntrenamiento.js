@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
 	Dialog,
 	DialogContent,
@@ -13,12 +13,17 @@ import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
 import { apiClient } from '../../utils/client';
 import { customToast } from '../../utils/customToast'
+import { UserContext } from '../../main-components/UserContext';
+import { GUARDAR_MENSAJE } from '../../utils/env';
 
 
 export function PutPlanEntrenamiento ({ open, onClose, planData }) {
+
+    const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+    const { fitNexusId } = user; // Desestructurar el objeto user
+
     const [data, setData] = useState({
         nombrePlan: planData?.nombrePlan || '',
-        entrenadorEmail: planData?.entrenadorEmail || '',
       });
 
     const handleChange = (e) => {
@@ -33,26 +38,27 @@ export function PutPlanEntrenamiento ({ open, onClose, planData }) {
 		e.preventDefault(); //prevent refresh on page
 		const updatedPlan = {
 			nombrePlan: data.nombrePlan,
-			entrenadorEmail: data.entrenadorEmail,
 		};
 
 		console.log('Enviando los siguientes datos: ', updatedPlan);
 
 		apiClient
-			.put('/api/v1/plan/${planData.id}', updatedPlan)
+            .put(`/api/v1/planes/${fitNexusId}`, updatedPlan)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
 				if (response.status === 200) {
                     customToast({message : "Plan actualizado correctamente!", type : "success"});
 				}
+                if (response.status === 404) {
+                    customToast({message : "FitNexusID de entrenador o plan no encontrado", type : "error"});
+                }
                 onClose(); // Cerrar el modal
 			})
 			.catch((error) => {
                 customToast({message : "Error al actualizar el plan de entrenamiento!", type : "error"});
 				console.error('Error al actualizar el plan de entrenamiento', error);
 			});
-            console.log('Datos actualizados:', data);
             //onClose(); // Cerrar el modal después de guardar
 	};
 
@@ -61,7 +67,6 @@ export function PutPlanEntrenamiento ({ open, onClose, planData }) {
         if (planData) {
             setData({
                 nombrePlan: planData?.nombrePlan || '',
-                entrenadorEmail: planData?.entrenadorEmail || '',
             });
         }
     }, [planData]);
@@ -73,7 +78,7 @@ export function PutPlanEntrenamiento ({ open, onClose, planData }) {
                     <DialogTitle>Plan</DialogTitle>
                     <DialogDescription>Edita tu plan aquí</DialogDescription>
                     <DialogDescription>
-                        Haz click en Guardar cuando hayas terminado
+                        {GUARDAR_MENSAJE}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">

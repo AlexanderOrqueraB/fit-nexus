@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "../../../components_ui/ui/dialog";
 import { mockAddRoutines } from '../../../mocks/mockData'
+import { GUARDAR_MENSAJE } from '../../utils/env';
 
 export function PostListRoutinesInPlan({ open, onClose, planData }) {
     const [data, setData] = useState({
@@ -97,7 +98,7 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
           <DialogTitle>Modificar Plan</DialogTitle>
           <DialogDescription>Selecciona las rutinas que quieres añadir al plan</DialogDescription>
           <DialogDescription>
-            Haz click en Guardar cuando hayas terminado
+            {GUARDAR_MENSAJE}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
