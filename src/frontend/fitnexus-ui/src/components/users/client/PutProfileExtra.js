@@ -9,6 +9,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../../components_ui/ui/dialog"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  } from "../../../components_ui/ui/select"
 import { Input } from "../../../components_ui/ui/input"
 import { Label } from "../../../components_ui/ui/label"
 import { mockClients } from '../../../mocks/mockData'
@@ -18,12 +25,14 @@ import {apiClient} from "../../utils/client";
 import { UserContext } from "../../main-components/UserContext";
 import { GUARDAR_MENSAJE } from "../../utils/env";
 
-export function EditProfileExtra() {
+export function PutProfileExtra() {
 
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
-  const { email, role, fitNexusId } = user; // Desestructurar el objeto user
+  const { fitNexusId } = user; // Desestructurar el objeto user
 
   const [clients, setClients] = useState([]);
+  const [extraData, setExtraData] = useState(null);
+
 	const loadData = async () => {
 		try {
 		// Ejecutar todas las solicitudes en paralelo
@@ -33,14 +42,25 @@ export function EditProfileExtra() {
 		setClients(clients);
 
 		} catch (error) {
-		console.error('Error al cargar datos:', error);
-		console.log('Disparando customToast');
-		customToast({message : "Hubo un error al cargar los datos de cliente", type : "error"});
+		  customToast({message : "Hubo un error al cargar los datos de cliente", type : "error"});
 		}
 	};
+
+  const fetchExtraData = async (fitNexusId) => {
+      try {
+        //uncomment this lines to use backend data
+        //const data = await fetchExtraData(fitNexusId);
+        //setExtraData(data);
+        const client = mockClients.find(client => client.fitNexusId === fitNexusId);
+        setExtraData(client ? client : null);
+      } catch (error) {
+        setExtraData(null);
+      }
+    };
 	
 	useEffect(() => {
-	loadData();
+    loadData();
+    fetchExtraData(fitNexusId);
 	}, []); // Llama a loadData solo al montar el componente
  	
   const [data, setData] = useState({
@@ -71,7 +91,7 @@ export function EditProfileExtra() {
       altura: data.altura,
     };
 
-    console.log('Datos del usuario: ', userData);
+    console.log('Datos extra del usuario: ', userData);
 
     apiClient
       .put(`/api/v1/clientes/${fitNexusId}`, userData)
@@ -79,6 +99,14 @@ export function EditProfileExtra() {
         if (response.status === 200) {
           console.log("Datos actualizados correctamente:", response.data);
           customToast({message : "Datos actualizados correctamente", type : "success"});
+        }
+        if (response.status === 404) {
+          console.log("Cliente no encontrado", response.data);
+          customToast({message : "Cliente no encontrado", type : "warning"});
+        }
+        if (response.status === 400) {
+          console.log("Ha habido un error", response.data);
+          customToast({message : "Ha habido un error", type : "error"});
         }
     })
       .catch((error) => {
@@ -90,7 +118,7 @@ export function EditProfileExtra() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default">Editar datos</Button>
+        <Button variant="default">Editar datos extra</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -101,37 +129,70 @@ export function EditProfileExtra() {
         </DialogHeader>
         <div className="grid gap-2 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="nombre" className="text-right">
+            <Label htmlFor="objetivo" className="text-right">
               Objetivo
             </Label>
-            <Input
-              id="nombre"
-              placeholder={mockClients[0].objetivo}
-              onChange={handleChange}
-              className="col-span-3"
-            />
+            <Select name="objetivo" 
+							onValueChange={(value) => setData({ ...data, objetivo: value})}>
+								<SelectTrigger className="col-span-3">
+									<SelectValue placeholder={mockClients[0].objetivo} />
+								</SelectTrigger>
+								<SelectContent>
+										<SelectItem  value="PERDER_GRASA" required>
+											Perder grasa
+										</SelectItem>
+										<SelectItem  value="GANAR_MUSCULO" required>
+											Ganar músculo
+										</SelectItem>
+								</SelectContent>
+							</Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="apellido" className="text-right">
               Genero
             </Label>
-            <Input
-              id="apellido"
-              placeholder={mockClients[0].genero}
-              onChange={handleChange}
-              className="col-span-3"
-            />
+            <Select name="genero" 
+              onValueChange={(value) => setData({ ...data, genero: value})}>
+              <SelectTrigger className="col-span-3">
+                <SelectValue placeholder={mockClients[0].genero} />
+              </SelectTrigger>
+              <SelectContent>
+                  <SelectItem  value="MUJER" required>
+                    Mujer
+                  </SelectItem>
+                  <SelectItem  value="HOMBRE" required>
+                    Hombre
+                  </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="frecuencia" className="text-right">
                 Frecuencia Ejercicio
               </Label>
-              <Input
-                id="text"
-                placeholder={mockClients[0].frecuenciaEjercicioSemanal}
-                onChange={handleChange}
-                className="col-span-3"
-              />
+              <Select name="frecuencia" 
+                  onValueChange={(value) => setData({ ...data, frecuencia: value})}>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder={mockClients[0].frecuenciaEjercicioSemanal} />
+                  </SelectTrigger>
+                  <SelectContent>
+                      <SelectItem  value="POCO_NADA" required>
+                        Poco o nada (xdiasxsemana)
+                      </SelectItem>
+                      <SelectItem  value="LIGERO" required>
+                        Ligero (xdiasxsemana)
+                      </SelectItem>
+                      <SelectItem  value="MODERADO" required>
+                        Moderado (xdiasxsemana)
+                      </SelectItem>
+                      <SelectItem  value="FUERTE" required>
+                        Fuerte (xdiasxsemana)
+                      </SelectItem>
+                      <SelectItem  value="MUY_FUERTE" required>
+                        Muy fuerte (xdiasxsemana)
+                      </SelectItem>
+                  </SelectContent>
+                </Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="edad" className="text-right">
@@ -176,4 +237,5 @@ export function EditProfileExtra() {
   )
 }
 
-export default EditProfileExtra
+export default PutProfileExtra
+

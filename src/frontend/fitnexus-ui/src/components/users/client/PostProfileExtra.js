@@ -17,10 +17,17 @@ import { customToast } from '../../utils/customToast'
 import {apiClient} from "../../utils/client";
 import { UserContext } from "../../main-components/UserContext";
 import { GUARDAR_MENSAJE } from "../../utils/env";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  } from "../../../components_ui/ui/select"
 
 export function PostProfileExtra() {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
-  const { email, role, fitNexusId } = user; // Desestructurar el objeto user
+  const { fitNexusId } = user; // Desestructurar el objeto user
 
   const [clients, setClients] = useState([]);
 	const loadData = async () => {
@@ -32,9 +39,7 @@ export function PostProfileExtra() {
 		setClients(clients);
 
 		} catch (error) {
-		console.error('Error al cargar datos:', error);
-		console.log('Disparando customToast');
-		customToast({message : "Hubo un error al cargar los datos de cliente", type : "error"});
+		  customToast({message : "Hubo un error al cargar los datos de cliente", type : "error"});
 		}
 	};
 	
@@ -79,6 +84,14 @@ export function PostProfileExtra() {
           console.log("Datos creados correctamente:", response.data);
           customToast({message : "Datos actualizados correctamente", type : "success"});
         }
+        if (response.status === 404) {
+          console.log("Cliente no encontrado", response.data);
+          customToast({message : "Cliente no encontrado", type : "warning"});
+        }
+        if (response.status === 400) {
+          console.log("Ha habido un error", response.data);
+          customToast({message : "Ha habido un error", type : "error"});
+        }
     })
       .catch((error) => {
         console.error("Error al actualizar los datos:", error);
@@ -93,43 +106,77 @@ export function PostProfileExtra() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Editar datos extra</DialogTitle>
+          <DialogTitle>Añadir datos extra</DialogTitle>
           <DialogDescription>
            {GUARDAR_MENSAJE}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-2 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="nombre" className="text-right">
+            <Label htmlFor="objetivo" className="text-right">
               Objetivo
             </Label>
-            <Input
-              id="nombre"
-              placeholder={mockClients[0].objetivo}
-              className="col-span-3"
-            />
+            <Select name="objetivo" 
+							onValueChange={(value) => setData({ ...data, objetivo: value})}>
+								<SelectTrigger className="col-span-3">
+									<SelectValue placeholder="Selecciona una opción" />
+								</SelectTrigger>
+								<SelectContent>
+										<SelectItem  value="PERDER_GRASA" required>
+											Perder grasa
+										</SelectItem>
+										<SelectItem  value="GANAR_MUSCULO" required>
+											Ganar músculo
+										</SelectItem>
+								</SelectContent>
+							</Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="apellido" className="text-right">
-              Genero
+            <Label htmlFor="genero" className="text-right">
+              Género
             </Label>
-            <Input
-              id="apellido"
-              placeholder={mockClients[0].genero}
-              onChange={handleChange}
-              className="col-span-3"
-            />
+            <Select name="genero" 
+							onValueChange={(value) => setData({ ...data, genero: value})}>
+								<SelectTrigger className="col-span-3">
+									<SelectValue placeholder="Selecciona una opción" />
+								</SelectTrigger>
+								<SelectContent>
+										<SelectItem  value="MUJER" required>
+											Mujer
+										</SelectItem>
+										<SelectItem  value="HOMBRE" required>
+											Hombre
+										</SelectItem>
+								</SelectContent>
+							</Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="frecuencia" className="text-right">
                 Frecuencia Ejercicio
               </Label>
-              <Input
-                id="text"
-                placeholder={mockClients[0].frecuenciaEjercicioSemanal}
-                onChange={handleChange}
-                className="col-span-3"
-              />
+              <Select name="frecuencia" 
+							onValueChange={(value) => setData({ ...data, frecuencia: value})}>
+								<SelectTrigger className="col-span-3">
+									<SelectValue placeholder="Selecciona una opción" />
+								</SelectTrigger>
+								<SelectContent>
+										<SelectItem  value="POCO_NADA" required>
+											Poco o nada (xdiasxsemana)
+										</SelectItem>
+										<SelectItem  value="LIGERO" required>
+											Ligero (xdiasxsemana)
+										</SelectItem>
+                    <SelectItem  value="MODERADO" required>
+											Moderado (xdiasxsemana)
+										</SelectItem>
+                    <SelectItem  value="FUERTE" required>
+											Fuerte (xdiasxsemana)
+										</SelectItem>
+                    <SelectItem  value="MUY_FUERTE" required>
+											Muy fuerte (xdiasxsemana)
+										</SelectItem>
+								</SelectContent>
+							</Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="edad" className="text-right">

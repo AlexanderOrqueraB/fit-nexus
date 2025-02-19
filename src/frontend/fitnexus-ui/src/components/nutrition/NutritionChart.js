@@ -123,7 +123,7 @@ export function NutritionChart() {
     }
   }, []);
 
-  if (loading) return <div>Cargando...</div>;
+  //if (loading) return <div>Cargando...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -239,7 +239,7 @@ export function NutritionChart() {
             description = {kcalMoreInfo} 
           />
           </div>
-          {role === 'client' && !extraData && (
+          {role === 'user' && !extraData && (
             <PostProfileExtra />
             )}
             {role === 'admin' && selectedClient && !extraData && (

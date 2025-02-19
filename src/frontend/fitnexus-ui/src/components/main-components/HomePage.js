@@ -1,4 +1,3 @@
-import EditProfileExtra from '../users/client/EditProfileExtra';
 import { customToast } from '../utils/customToast'
 import { Button } from "../../components_ui/ui/button"
 import { useNavigate } from 'react-router-dom'
@@ -10,7 +9,6 @@ import { Card, CardContent } from '../../components_ui/ui/card';
 import { apiClient } from '../utils/client';
 import React, { useContext, useEffect, useState } from 'react';
 import { mockClients } from '../../mocks/mockData'
-import PostProfileExtra from '../users/client/PostProfileExtra';
 import { BrickWall, Drumstick, EyeIcon } from 'lucide-react';
 import { UserContext } from './UserContext';
 

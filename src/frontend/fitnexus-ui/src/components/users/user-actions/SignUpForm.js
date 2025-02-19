@@ -17,8 +17,6 @@ import { mockClients } from '../../../mocks/mockData'
 
 export function SignUpForm() {
 	const navigate = useNavigate();
-
-	useState({});
 	
 	const [data, setData] = useState({
 		nombre: '',

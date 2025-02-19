@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import EditProfile from "./EditProfile";
-import EditProfileExtra from '../client/EditProfileExtra';
+import EditProfileExtra from '../client/PutProfileExtra';
 import ChangePassword from './ChangePassword';
 import {
   Card,
