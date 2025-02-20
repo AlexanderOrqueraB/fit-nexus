@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { UserCheck } from 'lucide-react';
 import {
 	Dialog,
 	DialogContent,
@@ -7,7 +6,6 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "../../../components_ui/ui/dialog"
 
 import { Button } from '../../../components_ui/ui/button';
@@ -24,7 +22,6 @@ export function PutPlanEntrenamientoFecha ({ open, onClose, planData }) {
         fechaInicio: planData?.fechaInicio || '',
         fechaFinal: planData?.fechaFinal || '',
       });
-
 
     const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -43,19 +40,23 @@ export function PutPlanEntrenamientoFecha ({ open, onClose, planData }) {
 		};
 
 		console.log('Enviando los siguientes datos: ', updatedPlan);
-
 		apiClient
-			.put('/api/v1/planes/fecha', updatedPlan)
+			.put('/api/v1/planes/plan/fecha', updatedPlan)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
-				if (response.status === 201) {
+				if (response.status === 200) {
                     customToast({message : "Fecha del plan actualizada correctamente!", type : "success"});
+				}
+                if (response.status === 404) {
+                    customToast({message : "Plan de entrenamiento no encontrado!", type : "warning"});
+				}
+                if (response.status === 400) {
+                    customToast({message : "Error al actualizar la fecha del plan de entrenamiento!", type : "error"});
 				}
 			})
 			.catch((error) => {
                 customToast({message : "Error al actualizar la fecha del plan de entrenamiento!", type : "error"});
-                console.error('Error al actualizar el plan de entrenamiento', error);
 			});
 	};
 
@@ -130,6 +131,5 @@ export function PutPlanEntrenamientoFecha ({ open, onClose, planData }) {
         </Dialog>
     );
 }
-
 
 export default PutPlanEntrenamientoFecha;

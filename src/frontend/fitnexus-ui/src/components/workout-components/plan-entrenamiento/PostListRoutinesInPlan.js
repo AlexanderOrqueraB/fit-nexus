@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { apiClient } from '../../utils/client';
 import { customToast } from '../../utils/customToast';
 import { Button } from '../../../components_ui/ui/button';
@@ -12,16 +12,43 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../../../components_ui/ui/dialog";
-import { mockAddRoutines } from '../../../mocks/mockData'
 import { GUARDAR_MENSAJE } from '../../utils/env';
+import { UserContext } from '../../main-components/UserContext';
+import { fetchWorkoutData } from '../../utils/api';
 
 export function PostListRoutinesInPlan({ open, onClose, planData }) {
-    const [data, setData] = useState({
-    nombreRutina: planData?.nombreRutina || '',
-    rutinasSeleccionadas: planData?.rutinas?.map((e) => e.id) || [],
-    });
 
-  const [availableRoutines, setAvailableRoutines] = useState(mockAddRoutines);
+  const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+  const { fitNexusId } = user; // Desestructurar el objeto user
+  
+  const [data, setData] = useState({
+  nombreRutina: planData?.nombreRutina || '',
+  rutinasSeleccionadas: planData?.rutinas?.map((e) => e.id) || [],
+  });
+
+  const [availableRoutines, setAvailableRoutines] = useState([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const { routines } = await fetchWorkoutData(fitNexusId);
+        const selectedRoutineIds = planData.rutinas.map(e => e.id);
+        const filteredRoutines = routines.filter(routine => !selectedRoutineIds.includes(routine.id));
+        setAvailableRoutines(filteredRoutines);
+      } catch (error) {
+        console.error('Error al cargar los datos:', error);
+        customToast({ message: 'Error al cargar los datos de rutinas', type: 'error' });
+      }
+    };
+
+    if (planData) {
+      setData({
+        nombrePlan: planData.nombrePlan || '',
+        rutinasSeleccionadas: planData.rutinas?.map((e) => e.id) || [],
+      });
+      loadData();
+    }
+  }, [planData]);
 
   const handleCheckboxChange = (routineId, isChecked) => {
     console.log('Checkbox change:', routineId, isChecked); // Log the exercise id and checked status
@@ -58,12 +85,18 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
     console.log('Enviando los siguientes datos: ', updatedPlan);
 
     apiClient
-        .post(`/api/v1/plan/${planData.id}/rutinas`, updatedPlan)
+        .post(`/api/v1/planes/plan/rutinas/${planData.id}`, updatedPlan)
         .then((response) => {
         console.log('Respuesta del servidor: ', response.data);
         console.log('Status: ', response.status);
         if (response.status === 200) {
           customToast({ message: "Plan actualizado correctamente!", type: "success" });
+        }
+        if (response.status === 404) {
+          customToast({ message: "Plan de entrenamiento no encontrado!", type: "warning" });
+        }
+        if (response.status === 500) {
+          customToast({ message: "Runtime exception from @Transactional!", type: "error" });
         }
         onClose(); // Close the modal
       })
@@ -72,24 +105,6 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
         console.error('Error en la petición: ', error);
       });
   };
-
-  useEffect(() => {
-    console.log("Plan Data in PostListRoutinesInPlan:", planData);
-    if (planData) {
-      setData({
-        nombrePlan: planData.nombrePlan || '',
-        rutinasSeleccionadas: planData.rutinas?.map((e) => e.id) || [],
-      });
-    }
-    if (planData && planData.rutinas) {
-        const selectedRoutineIds = planData.rutinas.map(e => e.id);
-        setAvailableRoutines(mockAddRoutines);
-        setData((prev) => ({
-          ...prev,
-          rutinasSeleccionadas: selectedRoutineIds.filter(id => mockAddRoutines.some(routine => routine.id === id)),
-        }));
-      }
-  }, [planData]);
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -140,7 +155,7 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
         </div>
         <DialogFooter>
           <Button onClick={onSubmit} type="submit">
-            Guardar
+            Guardar cambios
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { apiClient } from '../../utils/client';
 import { customToast } from '../../utils/customToast';
 import { Button } from '../../../components_ui/ui/button';
@@ -13,16 +13,43 @@ import {
   DialogTitle,
 } from "../../../components_ui/ui/dialog";
 
-import { mockAddExercises } from '../../../mocks/mockData'
 import { GUARDAR_MENSAJE } from '../../utils/env';
 
-export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
-    const [data, setData] = useState({
-    nombreRutina: routineData?.nombreRutina || '',
-    ejerciciosSeleccionados: routineData?.ejercicios?.map((e) => e.id) || [],
-    });
+import { fetchWorkoutData } from '../../utils/api';
+import { UserContext } from '../../main-components/UserContext';
 
-  const [availableExercises, setAvailableExercises] = useState(mockAddExercises);
+export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
+
+  const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+  const { fitNexusId } = user; // Desestructurar el objeto user
+
+  const [data, setData] = useState({
+  nombreRutina: routineData?.nombreRutina || '',
+  ejerciciosSeleccionados: routineData?.ejercicios?.map((e) => e.id) || [],
+  });
+
+  const [availableExercises, setAvailableExercises] = useState([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const { exercises } = await fetchWorkoutData(fitNexusId);
+        const selectedExerciseIds = routineData.ejercicios.map(e => e.id);
+        const filteredExercises = exercises.filter(exercise => !selectedExerciseIds.includes(exercise.id));
+        setAvailableExercises(filteredExercises);
+      } catch (error) {
+        customToast({ message: 'Error al cargar los datos de ejercicios', type: 'error' });
+      }
+    };
+
+    if (routineData) {
+      setData({
+        nombreRutina: routineData.nombreRutina || '',
+        ejerciciosSeleccionados: routineData.ejercicios?.map((e) => e.id) || [],
+      });
+      loadData();
+    }
+  }, [routineData]);
 
   const handleCheckboxChange = (exerciseId, isChecked) => {
     console.log('Checkbox change:', exerciseId, isChecked); // Log the exercise id and checked status
@@ -32,8 +59,6 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
         ? [...prev.ejerciciosSeleccionados, exerciseId]
         : prev.ejerciciosSeleccionados.filter((id) => id !== exerciseId);
         
-      console.log('Updated ejerciciosSeleccionados:', updatedEjercicios); // Log the updated list of selected exercises
-
       return {
         ...prev,
         ejerciciosSeleccionados: updatedEjercicios,
@@ -59,12 +84,18 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
     console.log('Enviando los siguientes datos: ', updatedRoutine);
 
     apiClient
-        .post(`/api/v1/rutina/${routineData.id}/ejercicios`, updatedRoutine)
+        .post(`/api/v1/rutina/ejercicios/${routineData.id}`, updatedRoutine)
         .then((response) => {
         console.log('Respuesta del servidor: ', response.data);
         console.log('Status: ', response.status);
         if (response.status === 200) {
           customToast({ message: "Rutina actualizada correctamente!", type: "success" });
+        }
+        if (response.status === 404) {
+          customToast({ message: "Rutina no encontrada!", type: "warning" });
+        }
+        if (response.status === 500) {
+          customToast({ message: "Runtime exception from @Transactional!", type: "error" });
         }
         onClose(); // Close the modal
       })
@@ -73,24 +104,6 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
         console.error('Error en la petición: ', error);
       });
   };
-
-  useEffect(() => {
-    console.log("Routine Data in PostListEjerciciosInRutina:", routineData);
-    if (routineData) {
-      setData({
-        nombreRutina: routineData.nombreRutina || '',
-        ejerciciosSeleccionados: routineData.ejercicios?.map((e) => e.id) || [],
-      });
-    }
-    if (routineData && routineData.ejercicios) {
-        const selectedExerciseIds = routineData.ejercicios.map(e => e.id);
-        setAvailableExercises(mockAddExercises);
-        setData((prev) => ({
-          ...prev,
-          ejerciciosSeleccionados: selectedExerciseIds.filter(id => mockAddExercises.some(exercise => exercise.id === id)),
-        }));
-      }
-  }, [routineData]);
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -141,7 +154,7 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
         </div>
         <DialogFooter>
           <Button onClick={onSubmit} type="submit">
-            Guardar
+            Guardar cambios
           </Button>
         </DialogFooter>
       </DialogContent>

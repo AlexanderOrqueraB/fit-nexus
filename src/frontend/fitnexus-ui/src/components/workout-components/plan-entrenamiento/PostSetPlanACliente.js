@@ -38,7 +38,7 @@ export function PostSetPlanACliente ({ open, onClose, planData }) {
 		console.log('Enviando los siguientes datos: ', assignedPlan);
 
 		apiClient
-			.post('/api/v1/planes/asignar-plan', assignedPlan)
+			.post('/api/v1/planes/plan/asignar-plan', assignedPlan)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
@@ -49,19 +49,16 @@ export function PostSetPlanACliente ({ open, onClose, planData }) {
                     customToast({message : "Plan o cliente no encontrado!", type : "error"});
                 }
                 if (response.status === 409) {
-                    customToast({message : "El cliente ya tiene ese plan asignado!", type : "error"});
+                    customToast({message : "El cliente ya tiene un plan asignado!", type : "error"});
                 }
                 if (response.status === 400) {
                     customToast({message : "Error al asignar el plan de entrenamiento!", type : "error"});
                 }
-                
                 onClose(); // Cerrar el modal
 			})
 			.catch((error) => {
                 customToast({message : "Error al asignar el plan de entrenamiento!", type : "error"});
-				console.error('Error al asignar el plan de entrenamiento', error);
 			});
-            console.log('Datos actualizados:', data);
             //onClose(); // Cerrar el modal después de guardar
 	};
 
@@ -81,7 +78,7 @@ export function PostSetPlanACliente ({ open, onClose, planData }) {
                 <DialogHeader>
                     <DialogTitle>Plan</DialogTitle>
                     <DialogDescription>
-                        Haz click en Asignar plan cuando hayas terminado
+                        Cuando hayas terminado, haz click en: Asignar plan
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
@@ -107,6 +104,7 @@ export function PostSetPlanACliente ({ open, onClose, planData }) {
                             name="clienteFitNexusId"
                             onChange={handleChange}
                             value={data.clienteFitNexusId || ''}
+                            placeholder= "98340706-8a7b-4827-a83e-478e52161df5"
                             className="col-span-3"
                         />
                     </div>

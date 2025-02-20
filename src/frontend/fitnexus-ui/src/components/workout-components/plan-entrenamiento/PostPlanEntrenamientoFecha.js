@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { UserCheck } from 'lucide-react';
 import {
 	Dialog,
 	DialogContent,
@@ -7,7 +6,6 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from "../../../components_ui/ui/dialog"
 
 import { Button } from '../../../components_ui/ui/button';
@@ -24,7 +22,6 @@ export function PostPlanEntrenamientoFecha ({ open, onClose, planData }) {
         fechaInicio: '',
         fechaFinal: '',
       });
-
 
     const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -45,17 +42,22 @@ export function PostPlanEntrenamientoFecha ({ open, onClose, planData }) {
 		console.log('Enviando los siguientes datos: ', createdDatePlan);
 
 		apiClient
-			.post('/api/v1/planes/fecha', createdDatePlan)
+			.post('/api/v1/planes/plan/fecha', createdDatePlan)
 			.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
-				if (response.status === 201) {
-                    customToast({message : "Fecha del plan creada correctamente!", type : "success"});
+				if (response.status === 200) {
+                    customToast({message : "Plan actualizado con fecha correctamente!", type : "success"});
 				}
+                if (response.status === 404) {
+                    customToast({message : "Plan de entrenamiento no encontrado!", type : "warning"});
+                }
+                if (response.status === 400) {
+                    customToast({message : "Error al añadir la fecha al plan de entrenamiento!", type : "error"});
+                }
 			})
 			.catch((error) => {
-                customToast({message : "Error al crear la fecha del plan de entrenamiento!", type : "error"});
-                console.error('Error al crear el plan de entrenamiento', error);
+                customToast({message : "Error al añadir la fecha al plan de entrenamiento!", type : "error"});
 			});
 	};
 
@@ -102,7 +104,7 @@ export function PostPlanEntrenamientoFecha ({ open, onClose, planData }) {
                             id="fechaInicial"
                             name="fechaInicial"
                             type="date"
-                            value={planWithEntrenador.fechaInicio}
+                            value={data.fechaInicio || ''}
                             onChange={handleChange}
                             placeholder={planWithEntrenador.fechaInicio}
                             className="col-span-3"
@@ -116,7 +118,7 @@ export function PostPlanEntrenamientoFecha ({ open, onClose, planData }) {
                             id="fechaFinal"
                             name="fechaFinal"
                             type="date"
-                            value={planWithEntrenador.fechaFinal}
+                            value={data.fechaFinal || ''}
                             onChange={handleChange}
                             placeholder={planWithEntrenador.fechaFinal}
                             className="col-span-3"
@@ -132,6 +134,5 @@ export function PostPlanEntrenamientoFecha ({ open, onClose, planData }) {
         </Dialog>
     );
 }
-
 
 export default PostPlanEntrenamientoFecha;

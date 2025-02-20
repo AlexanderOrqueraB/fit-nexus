@@ -324,7 +324,7 @@ public class PlanDeEntrenamientoController {
             byNombrePlan.setFechaFinal(planEntrenamientoDto.getFechaFinal());
 
         planDeEntrenamientoRepository.save(byNombrePlan);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Fecha añadida correctamente al plan: {}"
+        return ResponseEntity.status(HttpStatus.OK).body("Fecha añadida correctamente al plan: {}"
                 + planEntrenamientoDto.getNombrePlan());
     }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { apiClient } from '../../utils/client';
 import { customToast } from '../../utils/customToast';
 import { Label } from '../../../components_ui/ui/label';
@@ -14,11 +14,42 @@ import {
     AlertDialogTitle,
   } from "../../../components_ui/ui/alert-dialog"
 
+import { fetchWorkoutData } from '../../utils/api';
+import { UserContext } from '../../main-components/UserContext';
+
 export function DeleteListRoutinesInPlan({ open, onClose, planData }) {
+
+  const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+  const { fitNexusId } = user; // Desestructurar el objeto user
+
   const [data, setData] = useState({
     nombrePlan: planData?.nombrePlan || '',
     rutinasSeleccionadas: planData?.rutinas?.map((e) => e.id) || [],
   });
+
+  const [availableRoutines, setAvailableRoutines] = useState([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const { routines } = await fetchWorkoutData(fitNexusId);
+        const selectedRoutineIds = planData.rutinas.map(e => e.id);
+        const filteredRoutines = routines.filter(routine => selectedRoutineIds.includes(routine.id));
+        setAvailableRoutines(filteredRoutines);
+      } catch (error) {
+        console.error('Error al cargar los datos:', error);
+        customToast({ message: 'Error al cargar los datos de rutinas', type: 'error' });
+      }
+    };
+
+    if (planData) {
+      setData({
+        nombrePlan: planData.nombrePlan || '',
+        rutinasSeleccionadas: planData.rutinas?.map((e) => e.id) || [],
+      });
+      loadData();
+    }
+  }, [planData]);
 
   const handleCheckboxChange = (routineId, isChecked) => {
     setData((prev) => {
@@ -35,7 +66,7 @@ export function DeleteListRoutinesInPlan({ open, onClose, planData }) {
 
   const onSubmit = (e) => {
     e.preventDefault(); // prevent page refresh
-    const rutinasSeleccionadas = planData.rutinas.filter(routine =>
+    const rutinasSeleccionadas = availableRoutines.filter(routine =>
       data.rutinasSeleccionadas.includes(routine.id)
     );
 
@@ -49,9 +80,16 @@ export function DeleteListRoutinesInPlan({ open, onClose, planData }) {
     };
 
     apiClient
-      .delete(`/api/v1/plan/${planData.id}/rutinas`, { data: updatedPlan })
+      .delete(`/api/v1/planes/plan/rutinas/${planData.id}`, { data: updatedPlan })
       .then((response) => {
-        customToast({ message: "Rutinas eliminados correctamente!", type: "success" });
+        console.log('Respuesta del servidor: ', response.data);
+        console.log('Status: ', response.status);
+        if (response.status === 200) {
+          customToast({ message: "Rutinas eliminadas correctamente!", type: "success" });
+        }
+        if (response.status === 500) {
+          customToast({ message: "Runtime exception from @Transactional!", type: "error" });
+        }
         onClose(); // Close the modal
       })
       .catch((error) => {
@@ -59,15 +97,6 @@ export function DeleteListRoutinesInPlan({ open, onClose, planData }) {
         console.error('Error en la petición: ', error);
       });
   };
-
-  useEffect(() => {
-    if (planData) {
-      setData({
-        nombrePlan: planData.nombrePlan || '',
-        rutinasSeleccionadas: [],
-      });
-    }
-  }, [planData]);
 
   return (
     <AlertDialog open={open} onOpenChange={onClose}>
@@ -81,7 +110,7 @@ export function DeleteListRoutinesInPlan({ open, onClose, planData }) {
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right">Rutinas disponibles:</Label>
             <div className="space-y-2">
-              {planData.rutinas.map((routine) => (
+              {availableRoutines.map((routine) => (
                 <div key={routine.id} className="items-top flex space-x-2">
                   <input
                     type="checkbox"

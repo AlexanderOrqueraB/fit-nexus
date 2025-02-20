@@ -10,7 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { fetchWorkoutData } from '../../utils/api';
 import PostRutina from '../../workout-components/rutina/PostRutina';
 import PostListEjerciciosInRutina from '../../workout-components/rutina/PostListEjerciciosInRutina';
-import PostPlanEntrenamientoFecha, { PutPlanEntrenamientoFecha }  from '../../workout-components/plan-entrenamiento/PutPlanEntrenamientoFecha';
+import PostPlanEntrenamientoFecha from '../../workout-components/plan-entrenamiento/PostPlanEntrenamientoFecha';
+import PutPlanEntrenamientoFecha  from '../../workout-components/plan-entrenamiento/PutPlanEntrenamientoFecha';
 import PostPlanEntrenamiento  from '../../workout-components/plan-entrenamiento/PostPlanEntrenamiento';
 import DeleteModalExercisePost from '../../workout-components/ejercicio/DeleteModalExercisePost';
 import PutRutina from '../../workout-components/rutina/PutRutina';
