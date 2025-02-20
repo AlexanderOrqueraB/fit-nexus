@@ -1,0 +1,5 @@
+spring:
+  sql: #script-based initialization (to use schema-dev.sql)
+    init:
+      schema-locations: classpath:schema-dev.sql
+      mode: always

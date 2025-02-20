@@ -4,6 +4,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update #none, update...
+  profiles:
+    active: dev
 
 #to see in terminal SQL execution spring.jpa.show-sql=true
 #    show-sql : true
@@ -18,6 +20,7 @@ spring:
   #script-based initialization (to use schema.sql)
   sql:
     init:
+      schema-locations: classpath:schema.sql
       mode: always
 
     #server:
