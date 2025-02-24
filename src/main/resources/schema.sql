@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS rutina_ejercicio CASCADE;
 DROP TABLE IF EXISTS cliente_ejercicio CASCADE;
 DROP TABLE IF EXISTS cliente_rutina CASCADE;
 DROP TABLE IF EXISTS cliente_plan_de_entrenamiento CASCADE;
+-- INTERMEDIATE TABLES
 
 DROP SEQUENCE IF EXISTS seq_log CASCADE;
 
@@ -27,59 +28,6 @@ CREATE TABLE IF NOT EXISTS entrenador (
     email VARCHAR (100) NOT NULL,
     password VARCHAR (100) NOT NULL,
     role VARCHAR (100) NOT NULL,
-    version INT
-);
-
-CREATE TABLE IF NOT EXISTS ejercicio (
-    id SERIAL PRIMARY KEY,
-    nombre_ejercicio VARCHAR (100) NOT NULL,
-    repeticion INT,
-    serie INT,
-    peso INT,
-    cardio BOOLEAN,
-    entrenador_id INT,
-    CONSTRAINT fk_entrenador_ejercicio
-    FOREIGN KEY(entrenador_id)
-    REFERENCES entrenador(id),
-    version INT
-);
-
-CREATE TABLE IF NOT EXISTS plan_nutricional (
-    id SERIAL PRIMARY KEY,
-    proteina INT NOT NULL,
-    hidrato_de_carbono INT NOT NULL,
-    grasa INT NOT NULL,
-    kcal INT NOT NULL,
-    fecha_inicio DATE,
-    fecha_final DATE,
-    entrenador_id INT,
-    CONSTRAINT fk_entrenador_plan_nutricional
-        FOREIGN KEY(entrenador_id)
-        REFERENCES entrenador(id),
-    version INT
-);
-
-CREATE TABLE IF NOT EXISTS plan_de_entrenamiento (
-    id SERIAL PRIMARY KEY,
-    nombre_plan VARCHAR (100) NOT NULL,
-    fecha_inicio DATE,
-    fecha_final DATE,
-    entrenador_id INT,
-    CONSTRAINT fk_entrenador_plan_de_entrenamiento
-            FOREIGN KEY(entrenador_id)
-            REFERENCES entrenador(id),
-    version INT
-);
-
-CREATE TABLE IF NOT EXISTS rutina (
-    id SERIAL PRIMARY KEY,
-    nombre_rutina VARCHAR (100) NOT NULL,
-    fecha_inicio DATE,
-    fecha_final DATE,
-    entrenador_id INT,
-    CONSTRAINT fk_entrenador_rutina
-        FOREIGN KEY(entrenador_id)
-        REFERENCES entrenador(id),
     version INT
 );
 
@@ -102,6 +50,59 @@ CREATE TABLE IF NOT EXISTS cliente (
     CONSTRAINT fk_entrenador
         FOREIGN KEY(entrenador_id)
         REFERENCES entrenador(id),
+    version INT
+);
+
+CREATE TABLE IF NOT EXISTS plan_nutricional (
+    id SERIAL PRIMARY KEY,
+    proteina INT NOT NULL,
+    hidrato_de_carbono INT NOT NULL,
+    grasa INT NOT NULL,
+    kcal INT NOT NULL,
+    fecha_inicio DATE,
+    fecha_final DATE,
+    entrenador_id INT,
+    CONSTRAINT fk_entrenador_plan_nutricional
+        FOREIGN KEY(entrenador_id)
+        REFERENCES entrenador(id),
+    version INT
+);
+
+CREATE TABLE IF NOT EXISTS ejercicio (
+    id SERIAL PRIMARY KEY,
+    nombre_ejercicio VARCHAR (100) NOT NULL,
+    repeticion INT,
+    serie INT,
+    peso INT,
+    cardio BOOLEAN,
+    entrenador_id INT,
+    CONSTRAINT fk_entrenador_ejercicio
+    FOREIGN KEY(entrenador_id)
+    REFERENCES entrenador(id),
+    version INT
+);
+
+CREATE TABLE IF NOT EXISTS rutina (
+    id SERIAL PRIMARY KEY,
+    nombre_rutina VARCHAR (100) NOT NULL,
+    fecha_inicio DATE,
+    fecha_final DATE,
+    entrenador_id INT,
+    CONSTRAINT fk_entrenador_rutina
+        FOREIGN KEY(entrenador_id)
+        REFERENCES entrenador(id),
+    version INT
+);
+
+CREATE TABLE IF NOT EXISTS plan_de_entrenamiento (
+    id SERIAL PRIMARY KEY,
+    nombre_plan VARCHAR (100) NOT NULL,
+    fecha_inicio DATE,
+    fecha_final DATE,
+    entrenador_id INT,
+    CONSTRAINT fk_entrenador_plan_de_entrenamiento
+            FOREIGN KEY(entrenador_id)
+            REFERENCES entrenador(id),
     version INT
 );
 
