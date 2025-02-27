@@ -1,53 +1,89 @@
-
 # FitNexus
 
-Aplicación web de gestión de entrenamiento personal para entrenadores y sus clientes
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+
+A web application Fitness training tool that will be the Nexus between trainers and their clients
+
+## Table of Contents
+
+- [Documentation](#documentation)
+- [Generate Open API Docs](#generate-open-api-docs)
+- [View Open API Docs](#view-open-api-docs)
+- [View Data Model](#view-data-model)
+- [Tech Stack](#tech-stack)
+- [Running the Application](#running-the-application)
+    - [Full Application](#full-application)
+    - [React Application Only](#react-application-only)
+- [Features](#features)
+- [Author](#author)
+
+## Documentation
+
+FitNexus is a web application that helps trainers manage their clients and design personalized routines. Clients can connect with personal trainers who will create customized routines and assign nutritional plans to help them achieve their goals.
+
+Trainers can design training plans with specific routines and exercises that clients can view and follow. They can also manage their clients, create and assign nutritional plans. Both trainers and clients can create their profiles, access their personal data, and make modifications.
+
+What this application does not do: It is not focused on nutrition or specific diet assignments, and communication between trainers and clients will not be done through the application.
+
+## Generate Open API Docs
+
+FitNexus uses the `openapi-gradle-plugin` to generate Open API docs. Configuration is in the `build.gradle` file under the `openApi {}` block.
+
+### Steps:
+1. Run the command (with the React build part commented out and Docker Desktop running)
+   ```sh
+   ./gradlew clean build generateOpenApiDocs
+   ```
+2. Copy [fit-nexus.json](build/docs/fit-nexus.json) into [Swagger editor](https://editor.swagger.io/), double check and share if you want!
 
 
-## Documentación
+## View Open API Docs
+After start running the application:
+*  [Raw JSON] (http://localhost:8080/api-docs)
+*  [Swagger UI] (http://localhost:8080/swagger-ui/index.html)
 
-Aplicación web que facilita a los entrenadores la gestión de sus clientes y les permite diseñar y asignar rutinas personalizadas. Del mismo modo permite a cualquier cliente establecer un enlace con un entrenador personal que le creará una rutina personalizada y/o asignará un plan nutricional que le permita llegar a cumplir sus objetivos.
+## View Data Model 
+(Database Markup Language definition)
 
-Los entrenadores serán por tanto capaces de diseñar planes de entrenamiento, con rutinas y ejercicios concretos que los clientes podrán consultar y realizar. También podrán ver a sus clientes y aceptar solicitudes, además de crear y asignar planes nutricionales. Los clientes podrán guardar un registro de sus entrenamientos. Por último, ambos usuarios podrán crear su propio perfil, acceder a sus propios datos personales y realizar modificaciones.
-
-Que no hace ésta aplicación: no está enfocada a la nutrición ni asignación de dietas específicas y, la comunicación entre entrenador y cliente no se hará a través de la aplicación.
-
-## Generar Open API Docs:
-
-Utiliza openapi-gradle-plugin para generar open API docs, configuracion en build.gradle
-bloque openApi {}
-
-Pasos:
-1. Ejecuta el comando ```./gradlew clean build generateOpenApiDocs``` (con la parte de construcción de React comentada y Docker desktop running)
-2. Copia build/docs/fit-nexus.json en swagger editor, revisa y comparte!
-
-## Consultar Open API Docs (Swagger) tras iniciar la aplicación:
-
-- localhost:8080/api-docs (Raw JSON)
-- localhost:8080/swagger-ui/index.html (Swagger UI)
-
-## Visualizar Modelo de Datos (Database Markup Language definition)
-
-- Utiliza el archivo database_X.Y.Z.dbml y pega su contenido en: https://dbdiagram.io/d
+* Use the database_X.Y.Z.dbml file and paste its content into [dbdiagram.io] (https://dbdiagram.io/d)
 
 ## Tech Stack
 
-**Client:** React
-**Server:** Spring
+* **Client:** React
+* **Server:** Springboot
+* **Database:** PostgreSQL
 
-## Arrancar aplicación
-Para aplicación completa (backend: Springboot + frontend: React)
-Pasos:
-1. Desplázate a la ruta: \fit-nexus
-2. Utiliza docker desktop para que compose.yml levante un contenedor con la BD
-3. Ejecuta ./gradlew clean bootRun (./gradlew bootRun --args='--spring.profiles.active=dev' para perfil dev)
-4. Abre http://localhost:8080/
+## Running the Application
+### Full Application
+#### Steps:
+1. Navigate to the main directory using terminal: \fit-nexus>
+2. Use Docker Desktop to start a container with the database using [compose.yml](compose.yml)
+3. Execute: 
+   1. To run the application in real mode with the data you will create by using it:
+      ```sh
+      ./gradlew clean bootRun
+      ```
+   2. To run the application in development mode with fake data inserted directly into the database:
+      ```sh
+      ./gradlew bootRun --args='--spring.profiles.active=dev'
+      ```
+4. Open [localhost:8080] (http://localhost:8080/)
 
-Para aplicación React (dentro de frontend/fitnexus-ui)
-Pasos:
-1. Desplázate a la ruta: \fit-nexus\src\frontend\fitnexus-ui
-2. Ejecuta: npm start 
-3. Abre http://localhost:3030/
+### React Application Only
+#### Steps:
+1. Navigate to this directory using terminal: [fitnexus-ui](src/frontend/fitnexus-ui) 
+2. Execute:
+    1. To run the application in real mode with the data you will create by using it:
+       ```sh
+       npm start
+       ```
+3. Open [localhost:3030] (http://localhost:3030/)
+
+## Features
+* Manage clients and trainers
+* Design and assign personalized workout plans
+* Create and assign nutritional plans
+* Create and modify user profiles
 
 ## Autor
 
