@@ -45,7 +45,7 @@ After start running the application:
 ## View Data Model 
 (Database Markup Language definition)
 
-* Use the database_X.Y.Z.dbml file and paste its content into [dbdiagram.io] (https://dbdiagram.io/d)
+* Use the database_X.Y.Z.dbml file and paste its content into (https://dbdiagram.io/d)
 
 ## Tech Stack
 
@@ -67,7 +67,7 @@ After start running the application:
       ```sh
       ./gradlew bootRun --args='--spring.profiles.active=dev'
       ```
-4. Open [localhost:8080] (http://localhost:8080/)
+4. Open (http://localhost:8080/)
 
 ### React Application Only
 #### Steps:
@@ -77,7 +77,7 @@ After start running the application:
        ```sh
        npm start
        ```
-3. Open [localhost:3030] (http://localhost:3030/)
+3. Open (http://localhost:3030/)
 
 ## Features
 * Manage clients and trainers
