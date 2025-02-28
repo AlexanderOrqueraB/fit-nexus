@@ -9,8 +9,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../../../components_ui/ui/alert-dialog"
-import { customToast } from '../../utils/customToast'
-import { apiClient } from '../../utils/client';
+import { customToast } from '../../../utils/customToast'
+import { apiClient } from '../../../utils/client';
 
 
 export function DeleteModalRoutinePost ({ 

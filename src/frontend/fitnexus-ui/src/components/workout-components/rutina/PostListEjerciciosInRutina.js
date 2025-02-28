@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { apiClient } from '../../utils/client';
-import { customToast } from '../../utils/customToast';
+import { apiClient } from '../../../utils/client';
+import { customToast } from '../../../utils/customToast';
 import { Button } from '../../../components_ui/ui/button';
 import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
@@ -13,10 +13,10 @@ import {
   DialogTitle,
 } from "../../../components_ui/ui/dialog";
 
-import { GUARDAR_MENSAJE } from '../../utils/env';
+import { GUARDAR_MENSAJE } from '../../../utils/env';
 
-import { fetchWorkoutData } from '../../utils/api';
-import { UserContext } from '../../main-components/UserContext';
+import { fetchWorkoutData } from '../../../utils/api';
+import { UserContext } from '../../global/UserContext';
 
 export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
 

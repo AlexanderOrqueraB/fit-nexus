@@ -11,10 +11,10 @@ import {
 import { Button } from '../../../components_ui/ui/button';
 import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
-import { apiClient } from '../../utils/client';
-import { customToast } from '../../utils/customToast'
-import { UserContext } from '../../main-components/UserContext';
-import { GUARDAR_MENSAJE } from '../../utils/env';
+import { apiClient } from '../../../utils/client';
+import { customToast } from '../../../utils/customToast'
+import { UserContext } from '../../global/UserContext';
+import { GUARDAR_MENSAJE } from '../../../utils/env';
 
 
 export function PutExercise ({ open, onClose, exerciseData }) {

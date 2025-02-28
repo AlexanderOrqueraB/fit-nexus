@@ -1,39 +1,39 @@
-import { Button } from '../../../components_ui/ui/button';
+import { Button } from '../components_ui/ui/button';
 import React, { useContext, useEffect, useState } from 'react';
-import { customToast } from '../../utils/customToast'
-import PostExercise from '../../workout-components/ejercicio/PostExercise';
-import PutExercise from '../../workout-components/ejercicio/PutExercise';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components_ui/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components_ui/ui/tabs';
+import { customToast } from '../utils/customToast'
+import PostExercise from '../components/workout-components/ejercicio/PostExercise';
+import PutExercise from '../components/workout-components/ejercicio/PutExercise';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components_ui/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components_ui/ui/tabs';
 import { Calendar, CalendarDays, CircleMinusIcon, CirclePlusIcon, Edit, RefreshCwIcon, Trash2Icon, UserRoundPlus } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components_ui/ui/card';
-import { fetchWorkoutData } from '../../utils/api';
-import PostRutina from '../../workout-components/rutina/PostRutina';
-import PostListEjerciciosInRutina from '../../workout-components/rutina/PostListEjerciciosInRutina';
-import PostPlanEntrenamientoFecha from '../../workout-components/plan-entrenamiento/PostPlanEntrenamientoFecha';
-import PutPlanEntrenamientoFecha  from '../../workout-components/plan-entrenamiento/PutPlanEntrenamientoFecha';
-import PostPlanEntrenamiento  from '../../workout-components/plan-entrenamiento/PostPlanEntrenamiento';
-import DeleteModalExercisePost from '../../workout-components/ejercicio/DeleteModalExercisePost';
-import PutRutina from '../../workout-components/rutina/PutRutina';
-import DeleteModalRoutinePost from '../../workout-components/rutina/DeleteModalRoutinePost';
-import DeleteListEjerciciosInRutina from '../../workout-components/rutina/DeleteListEjerciciosInRutina';
-import PutPlanEntrenamiento from '../../workout-components/plan-entrenamiento/PutPlanEntrenamiento';
-import DeleteModalPlanPost from '../../workout-components/plan-entrenamiento/DeleteModalPlanPost';
-import PostListRoutinesInPlan from '../../workout-components/plan-entrenamiento/PostListRoutinesInPlan';
-import DeleteListRoutinesInPlan from '../../workout-components/plan-entrenamiento/DeleteListRoutinesInPlan';
-import { mockExercises, mockRoutinesBuilder, mockPlans, mockClients } from '../../../mocks/mockData'
-import { UserContext } from '../../main-components/UserContext';
-import { formatDateToDDMMYYYY } from '../../utils/utilsMethod';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components_ui/ui/card';
+import { fetchWorkoutData } from '../utils/api';
+import PostRutina from '../components/workout-components/rutina/PostRutina';
+import PostListEjerciciosInRutina from '../components/workout-components/rutina/PostListEjerciciosInRutina';
+import PostPlanEntrenamientoFecha from '../components/workout-components/plan-entrenamiento/PostPlanEntrenamientoFecha';
+import PutPlanEntrenamientoFecha  from '../components/workout-components/plan-entrenamiento/PutPlanEntrenamientoFecha';
+import PostPlanEntrenamiento  from '../components/workout-components/plan-entrenamiento/PostPlanEntrenamiento';
+import DeleteModalExercisePost from '../components/workout-components/ejercicio/DeleteModalExercisePost';
+import PutRutina from '../components/workout-components/rutina/PutRutina';
+import DeleteModalRoutinePost from '../components/workout-components/rutina/DeleteModalRoutinePost';
+import DeleteListEjerciciosInRutina from '../components/workout-components/rutina/DeleteListEjerciciosInRutina';
+import PutPlanEntrenamiento from '../components/workout-components/plan-entrenamiento/PutPlanEntrenamiento';
+import DeleteModalPlanPost from '../components/workout-components/plan-entrenamiento/DeleteModalPlanPost';
+import PostListRoutinesInPlan from '../components/workout-components/plan-entrenamiento/PostListRoutinesInPlan';
+import DeleteListRoutinesInPlan from '../components/workout-components/plan-entrenamiento/DeleteListRoutinesInPlan';
+import { mockExercises, mockRoutinesBuilder, mockPlans, mockClients } from '../mocks/mockData'
+import { UserContext } from "../components/global/UserContext";
+import { formatDateToDDMMYYYY } from '../utils/utilsMethod';
 import {   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger, } from '../../../components_ui/ui/dropdown-menu';
+  DropdownMenuTrigger, } from '../components_ui/ui/dropdown-menu';
   import {
     ListFilter,
   } from "lucide-react";
-import { PostSetPlanACliente } from '../../workout-components/plan-entrenamiento/PostSetPlanACliente';
+import { PostSetPlanACliente } from '../components/workout-components/plan-entrenamiento/PostSetPlanACliente';
 
 const deleteMessage = "deleteMessage"
 const deleteTitle = "¡¡ Esta acción NO se puede revertir !!"

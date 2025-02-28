@@ -1,6 +1,6 @@
 import React from "react";
-import { Button } from "../../components_ui/ui/button";
-import AlertDestructive from "../utils/AlertDestructive"
+import { Button } from "../components_ui/ui/button";
+import AlertDestructive from "../components/common/AlertDestructive"
 
 const UnauthorizedPage = () => {
   const returnBack = () => {

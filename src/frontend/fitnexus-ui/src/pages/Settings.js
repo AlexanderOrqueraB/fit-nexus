@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
-import EditProfile from "./EditProfile";
-import EditProfileExtra from '../client/PutProfileExtra';
-import ChangePassword from './ChangePassword';
+import EditProfile from "../components/users/user-actions/EditProfile";
+import EditProfileExtra from '../components/users/client/PutProfileExtra';
+import ChangePassword from '../components/users/user-actions/ChangePassword';
 import {
   Card,
   CardContent,
@@ -9,12 +9,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../../components_ui/ui/card";
-import { Label } from '../../../components_ui/ui/label';
-import { mockClients } from '../../../mocks/mockData';
-import { UserContext } from '../../main-components/UserContext';
-import customToast from '../../utils/customToast';
-import { fetchMyData } from '../../utils/api';
+} from "../components_ui/ui/card";
+import { Label } from '../components_ui/ui/label';
+import { mockClients } from '../mocks/mockData';
+import { UserContext } from '../components/global/UserContext';
+import customToast from '../utils/customToast';
+import { fetchMyData } from '../utils/api';
 
 export function Settings () {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)

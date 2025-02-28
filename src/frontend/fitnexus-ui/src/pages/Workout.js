@@ -1,19 +1,19 @@
 import { Info, ListFilter, RefreshCcwIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { Button } from '../../../components_ui/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components_ui/ui/card';
+import { Button } from '../components_ui/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components_ui/ui/card';
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../components_ui/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components_ui/ui/tabs';
-import { apiClient } from '../../utils/client';
-import { customToast } from '../../utils/customToast'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components_ui/ui/table';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components_ui/ui/tabs';
+import { apiClient } from '../utils/client';
+import { customToast } from '../utils/customToast'
 
 import {
 	Sheet,
 	SheetContent,
 	SheetHeader,
 	SheetTrigger,
-  } from '../../../components_ui/ui/sheet';
+  } from '../components_ui/ui/sheet';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -21,11 +21,11 @@ import {
 	DropdownMenuRadioItem,
 	DropdownMenuLabel,
 	DropdownMenuTrigger
-} from '../../../components_ui/ui/dropdown-menu';
-import ExercisesInfoImg from '../../workout-components/ejercicio/ExercisesInfoImg';
-import { Badge } from '../../../components_ui/ui/badge';
-import { mockExercises, mockRoutine, mockPlans } from '../../../mocks/mockData'
-import { formatDateToDDMMYYYY } from '../../utils/utilsMethod';
+} from '../components_ui/ui/dropdown-menu';
+import ExercisesInfoImg from '../components/workout-components/ejercicio/ExercisesInfoImg';
+import { Badge } from '../components_ui/ui/badge';
+import { mockExercises, mockRoutine, mockPlans } from '../mocks/mockData'
+import { formatDateToDDMMYYYY } from '../utils/utilsMethod';
 
 export function Workout ({ role, fitNexusId })  {
 	const [data, setData] = useState({}); //useState to store data from server

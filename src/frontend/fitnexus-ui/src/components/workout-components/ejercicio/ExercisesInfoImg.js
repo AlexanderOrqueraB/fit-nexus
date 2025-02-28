@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Card, CardContent } from "../../../components_ui/ui/card";
-import { exerciseImages } from '../../utils/exercisesImg'
+import { exerciseImages } from '../../../utils/exercisesImg'
 
 
 export function ExercisesInfoImg ({exercise}) {

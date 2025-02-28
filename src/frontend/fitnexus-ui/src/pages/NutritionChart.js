@@ -10,22 +10,22 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../components_ui/ui/card"
+} from "../components_ui/ui/card"
 
 import {
   ChartContainer,
   ChartTooltip,
-} from "../../components_ui/ui/chart"
-import { CustomAlertDialog } from "../utils/CustomAlertDialog"
-import PostProfileExtra from "../users/client/PostProfileExtra"
-import { mockPlans, mockClients} from "../../mocks/mockData"
+} from "../components_ui/ui/chart"
+import { CustomAlertDialog } from "../components/common/CustomAlertDialog"
+import PostProfileExtra from "../components/users/client/PostProfileExtra"
+import { mockPlans, mockClients} from "../mocks/mockData"
 import { Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue } from "../../components_ui/ui/select"
-import { Button } from "../../components_ui/ui/button"
-import { UserContext } from "../main-components/UserContext";
+  SelectValue } from "../components_ui/ui/select"
+import { Button } from "../components_ui/ui/button"
+import { UserContext } from "../components/global/UserContext";
 import { fetchNutriData } from "../utils/api";
 
 const chartConfig = {

@@ -11,10 +11,10 @@ import {
 } from "../../../components_ui/ui/dialog"
 import { Input } from "../../../components_ui/ui/input"
 import { Label } from "../../../components_ui/ui/label"
-import { UserContext } from "../../main-components/UserContext";
-import customToast from "../../utils/customToast";
-import { apiClient } from "../../utils/client";
-import { GUARDAR_MENSAJE } from "../../utils/env";
+import { UserContext } from "../../global/UserContext";
+import customToast from "../../../utils/customToast";
+import { apiClient } from "../../../utils/client";
+import { GUARDAR_MENSAJE } from "../../../utils/env";
 
 
 export function ChangePassword() {

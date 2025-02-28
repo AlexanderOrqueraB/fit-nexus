@@ -3,15 +3,15 @@ import {
   ListFilter,
   RefreshCcwIcon,
 } from "lucide-react";
-import { Badge } from "../../../components_ui/ui/badge";
-import { Button } from "../../../components_ui/ui/button";
+import { Badge } from "../components_ui/ui/badge";
+import { Button } from "../components_ui/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../../../components_ui/ui/card";
+} from "../components_ui/ui/card";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -21,7 +21,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../../components_ui/ui/dropdown-menu";
+} from "../components_ui/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -29,17 +29,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../../components_ui/ui/table";
+} from "../components_ui/ui/table";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "../../../components_ui/ui/tabs";
-import { customToast } from "../../utils/customToast";
-import { fetchClientData } from "../../utils/api";
-import { mockClients } from "../../../mocks/mockData";
-import { UserContext } from "../../main-components/UserContext";
+} from "../components_ui/ui/tabs";
+import { customToast } from "../utils/customToast";
+import { fetchClientData } from "../utils/api";
+import { mockClients } from "../mocks/mockData";
+import { UserContext } from "../components/global/UserContext";
 
 export function ClientsList() {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)

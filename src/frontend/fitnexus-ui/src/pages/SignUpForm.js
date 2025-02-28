@@ -1,19 +1,19 @@
 import { useNavigate } from 'react-router-dom'
 import React, { useState } from 'react';
-import { Button } from '../../../components_ui/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components_ui/ui/card';
-import { Input } from '../../../components_ui/ui/input';
-import { Label } from '../../../components_ui/ui/label';
+import { Button } from '../components_ui/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components_ui/ui/card';
+import { Input } from '../components_ui/ui/input';
+import { Label } from '../components_ui/ui/label';
 import {
 Select,
 SelectContent,
 SelectItem,
 SelectTrigger,
 SelectValue,
-} from "../../../components_ui/ui/select"
-import {apiClient} from "../../utils/client";
-import { customToast } from '../../utils/customToast'
-import { mockClients } from '../../../mocks/mockData'
+} from "../components_ui/ui/select"
+import {apiClient} from "../utils/client";
+import { customToast } from '../utils/customToast'
+import { mockClients } from '../mocks/mockData'
 
 export function SignUpForm() {
 	const navigate = useNavigate();

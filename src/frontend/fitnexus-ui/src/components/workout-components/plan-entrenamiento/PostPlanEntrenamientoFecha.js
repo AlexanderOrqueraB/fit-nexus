@@ -11,10 +11,10 @@ import {
 import { Button } from '../../../components_ui/ui/button';
 import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
-import { apiClient } from '../../utils/client';
+import { apiClient } from '../../../utils/client';
 import { planWithEntrenador } from '../../../mocks/mockData'
-import { customToast } from '../../utils/customToast'
-import { GUARDAR_MENSAJE } from '../../utils/env';
+import { customToast } from '../../../utils/customToast'
+import { GUARDAR_MENSAJE } from '../../../utils/env';
 
 export function PostPlanEntrenamientoFecha ({ open, onClose, planData }) {
     const [data, setData] = useState({

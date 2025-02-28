@@ -1,4 +1,4 @@
-import { apiClient } from '../utils/client';
+import { apiClient } from './client';
 import customToast from './customToast';
 
 export const fetchWorkoutData = async (fitNexusId) => {

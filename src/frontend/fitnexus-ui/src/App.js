@@ -1,20 +1,20 @@
 import React, { lazy, Suspense } from "react"; 
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
-import { WorkoutBuilder } from './components/users/trainer/WorkoutBuilder';
+import { WorkoutBuilder } from './pages/WorkoutBuilder';
 
-import LoginForm from './components/users/user-actions/LoginForm';
-import LogoutForm from './components/users/user-actions/LogoutForm';
-import SignUpForm from './components/users/user-actions/SignUpForm';
+import LoginForm from './pages/LoginForm';
+import LogoutForm from './pages/LogoutForm';
+import SignUpForm from './pages/SignUpForm';
 
-import ClientsList from "./components/users/trainer/ClientsList";
-import { Workout } from "./components/users/client/Workout";
-import UnauthorizedPage from "./components/main-components/UnauthorizedPage";
-import ProtectedLayout from "./components/main-components/ProtectedLayout";
-import Settings from "./components/users/user-actions/Settings";
-import NutritionChart from "./components/nutrition/NutritionChart";
+import ClientsList from "./pages/ClientsList";
+import { Workout } from "./pages/Workout";
+import UnauthorizedPage from "./pages/UnauthorizedPage";
+import ProtectedLayout from "./components/global/ProtectedLayout";
+import Settings from "./pages/Settings";
+import NutritionChart from "./pages/NutritionChart";
 import { Toaster } from "sonner";
-const HomePage = lazy (() =>import ("./components/main-components/HomePage"));
+const HomePage = lazy (() =>import ("./pages/HomePage"));
 
 
 

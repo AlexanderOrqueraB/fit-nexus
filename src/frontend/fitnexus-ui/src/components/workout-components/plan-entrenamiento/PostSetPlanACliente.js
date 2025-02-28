@@ -11,8 +11,8 @@ import {
 import { Button } from '../../../components_ui/ui/button';
 import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
-import { apiClient } from '../../utils/client';
-import { customToast } from '../../utils/customToast'
+import { apiClient } from '../../../utils/client';
+import { customToast } from '../../../utils/customToast'
 
 export function PostSetPlanACliente ({ open, onClose, planData }) {
     const [data, setData] = useState({

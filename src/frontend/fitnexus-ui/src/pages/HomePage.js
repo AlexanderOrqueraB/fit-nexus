@@ -1,16 +1,16 @@
 import { customToast } from '../utils/customToast'
-import { Button } from "../../components_ui/ui/button"
+import { Button } from "../components_ui/ui/button"
 import { useNavigate } from 'react-router-dom'
-import PostExercise from '../workout-components/ejercicio/PostExercise';
+import PostExercise from '../components/workout-components/ejercicio/PostExercise';
 
-import fitNexusLogo from "../../images/fit-nexus-logo.jpeg"
+import fitNexusLogo from "../assets/images/fit-nexus-logo.jpeg"
 
-import { Card, CardContent } from '../../components_ui/ui/card';
+import { Card, CardContent } from '../components_ui/ui/card';
 import { apiClient } from '../utils/client';
 import React, { useContext, useEffect, useState } from 'react';
-import { mockClients } from '../../mocks/mockData'
+import { mockClients } from '../mocks/mockData'
 import { BrickWall, Drumstick, EyeIcon } from 'lucide-react';
-import { UserContext } from './UserContext';
+import { UserContext } from '../components/global/UserContext';
 
 export function HomePage() {	
 

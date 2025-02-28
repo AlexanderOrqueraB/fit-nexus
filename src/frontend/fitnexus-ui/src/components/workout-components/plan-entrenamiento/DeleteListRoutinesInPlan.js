@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { apiClient } from '../../utils/client';
-import { customToast } from '../../utils/customToast';
+import { apiClient } from '../../../utils/client';
+import { customToast } from '../../../utils/customToast';
 import { Label } from '../../../components_ui/ui/label';
 
 import {
@@ -14,8 +14,8 @@ import {
     AlertDialogTitle,
   } from "../../../components_ui/ui/alert-dialog"
 
-import { fetchWorkoutData } from '../../utils/api';
-import { UserContext } from '../../main-components/UserContext';
+import { fetchWorkoutData } from '../../../utils/api';
+import { UserContext } from '../../global/UserContext';
 
 export function DeleteListRoutinesInPlan({ open, onClose, planData }) {
 
