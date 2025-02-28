@@ -1,12 +1,13 @@
 package aorquerab.fitnexus.repository.intermediate;
 
+import aorquerab.fitnexus.model.componenteEntrenamiento.PlanRutina;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface PlanRutinaRepository extends JpaRepository<Object,Long> {
+public interface PlanRutinaRepository extends JpaRepository<PlanRutina,Long> {
 
     @Modifying
     @Transactional

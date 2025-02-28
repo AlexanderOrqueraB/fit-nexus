@@ -112,7 +112,7 @@ public class EjercicioController {
         log.info("Ejecutando obtenerEjerciciosPorFitNexusId con el FitNexusId: {}...", fitNexusId);
         try {
             List<Ejercicio> ejercicios = Collections.emptyList();
-            Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+            Optional<Cliente> clienteOptional = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             if (clienteOptional.isEmpty() && entrenadorOptional.isEmpty()) {
                 log.warn("Usuario no encontrado con el fitNexusId: {}", fitNexusId);

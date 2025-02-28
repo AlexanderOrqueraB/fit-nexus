@@ -99,9 +99,13 @@ CREATE TABLE IF NOT EXISTS plan_de_entrenamiento (
     fecha_inicio DATE,
     fecha_final DATE,
     entrenador_id INT,
+    cliente_id INT,
     CONSTRAINT fk_entrenador_plan_de_entrenamiento
-            FOREIGN KEY(entrenador_id)
-            REFERENCES entrenador(id),
+        FOREIGN KEY(entrenador_id)
+        REFERENCES entrenador(id),
+    CONSTRAINT fk_cliente_plan_de_entrenamiento
+        FOREIGN KEY(cliente_id)
+        REFERENCES cliente(id),
     version INT
 );
 
@@ -205,11 +209,11 @@ VALUES
     ('Torso', '2023-01-15', '2023-02-15', 2, 1), -- Rutina de Mace Windu
     ('Pierna', '2023-02-01', '2023-03-01', 3, 1); -- Rutina de Yoda
 
-INSERT INTO plan_de_entrenamiento (nombre_plan, fecha_inicio, fecha_final, entrenador_id, version)
+INSERT INTO plan_de_entrenamiento (nombre_plan, fecha_inicio, fecha_final, entrenador_id, cliente_id, version)
 VALUES
-    ('Plan de Obi-Wan', '2023-01-01', '2023-03-01', 1, 1), -- Plan de Obi-Wan
-    ('Plan de Windu', '2023-01-15', '2023-03-15', 2, 1), -- Plan de Mace Windu
-    ('Plan de Yoda', '2023-02-01', '2023-04-01', 3, 1); -- Plan de Yoda
+    ('Plan de Obi-Wan', '2023-01-01', '2023-03-01', 1, 1, 1), -- Plan de Obi-Wan
+    ('Plan de Windu', '2023-01-15', '2023-03-15', 2, 2, 1), -- Plan de Mace Windu
+    ('Plan de Yoda', '2023-02-01', '2023-04-01', 3, 3, 1); -- Plan de Yoda
 
 INSERT INTO ejercicio (nombre_ejercicio, repeticion, serie, peso, cardio, entrenador_id, version)
 VALUES
@@ -217,4 +221,3 @@ VALUES
     ('Peso muerto', 5, 5, 100, FALSE, 2, 1), -- Ejercicio de Mace Windu
     ('Sentadillas', 20, 3, NULL, TRUE, 2, 1), -- Ejercicio de Mace Windu
     ('Correr en cinta', 1, 1, NULL, TRUE, 3, 1); -- Ejercicio de Yoda
-

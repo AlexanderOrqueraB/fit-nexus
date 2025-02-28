@@ -197,7 +197,7 @@ public class AuthHomeController {
     public ResponseEntity<DatosUsuarioDTO> obtenerMisDatosPorFitNexusId (@PathVariable String fitNexusId){
         log.info("Ejecutando obtenerMisDatosPorFitNexusId con este fitNexusId: {}", fitNexusId);
         try {
-            Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+            Optional<Cliente> clienteOptional = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             if (clienteOptional.isEmpty() && entrenadorOptional.isEmpty()) {
                 log.warn("Usuario no encontrado con el fitNexusId: {}", fitNexusId);
@@ -237,7 +237,7 @@ public class AuthHomeController {
         log.info("Datos recibidos: {}", datosUsuarioDTO);
         try {
             DatosUsuarioDTO datosUsuarioActualizado;
-            Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+            Optional<Cliente> clienteOptional = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
 
             if (clienteOptional.isEmpty() && entrenadorOptional.isEmpty()) {
@@ -284,7 +284,7 @@ public class AuthHomeController {
         PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
         try {
-            Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+            Optional<Cliente> clienteOptional = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             
             if(clienteOptional.isPresent()) {

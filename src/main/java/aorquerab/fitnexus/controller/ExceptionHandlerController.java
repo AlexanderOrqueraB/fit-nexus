@@ -26,11 +26,6 @@ public class ExceptionHandlerController {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(RutinaNotFoundException.class)
-    public ResponseEntity<String> handleRutinaNotFoundException(RutinaNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneralException(Exception ex) {
         log.error("Error inesperado", ex);

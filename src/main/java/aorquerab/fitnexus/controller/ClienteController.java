@@ -74,7 +74,7 @@ public class ClienteController {
     public ResponseEntity<Optional<Cliente>> obtenerClientePorFitNexusId(@PathVariable String fitNexusId){
         log.info("Ejecutando obtenerClientePorFitNexusId con este fitNexusId: {}", fitNexusId);
         try {
-            Optional<Cliente> clienteByFitNexusId = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+            Optional<Cliente> clienteByFitNexusId = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             return ResponseEntity.status(HttpStatus.OK).body(clienteByFitNexusId);
         } catch (Exception e) {
             log.warn("Error al obtener cliente por emailId", e);
@@ -86,7 +86,7 @@ public class ClienteController {
     public ResponseEntity<ClienteDtoRequest> obtenerDatosExtraClientePorFitNexusId (@PathVariable String fitNexusId){
         log.info("Ejecutando obtenerDatosExtraClientePorFitNexusId con este fitNexusId: {}", fitNexusId);
         try {
-            Cliente clienteByFitNexusId = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId))
+            Cliente clienteByFitNexusId = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId))
                     .orElseThrow(() -> new ClienteNotFoundException("Cliente no encontrado con emailId: "));
             ClienteDtoRequest datosExtraCliente = ClienteDtoRequest.builder()
                     .objetivo(clienteByFitNexusId.getObjetivo())
@@ -112,7 +112,7 @@ public class ClienteController {
         if(clienteDTORequest == null) {
             throw new InvalidRequestException("Peticion de cliente no valida");
         }
-        Optional<Cliente> cliente = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+        Optional<Cliente> cliente = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId));
         log.info("Cliente a actualizar: {}", cliente);
         if (cliente.isEmpty()) {
             log.error("Cliente no encontrado con fitNexusId: {}", fitNexusId);
@@ -143,7 +143,7 @@ public class ClienteController {
             if(clienteDTORequest == null) {
                 throw new InvalidRequestException("Peticion de cliente no valida");
             } else {
-                Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+                Optional<Cliente> clienteOptional = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId));
                 if (clienteOptional.isEmpty()) {
                     log.error("Cliente no encontrado con fitNexusId: {}", fitNexusId);
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado");

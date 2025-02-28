@@ -100,9 +100,13 @@ CREATE TABLE IF NOT EXISTS plan_de_entrenamiento (
     fecha_inicio DATE,
     fecha_final DATE,
     entrenador_id INT,
+    cliente_id INT,
     CONSTRAINT fk_entrenador_plan_de_entrenamiento
             FOREIGN KEY(entrenador_id)
             REFERENCES entrenador(id),
+    CONSTRAINT fk_cliente_plan_de_entrenamiento
+            FOREIGN KEY(cliente_id)
+            REFERENCES cliente(id),
     version INT
 );
 

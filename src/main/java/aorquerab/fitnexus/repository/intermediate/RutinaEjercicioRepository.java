@@ -5,8 +5,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+import aorquerab.fitnexus.model.componenteEntrenamiento.RutinaEjercicio;
 
-public interface RutinaEjercicioRepository extends JpaRepository<Object,Long> {
+public interface RutinaEjercicioRepository extends JpaRepository<RutinaEjercicio,Long> {
 
     @Modifying
     @Transactional

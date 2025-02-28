@@ -124,9 +124,9 @@ export function LoginForm() {
     }
 
     console.log(
-      "El rol del usuario es:",
-      role + "y su email es:",
-      email + "y su fitNexusId es:",
+      "El rol del usuario es: ",
+      role + " y su email es: ",
+      email + " y su fitNexusId es: ",
       fitNexusId
     );
 

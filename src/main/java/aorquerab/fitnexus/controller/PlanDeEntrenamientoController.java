@@ -108,7 +108,7 @@ public class PlanDeEntrenamientoController {
         log.info("Ejecutando obtenerEjerciciosPorFitNexusId con el FitNexusId: {}...", fitNexusId);
         try {
             List<PlanDeEntrenamiento> planes = Collections.emptyList();
-            Optional<Cliente> clienteOptional = clienteRepository.findByFitnexusId(UUID.fromString(fitNexusId));
+            Optional<Cliente> clienteOptional = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             if (clienteOptional.isEmpty() && entrenadorOptional.isEmpty()) {
                 log.warn("Usuario no encontrado con el fitNexusId: {}", fitNexusId);
@@ -341,7 +341,7 @@ public class PlanDeEntrenamientoController {
                 throw new PlanDeEntrenamientoNotFoundException("Plan no encontrado con el nombre: " + planEntrenamientoAsignarRequest.getNombrePlan());
             }
 
-            Cliente cliente = clienteRepository.findByFitnexusId(UUID.fromString(planEntrenamientoAsignarRequest.getClienteFitNexusId()))
+            Cliente cliente = clienteRepository.findByFitNexusId(UUID.fromString(planEntrenamientoAsignarRequest.getClienteFitNexusId()))
                     .orElseThrow(() -> {
                         log.warn("Cliente no encontrado con el fitNexusId: {}", planEntrenamientoAsignarRequest.getClienteFitNexusId());
                         return new ClienteNotFoundException("Cliente no encontrado con el fitNexusId: " + planEntrenamientoAsignarRequest.getClienteFitNexusId());
