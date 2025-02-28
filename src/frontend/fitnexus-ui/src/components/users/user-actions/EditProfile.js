@@ -25,7 +25,7 @@ export function EditProfile({ clientData }) {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
   const { fitNexusId } = user; // Desestructurar el objeto user
 
-  const [data, setData] = useState([]);
+  const [setData] = useState([]);
 
   const loadData = async () => {
       try {

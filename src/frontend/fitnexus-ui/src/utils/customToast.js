@@ -61,7 +61,7 @@ export const customToast = ({
       })
       break;
 
-    case "default":
+    default:
       toast(message, {
         description: description,
       })

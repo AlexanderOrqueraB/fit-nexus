@@ -1,4 +1,3 @@
-import { customToast } from '../utils/customToast'
 import { Button } from "../components_ui/ui/button"
 import { useNavigate } from 'react-router-dom'
 import PostExercise from '../components/workout-components/ejercicio/PostExercise';
@@ -17,13 +16,10 @@ export function HomePage() {
 	const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
 
 	useState({});
-	const [data, setData] = useState({});
 	const navigate = useNavigate();
-	//EJERCICIO LOGIC
-	//Listar ejercicios en tabla + Put Exercise
-	const [exercises, setExercises] = useState([]);
-    const [isEditOpen, setIsEditOpen] = useState(false);
-    const [selectedExercise, setSelectedExercise] = useState(null);
+
+	const [setExercises] = useState([]);
+
 
 	useEffect(() => {
         // Obtener los ejercicios al cargar la página
@@ -35,62 +31,6 @@ export function HomePage() {
                 console.error('Error al obtener los ejercicios:', error);
             });
     }, []);
-
-	const handleEditClick = (exercise) => {
-		setSelectedExercise(exercise);
-		setIsEditOpen(true);
-	};
-	//EJERCICIO LOGIC
-	//Listar ejercicios en tabla + Put Exercise
-
-	const [dataEx, setDataEx] = useState({
-		//useState to store data from server
-		nombreEjercicio: '',
-		repeticion: '',
-		serie: '',
-		peso: '',
-		cardioRealizado: '',
-	});
-
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setData({
-			...data,
-			[name]: value,
-		});
-	};
-
-
-	const onSubmit = (e) => {
-		e.preventDefault(); //prevent refresh on page
-		const userData = {
-			nombreEjercicio: data.nombreEjercicio,
-			repeticion: data.repeticion,
-			serie: data.serie,
-			peso: data.peso,
-			cardioRealizado: data.cardioRealizado,
-		};
-
-		console.log('Enviando los siguientes datos: ', userData);
-
-		apiClient
-			.post('/api/v1/ejercicios', userData)
-			//.put(URL, userData)
-			.then((response) => {
-				console.log('Respuesta del servidor: ', response.data);
-				console.log('Status: ', response.status);
-				if (response.status === 201) {
-					console.log('Mostrando Toast de Ejercicio Guardado...');
-					customToast({message : "Cambiar mensaje!", type : "success"});
-				}
-			})
-			.catch((error) => {
-				console.error('Error en la petición: ', error);
-			});
-	};
-
-	useEffect(() => {
-	}, []); //empty array ensures that the effect only runs once
 
 
 	return (

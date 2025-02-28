@@ -29,7 +29,7 @@ export function PostProfileExtra() {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
   const { fitNexusId } = user; // Desestructurar el objeto user
 
-  const [clients, setClients] = useState([]);
+  const [setClients] = useState([]);
 	const loadData = async () => {
 		try {
 		// Ejecutar todas las solicitudes en paralelo

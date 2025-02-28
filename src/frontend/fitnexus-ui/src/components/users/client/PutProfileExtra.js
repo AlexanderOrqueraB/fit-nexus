@@ -30,8 +30,8 @@ export function PutProfileExtra() {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
   const { fitNexusId } = user; // Desestructurar el objeto user
 
-  const [clients, setClients] = useState([]);
-  const [extraData, setExtraData] = useState(null);
+  const [setClients] = useState([]);
+  const [setExtraData] = useState(null);
 
 	const loadData = async () => {
 		try {

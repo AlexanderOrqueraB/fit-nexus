@@ -171,13 +171,6 @@ export function WorkoutBuilder() {
     setSelectedPlan(plan);
     setIsSetPlanToClientOpen(true);
   }
-
-  // Creamos un mapper para mapear el fitNexusId con el nombre del cliente
-  // Posiblemente util para mapear el plan con el id del plan
-  const clientNameMap = mockClients.reduce((map, client) => {
-    map[client.fitNexusId] = client.nombre;
-    return map;
-  }, {});
   
   return (
     <React.Fragment>

@@ -21,7 +21,7 @@ export function Settings () {
   const { fitNexusId } = user; // Desestructurar el objeto user
 
   const [selectedSection, setSelectedSection] = useState("general");
-  const [data, setData] = useState({
+  const [setData] = useState({
     nombre: user.nombre || mockClients[0].nombre,
     apellido: user.apellido || mockClients[0].apellido,
     email: user.email || mockClients[0].email,

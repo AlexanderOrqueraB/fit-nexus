@@ -5,7 +5,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components_ui/ui/tabs';
-import { apiClient } from '../utils/client';
 import { customToast } from '../utils/customToast'
 
 import {
@@ -28,7 +27,6 @@ import { mockExercises, mockRoutine, mockPlans } from '../mocks/mockData'
 import { formatDateToDDMMYYYY } from '../utils/utilsMethod';
 
 export function Workout ({ role, fitNexusId })  {
-	const [data, setData] = useState({}); //useState to store data from server
 
 	const [exercises, setExercises] = useState([]);
   
@@ -62,15 +60,6 @@ export function Workout ({ role, fitNexusId })  {
 		return exercise.cardioRealizado === isCardio; // Compararmos valores booleanos
 	  });
 	  
-
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setData({
-			...data,
-			[name]: value,
-		});
-	};
-
 	const loadData = async () => {
 		try {
 		// Ejecutar todas las solicitudes en paralelo
@@ -98,40 +87,9 @@ export function Workout ({ role, fitNexusId })  {
 		}
 	};
 	
-
 	useEffect(() => {
 		loadData();
 	}, []);
-
-
-	const onSubmit = (e) => {
-		e.preventDefault(); //prevent refresh on page
-		const userData = {
-			nombreEjercicio: data.nombreEjercicio,
-			repeticion: data.repeticion,
-			serie: data.serie,
-			peso: data.peso,
-			cardioRealizado: data.cardioRealizado,
-		};
-
-		console.log('Enviando los siguientes datos: ', userData);
-
-		apiClient
-			.post('/api/v1/ejercicios', userData)
-			//.put(URL, userData)
-			.then((response) => {
-				console.log('Respuesta del servidor: ', response.data);
-				console.log('Status: ', response.status);
-				if (response.status === 201) {
-					console.log('Mostrando Toast de Ejercicio Guardado...');
-					customToast({message : "Cambiar mensaje", type : "success"});
-
-				}
-			})
-			.catch((error) => {
-				console.error('Error en la petición: ', error);
-			});
-	};
 
 	return (
 		<React.Fragment>	
