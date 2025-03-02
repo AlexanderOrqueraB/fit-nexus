@@ -74,9 +74,9 @@ public class Cliente {
     @Builder.Default
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
-        name = "cliente_pauta_nutricional",
+        name = "cliente_plan_nutricional",
         joinColumns = @JoinColumn(name = "cliente_id"),
-        inverseJoinColumns = @JoinColumn(name = "pauta_nutricional_id")
+        inverseJoinColumns = @JoinColumn(name = "plan_nutricional_id")
     )
     @JsonIgnore
     private List<PlanNutricional> planNutricional = new ArrayList<>();

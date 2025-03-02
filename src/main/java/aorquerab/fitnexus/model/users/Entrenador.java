@@ -20,7 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@ToString(exclude = {"password", "rutinas", "pautasNutricionales", "clientes", "planesDeEntrenamiento", "ejercicios"})
+@ToString(exclude = {"password", "rutinas", "planesNutricionales", "clientes", "planesDeEntrenamiento", "ejercicios"})
 @EqualsAndHashCode
 @Entity
 @Table(name = "entrenador")
@@ -59,7 +59,7 @@ public class Entrenador {
     @Builder.Default
     @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<PlanNutricional> pautasNutricionales = new ArrayList<>();
+    private List<PlanNutricional> planesNutricionales = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

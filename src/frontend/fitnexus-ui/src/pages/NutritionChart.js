@@ -46,7 +46,7 @@ const chartConfig = {
   },
 }
 
-const pautaMoreInfo = "Los porcentajes vienen fijados de la forma 30% proteínas, 30% hidratos de carbono y 40% grasas para" + 
+const planNutriMoreInfo = "Los porcentajes vienen fijados de la forma 30% proteínas, 30% hidratos de carbono y 40% grasas para" +
 "favorecer la pérdida de grasa. Los gramos se calculan con el total de kcal y teniendo en cuenta que la grasa aporta 9kcal por gramo, " +
 "mientras que los hidratos y las proteínas aportan 4 kcal."
 
@@ -231,7 +231,7 @@ export function NutritionChart() {
           <CustomAlertDialog
             messageButton = "¿De dónde salen estos datos?"
             title = "Macronutrientes en % y en gramos"
-            description = {pautaMoreInfo} 
+            description = {planNutriMoreInfo}
           />
           <CustomAlertDialog
             messageButton = "De dónde salen estos datos?"

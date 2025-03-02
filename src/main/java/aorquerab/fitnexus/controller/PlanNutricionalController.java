@@ -199,6 +199,9 @@ public class PlanNutricionalController {
                 } else if (cliente.getObjetivo().equals(Objetivo.PERDER_GRASA)) {
                     planNutricionalDTOBuilder.proteina(30).hidratoDeCarbono(30).grasa(40)
                             .fechaInicio(LocalDate.now()).fechaFinal(LocalDate.now().plusWeeks(4));
+                } else if (cliente.getObjetivo().equals(Objetivo.MANTENER_FORMA)) {
+                    planNutricionalDTOBuilder.proteina(30).hidratoDeCarbono(40).grasa(40)
+                            .fechaInicio(LocalDate.now()).fechaFinal(LocalDate.now().plusWeeks(4));
                 }
                 planNutricionalDTO = planNutricionalDTOBuilder.build();
                 log.info("Plan nutricional DTO creado usando patron builder: {}", planNutricionalDTO);

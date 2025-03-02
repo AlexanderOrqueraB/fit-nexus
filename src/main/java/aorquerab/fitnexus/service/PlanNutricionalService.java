@@ -154,16 +154,23 @@ public class PlanNutricionalService {
     }
 
     public int obtenerKcalDiariasPorObjetivo(Objetivo objetivo, int kcalMantenimiento) {
-        int obtenerKcalDiariasPorObjetivo;
+        int obtenerKcalDiariasPorObjetivo = 0;
         log.info("Obteniendo kcal diarias en base al objetivo");
         if (objetivo.equals((Objetivo.GANAR_MUSCULO))) {
             obtenerKcalDiariasPorObjetivo = kcalMantenimiento + objetivo.getKcalExtra();
-            log.info("Kcal diarias por objetivo = kcalMantenimiento: {} + kcalExtra para ganar musculo: {}"
+            log.info("Kcal diarias por objetivo = kcalMantenimiento: {} + kcalExtra para ganar músculo: {}"
                     ,kcalMantenimiento, obtenerKcalDiariasPorObjetivo);
         }
-        else obtenerKcalDiariasPorObjetivo = kcalMantenimiento - objetivo.getKcalExtra();
-        log.info("Kcal diarias por objetivo = kcalMantenimiento: {} + kcalExtra para ganar musculo: {}"
+        else if (objetivo.equals((Objetivo.PERDER_GRASA))){
+            obtenerKcalDiariasPorObjetivo = kcalMantenimiento - objetivo.getKcalExtra();
+            log.info("Kcal diarias por objetivo = kcalMantenimiento: {} - kcalExtra para perder grasa: {}"
                 ,kcalMantenimiento, obtenerKcalDiariasPorObjetivo);
+        }
+        else if (objetivo.equals((Objetivo.MANTENER_FORMA))){
+            obtenerKcalDiariasPorObjetivo = kcalMantenimiento - objetivo.getKcalExtra();
+            log.info("Kcal diarias por objetivo = kcalMantenimiento: {} - 0 kcal para mantener forma: {}"
+                    ,kcalMantenimiento, obtenerKcalDiariasPorObjetivo);
+        }
         return  obtenerKcalDiariasPorObjetivo;
     }
 
@@ -176,6 +183,10 @@ public class PlanNutricionalService {
         } else if (cliente.getObjetivo().equals(Objetivo.PERDER_GRASA)) {
             planNutricionalDTO = PlanNutricionalDTO.builder()
                     .proteina(30).hidratoDeCarbono(30).grasa(40)
+                    .build();
+        } else if (cliente.getObjetivo().equals(Objetivo.MANTENER_FORMA)) {
+            planNutricionalDTO = PlanNutricionalDTO.builder()
+                    .proteina(30).hidratoDeCarbono(40).grasa(30)
                     .build();
         }
         return planNutricionalDTO;

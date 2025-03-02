@@ -41,11 +41,11 @@ CREATE TABLE IF NOT EXISTS cliente (
     role VARCHAR (100) NOT NULL,
     objetivo VARCHAR (100),
     genero VARCHAR (100),
-    frecuenciaEjercicioSemanal VARCHAR (100),
+    frecuencia_ejercicio_semanal VARCHAR (100),
     edad INT,
     peso INT,
     altura INT,
-    cliente_desde DATE,
+    usuario_desde DATE,
     entrenador_id INT,
     CONSTRAINT fk_entrenador
         FOREIGN KEY(entrenador_id)

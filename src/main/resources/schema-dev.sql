@@ -1,17 +1,23 @@
-DROP TABLE IF EXISTS ejercicio CASCADE;
-DROP TABLE IF EXISTS plan_nutricional CASCADE;
-DROP TABLE IF EXISTS plan_de_entrenamiento CASCADE;
-DROP TABLE IF EXISTS rutina CASCADE;
 DROP TABLE IF EXISTS cliente CASCADE;
+DROP TABLE IF EXISTS cliente_ejercicio CASCADE;
+DROP TABLE IF EXISTS cliente_pauta_nutricional CASCADE;
+DROP TABLE IF EXISTS cliente_plan_de_entrenamiento CASCADE;
+DROP TABLE IF EXISTS cliente_plan_nutricional CASCADE;
+DROP TABLE IF EXISTS cliente_rutina CASCADE;
+DROP TABLE IF EXISTS ejercicio CASCADE;
 DROP TABLE IF EXISTS entrenador CASCADE;
+DROP TABLE IF EXISTS pauta_nutricional CASCADE;
+DROP TABLE IF EXISTS plan_de_entrenamiento CASCADE;
+DROP TABLE IF EXISTS plan_de_entrenamiento_rutina CASCADE;
+DROP TABLE IF EXISTS plan_nutricional CASCADE;
+DROP TABLE IF EXISTS rutina CASCADE;
+DROP TABLE IF EXISTS rutina_ejercicio CASCADE;
+DROP TABLE IF EXISTS usuario CASCADE;
+DROP TABLE IF EXISTS valoracion CASCADE;
+DROP TABLE IF EXISTS valoracion_cliente CASCADE;
+DROP TABLE IF EXISTS valoracion_plan_de_entrenamiento CASCADE;
 
 -- INTERMEDIATE TABLES
-DROP TABLE IF EXISTS cliente_plan_nutricional CASCADE;
-DROP TABLE IF EXISTS plan_de_entrenamiento_rutina CASCADE;
-DROP TABLE IF EXISTS rutina_ejercicio CASCADE;
-DROP TABLE IF EXISTS cliente_ejercicio CASCADE;
-DROP TABLE IF EXISTS cliente_rutina CASCADE;
-DROP TABLE IF EXISTS cliente_plan_de_entrenamiento CASCADE;
 
 DROP SEQUENCE IF EXISTS seq_log CASCADE;
 
@@ -40,11 +46,11 @@ CREATE TABLE IF NOT EXISTS cliente (
     role VARCHAR (100) NOT NULL,
     objetivo VARCHAR (100),
     genero VARCHAR (100),
-    frecuenciaEjercicioSemanal VARCHAR (100),
+    frecuencia_ejercicio_semanal VARCHAR (100),
     edad INT,
     peso INT,
     altura INT,
-    cliente_desde DATE,
+    usuario_desde DATE,
     entrenador_id INT,
     CONSTRAINT fk_entrenador
         FOREIGN KEY(entrenador_id)
@@ -183,19 +189,19 @@ CREATE TABLE IF NOT EXISTS cliente_rutina (
 );
 -- INTERMEDIATE TABLES
 
-INSERT INTO entrenador (fit_nexus_id, nombre, apellido, email, password, role, version)
+INSERT INTO entrenador (fit_nexus_id, nombre, apellido, email, password, role, usuario_desde, version)
 VALUES
-    ('550e8400-e29b-41d4-a716-446655440000', 'Obi-Wan', 'Kenobi', 'obiwan@jedi.com', 'blue123', 'ADMIN', 1),
-    ('550e8400-e29b-41d4-a716-446655440001', 'Mace', 'Windu', 'mace@jedi.com', 'purple123', 'ADMIN', 1),
-    ('550e8400-e29b-41d4-a716-446655440002', 'Yoda', 'Desconocido', 'yoda@jedi.com', 'green123', 'ADMIN', 1);
+    ('550e8400-e29b-41d4-a716-446655440000', 'Obi-Wan', 'Kenobi', 'obiwan@jedi.com', 'blue123', 'ADMIN', '2023-01-01', 1),
+    ('550e8400-e29b-41d4-a716-446655440001', 'Mace', 'Windu', 'mace@jedi.com', 'purple123', 'ADMIN', '2023-01-01', 1),
+    ('550e8400-e29b-41d4-a716-446655440002', 'Yoda', 'Desconocido', 'yoda@jedi.com', 'green123', 'ADMIN', '2023-01-01', 1);
 
-INSERT INTO cliente (fit_nexus_id, nombre, apellido, email, password, role, objetivo, genero, frecuenciaEjercicioSemanal, edad, peso, altura, cliente_desde, entrenador_id, version)
+INSERT INTO cliente (fit_nexus_id, nombre, apellido, email, password, role, objetivo, genero, frecuencia_ejercicio_semanal, edad, peso, altura, usuario_desde, entrenador_id, version)
 VALUES
-    ('660e8400-e29b-41d4-a716-446655440000', 'Luke', 'Skywalker', 'luke@rebels.com', 'lightsaber123', 'USER', 'GANAR_MUSCULO', 'HOMBRE', 'ALTA', 25, 75, 180, '2023-01-01', 1, 1),
-    ('660e8400-e29b-41d4-a716-446655440001', 'Leia', 'Organa', 'leia@rebels.com', 'alderaan123', 'USER', 'PERDER_PESO', 'MUJER', 'MODERADA', 23, 60, 165, '2023-01-02', 2, 1),
-    ('660e8400-e29b-41d4-a716-446655440002', 'Han', 'Solo', 'han@smugglers.com', 'millennium123', 'USER', 'MANTENER_FORMA', 'HOMBRE', 'BAJA', 30, 85, 175, '2023-01-03', 3, 1),
-    ('660e8400-e29b-41d4-a716-446655440003', 'Rey', 'Palpatine', 'rey@jedi.com', 'scavenger123', 'USER', 'GANAR_MUSCULO', 'MUJER', 'ALTA', 20, 55, 170, '2023-01-04', 1, 1),
-    ('660e8400-e29b-41d4-a716-446655440004', 'Darth', 'Vader', 'vader@sith.com', 'darkside123', 'USER', 'PERDER_PESO', 'HOMBRE', 'MODERADA', 40, 120, 190, '2023-01-05', 2, 1);
+    ('660e8400-e29b-41d4-a716-446655440000', 'Luke', 'Skywalker', 'luke@rebels.com', 'lightsaber123', 'USER', 'GANAR_MUSCULO', 'HOMBRE', 'FUERTE', 25, 75, 180, '2023-01-01', 1, 1),
+    ('660e8400-e29b-41d4-a716-446655440001', 'Leia', 'Organa', 'leia@rebels.com', 'alderaan123', 'USER', 'PERDER_PESO', 'MUJER', 'MODERADO', 23, 60, 165, '2023-01-02', 2, 1),
+    ('660e8400-e29b-41d4-a716-446655440002', 'Han', 'Solo', 'han@smugglers.com', 'millennium123', 'USER', 'MANTENER_FORMA', 'HOMBRE', 'MODERADO', 30, 85, 175, '2023-01-03', 3, 1),
+    ('660e8400-e29b-41d4-a716-446655440003', 'Rey', 'Palpatine', 'rey@jedi.com', 'scavenger123', 'USER', 'GANAR_MUSCULO', 'MUJER', 'MUY_FUERTE', 20, 55, 170, '2023-01-04', 1, 1),
+    ('660e8400-e29b-41d4-a716-446655440004', 'Darth', 'Vader', 'vader@sith.com', 'darkside123', 'USER', 'PERDER_PESO', 'HOMBRE', 'POCO_NADA', 40, 120, 190, '2023-01-05', 2, 1);
 
 INSERT INTO plan_nutricional (proteina, hidrato_de_carbono, grasa, kcal, fecha_inicio, fecha_final, entrenador_id, version)
 VALUES
@@ -205,7 +211,7 @@ VALUES
 
 INSERT INTO rutina (nombre_rutina, fecha_inicio, fecha_final, entrenador_id, version)
 VALUES
-    ('Entrenamiento básico', '2023-01-01', '2023-01-31', 1, 1), -- Rutina de Obi-Wan
+    ('Entrenamiento basico', '2023-01-01', '2023-01-31', 1, 1), -- Rutina de Obi-Wan
     ('Torso', '2023-01-15', '2023-02-15', 2, 1), -- Rutina de Mace Windu
     ('Pierna', '2023-02-01', '2023-03-01', 3, 1); -- Rutina de Yoda
 
@@ -217,7 +223,7 @@ VALUES
 
 INSERT INTO ejercicio (nombre_ejercicio, repeticion, serie, peso, cardio, entrenador_id, version)
 VALUES
-    ('Press banca', 15, 3, NULL, FALSE, 1, 1), -- Ejercicio de Obi-Wan
-    ('Peso muerto', 5, 5, 100, FALSE, 2, 1), -- Ejercicio de Mace Windu
-    ('Sentadillas', 20, 3, NULL, TRUE, 2, 1), -- Ejercicio de Mace Windu
+    ('Press banca', 15, 3, 120, FALSE, 1, 1), -- Ejercicio de Obi-Wan
+    ('Peso muerto', 5, 5, 150, FALSE, 2, 1), -- Ejercicio de Mace Windu
+    ('Sentadillas', 20, 3, 140, FALSE, 2, 1), -- Ejercicio de Mace Windu
     ('Correr en cinta', 1, 1, NULL, TRUE, 3, 1); -- Ejercicio de Yoda
