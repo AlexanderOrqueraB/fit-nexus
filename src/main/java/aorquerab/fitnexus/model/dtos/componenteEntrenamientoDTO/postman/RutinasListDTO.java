@@ -15,6 +15,8 @@ public class RutinasListDTO {
 
     private List<RutinaDTO> rutinas;
 
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Data
     @Builder
     public static class RutinaDTO {

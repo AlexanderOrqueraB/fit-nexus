@@ -20,6 +20,8 @@ public class RutinaGetDTO {
     private LocalDate fechaFinal;
     private List<RutinaGetDTO.EjercicioDTO> ejercicios;
 
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Data
     @Builder
     public static class EjercicioDTO {

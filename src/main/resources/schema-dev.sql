@@ -1,23 +1,17 @@
 DROP TABLE IF EXISTS cliente CASCADE;
+DROP TABLE IF EXISTS entrenador CASCADE;
+DROP TABLE IF EXISTS ejercicio CASCADE;
+DROP TABLE IF EXISTS rutina CASCADE;
+DROP TABLE IF EXISTS plan_de_entrenamiento CASCADE;
+DROP TABLE IF EXISTS plan_nutricional CASCADE;
+
+-- INTERMEDIATE TABLES
 DROP TABLE IF EXISTS cliente_ejercicio CASCADE;
-DROP TABLE IF EXISTS cliente_pauta_nutricional CASCADE;
 DROP TABLE IF EXISTS cliente_plan_de_entrenamiento CASCADE;
 DROP TABLE IF EXISTS cliente_plan_nutricional CASCADE;
 DROP TABLE IF EXISTS cliente_rutina CASCADE;
-DROP TABLE IF EXISTS ejercicio CASCADE;
-DROP TABLE IF EXISTS entrenador CASCADE;
-DROP TABLE IF EXISTS pauta_nutricional CASCADE;
-DROP TABLE IF EXISTS plan_de_entrenamiento CASCADE;
 DROP TABLE IF EXISTS plan_de_entrenamiento_rutina CASCADE;
-DROP TABLE IF EXISTS plan_nutricional CASCADE;
-DROP TABLE IF EXISTS rutina CASCADE;
 DROP TABLE IF EXISTS rutina_ejercicio CASCADE;
-DROP TABLE IF EXISTS usuario CASCADE;
-DROP TABLE IF EXISTS valoracion CASCADE;
-DROP TABLE IF EXISTS valoracion_cliente CASCADE;
-DROP TABLE IF EXISTS valoracion_plan_de_entrenamiento CASCADE;
-
--- INTERMEDIATE TABLES
 
 DROP SEQUENCE IF EXISTS seq_log CASCADE;
 
@@ -33,6 +27,7 @@ CREATE TABLE IF NOT EXISTS entrenador (
     email VARCHAR (100) NOT NULL,
     password VARCHAR (100) NOT NULL,
     role VARCHAR (100) NOT NULL,
+    usuario_desde DATE,
     version INT
 );
 
@@ -189,41 +184,41 @@ CREATE TABLE IF NOT EXISTS cliente_rutina (
 );
 -- INTERMEDIATE TABLES
 
-INSERT INTO entrenador (fit_nexus_id, nombre, apellido, email, password, role, usuario_desde, version)
+INSERT INTO entrenador (id, fit_nexus_id, nombre, apellido, email, password, role, usuario_desde, version)
 VALUES
-    ('550e8400-e29b-41d4-a716-446655440000', 'Obi-Wan', 'Kenobi', 'obiwan@jedi.com', 'blue123', 'ADMIN', '2023-01-01', 1),
-    ('550e8400-e29b-41d4-a716-446655440001', 'Mace', 'Windu', 'mace@jedi.com', 'purple123', 'ADMIN', '2023-01-01', 1),
-    ('550e8400-e29b-41d4-a716-446655440002', 'Yoda', 'Desconocido', 'yoda@jedi.com', 'green123', 'ADMIN', '2023-01-01', 1);
+    (4, '550e8400-e29b-41d4-a716-446655440000', 'Obi-Wan', 'Kenobi', 'obiwan@jedi.com', 'blue123', 'ADMIN', '2023-01-01', 1),
+    (5, '550e8400-e29b-41d4-a716-446655440001', 'Mace', 'Windu', 'mace@jedi.com', 'purple123', 'ADMIN', '2023-01-01', 1),
+    (6, '550e8400-e29b-41d4-a716-446655440002', 'Yoda', 'Desconocido', 'yoda@jedi.com', 'green123', 'ADMIN', '2023-01-01', 1);
 
-INSERT INTO cliente (fit_nexus_id, nombre, apellido, email, password, role, objetivo, genero, frecuencia_ejercicio_semanal, edad, peso, altura, usuario_desde, entrenador_id, version)
+INSERT INTO cliente (id, fit_nexus_id, nombre, apellido, email, password, role, objetivo, genero, frecuencia_ejercicio_semanal, edad, peso, altura, usuario_desde, entrenador_id, version)
 VALUES
-    ('660e8400-e29b-41d4-a716-446655440000', 'Luke', 'Skywalker', 'luke@rebels.com', 'lightsaber123', 'USER', 'GANAR_MUSCULO', 'HOMBRE', 'FUERTE', 25, 75, 180, '2023-01-01', 1, 1),
-    ('660e8400-e29b-41d4-a716-446655440001', 'Leia', 'Organa', 'leia@rebels.com', 'alderaan123', 'USER', 'PERDER_PESO', 'MUJER', 'MODERADO', 23, 60, 165, '2023-01-02', 2, 1),
-    ('660e8400-e29b-41d4-a716-446655440002', 'Han', 'Solo', 'han@smugglers.com', 'millennium123', 'USER', 'MANTENER_FORMA', 'HOMBRE', 'MODERADO', 30, 85, 175, '2023-01-03', 3, 1),
-    ('660e8400-e29b-41d4-a716-446655440003', 'Rey', 'Palpatine', 'rey@jedi.com', 'scavenger123', 'USER', 'GANAR_MUSCULO', 'MUJER', 'MUY_FUERTE', 20, 55, 170, '2023-01-04', 1, 1),
-    ('660e8400-e29b-41d4-a716-446655440004', 'Darth', 'Vader', 'vader@sith.com', 'darkside123', 'USER', 'PERDER_PESO', 'HOMBRE', 'POCO_NADA', 40, 120, 190, '2023-01-05', 2, 1);
+    (5,'660e8400-e29b-41d4-a716-446655440000', 'Luke', 'Skywalker', 'luke@rebels.com', 'lightsaber123', 'USER', 'GANAR_MUSCULO', 'HOMBRE', 'FUERTE', 25, 75, 180, '2023-01-01', 4, 1),
+    (6,'660e8400-e29b-41d4-a716-446655440001', 'Leia', 'Organa', 'leia@rebels.com', 'alderaan123', 'USER', 'PERDER_PESO', 'MUJER', 'MODERADO', 23, 60, 165, '2023-01-02', 5, 1),
+    (7,'660e8400-e29b-41d4-a716-446655440002', 'Han', 'Solo', 'han@smugglers.com', 'millennium123', 'USER', 'MANTENER_FORMA', 'HOMBRE', 'MODERADO', 30, 85, 175, '2023-01-03', 6, 1),
+    (8,'660e8400-e29b-41d4-a716-446655440003', 'Rey', 'Palpatine', 'rey@jedi.com', 'scavenger123', 'USER', 'GANAR_MUSCULO', 'MUJER', 'MUY_FUERTE', 20, 55, 170, '2023-01-04', 4, 1),
+    (9,'660e8400-e29b-41d4-a716-446655440004', 'Darth', 'Vader', 'vader@sith.com', 'darkside123', 'USER', 'PERDER_PESO', 'HOMBRE', 'POCO_NADA', 40, 120, 190, '2023-01-05', 5, 1);
 
 INSERT INTO plan_nutricional (proteina, hidrato_de_carbono, grasa, kcal, fecha_inicio, fecha_final, entrenador_id, version)
 VALUES
-    (150, 300, 50, 2500, '2023-01-01', '2023-03-01', 1, 1), -- Plan de Obi-Wan
-    (120, 250, 40, 2200, '2023-01-15', '2023-03-15', 2, 1), -- Plan de Mace Windu
-    (200, 400, 60, 3000, '2023-02-01', '2023-04-01', 3, 1); -- Plan de Yoda
+    (150, 300, 50, 2500, '2023-01-01', '2023-03-01', 4, 1), -- Plan de Obi-Wan
+    (120, 250, 40, 2200, '2023-01-15', '2023-03-15', 5, 1), -- Plan de Mace Windu
+    (200, 400, 60, 3000, '2023-02-01', '2023-04-01', 6, 1); -- Plan de Yoda
 
 INSERT INTO rutina (nombre_rutina, fecha_inicio, fecha_final, entrenador_id, version)
 VALUES
-    ('Entrenamiento basico', '2023-01-01', '2023-01-31', 1, 1), -- Rutina de Obi-Wan
-    ('Torso', '2023-01-15', '2023-02-15', 2, 1), -- Rutina de Mace Windu
-    ('Pierna', '2023-02-01', '2023-03-01', 3, 1); -- Rutina de Yoda
+    ('Entrenamiento basico', '2023-01-01', '2023-01-31', 4, 1), -- Rutina de Obi-Wan
+    ('Torso', '2023-01-15', '2023-02-15', 5, 1), -- Rutina de Mace Windu
+    ('Pierna', '2023-02-01', '2023-03-01', 6, 1); -- Rutina de Yoda
 
 INSERT INTO plan_de_entrenamiento (nombre_plan, fecha_inicio, fecha_final, entrenador_id, cliente_id, version)
 VALUES
-    ('Plan de Obi-Wan', '2023-01-01', '2023-03-01', 1, 1, 1), -- Plan de Obi-Wan
-    ('Plan de Windu', '2023-01-15', '2023-03-15', 2, 2, 1), -- Plan de Mace Windu
-    ('Plan de Yoda', '2023-02-01', '2023-04-01', 3, 3, 1); -- Plan de Yoda
+    ('Plan de Obi-Wan', '2023-01-01', '2023-03-01', 4, 5, 1), -- Plan de Obi-Wan
+    ('Plan de Windu', '2023-01-15', '2023-03-15', 5, 6, 1), -- Plan de Mace Windu
+    ('Plan de Yoda', '2023-02-01', '2023-04-01', 6, 7, 1); -- Plan de Yoda
 
 INSERT INTO ejercicio (nombre_ejercicio, repeticion, serie, peso, cardio, entrenador_id, version)
 VALUES
-    ('Press banca', 15, 3, 120, FALSE, 1, 1), -- Ejercicio de Obi-Wan
-    ('Peso muerto', 5, 5, 150, FALSE, 2, 1), -- Ejercicio de Mace Windu
-    ('Sentadillas', 20, 3, 140, FALSE, 2, 1), -- Ejercicio de Mace Windu
-    ('Correr en cinta', 1, 1, NULL, TRUE, 3, 1); -- Ejercicio de Yoda
+    ('Press banca', 15, 3, 120, FALSE, 4, 1), -- Ejercicio de Obi-Wan
+    ('Peso muerto', 5, 5, 150, FALSE, 5, 1), -- Ejercicio de Mace Windu
+    ('Sentadillas', 20, 3, 140, FALSE, 5, 1), -- Ejercicio de Mace Windu
+    ('Correr en cinta', 1, 1, NULL, TRUE, 6, 1); -- Ejercicio de Yoda

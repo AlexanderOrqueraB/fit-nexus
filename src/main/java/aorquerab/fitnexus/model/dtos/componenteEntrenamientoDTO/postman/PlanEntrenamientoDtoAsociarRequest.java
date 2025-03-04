@@ -14,6 +14,8 @@ public class PlanEntrenamientoDtoAsociarRequest {
     private String nombrePlan;
     private Cliente cliente;
 
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Data
     @Builder
     public static class Cliente {

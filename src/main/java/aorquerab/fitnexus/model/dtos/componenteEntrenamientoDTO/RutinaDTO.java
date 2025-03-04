@@ -16,6 +16,8 @@ public class RutinaDTO {
     private String nombreRutina;
     private List<EjercicioDTO> ejercicios;
 
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Data
     @Builder
     public static class EjercicioDTO {

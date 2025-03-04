@@ -19,12 +19,16 @@ public class PlanEntrenamientoDtoResponse {
     private Entrenador entrenador;
     private Cliente cliente;
 
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Data
     @Builder
     public static class Cliente {
         private String email;
     }
 
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Data
     @Builder
     public static class Entrenador {

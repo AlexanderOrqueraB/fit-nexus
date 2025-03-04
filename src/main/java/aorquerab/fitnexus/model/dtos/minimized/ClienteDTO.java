@@ -22,6 +22,8 @@ public class ClienteDTO {
     private Integer altura;
     private Entrenador entrenador;
 
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Data
     @Builder
     public static class Entrenador {

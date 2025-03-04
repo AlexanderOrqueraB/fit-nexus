@@ -1,18 +1,17 @@
-DROP TABLE IF EXISTS ejercicio CASCADE;
-DROP TABLE IF EXISTS plan_nutricional CASCADE;
-DROP TABLE IF EXISTS plan_de_entrenamiento CASCADE;
-DROP TABLE IF EXISTS rutina CASCADE;
 DROP TABLE IF EXISTS cliente CASCADE;
 DROP TABLE IF EXISTS entrenador CASCADE;
+DROP TABLE IF EXISTS ejercicio CASCADE;
+DROP TABLE IF EXISTS rutina CASCADE;
+DROP TABLE IF EXISTS plan_de_entrenamiento CASCADE;
+DROP TABLE IF EXISTS plan_nutricional CASCADE;
 
 -- INTERMEDIATE TABLES
+DROP TABLE IF EXISTS cliente_ejercicio CASCADE;
+DROP TABLE IF EXISTS cliente_plan_de_entrenamiento CASCADE;
 DROP TABLE IF EXISTS cliente_plan_nutricional CASCADE;
+DROP TABLE IF EXISTS cliente_rutina CASCADE;
 DROP TABLE IF EXISTS plan_de_entrenamiento_rutina CASCADE;
 DROP TABLE IF EXISTS rutina_ejercicio CASCADE;
-DROP TABLE IF EXISTS cliente_ejercicio CASCADE;
-DROP TABLE IF EXISTS cliente_rutina CASCADE;
-DROP TABLE IF EXISTS cliente_plan_de_entrenamiento CASCADE;
--- INTERMEDIATE TABLES
 
 DROP SEQUENCE IF EXISTS seq_log CASCADE;
 
@@ -28,6 +27,7 @@ CREATE TABLE IF NOT EXISTS entrenador (
     email VARCHAR (100) NOT NULL,
     password VARCHAR (100) NOT NULL,
     role VARCHAR (100) NOT NULL,
+    usuario_desde DATE,
     version INT
 );
 

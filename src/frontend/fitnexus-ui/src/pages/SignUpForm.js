@@ -14,6 +14,7 @@ SelectValue,
 import {apiClient} from "../utils/client";
 import { customToast } from '../utils/customToast'
 import { mockClients } from '../mocks/mockData'
+import { isEmailValid } from "../utils/utilsMethod";
 
 export function SignUpForm() {
 	const navigate = useNavigate();
@@ -36,6 +37,13 @@ export function SignUpForm() {
 		});
 	};
 
+	const handleRoleChange = (value) => {
+		setData((prevData) => ({
+			...prevData,
+			role: value,
+		}));
+	};
+
 	const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
 		const userData = {
@@ -48,6 +56,13 @@ export function SignUpForm() {
 				entrenador: { fitNexusId: data.fitNexusId },
 			}),
 		};
+
+		if (!isEmailValid(userData.email)) {
+			customToast({
+				message: "El email no tiene un formato válido nombre@email.com",
+				type: "warning",
+			});
+		}
 
 		if (userData.password !== data.confirmPassword) {
 			customToast({message : "Las contraseñas no coinciden!", type : "warning"});
@@ -119,9 +134,9 @@ export function SignUpForm() {
 						<div className="grid gap-2">
             			<Label htmlFor="role">Tipo de usuario</Label>
 							<Select name="role" 
-							onValueChange={(value) => setData({ ...data, role: value, fitNexusId: '' })}>
+							onValueChange={handleRoleChange}>
 								<SelectTrigger>
-									<SelectValue placeholder="Entrenador" />
+									<SelectValue placeholder="Selecciona el tipo" />
 								</SelectTrigger>
 								<SelectContent>
 										<SelectItem  value="ADMIN" required>

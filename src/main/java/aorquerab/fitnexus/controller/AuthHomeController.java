@@ -85,7 +85,7 @@ public class AuthHomeController {
 
         try {
             if ("USER".equalsIgnoreCase(String.valueOf(signupDTO.getRole()))) {
-                UUID entrenadorFitNexusId = UUID.fromString(signupDTO.getFitNexusId());
+                UUID entrenadorFitNexusId = UUID.fromString(signupDTO.getEntrenador().getFitNexusId());
                 log.info ("FitNexusId de entrenador: {}", entrenadorFitNexusId);
                 Entrenador entrenador = entrenadorRepository.findByFitNexusId(entrenadorFitNexusId)
                         .orElseThrow(()-> {
@@ -94,17 +94,18 @@ public class AuthHomeController {
                                     entrenadorFitNexusId);
                         });
                 UUID fitNexusId = generateFitNexusId();
-                log.info ("FitNexusId de cliente: {}", entrenadorFitNexusId);
+                log.info ("FitNexusId de cliente: {}", fitNexusId);
                 Cliente clienteActualizado = Cliente.builder()
                         .usuarioDesde(LocalDate.now())
                         .fitNexusId(fitNexusId)
                         .nombre(signupDTO.getNombre())
                         .apellido(signupDTO.getApellido())
                         .email(signupDTO.getEmail())
-                        .password(signupDTO.getPassword())
                         .role(signupDTO.getRole())
                         .entrenador(entrenador)
                         .build();
+                clienteActualizado.setPassword(signupDTO.getPassword());
+
                 log.info("Datos del cliente a guardar: {}", clienteActualizado);
                 clienteRepository.save(clienteActualizado);
                 log.info("postSignup Cliente ejecutado y registrado correctamente.");
@@ -122,9 +123,9 @@ public class AuthHomeController {
                         .nombre(signupDTO.getNombre())
                         .apellido(signupDTO.getApellido())
                         .email(signupDTO.getEmail())
-                        .password(signupDTO.getPassword())
                         .role(signupDTO.getRole())
                         .build();
+                entrenadorActualizado.setPassword(signupDTO.getPassword());
 
                 log.info("Datos del entrenador a guardar: {}", entrenadorActualizado);
                 entrenadorRepository.save(entrenadorActualizado);

@@ -1,7 +1,6 @@
 package aorquerab.fitnexus.model.dtos;
 
 import aorquerab.fitnexus.model.enumerator.Role;
-import aorquerab.fitnexus.model.users.Entrenador;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +24,15 @@ public class SignupDTO {
     private Role role;
 
     //Cliente
-    private Entrenador entrenador;
-    private String fitNexusId;
+    private EntrenadorDTO entrenador;
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    @Builder
+    public static class EntrenadorDTO {
+        private String fitNexusId;
+    }
+
 
 }

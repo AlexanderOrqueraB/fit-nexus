@@ -28,6 +28,8 @@ public class PlanDeEntrenamientoDTO {
         private String nombreRutina;
         private List<EjercicioDTOmin> ejercicios;
 
+        @AllArgsConstructor
+        @NoArgsConstructor
         @Data
         @Builder
         public static class EjercicioDTOmin {
@@ -35,12 +37,16 @@ public class PlanDeEntrenamientoDTO {
         }
     }
 
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Data
     @Builder
     public static class Entrenador {
         private String email;
     }
 
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Data
     @Builder
     public static class Cliente {
