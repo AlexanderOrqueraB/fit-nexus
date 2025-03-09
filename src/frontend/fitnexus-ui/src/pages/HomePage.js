@@ -19,7 +19,7 @@ export function HomePage() {
 	const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
 	const { fitNexusId } = user; // Desestructurar el objeto user
 
-	const [setData] = useState([]);
+	const [myData, setData] = useState({});
 
 	const navigate = useNavigate();
 
