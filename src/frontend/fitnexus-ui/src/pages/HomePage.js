@@ -11,10 +11,13 @@ import { mockClients } from '../mocks/mockData'
 import { BrickWall, Drumstick, EyeIcon } from 'lucide-react';
 import { UserContext } from '../components/global/UserContext';
 import { fetchMyData } from '../utils/api';
+import { customToast } from "../utils/customToast";
+
 
 export function HomePage() {	
 
 	const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+	const { fitNexusId } = user; // Desestructurar el objeto user
 
 	const [setData] = useState([]);
 

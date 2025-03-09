@@ -186,17 +186,17 @@ CREATE TABLE IF NOT EXISTS cliente_rutina (
 
 INSERT INTO entrenador (id, fit_nexus_id, nombre, apellido, email, password, role, usuario_desde, version)
 VALUES
-    (4, '550e8400-e29b-41d4-a716-446655440000', 'Obi-Wan', 'Kenobi', 'obiwan@jedi.com', 'blue123', 'ADMIN', '2023-01-01', 1),
-    (5, '550e8400-e29b-41d4-a716-446655440001', 'Mace', 'Windu', 'mace@jedi.com', 'purple123', 'ADMIN', '2023-01-01', 1),
-    (6, '550e8400-e29b-41d4-a716-446655440002', 'Yoda', 'Desconocido', 'yoda@jedi.com', 'green123', 'ADMIN', '2023-01-01', 1);
+    (4, '550e8400-e29b-41d4-a716-446655440000', 'Obi-Wan', 'Kenobi', 'obiwan@jedi.com', '$2a$10$fFFxj01q6x1sxK2zapjejOt7GF21zUUMMB9WcwcdWXpwVUBNMO2Yi', 'ADMIN', '2023-01-01', 1), --pass: blue123
+    (5, '550e8400-e29b-41d4-a716-446655440001', 'Mace', 'Windu', 'mace@jedi.com', '$2a$10$ITecDgFJaNEec5I1wNsnTeVcoy5tDJvFFAQd2bPxgE/c//PsBjANO', 'ADMIN', '2023-01-01', 1), --pass: purple123
+    (6, '550e8400-e29b-41d4-a716-446655440002', 'Yoda', 'Desconocido', 'yoda@jedi.com', '$2a$10$8FmB3dHg0I86ng5xr.3Feuya7sd5R5AWEy4bFPsdfBwvmXBf2UFE.', 'ADMIN', '2023-01-01', 1); --pass: green123
 
 INSERT INTO cliente (id, fit_nexus_id, nombre, apellido, email, password, role, objetivo, genero, frecuencia_ejercicio_semanal, edad, peso, altura, usuario_desde, entrenador_id, version)
 VALUES
-    (5,'660e8400-e29b-41d4-a716-446655440000', 'Luke', 'Skywalker', 'luke@rebels.com', 'lightsaber123', 'USER', 'GANAR_MUSCULO', 'HOMBRE', 'FUERTE', 25, 75, 180, '2023-01-01', 4, 1),
-    (6,'660e8400-e29b-41d4-a716-446655440001', 'Leia', 'Organa', 'leia@rebels.com', 'alderaan123', 'USER', 'PERDER_PESO', 'MUJER', 'MODERADO', 23, 60, 165, '2023-01-02', 5, 1),
-    (7,'660e8400-e29b-41d4-a716-446655440002', 'Han', 'Solo', 'han@smugglers.com', 'millennium123', 'USER', 'MANTENER_FORMA', 'HOMBRE', 'MODERADO', 30, 85, 175, '2023-01-03', 6, 1),
-    (8,'660e8400-e29b-41d4-a716-446655440003', 'Rey', 'Palpatine', 'rey@jedi.com', 'scavenger123', 'USER', 'GANAR_MUSCULO', 'MUJER', 'MUY_FUERTE', 20, 55, 170, '2023-01-04', 4, 1),
-    (9,'660e8400-e29b-41d4-a716-446655440004', 'Darth', 'Vader', 'vader@sith.com', 'darkside123', 'USER', 'PERDER_PESO', 'HOMBRE', 'POCO_NADA', 40, 120, 190, '2023-01-05', 5, 1);
+    (5,'660e8400-e29b-41d4-a716-446655440000', 'Luke', 'Skywalker', 'luke@rebels.com', '$2a$10$R/z/V0MPpGHF6AAoHNFs2.b.fkgk31ZQgoSE1TsF2/Re4Hav1/Zbq', 'USER', 'GANAR_MUSCULO', 'HOMBRE', 'FUERTE', 25, 75, 180, '2023-01-01', 4, 1), --pass: lightsaber123
+    (6,'660e8400-e29b-41d4-a716-446655440001', 'Leia', 'Organa', 'leia@rebels.com', '$2a$10$uGAAmuqupe9Ig6t2j9jA6ezBZEvPNdN3ukiikKS/oG3hNIYRoPsp2', 'USER', 'PERDER_PESO', 'MUJER', 'MODERADO', 23, 60, 165, '2023-01-02', 5, 1), --pass: alderaan123
+    (7,'660e8400-e29b-41d4-a716-446655440002', 'Han', 'Solo', 'han@smugglers.com', '$2a$10$B9OsKAT3m/Y8KGt/UqcLOuUWc/z8tFf0Nxx34rtxTcj6CDszjC4Bi', 'USER', 'MANTENER_FORMA', 'HOMBRE', 'MODERADO', 30, 85, 175, '2023-01-03', 6, 1), --pass: blue123
+    (8,'660e8400-e29b-41d4-a716-446655440003', 'Rey', 'Palpatine', 'rey@jedi.com', '$2a$10$8lP2mP33EMEe9jfDhvJYiOGfr/mnsZX8F49g4C4YTASNY5MLoYgDa', 'USER', 'GANAR_MUSCULO', 'MUJER', 'MUY_FUERTE', 20, 55, 170, '2023-01-04', 4, 1), --pass: blue123
+    (9,'660e8400-e29b-41d4-a716-446655440004', 'Darth', 'Vader', 'vader@sith.com', '$2a$10$gumkdc5ohc7ero/QVGZJEOxBRYlKWZpZnYWRmcJKrLgGsvPXy14Se', 'USER', 'PERDER_PESO', 'HOMBRE', 'POCO_NADA', 40, 120, 190, '2023-01-05', 5, 1); --pass: blue123
 
 INSERT INTO plan_nutricional (proteina, hidrato_de_carbono, grasa, kcal, fecha_inicio, fecha_final, entrenador_id, version)
 VALUES
