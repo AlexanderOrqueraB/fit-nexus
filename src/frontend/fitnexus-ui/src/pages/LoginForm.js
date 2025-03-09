@@ -34,6 +34,7 @@ export function LoginForm() {
 
   const onSubmit = (e) => {
     e.preventDefault(); //prevent refresh on page
+
     const userData = {
       email: data.email,
       password: data.password,
@@ -41,154 +42,61 @@ export function LoginForm() {
 
     if (!userData.email || !userData.password) {
       customToast({ message: "Introduce ambos campos!", type: "warning" });
-    }
-
-    if (!isEmailValid(userData.email)) {
+    } else if (!isEmailValid(userData.email)) {
       customToast({
         message: "El email no tiene un formato válido nombre@email.com",
         type: "warning",
       });
-    }
+    } else {
+        console.log("Datos de login: ", userData);
 
-    //Lógica de autenticación de prueba. Comentar para usar la API
-    if (userData.email && userData.password) {
-      if (userData.email === "admin@email.com") {
-        const rolUser = "admin";
-        const emailUser = userData.email;
-        const fitNexusId = "123456789";
-        onSubmitTest(rolUser, emailUser, fitNexusId);
-      } else if (userData.email === "user@email.com") {
-        const rolUser = "user";
-        const emailUser = userData.email;
-        const fitNexusId = "987654321";
-        onSubmitTest(rolUser, emailUser, fitNexusId);
-      } else {
-        customToast({ message: "Usuario no encontrado", type: "error" });
-      }
-    }
-    //Lógica de autenticación de prueba. Comentar para usar la API
-    else {
-      console.log("Datos de login: ", userData);
+        apiClient
+          .post("/api/v1/login", userData)
+          .then((response) => {
+            console.log("Respuesta del servidor: ", response.data);
+            console.log("Status: ", response.status);
 
-      apiClient
-        .post("/api/v1/login", userData)
-        .then((response) => {
-          console.log("Respuesta del servidor: ", response.data);
-          console.log("Status: ", response.status);
+            const { role, email, fitNexusId } = response.data;
+            console.log("El rol del usuario es: ", role +
+            " y su email es: ", email + " y su fitNexusId es: ",fitNexusId);
 
-          const { role, email, fitNexusId } = response.data;
+            //Guardamos email y rol en el contexto
+            setUser({ role, email, fitNexusId });
+            //Guardamos  rol, fitNexusId y email en local storage
+            localStorage.setItem("userRole", role);
+            localStorage.setItem("userEmail", email);
+            localStorage.setItem("fitNexusId", fitNexusId);
 
-          //Guardamos email y rol en el contexto
-          setUser({ role, email, fitNexusId });
-          //Guardamos  rol, fitNexusId y email en local storage
-          localStorage.setItem("userRole", role);
-          localStorage.setItem("userEmail", email);
-          localStorage.setItem("fitNexusId", fitNexusId);
-
-          if (response.status === 401) {
-            customToast({
-              message: "Error 401 usuario no autorizado",
-              type: "error",
-            });
-          }
-          if (response.status === 200) {
-            console.log("Rol del usuario:", role);
-            customToast({
-              message: "Login efectuado correctamente!",
-              type: "success",
-            });
-
-            if (role === "ADMIN") {
-              console.log("Redireccionando a pagina admin");
-              navigate("/dashboard", { state: { isAdminProp: true } });
-            } else if (role === "USER") {
-              console.log("Redireccionando a pagina admin");
-              navigate("/dashboard", { state: { isAdminProp: false } });
+            if (response.status === 401) {
+              customToast({
+                message: "Error 401 usuario no autorizado",
+                type: "error",
+              });
             }
-          }
+            if (response.status === 200) {
+              console.log("Rol del usuario:", role);
+              if (role === "ADMIN") {
+                console.log("Redireccionando a pagina admin");
+                customToast({
+                  message: "Login efectuado correctamente con rol administrador!",
+                  type: "success",
+                });
+                navigate("/dashboard", { state: { isAdminProp: true } });
+              } else if (role === "USER") {
+                console.log("Redireccionando a pagina usuario");
+                customToast({
+                  message: "Login efectuado correctamente!",
+                  type: "success",
+                });
+                navigate("/dashboard", { state: { isAdminProp: false } });
+              }
+            }
         })
-        .catch((error) => {
+          .catch((error) => {
           console.error("Error en la autenticación: ", error);
           customToast({ message: "Error en la autenticacion", type: "error" });
         });
-    }
-  };
-
-  const onSubmitTest = (role, email, fitNexusId) => {
-    if (!data.email || !data.password) {
-      customToast({
-        message: "Por favor introduce ambos campos...",
-        type: "success",
-      });
-      return;
-    }
-
-    console.log(
-      "El rol del usuario es: ",
-      role + " y su email es: ",
-      email + " y su fitNexusId es: ",
-      fitNexusId
-    );
-
-    const validCredentials = {
-      admin: {
-        email: "admin@email.com",
-        password: "1234",
-      },
-      user: {
-        email: "user@email.com",
-        password: "5678",
-      },
-    };
-
-    // Simula la validación de credenciales y asigna el rol
-    if (role === "admin") {
-      if (
-        data.email === validCredentials.admin.email &&
-        data.password === validCredentials.admin.password
-      ) {
-        //Guardamos email y rol en el contexto
-        setUser({ role, email, fitNexusId });
-        //Guardamos  rol, fitNexusId y email en local storage
-        localStorage.setItem("userRole", role);
-        localStorage.setItem("userEmail", email);
-        localStorage.setItem("fitNexusId", fitNexusId);
-
-        customToast({
-          message: "Login efectuado correctamente como administrador!",
-          type: "success",
-        });
-        navigate("/dashboard", { state: { isAdminProp: true } });
-      } else {
-        customToast({
-          message: "Credenciales incorrectas para administrador.",
-          type: "error",
-        });
       }
-    } else if (role === "user") {
-      if (
-        data.email === validCredentials.user.email &&
-        data.password === validCredentials.user.password
-      ) {
-        //Guardamos email y rol en el contexto
-        setUser({ role, email, fitNexusId });
-        //Guardamos  rol, fitNexusId y email en local storage
-        localStorage.setItem("userRole", role);
-        localStorage.setItem("userEmail", email);
-        localStorage.setItem("fitNexusId", fitNexusId);
-
-        customToast({
-          message: "Login efectuado correctamente como usuario!",
-          type: "success",
-        });
-        navigate("/dashboard", { state: { isAdminProp: false } });
-      } else {
-        customToast({
-          message: "Credenciales incorrectas para usuario.",
-          type: "error",
-        });
-      }
-    }
   };
 
   return (

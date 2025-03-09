@@ -10,34 +10,39 @@ import React, { useContext, useEffect, useState } from 'react';
 import { mockClients } from '../mocks/mockData'
 import { BrickWall, Drumstick, EyeIcon } from 'lucide-react';
 import { UserContext } from '../components/global/UserContext';
+import { fetchMyData } from '../utils/api';
 
 export function HomePage() {	
 
 	const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
 
-	useState({});
+	const [setData] = useState([]);
+
 	const navigate = useNavigate();
 
-	const [setExercises] = useState([]);
-
+	const loadData = async () => {
+		try {
+			const myData = await fetchMyData(fitNexusId);
+			setData(myData);
+			customToast({ message: "Datos cargados correctamente", type: "success" });
+		} catch (error) {
+			console.error("Error al cargar datos:", error);
+			customToast({
+				message: "Hubo un error al cargar los datos de cliente",
+				type: "error",
+			});
+		}
+	};
 
 	useEffect(() => {
-        // Obtener los ejercicios al cargar la página
-        apiClient.get('/api/v1/ejercicios')
-            .then(response => {
-                setExercises(response.data); // Actualizar estado con los datos obtenidos
-            })
-            .catch(error => {
-                console.error('Error al obtener los ejercicios:', error);
-            });
-    }, []);
-
+		loadData();
+	}, []); // Llama a loadData solo al montar el componente
 
 	return (
 		<React.Fragment>
-		  <h1>Bienvenido: {mockClients[0].nombre} :)</h1>
+		  <h1>Hola: {myData.nombre} :)</h1>
 		  <div className="flex flex-1 flex-col gap-4 p-4">
-			{user.role === 'admin' ?  (
+			{user.role === 'ADMIN' ?  (
 			  <div className="grid auto-rows-min gap-4 md:grid-cols-2">
 				<div className="aspect-video rounded-xl bg-muted/50">
 				  <Card className="h-full">

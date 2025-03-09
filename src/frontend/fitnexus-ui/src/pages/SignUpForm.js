@@ -62,17 +62,14 @@ export function SignUpForm() {
 				message: "El email no tiene un formato válido nombre@email.com",
 				type: "warning",
 			});
-		}
-
-		if (userData.password !== data.confirmPassword) {
+		} else if (userData.password !== data.confirmPassword) {
 			customToast({message : "Las contraseñas no coinciden!", type : "warning"});
-		}
+		} else {
+			console.log('Datos de registro: ', userData);
 
-		console.log('Datos de registro: ', userData);
-
-		apiClient
-			.post('/api/v1/signup', userData)
-			.then((response) => {
+			apiClient
+				.post('/api/v1/signup', userData)
+				.then((response) => {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
 				if (response.status === 201) {
@@ -80,10 +77,11 @@ export function SignUpForm() {
 					navigate('/');
 				}
 			})
-			.catch((error) => {
+				.catch((error) => {
 				customToast({message : "Error en el registro!", type : "error"});
 				console.error('Error en el proceso de registro: ', error);
 			});
+		}
 	};
 
 	return (

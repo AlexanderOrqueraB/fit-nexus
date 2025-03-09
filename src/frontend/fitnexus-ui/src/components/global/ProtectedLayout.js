@@ -9,7 +9,7 @@ const ProtectedLayout = () => {
   const { user } = useContext(UserContext);
   console.log("Usuario en ProtectedLayout: ", user);
   console.log("Rol del usuario en ProtectedLayout: ", user.role);
-  const isAdmin = user.role === 'admin';
+  const isAdmin = user.role === 'ADMIN';
 
   return (
       <div className="flex min-h-screen">
