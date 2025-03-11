@@ -1,6 +1,6 @@
 import {
   BicepsFlexed,
-  BrickWall,
+  Hammer,
   Drumstick,
   Home,
   Settings,
@@ -136,7 +136,7 @@ const SideBar = ({ isAdmin }) => {
                       }
 										} md:h-8 md:w-8`}
                 >
-                  <BrickWall
+                  <Hammer
                     className={`h-5 w-5 ${
                       isActive("/workout-builder") ? "text-bold" : ""
                     }`}

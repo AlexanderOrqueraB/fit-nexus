@@ -5,45 +5,18 @@ import PostExercise from '../components/workout-components/ejercicio/PostExercis
 import fitNexusLogo from "../assets/images/fit-nexus-logo.jpeg"
 
 import { Card, CardContent } from '../components_ui/ui/card';
-import { apiClient } from '../utils/client';
-import React, { useContext, useEffect, useState } from 'react';
-import { mockClients } from '../mocks/mockData'
+import React, { useContext } from 'react';
 import { BrickWall, Drumstick, EyeIcon } from 'lucide-react';
 import { UserContext } from '../components/global/UserContext';
-import { fetchMyData } from '../utils/api';
-import { customToast } from "../utils/customToast";
-
 
 export function HomePage() {	
 
 	const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
-	const { fitNexusId } = user; // Desestructurar el objeto user
-
-	const [myData, setData] = useState({});
-
 	const navigate = useNavigate();
-
-	const loadData = async () => {
-		try {
-			const myData = await fetchMyData(fitNexusId);
-			setData(myData);
-			customToast({ message: "Datos cargados correctamente", type: "success" });
-		} catch (error) {
-			console.error("Error al cargar datos:", error);
-			customToast({
-				message: "Hubo un error al cargar los datos de cliente",
-				type: "error",
-			});
-		}
-	};
-
-	useEffect(() => {
-		loadData();
-	}, []); // Llama a loadData solo al montar el componente
 
 	return (
 		<React.Fragment>
-		  <h1>Hola: {myData.nombre} :)</h1>
+		  <h1>Hola :)</h1>
 		  <div className="flex flex-1 flex-col gap-4 p-4">
 			{user.role === 'ADMIN' ?  (
 			  <div className="grid auto-rows-min gap-4 md:grid-cols-2">

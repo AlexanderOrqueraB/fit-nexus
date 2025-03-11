@@ -109,13 +109,13 @@ public class EjercicioController {
     //TODO: Testear en Postman y React NEW UI
     @GetMapping("/ejercicio/usuario/{fitNexusId}")
     public ResponseEntity<List<EjercicioGetDTO>> obtenerEjerciciosPorFitNexusId(@PathVariable String fitNexusId) {
-        log.info("Ejecutando obtenerEjerciciosPorFitNexusId con el FitNexusId: {}...", fitNexusId);
+        log.info("Ejecutando obtenerEjerciciosPorFitNexusId con el FitNexusId: {} ...", fitNexusId);
         try {
             List<Ejercicio> ejercicios = Collections.emptyList();
             Optional<Cliente> clienteOptional = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             if (clienteOptional.isEmpty() && entrenadorOptional.isEmpty()) {
-                log.warn("Usuario no encontrado con el fitNexusId: {}", fitNexusId);
+                log.warn("Usuario no encontrado con el fitNexusId: {} ", fitNexusId);
                 throw new UsuarioNotFoundException("Usuario no encontrado en BD: " + fitNexusId);
             }
 
@@ -129,7 +129,7 @@ public class EjercicioController {
             }
 
             if (ejercicios.isEmpty()) {
-                log.warn("Ejercicios no encontrados para el usuario con el fitNexusId: {}", fitNexusId);
+                log.warn("Ejercicios no encontrados para el usuario con el fitNexusId: {} ", fitNexusId);
                 throw new EjercicioNotFoundException("Ejercicios no encontrados para el usuario con el fitNexusId: {}"
                         + fitNexusId);
             }

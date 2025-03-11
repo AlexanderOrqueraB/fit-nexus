@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
@@ -26,14 +27,15 @@ public class EntrenadorController {
         this.entrenadorRepository = entrenadorRepository;
     }
 
-    @GetMapping("/{entrenadorEmailId}")
-    public ResponseEntity<List<Cliente>> obtenerClientesDeEntrenador (@PathVariable String entrenadorEmailId) {
-        log.info("Ejecutando obtenerClientesDeEntrenador...");
-        Entrenador entrenador = entrenadorRepository.findByEmail(entrenadorEmailId).orElseThrow( () -> {
-            log.warn("Entrenador no encontrado con el email: {}", entrenadorEmailId);
-            return new EntrenadorNotFoundException("Entrenador no encontrado con el email" + entrenadorEmailId);
+    @GetMapping("/{fitNexusId}")
+    public ResponseEntity<List<Cliente>> obtenerClientesDeEntrenador (@PathVariable String fitNexusId) {
+        log.info("Ejecutando obtenerClientesDeEntrenador con este fitNexusId: {}", fitNexusId);
+        Entrenador entrenador = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId)).orElseThrow( () -> {
+            log.warn("Entrenador no encontrado con el fitNexusId: {}", fitNexusId);
+            return new EntrenadorNotFoundException("Entrenador no encontrado con el fitNexusId" + fitNexusId);
         });
         List<Cliente> clientes = entrenador.getClientes();
+        log.info("Clientes obtenidos: {}", clientes);
         return ResponseEntity.status(HttpStatus.OK).body(clientes);
     }
 

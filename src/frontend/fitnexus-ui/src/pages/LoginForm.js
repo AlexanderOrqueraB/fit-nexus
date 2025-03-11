@@ -47,6 +47,28 @@ export function LoginForm() {
         message: "El email no tiene un formato válido nombre@email.com",
         type: "warning",
       });
+    }
+
+    //TESTING PURPOSE FOR UI CHANGES
+    else if ((userData.email === "admin@email.com") && (userData.password === "1234")) {
+      const role = "ADMIN";
+      const email = userData.email;
+      const fitNexusId = "123456789";
+
+      //Guardamos email y rol en el contexto
+      setUser({ role, email, fitNexusId });
+      //Guardamos  rol, fitNexusId y email en local storage
+      localStorage.setItem("userRole", role);
+      localStorage.setItem("userEmail", email);
+      localStorage.setItem("fitNexusId", fitNexusId);
+
+      customToast({
+        message: "Login efectuado correctamente como administrador!",
+        type: "success",
+      });
+      navigate("/dashboard", { state: { isAdminProp: true } });
+      //TESTING PURPOSE FOR UI CHANGES
+
     } else {
         console.log("Datos de login: ", userData);
 

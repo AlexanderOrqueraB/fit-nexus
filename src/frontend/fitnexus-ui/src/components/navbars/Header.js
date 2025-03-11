@@ -1,6 +1,6 @@
 import {
     BicepsFlexed,
-    BrickWall,
+    Hammer,
     CircleUserRound,
     Drumstick,
     Home,
@@ -96,7 +96,7 @@ const Header = ({ isAdmin }) => {
                                     <Link to={FITNEXUS_URL + "/workout-builder"}
 									className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
 								>
-									<BrickWall className="h-5 w-5" />
+									<Hammer className="h-5 w-5" />
 									Workout builder
 								</Link>
                                 ): (null)}

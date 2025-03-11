@@ -36,7 +36,7 @@ export function PutProfileExtra() {
 	const loadData = async () => {
 		try {
 		// Ejecutar todas las solicitudes en paralelo
-		const clients = await fetchClientData(fitNexusId);
+        const { clients } = await fetchClientData(fitNexusId);
 
 		// Actualizar los estados con los datos obtenidos
 		setClients(clients);
