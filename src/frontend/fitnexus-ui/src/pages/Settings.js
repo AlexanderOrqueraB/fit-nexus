@@ -68,10 +68,10 @@ export function Settings () {
               <div className="grid w-full items-center gap-4">
                 <div className="space-y-2">
                   {[
-                    { label: "Nombre", value: mockClients[0].nombre },
-                    { label: "Apellido", value: mockClients[0].apellido },
-                    { label: "Email", value: mockClients[0].email },
-                    { label: "FitNexusId", value: mockClients[0].fitNexusId },
+                    { label: "Nombre", value: myData?.nombre || mockClients[0].nombre },
+                    { label: "Apellido", value: myData?.apellido || mockClients[0].apellido },
+                    { label: "Email", value: myData?.email || mockClients[0].email },
+                    { label: "FitNexusId", myData?.fitNexusId || value: mockClients[0].fitNexusId },
                   ].map((item, index) => (
                     <div key={index} className="flex items-center">
                       <Label className="w-1/4">{item.label}</Label>
@@ -127,12 +127,12 @@ export function Settings () {
               <div className="grid w-full items-center gap-4">
                 <div className="space-y-2">
                   {[
-                    { label: "Objetivo", value: mockClients[0].objetivo },
-                    { label: "Genero", value: mockClients[0].genero },
-                    { label: "Frecuencia Ejercicio", value: mockClients[0].frecuenciaEjercicioSemanal },
-                    { label: "Edad", value: mockClients[0].edad },
-                    { label: "Peso", value: mockClients[0].peso },
-                    { label: "Altura", value: mockClients[0].altura },
+                    { label: "Objetivo", value: myData?.objetivo || mockClients[0].objetivo },
+                    { label: "Genero", value: myData?.genero || mockClients[0].genero },
+                    { label: "Frecuencia Ejercicio", value: myData?.frecuenciaEjercicioSemanal || mockClients[0].frecuenciaEjercicioSemanal },
+                    { label: "Edad", value: myData?.edad || mockClients[0].edad },
+                    { label: "Peso", value: myData?.peso || mockClients[0].peso },
+                    { label: "Altura", value: myData?.altura || mockClients[0].altura },
                   ].map((item, index) => (
                     <div key={index} className="flex items-center">
                       <Label className="w-1/4">{item.label}</Label>

@@ -49,10 +49,12 @@ export function PutProfileExtra() {
   const fetchExtraData = async (fitNexusId) => {
       try {
         //uncomment this lines to use backend data
-        //const data = await fetchExtraData(fitNexusId);
-        //setExtraData(data);
-        const client = mockClients.find(client => client.fitNexusId === fitNexusId);
-        setExtraData(client ? client : null);
+        const data = await fetchExtraData(fitNexusId);
+        setExtraData(data);
+
+        //uncomment this lines to use mock data
+        //const client = mockClients.find(client => client.fitNexusId === fitNexusId);
+        //setExtraData(client ? client : null);
       } catch (error) {
         setExtraData(null);
       }
@@ -135,7 +137,7 @@ export function PutProfileExtra() {
             <Select name="objetivo" 
 							onValueChange={(value) => setData({ ...data, objetivo: value})}>
 								<SelectTrigger className="col-span-3">
-									<SelectValue placeholder={mockClients[0].objetivo} />
+									<SelectValue placeholder={data?.objetivo || mockClients[0].objetivo} />
 								</SelectTrigger>
 								<SelectContent>
 										<SelectItem  value="PERDER_GRASA" required>
@@ -154,7 +156,7 @@ export function PutProfileExtra() {
             <Select name="genero" 
               onValueChange={(value) => setData({ ...data, genero: value})}>
               <SelectTrigger className="col-span-3">
-                <SelectValue placeholder={mockClients[0].genero} />
+                <SelectValue placeholder={data?.genero || mockClients[0].genero} />
               </SelectTrigger>
               <SelectContent>
                   <SelectItem  value="MUJER" required>
@@ -173,23 +175,23 @@ export function PutProfileExtra() {
               <Select name="frecuencia" 
                   onValueChange={(value) => setData({ ...data, frecuencia: value})}>
                   <SelectTrigger className="col-span-3">
-                    <SelectValue placeholder={mockClients[0].frecuenciaEjercicioSemanal} />
+                    <SelectValue placeholder={data?.frecuenciaEjercicioSemanal || mockClients[0].frecuenciaEjercicioSemanal} />
                   </SelectTrigger>
                   <SelectContent>
                       <SelectItem  value="POCO_NADA" required>
-                        Poco o nada (xdiasxsemana)
+                        Poco o nada
                       </SelectItem>
                       <SelectItem  value="LIGERO" required>
-                        Ligero (xdiasxsemana)
+                        Ligero (1-3 días a la semana)
                       </SelectItem>
                       <SelectItem  value="MODERADO" required>
-                        Moderado (xdiasxsemana)
+                        Moderado (3-5 días a la semana)
                       </SelectItem>
                       <SelectItem  value="FUERTE" required>
-                        Fuerte (xdiasxsemana)
+                        Fuerte (6-7 días a la semana)
                       </SelectItem>
                       <SelectItem  value="MUY_FUERTE" required>
-                        Muy fuerte (xdiasxsemana)
+                        Muy fuerte (2 veces al día)
                       </SelectItem>
                   </SelectContent>
                 </Select>
@@ -200,7 +202,7 @@ export function PutProfileExtra() {
               </Label>
               <Input
                 id="text"
-                placeholder={mockClients[0].edad}
+                placeholder={data?.edad || mockClients[0].edad}
                 onChange={handleChange}
                 className="col-span-3"
               />
@@ -211,7 +213,7 @@ export function PutProfileExtra() {
               </Label>
               <Input
                 id="text"
-                placeholder={mockClients[0].peso}
+                placeholder={data?.peso || mockClients[0].peso}
                 onChange={handleChange}
                 className="col-span-3"
               />
@@ -222,7 +224,7 @@ export function PutProfileExtra() {
               </Label>
               <Input
                 id="text"
-                placeholder={mockClients[0].altura}
+                placeholder={data?.altura || mockClients[0].altura}
                 onChange={handleChange}
                 className="col-span-3"
               />

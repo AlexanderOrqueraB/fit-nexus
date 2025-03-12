@@ -68,8 +68,8 @@ export function NutritionChart() {
     const { role, fitNexusId } = user; // Desestructurar el objeto user
 
   const [selectedClient, setSelectedClient] = useState(null);
-  //const [clients, setClients] = useState([]); uncomment this line and comment the next one to use backend data
-  const [clients, setClients] = useState(mockClients);
+  const [clients, setClients] = useState([]); // uncomment this line and comment the next one to use backend data
+  //const [clients, setClients] = useState(mockClients); // uncomment this line and comment the previous one to use mock data
   const [extraData, setExtraData] = useState(null);
   const [loading, setLoading] =useState(true);
   const [error, setError] =useState(null);
@@ -81,9 +81,9 @@ export function NutritionChart() {
   const fetchData = async (fitNexusId) => {
     try {
       //uncomment this lines to use backend data
-      //const clientsData = await fetchClientData(fitNexusId); 
-      //setClients(clientsData.clients);
-      setClients(mockClients);
+      const clientsData = await fetchClientData(fitNexusId);
+      setClients(clientsData.clients);
+      //setClients(mockClients); //uncomment this lines to use mock data
     } catch (error) {
       setError(error.message);
     } finally {
@@ -94,10 +94,12 @@ export function NutritionChart() {
   const fetchExtraData = async (fitNexusId) => {
     try {
       //uncomment this lines to use backend data
-      //const data = await fetchExtraData(fitNexusId);
-      //setExtraData(data);
-      const client = mockClients.find(client => client.fitNexusId === fitNexusId);
-      setExtraData(client ? client : null);
+      const data = await fetchExtraData(fitNexusId);
+      setExtraData(data);
+
+      //uncomment this lines to use mock data
+      //const client = mockClients.find(client => client.fitNexusId === fitNexusId);
+      //setExtraData(client ? client : null);
     } catch (error) {
       setExtraData(null);
     }
@@ -106,7 +108,7 @@ export function NutritionChart() {
   const createPlan = async (email) => {
     try {
       //uncomment this lines to use backend data
-      //await createNutritionPlan(email);
+      await createNutritionPlan(email);
       fetchData();
     } catch (error) {
       setError(error.message);
@@ -123,7 +125,7 @@ export function NutritionChart() {
     }
   }, []);
 
-  //if (loading) return <div>Cargando...</div>;
+  if (loading) return <div>Cargando...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
