@@ -40,6 +40,7 @@ import { customToast } from "../utils/customToast";
 import { fetchClientData } from "../utils/api";
 import { mockClients } from "../mocks/mockData";
 import { UserContext } from "../components/global/UserContext";
+import { formatObjetivo } from "../utils/stringUtils";
 
 export function ClientsList() {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
@@ -80,10 +81,10 @@ export function ClientsList() {
 
       // Actualizar los estados con los datos obtenidos
       setClients(clients);
-	  customToast({ message: "Datos cargados correctamente", type: "success" });
+	  customToast({ message: "Datos de clientes cargados correctamente", type: "success" });
 
     } catch (error) {
-      console.error("Error al cargar datos:", error);
+      console.error("Error al cargar datos de clientes:", error);
       customToast({
         message: "Hubo un error al cargar los datos de cliente",
         type: "error",
@@ -212,7 +213,7 @@ export function ClientsList() {
                           )}
                           {visibleColumns.includes("genero") && (
                             <TableHead className="hidden md:table-cell">
-                              Genero
+                              Género
                             </TableHead>
                           )}
                           {visibleColumns.includes("edad") && (
@@ -222,12 +223,12 @@ export function ClientsList() {
                           )}
                           {visibleColumns.includes("peso") && (
                             <TableHead className="hidden md:table-cell">
-                              Peso
+                              Peso (kg)
                             </TableHead>
                           )}
                           {visibleColumns.includes("altura") && (
                             <TableHead className="hidden md:table-cell">
-                              Altura
+                              Altura (cm)
                             </TableHead>
                           )}
                           {visibleColumns.includes("clienteDesde") && (
@@ -264,7 +265,7 @@ export function ClientsList() {
                             {visibleColumns.includes("objetivo") && (
                               <TableCell>
                                 <Badge variant="outline">
-                                  {client.objetivo}
+                                    {formatObjetivo(client.objetivo)}
                                 </Badge>
                               </TableCell>
                             )}

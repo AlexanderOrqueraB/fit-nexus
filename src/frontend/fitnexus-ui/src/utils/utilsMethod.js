@@ -25,5 +25,15 @@ export const formatDateToDDMMYYYY = (isoDate) => {
     return `${day}/${month}/${year}`;
 };
 
+export const formatObjetivo = (objetivo) => {
+    return objetivo
+        .toLowerCase()
+        .replace('_', ' ')
+        .split(' ')
+        .map(word => word[0].toUpperCase() + word.slice(1))
+        .join(' ')
+        .replace("Musculo", "Músculo");
+};
+
 
 
