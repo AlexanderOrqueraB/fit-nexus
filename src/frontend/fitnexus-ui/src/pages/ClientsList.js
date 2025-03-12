@@ -40,7 +40,7 @@ import { customToast } from "../utils/customToast";
 import { fetchClientData } from "../utils/api";
 import { mockClients } from "../mocks/mockData";
 import { UserContext } from "../components/global/UserContext";
-import { formatObjetivo } from "../utils/stringUtils";
+import { formatObjetivo } from "../utils/utilsMethod";
 
 export function ClientsList() {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)

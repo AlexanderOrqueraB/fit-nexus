@@ -33,9 +33,11 @@ export function Settings () {
     GANAR_MUSCULO: "Ganar músculo"
   };
 
+  var myData = "";
+
   const loadData = async () => {
     try {
-      const myData = await fetchMyData(fitNexusId);
+      myData = await fetchMyData(fitNexusId);
       setData(myData);
       customToast({ message: "Datos cargados correctamente", type: "success" });
 
@@ -71,7 +73,7 @@ export function Settings () {
                     { label: "Nombre", value: myData?.nombre || mockClients[0].nombre },
                     { label: "Apellido", value: myData?.apellido || mockClients[0].apellido },
                     { label: "Email", value: myData?.email || mockClients[0].email },
-                    { label: "FitNexusId", myData?.fitNexusId || value: mockClients[0].fitNexusId },
+                    { label: "FitNexusId", value: myData?.fitNexusId || mockClients[0].fitNexusId },
                   ].map((item, index) => (
                     <div key={index} className="flex items-center">
                       <Label className="w-1/4">{item.label}</Label>
