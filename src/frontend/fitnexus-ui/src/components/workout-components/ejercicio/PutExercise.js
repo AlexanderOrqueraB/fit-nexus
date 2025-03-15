@@ -118,6 +118,7 @@ useEffect(() => {
                             value={data.repeticion || ''}
                             onChange={handleChange}
                             className="col-span-3"
+                            min="0"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -131,6 +132,7 @@ useEffect(() => {
                             value={data.serie || ''}
                             onChange={handleChange}
                             className="col-span-3"
+                            min="0"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -144,6 +146,7 @@ useEffect(() => {
                             value={data.peso || ''}
                             onChange={handleChange}
                             className="col-span-3"
+                            min="0" 
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">

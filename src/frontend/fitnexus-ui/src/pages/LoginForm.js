@@ -12,6 +12,7 @@ import { Input } from "../components_ui/ui/input";
 import { Label } from "../components_ui/ui/label";
 import { apiClient } from "../utils/client";
 import { customToast } from "../utils/customToast";
+import { InputPassword } from "../components_ui/ui/input-password";
 
 export function LoginForm() {
   const { setUser } = useContext(UserContext);
@@ -131,6 +132,7 @@ export function LoginForm() {
                 <div className="flex flex-col items-center text-center">
                   <h1 className="text-2xl font-bold">Iniciar sesión</h1>
                 </div>
+                <form onSubmit={onSubmit} className="flex flex-col gap-6">
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
@@ -147,7 +149,7 @@ export function LoginForm() {
                   <div className="flex items-center">
                     <Label htmlFor="password">Contraseña</Label>
                   </div>
-                  <Input
+                  <InputPassword
                     id="password"
                     name="password"
                     type="password"
@@ -160,14 +162,14 @@ export function LoginForm() {
                 <Button onClick={onSubmit} type="submit" className="w-full">
                   Iniciar sesión
                 </Button>
-
+                </form>
                 <div className="text-center text-sm">
-                  No tienes una cuenta?{" "}
+                  ¿No tienes una cuenta?{" "}
                   <Button
                     onClick={() => navigate("/signup")}
                     className="w-full"
                   >
-                    Regístrate!
+                    ¡Regístrate!
                   </Button>
                 </div>
               </div>

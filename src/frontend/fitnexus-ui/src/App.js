@@ -14,6 +14,7 @@ import ProtectedLayout from "./components/global/ProtectedLayout";
 import Settings from "./pages/Settings";
 import NutritionChart from "./pages/NutritionChart";
 import { Toaster } from "sonner";
+import ProgressCustom from "./components/common/ProgressCustom";
 const HomePage = lazy (() =>import ("./pages/HomePage"));
 
 
@@ -34,7 +35,7 @@ return (
                 <Route element = {<ProtectedLayout />}>
                     <Route path="/dashboard" element={
                         /*<ProtectedRoute>*/
-                        <Suspense fallback={<div>Cargando...</div>}>
+                        <Suspense fallback={<ProgressCustom />}>
                                 <HomePage />
                         </Suspense>
                         /*</ProtectedRoute>*/

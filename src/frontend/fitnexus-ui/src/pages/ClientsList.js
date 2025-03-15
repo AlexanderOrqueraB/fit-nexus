@@ -166,11 +166,11 @@ export function ClientsList() {
                         <DropdownMenuRadioItem value="Todos">
                           Todos
                         </DropdownMenuRadioItem>
-                        <DropdownMenuRadioItem value="PERDER_GRASA">
-                          Perder grasa
+                        <DropdownMenuRadioItem value={formatObjetivo("PERDER_GRASA")}>
+                        {formatObjetivo("PERDER_GRASA")}
                         </DropdownMenuRadioItem>
-                        <DropdownMenuRadioItem value="GANAR_MUSCULO">
-                          Ganar músculo
+                        <DropdownMenuRadioItem value={formatObjetivo("GANAR_MUSCULO")}>
+                        {formatObjetivo("GANAR_MUSCULO")}
                         </DropdownMenuRadioItem>
                       </DropdownMenuRadioGroup>
                     </DropdownMenuContent>

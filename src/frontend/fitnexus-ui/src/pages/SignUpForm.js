@@ -15,6 +15,7 @@ import {apiClient} from "../utils/client";
 import { customToast } from '../utils/customToast'
 import { mockClients } from '../mocks/mockData'
 import { isEmailValid } from "../utils/utilsMethod";
+import { InputPassword } from '../components_ui/ui/input-password';
 
 export function SignUpForm() {
 	const navigate = useNavigate();
@@ -59,7 +60,7 @@ export function SignUpForm() {
 
 		if (!isEmailValid(userData.email)) {
 			customToast({
-				message: "El email no tiene un formato válido nombre@email.com",
+				message: "El email no tiene un formato válido email@ejemplo.com",
 				type: "warning",
 			});
 		} else if (userData.password !== data.confirmPassword) {
@@ -91,6 +92,7 @@ export function SignUpForm() {
 				<CardDescription>Introduce tu información para crear una cuenta</CardDescription>
 			</CardHeader>
 			<CardContent>
+			<form onSubmit={onSubmit} className="flex flex-col gap-6">
 				<div className="grid gap-4">
 					<div className="grid grid-cols-2 gap-4">
 						<div className="grid gap-2">
@@ -134,7 +136,7 @@ export function SignUpForm() {
 							<Select name="role" 
 							onValueChange={handleRoleChange}>
 								<SelectTrigger>
-									<SelectValue placeholder="Selecciona el tipo" />
+									<SelectValue placeholder="Elige el tuyo" />
 								</SelectTrigger>
 								<SelectContent>
 										<SelectItem  value="ADMIN" required>
@@ -162,9 +164,10 @@ export function SignUpForm() {
 						)}
 						<div className="grid gap-2">
 							<Label htmlFor="password">Contraseña</Label>
-							<Input
+							<InputPassword
 								id="password"
 								name="password"
+								type="password"
 								value={data.password}
 								onChange={handleChange}
 								required
@@ -172,9 +175,10 @@ export function SignUpForm() {
 						</div>
 						<div className="grid gap-2">
 							<Label htmlFor="confirmPassword">Confirma tu contraseña</Label>
-							<Input
+							<InputPassword
 								id="confirmPassword"
 								name="confirmPassword"
+								type="password"
 								value={data.confirmPassword}
 								onChange={handleChange}
 								required
@@ -191,6 +195,7 @@ export function SignUpForm() {
 						</Button>
 					</div>
 				</div>
+			</form>
 			</CardContent>
 		</Card>
 	);

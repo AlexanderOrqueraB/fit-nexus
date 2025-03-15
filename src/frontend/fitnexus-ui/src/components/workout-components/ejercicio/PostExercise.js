@@ -115,6 +115,7 @@ export function PostExercise() {
                             onChange={handleChange}
                             placeholder="5"
                             className="col-span-3"
+                            min="0"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -129,6 +130,7 @@ export function PostExercise() {
                             onChange={handleChange}
                             placeholder="5"
                             className="col-span-3"
+                            min="0"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -143,6 +145,7 @@ export function PostExercise() {
                             onChange={handleChange}
                             placeholder="30"
                             className="col-span-3"
+                            min="0"
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">

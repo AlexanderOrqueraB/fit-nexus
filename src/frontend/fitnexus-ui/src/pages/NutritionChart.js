@@ -27,6 +27,7 @@ import { Select,
 import { Button } from "../components_ui/ui/button"
 import { UserContext } from "../components/global/UserContext";
 import { createNutritionPlan, fetchClientData, fetchNutriData } from "../utils/api";
+import ProgressCustom from "../components/common/ProgressCustom";
 
 const chartConfig = {
   porcentajes: {
@@ -125,7 +126,7 @@ export function NutritionChart() {
     }
   }, []);
 
-  if (loading) return <div>Cargando...</div>;
+  if (loading) return <ProgressCustom />;
   if (error) return <div>Error: {error}</div>;
 
   return (
