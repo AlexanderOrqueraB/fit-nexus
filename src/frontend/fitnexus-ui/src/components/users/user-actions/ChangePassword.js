@@ -15,7 +15,7 @@ import { UserContext } from "../../global/UserContext";
 import customToast from "../../../utils/customToast";
 import { apiClient } from "../../../utils/client";
 import { GUARDAR_MENSAJE } from "../../../utils/env";
-
+import { InputPassword } from "../../../components_ui/ui/input-password";
 
 export function ChangePassword() {
   const { user } = useContext(UserContext);
@@ -84,9 +84,10 @@ export function ChangePassword() {
             <Label htmlFor="passwordVieja" className="text-right">
               Contraseña actual
             </Label>
-            <Input
+            <InputPassword
               id="passwordVieja"
               name="passwordVieja"
+              type="password"
               placeholder="********"
               className="col-span-3"
               value={passwords.passwordVieja}
@@ -98,9 +99,10 @@ export function ChangePassword() {
             <Label htmlFor="passwordNueva" className="text-right">
               Contraseña nueva
             </Label>
-            <Input
+            <InputPassword
               id="passwordNueva"
               name="passwordNueva"
+              type="password"
               placeholder="********"
               className="col-span-3"
               value={passwords.passwordNueva}

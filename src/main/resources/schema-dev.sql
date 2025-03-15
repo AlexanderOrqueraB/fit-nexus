@@ -198,27 +198,27 @@ VALUES
     (8,'660e8400-e29b-41d4-a716-446655440003', 'Rey', 'Palpatine', 'rey@jedi.com', '$2a$10$8lP2mP33EMEe9jfDhvJYiOGfr/mnsZX8F49g4C4YTASNY5MLoYgDa', 'USER', 'GANAR_MUSCULO', 'MUJER', 'MUY_FUERTE', 20, 55, 170, '2023-01-04', 4, 1), --pass: scavenger123
     (9,'660e8400-e29b-41d4-a716-446655440004', 'Darth', 'Vader', 'vader@sith.com', '$2a$10$gumkdc5ohc7ero/QVGZJEOxBRYlKWZpZnYWRmcJKrLgGsvPXy14Se', 'USER', 'PERDER_PESO', 'HOMBRE', 'POCO_NADA', 40, 120, 190, '2023-01-05', 5, 1); --pass: darkside123
 
-INSERT INTO plan_nutricional (proteina, hidrato_de_carbono, grasa, kcal, fecha_inicio, fecha_final, entrenador_id, version)
+INSERT INTO plan_nutricional (id, proteina, hidrato_de_carbono, grasa, kcal, fecha_inicio, fecha_final, entrenador_id, version)
 VALUES
-    (150, 300, 50, 2500, '2023-01-01', '2023-03-01', 4, 1), -- Plan de Obi-Wan
-    (120, 250, 40, 2200, '2023-01-15', '2023-03-15', 5, 1), -- Plan de Mace Windu
-    (200, 400, 60, 3000, '2023-02-01', '2023-04-01', 6, 1); -- Plan de Yoda
+    (6, 150, 300, 50, 2500, '2023-01-01', '2023-03-01', 4, 1), -- Plan de Obi-Wan
+    (7, 120, 250, 40, 2200, '2023-01-15', '2023-03-15', 5, 1), -- Plan de Mace Windu
+    (8, 200, 400, 60, 3000, '2023-02-01', '2023-04-01', 6, 1); -- Plan de Yoda
 
-INSERT INTO rutina (nombre_rutina, fecha_inicio, fecha_final, entrenador_id, version)
+INSERT INTO rutina (id, nombre_rutina, fecha_inicio, fecha_final, entrenador_id, version)
 VALUES
-    ('Entrenamiento basico', '2023-01-01', '2023-01-31', 4, 1), -- Rutina de Obi-Wan
-    ('Torso', '2023-01-15', '2023-02-15', 5, 1), -- Rutina de Mace Windu
-    ('Pierna', '2023-02-01', '2023-03-01', 6, 1); -- Rutina de Yoda
+    (6, 'Entrenamiento basico', '2023-01-01', '2023-01-31', 4, 1), -- Rutina de Obi-Wan
+    (7, 'Torso', '2023-01-15', '2023-02-15', 5, 1), -- Rutina de Mace Windu
+    (8, 'Pierna', '2023-02-01', '2023-03-01', 6, 1); -- Rutina de Yoda
 
-INSERT INTO plan_de_entrenamiento (nombre_plan, fecha_inicio, fecha_final, entrenador_id, cliente_id, version)
+INSERT INTO plan_de_entrenamiento (id, nombre_plan, fecha_inicio, fecha_final, entrenador_id, cliente_id, version)
 VALUES
-    ('Plan de Obi-Wan', '2023-01-01', '2023-03-01', 4, 5, 1), -- Plan de Obi-Wan
-    ('Plan de Windu', '2023-01-15', '2023-03-15', 5, 6, 1), -- Plan de Mace Windu
-    ('Plan de Yoda', '2023-02-01', '2023-04-01', 6, 7, 1); -- Plan de Yoda
+    (6, 'Plan de Obi-Wan', '2023-01-01', '2023-03-01', 4, 5, 1), -- Plan de Obi-Wan
+    (7, 'Plan de Windu', '2023-01-15', '2023-03-15', 5, 6, 1), -- Plan de Mace Windu
+    (8, 'Plan de Yoda', '2023-02-01', '2023-04-01', 6, 7, 1); -- Plan de Yoda
 
-INSERT INTO ejercicio (nombre_ejercicio, repeticion, serie, peso, cardio, entrenador_id, version)
+INSERT INTO ejercicio (id, nombre_ejercicio, repeticion, serie, peso, cardio, entrenador_id, version)
 VALUES
-    ('Press banca', 15, 3, 120, FALSE, 4, 1), -- Ejercicio de Obi-Wan
-    ('Peso muerto', 5, 5, 150, FALSE, 5, 1), -- Ejercicio de Mace Windu
-    ('Sentadillas', 20, 3, 140, FALSE, 5, 1), -- Ejercicio de Mace Windu
-    ('Correr en cinta', 1, 1, NULL, TRUE, 6, 1); -- Ejercicio de Yoda
+    (9, 'Press banca', 15, 3, 120, FALSE, 4, 1), -- Ejercicio de Obi-Wan
+    (10, 'Peso muerto', 5, 5, 150, FALSE, 5, 1), -- Ejercicio de Mace Windu
+    (11, 'Sentadillas', 20, 3, 140, FALSE, 5, 1), -- Ejercicio de Mace Windu
+    (12, 'Correr en cinta', 1, 1, NULL, TRUE, 6, 1); -- Ejercicio de Yoda

@@ -254,7 +254,7 @@ export function WorkoutBuilder() {
                       </div>
                       <CardDescription>
                         A continuación puedes ver tus planes de entrenamiento creados
-											</CardDescription>
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <Table>
