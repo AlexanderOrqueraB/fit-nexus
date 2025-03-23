@@ -291,13 +291,13 @@ public class AuthHomeController {
             if(clienteOptional.isPresent()) {
                 Cliente cliente = clienteOptional.get();
                 String emailCliente = cliente.getEmail();
+                log.info("Se va a proceder a cambiar la contraseña de cliente con email {}",cliente);
 
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(emailCliente);
+
                 if (userDetails == null || !PASSWORD_ENCODER.matches(changeLoginDTO.getPasswordVieja(), userDetails.getPassword())) {
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña actual incorrecta");
-                }
-
-                if (userDetails instanceof CustomUserDetails) {
+                } else if (userDetails instanceof CustomUserDetails) {
                     CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
                     if (customUserDetails.getRole().equals(Role.USER)) {
                         cliente.setPassword(PASSWORD_ENCODER.encode(changeLoginDTO.getPasswordNueva()));
@@ -308,19 +308,20 @@ public class AuthHomeController {
         } else if (entrenadorOptional.isPresent()) {
             Entrenador entrenador = entrenadorOptional.get();
             String emailEntrenador = entrenador.getEmail();
+            log.info("Se va a proceder a cambiar la contraseña de entrenador con email {}",emailEntrenador);
 
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(emailEntrenador);
-            if (userDetails == null || !PASSWORD_ENCODER.matches(changeLoginDTO.getPasswordVieja(), userDetails.getPassword())) {
+            if (userDetails == null ||
+                    !PASSWORD_ENCODER.matches(changeLoginDTO.getPasswordVieja(), userDetails.getPassword())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña actual incorrecta");
-            }
-
-            if (userDetails instanceof CustomUserDetails) {
+            } else if (userDetails instanceof CustomUserDetails) {
                 CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
                 if (customUserDetails.getRole().equals(Role.ADMIN)) {
                     entrenador.setPassword(PASSWORD_ENCODER.encode(changeLoginDTO.getPasswordNueva()));
                     entrenadorRepository.save(entrenador);
                 }
             }
+
             return ResponseEntity.status(HttpStatus.OK).body("Contraseña cambiada correctamente");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
