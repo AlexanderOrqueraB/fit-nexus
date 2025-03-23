@@ -311,6 +311,7 @@ public class AuthHomeController {
             log.info("Se va a proceder a cambiar la contraseña de entrenador con email {}",emailEntrenador);
 
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(emailEntrenador);
+
             if (userDetails == null ||
                     !PASSWORD_ENCODER.matches(changeLoginDTO.getPasswordVieja(), userDetails.getPassword())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña actual incorrecta");
