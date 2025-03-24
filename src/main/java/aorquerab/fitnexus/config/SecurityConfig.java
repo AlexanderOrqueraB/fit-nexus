@@ -13,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 
@@ -64,6 +66,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, FITNEXUS_BASE_URI + "/planes").permitAll()
                         .requestMatchers(HttpMethod.GET, FITNEXUS_BASE_URI + "/planes/**").permitAll()
                         .requestMatchers(HttpMethod.POST, FITNEXUS_BASE_URI + "/planes/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, FITNEXUS_BASE_URI + "/data/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, FITNEXUS_BASE_URI + "/data/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, FITNEXUS_BASE_URI + "/user/password/**").permitAll()
+
                         //TODO: END
 
                         //ROLE ACCESS CONTROL React pages
