@@ -77,7 +77,7 @@ public class ClienteController {
             Optional<Cliente> clienteByFitNexusId = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             return ResponseEntity.status(HttpStatus.OK).body(clienteByFitNexusId);
         } catch (Exception e) {
-            log.warn("Error al obtener cliente por emailId", e);
+            log.warn("Error al obtener cliente por fitNexusId", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Optional.empty());
         }
     }
@@ -87,7 +87,7 @@ public class ClienteController {
         log.info("Ejecutando obtenerDatosExtraClientePorFitNexusId con este fitNexusId: {}", fitNexusId);
         try {
             Cliente clienteByFitNexusId = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId))
-                    .orElseThrow(() -> new ClienteNotFoundException("Cliente no encontrado con emailId: "));
+                    .orElseThrow(() -> new ClienteNotFoundException("Cliente no encontrado con fitNexusId: "));
             ClienteDtoRequest datosExtraCliente = ClienteDtoRequest.builder()
                     .objetivo(clienteByFitNexusId.getObjetivo())
                     .genero(clienteByFitNexusId.getGenero())
@@ -98,7 +98,7 @@ public class ClienteController {
                     .build();
             return ResponseEntity.status(HttpStatus.OK).body(datosExtraCliente);
         } catch (Exception e) {
-            log.warn("Error al obtener cliente por emailId", e);
+            log.warn("Error al obtener cliente por fitNexusId", e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ClienteDtoRequest.builder().build());
         }
     }

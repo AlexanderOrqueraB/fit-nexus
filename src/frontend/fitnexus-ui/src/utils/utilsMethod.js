@@ -26,6 +26,7 @@ export const formatDateToDDMMYYYY = (isoDate) => {
 };
 
 export const formatObjetivo = (objetivo) => {
+    if (!objetivo) return 'No definido';
     return objetivo
         .toLowerCase()
         .replace('_', ' ')

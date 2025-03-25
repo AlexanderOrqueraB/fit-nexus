@@ -23,8 +23,8 @@ const SideBar = ({ isAdmin }) => {
   const isActive = (path) => location.pathname === path; // Function to check active link
 
   return (
-    <aside className="w-16 flex-col border-r bg-background hidden sm:flex">
-      <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+    <aside className="w-16 flex-col border-r bg-background hidden sm:flex justify-center">
+      <nav className="flex flex-col items-center gap-6 px-2 sm:py-5 ">
         {/*Iconos de Sidebar*/}
         <TooltipProvider>
           <Tooltip>

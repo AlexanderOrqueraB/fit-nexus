@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import EditProfile from "../components/users/user-actions/EditProfile";
-import EditProfileExtra from '../components/users/client/PutProfileExtra';
+import { PutProfileExtra } from '../components/users/client/PutProfileExtra';
 import ChangePassword from '../components/users/user-actions/ChangePassword';
 import {
   Card,
@@ -15,13 +15,15 @@ import { mockClients } from '../mocks/mockData';
 import { UserContext } from '../components/global/UserContext';
 import customToast from '../utils/customToast';
 import { fetchMyData } from '../utils/api';
+import ProgressCustom from '../components/common/ProgressCustom';
 
 export function Settings () {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
-  const { fitNexusId } = user; // Desestructurar el objeto user
+  const { fitNexusId, role } = user; // Desestructurar el objeto user
 
   const [selectedSection, setSelectedSection] = useState("general");
-  const [setData] = useState({
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState({
     nombre: user.nombre || mockClients[0].nombre,
     apellido: user.apellido || mockClients[0].apellido,
     email: user.email || mockClients[0].email,
@@ -33,20 +35,27 @@ export function Settings () {
     GANAR_MUSCULO: "Ganar músculo"
   };
 
-  var myData = "";
-
   const loadData = async () => {
+    setLoading(true); 
     try {
-      myData = await fetchMyData(fitNexusId);
-      setData(myData);
-      customToast({ message: "Datos cargados correctamente", type: "success" });
-
+      const myData = await fetchMyData(fitNexusId);
+        if (myData !== null) {
+          console.log("Datos del usuario: ", myData);
+          setData(myData);
+          customToast({ message: "Datos cargados correctamente", type: "success" });
+        } else {
+          console.log("Datos del usuario (null): ", myData);
+          customToast({ message: "Hubo un error al cargar los datos de cliente", type: "error" });
+        }
+      
     } catch (error) {
       console.error("Error al cargar datos:", error);
       customToast({
         message: "Hubo un error al cargar los datos de cliente",
         type: "error",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,10 +79,10 @@ export function Settings () {
               <div className="grid w-full items-center gap-4">
                 <div className="space-y-2">
                   {[
-                    { label: "Nombre", value: myData?.nombre || mockClients[0].nombre },
-                    { label: "Apellido", value: myData?.apellido || mockClients[0].apellido },
-                    { label: "Email", value: myData?.email || mockClients[0].email },
-                    { label: "FitNexusId", value: myData?.fitNexusId || mockClients[0].fitNexusId },
+                    { label: "Nombre", value: data?.nombre || mockClients[0].nombre },
+                    { label: "Apellido", value: data?.apellido || mockClients[0].apellido },
+                    { label: "Email", value: data?.email || mockClients[0].email },
+                    { label: "FitNexusId", value: data?.fitNexusId || mockClients[0].fitNexusId },
                   ].map((item, index) => (
                     <div key={index} className="flex items-center">
                       <Label className="w-1/4">{item.label}</Label>
@@ -99,18 +108,6 @@ export function Settings () {
                 Cambia aquí tu contraseña. Pulsa el botón para editar.
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="grid w-full items-center gap-4">
-                <div className="space-y-2">
-                  <div className="flex items-center">
-                    <Label className="w-1/4">Contraseña</Label>
-                    <div className="w-3/4 p-2 bg-gray-100 border border-gray-300 rounded-md text-gray-700">
-                      *******
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
             <CardFooter className="border-t px-6 py-4">
               <ChangePassword />
             </CardFooter>
@@ -129,12 +126,12 @@ export function Settings () {
               <div className="grid w-full items-center gap-4">
                 <div className="space-y-2">
                   {[
-                    { label: "Objetivo", value: myData?.objetivo || mockClients[0].objetivo },
-                    { label: "Genero", value: myData?.genero || mockClients[0].genero },
-                    { label: "Frecuencia Ejercicio", value: myData?.frecuenciaEjercicioSemanal || mockClients[0].frecuenciaEjercicioSemanal },
-                    { label: "Edad", value: myData?.edad || mockClients[0].edad },
-                    { label: "Peso", value: myData?.peso || mockClients[0].peso },
-                    { label: "Altura", value: myData?.altura || mockClients[0].altura },
+                    { label: "Objetivo", value: data?.objetivo || mockClients[0].objetivo },
+                    { label: "Genero", value: data?.genero || mockClients[0].genero },
+                    { label: "Frecuencia Ejercicio", value: data?.frecuenciaEjercicioSemanal || mockClients[0].frecuenciaEjercicioSemanal },
+                    { label: "Edad", value: data?.edad || mockClients[0].edad },
+                    { label: "Peso", value: data?.peso || mockClients[0].peso },
+                    { label: "Altura", value: data?.altura || mockClients[0].altura },
                   ].map((item, index) => (
                     <div key={index} className="flex items-center">
                       <Label className="w-1/4">{item.label}</Label>
@@ -147,7 +144,7 @@ export function Settings () {
               </div>
             </CardContent>
             <CardFooter className="border-t px-6 py-4">
-              <EditProfileExtra />
+              <PutProfileExtra />
             </CardFooter>
           </Card>
         );
@@ -155,6 +152,8 @@ export function Settings () {
         return null;
     }
   };
+
+  if (loading) return <ProgressCustom />;
 
   return (
     <div className="flex min-h-screen w-full flex-col">
@@ -180,6 +179,7 @@ export function Settings () {
             >
               Contraseña
             </button>
+            {role === 'USER' ?  (
             <button
               onClick={() => setSelectedSection("advanced")}
               className={`font-semibold ${
@@ -187,7 +187,7 @@ export function Settings () {
               }`}
             >
               Datos extra
-            </button>
+            </button>) : null}
           </nav>
           <div className="grid gap-6">{renderSection()}</div>
         </div>

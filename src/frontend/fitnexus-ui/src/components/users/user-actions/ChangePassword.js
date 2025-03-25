@@ -80,8 +80,8 @@ export function ChangePassword() {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="passwordVieja" className="text-right">
+          <div className="grid grid-cols-2 items-center gap-4">
+            <Label htmlFor="passwordVieja" className="text-center">
               Contraseña actual
             </Label>
             <InputPassword
@@ -95,8 +95,8 @@ export function ChangePassword() {
               required
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="passwordNueva" className="text-right">
+          <div className="grid grid-cols-2 items-center gap-4">
+            <Label htmlFor="passwordNueva" className="text-center">
               Contraseña nueva
             </Label>
             <InputPassword
@@ -104,21 +104,22 @@ export function ChangePassword() {
               name="passwordNueva"
               type="password"
               placeholder="********"
-              className="col-span-3"
+              className="col-span-6"
               value={passwords.passwordNueva}
               onChange={handleChange}
               required
             />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="confirmaPassword" className="text-right">
+          <div className="grid grid-cols-2 items-center gap-4">
+            <Label htmlFor="confirmaPassword" className="text-center">
               Confirma tu contraseña
             </Label>
-            <Input
+            <InputPassword
               id="confirmaPassword"
               name="confirmaPassword"
+              type="password"
               placeholder="********"
-              className="col-span-3"
+              className="col-span-6"
               value={passwords.confirmaPassword}
               onChange={handleChange}
               required

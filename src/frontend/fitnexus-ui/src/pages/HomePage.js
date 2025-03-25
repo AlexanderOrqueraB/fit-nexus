@@ -16,7 +16,6 @@ export function HomePage() {
 
 	return (
 		<React.Fragment>
-		  <h1>Hola :)</h1>
 		  <div className="flex flex-1 flex-col gap-4 p-4">
 			{user.role === 'ADMIN' ?  (
 			  <div className="grid auto-rows-min gap-4 md:grid-cols-2">

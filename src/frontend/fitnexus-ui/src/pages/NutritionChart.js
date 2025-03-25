@@ -28,6 +28,7 @@ import { Button } from "../components_ui/ui/button"
 import { UserContext } from "../components/global/UserContext";
 import { createNutritionPlan, fetchClientData, fetchNutriData } from "../utils/api";
 import ProgressCustom from "../components/common/ProgressCustom";
+import customToast from "../utils/customToast";
 
 const chartConfig = {
   porcentajes: {
@@ -65,13 +66,14 @@ const mockChartNutri = [
 
 export function NutritionChart() {
 
-    const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
-    const { role, fitNexusId } = user; // Desestructurar el objeto user
+  const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+  const { role, fitNexusId } = user; // Desestructurar el objeto user
 
   const [selectedClient, setSelectedClient] = useState(null);
   const [clients, setClients] = useState([]); // uncomment this line and comment the next one to use backend data
   //const [clients, setClients] = useState(mockClients); // uncomment this line and comment the previous one to use mock data
   const [extraData, setExtraData] = useState(null);
+
   const [loading, setLoading] =useState(true);
   const [error, setError] =useState(null);
 
@@ -80,11 +82,19 @@ export function NutritionChart() {
   }, [])
 
   const fetchData = async (fitNexusId) => {
+    setLoading(true);
     try {
       //uncomment this lines to use backend data
       const clientsData = await fetchClientData(fitNexusId);
-      setClients(clientsData.clients);
-      //setClients(mockClients); //uncomment this lines to use mock data
+      if (clientsData !== null) {
+        setClients(clientsData.clients);
+        customToast({ message: "Datos de cliente cargados correctamente", type: "success" });
+        //setClients(mockClients); //uncomment this lines to use mock data
+      } else {
+        setClients([]);
+        customToast({ message: "Hubo un error al cargar los datos de cliente", type: "error" });
+      }
+
     } catch (error) {
       setError(error.message);
     } finally {
@@ -93,35 +103,47 @@ export function NutritionChart() {
   };
 
   const fetchExtraData = async (fitNexusId) => {
+    setLoading(true);
     try {
       //uncomment this lines to use backend data
       const data = await fetchExtraData(fitNexusId);
-      setExtraData(data);
-
+      if (data !== null) {
+        setExtraData(data);
+        customToast({ message: "Datos de cliente cargados correctamente", type: "success" });
+      } else {
+        setExtraData(null);
+        customToast({ message: "Hubo un error al cargar los datos de cliente", type: "error" });
+      }
+      
       //uncomment this lines to use mock data
       //const client = mockClients.find(client => client.fitNexusId === fitNexusId);
       //setExtraData(client ? client : null);
     } catch (error) {
       setExtraData(null);
+    } finally {
+      setLoading(false);
     }
   };
 
   const createPlan = async (email) => {
+    setLoading(true);
     try {
       //uncomment this lines to use backend data
       await createNutritionPlan(email);
       fetchData();
     } catch (error) {
       setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (role === 'admin') {
+    if (role === 'ADMIN') {
       fetchData(fitNexusId); //Cargar datos de clientes (para mostrar en el select)
       fetchNutriData(fitNexusId); //Cargar datos del plan nutricional
     }
-    if (role === 'user') {
+    if (role === 'USER') {
       fetchExtraData(fitNexusId); //Cargar datos extra del cliente (para mostrar Crear Plan Nutricional)
     }
   }, []);
@@ -131,7 +153,7 @@ export function NutritionChart() {
 
   return (
     <div className="flex flex-col gap-4">
-      {role === 'admin' ? (
+      {role === 'ADMIN' ? (
         <Select onValueChange={(value) => {
           const client = clients.find(client => client.fitNexusId === value);
           setSelectedClient(client);
@@ -242,10 +264,10 @@ export function NutritionChart() {
             description = {kcalMoreInfo} 
           />
           </div>
-          {role === 'user' && !extraData && (
+          {role === 'USER' && !extraData && (
             <PostProfileExtra />
             )}
-            {role === 'admin' && selectedClient && !extraData && (
+            {role === 'ADMIN' && selectedClient && !extraData && (
               <Button onClick={() => createPlan(selectedClient.email)}>Crear Plan Nutricional</Button>
             )}
         </CardFooter>

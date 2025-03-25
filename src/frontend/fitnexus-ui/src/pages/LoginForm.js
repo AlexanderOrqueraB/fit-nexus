@@ -64,7 +64,7 @@ export function LoginForm() {
       localStorage.setItem("fitNexusId", fitNexusId);
 
       customToast({
-        message: "Login efectuado correctamente como administrador!",
+        message: "Bienvenidx! Login efectuado correctamente como administrador!",
         type: "success",
       });
       navigate("/dashboard", { state: { isAdminProp: true } });
@@ -101,14 +101,14 @@ export function LoginForm() {
               if (role === "ADMIN") {
                 console.log("Redireccionando a pagina admin");
                 customToast({
-                  message: "Login efectuado correctamente con rol administrador!",
+                  message: "Bienvenidx! Login efectuado correctamente como administrador!",
                   type: "success",
                 });
                 navigate("/dashboard", { state: { isAdminProp: true } });
               } else if (role === "USER") {
                 console.log("Redireccionando a pagina usuario");
                 customToast({
-                  message: "Login efectuado correctamente!",
+                  message: "Bienvenidx! Login efectuado correctamente!",
                   type: "success",
                 });
                 navigate("/dashboard", { state: { isAdminProp: false } });

@@ -18,14 +18,12 @@ import {apiClient} from "../../../utils/client";
 import { UserContext } from "../../global/UserContext";
 import { GUARDAR_MENSAJE } from "../../../utils/env";
 
-export function EditProfile({ clientData }) {
-
-  console.log('Datos del cliente:', clientData);
+export function EditProfile () {
 
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
   const { fitNexusId } = user; // Desestructurar el objeto user
 
-  const [setData] = useState([]);
+  const [data, setData] = useState([]);
 
   const loadData = async () => {
       try {

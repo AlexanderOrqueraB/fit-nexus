@@ -44,7 +44,7 @@ export const fetchWorkoutData = async (fitNexusId) => {
         };
     } catch (error) {
         console.error('Error al cargar los datos:', error);
-        throw new Error('Error al cargar los datos planes/rutinas/ejercicios');
+        customToast({ message: 'Error al cargar los datos planes/rutinas/ejercicios', type: 'error' }); 
     }
 };
 
@@ -53,26 +53,43 @@ export const fetchClientData = async (fitNexusId) => {
         const [clientResponse] = await Promise.all([
             apiClient.get(`/api/v1/entrenadores/${fitNexusId}`)
         ]);
+ 
+        if (clientResponse.status === 200) {
+            customToast({ message: 'Datos de cliente cargados correctamente', type: 'success' });
+            return { clients: [] };
+        }
 
         if (clientResponse.status === 400) {
             customToast({ message: 'Error al cargar los clientes', type: 'error' }); 
         }
 
-        return {
-            clients: clientResponse.data
-        };
+        if (clientResponse.status === 404) {
+            customToast({ message: 'Datos de entrenador no encontrados con fitNexusId: ', type: 'warning' }); 
+        }
+
+        return { clients: [] };
+
     } catch (error) {
         console.error('Error al cargar los datos:', error);
-        throw new Error('Error al cargar los datos de clientes');
+        customToast({ message: 'Error al cargar los clientes', type: 'error' }); 
+        return { clients: [] };
     }
 };
 
 export const fetchMyData = async (fitNexusId) => {
     try {
         const response = await apiClient.get(`/api/v1/data/${fitNexusId}`);
-        
+        if (response.status === 200) {
+            customToast({ message: 'Datos cargados correctamente', type: 'success' }); 
+        }
+
         if (response.status === 400) {
-            customToast({ message: 'Error al cargar los datos', type: 'error' }); 
+            customToast({ message: 'Error al cargar tus datos', type: 'error' }); 
+        }
+
+        if (response.status === 404) {
+            customToast({ message: 'Datos de entrenador no encontrados con fitNexusId: '
+                + fitNexusId , type: 'warning' }); 
         }
 
         return response.data;
@@ -80,17 +97,25 @@ export const fetchMyData = async (fitNexusId) => {
         if (error.response && error.response.status === 404) {
             return null;
         }
-        console.error('Error al cargar los datos extra:', error);
-        throw new Error('Error al cargar los datos extra');
+        console.error('Error al cargar los datos:', error);
+        customToast({ message: 'Error al cargar los datos', type: 'error' }); 
     }
 };
 
 export const fetchExtraData = async (fitNexusId) => {
     try {
         const response = await apiClient.get(`/api/v1/clientes/extra-data/${fitNexusId}`);
-        
+        if (response.status === 200) {
+            customToast({ message: 'Datos cargados correctamente', type: 'success' }); 
+        }
+
         if(response.status === 400) {
             customToast({ message: 'Error al cargar los datos extra', type: 'error' }); 
+        }
+
+        if (response.status === 404) {
+            customToast({ message: 'Datos de cliente no encontrados con fitNexusId: '
+                + fitNexusId , type: 'warning' }); 
         }
 
         return response.data;
@@ -99,7 +124,7 @@ export const fetchExtraData = async (fitNexusId) => {
             return null;
         }
         console.error('Error al cargar los datos extra:', error);
-        throw new Error('Error al cargar los datos extra');
+        customToast({ message: 'Error al cargar los datos extra', type: 'error' }); 
     }
 };
 
@@ -118,7 +143,7 @@ export const createNutritionPlan = async (email) => {
         return response.data;
     } catch (error) {
         console.error('Error al crear el plan nutricional:', error);
-        throw new Error('Error al crear el plan nutricional');
+        customToast({ message: 'Error al crear el plan nutricional', type: 'error' }); 
     }
 };
 
@@ -136,13 +161,13 @@ export const fetchNutriData = async (fitNexusId) => {
         }
 
         if (nutriGramosResponse.status === 400) {
-            customToast({ message: 'Error al cargar los datos', type: 'error' }); 
+            customToast({ message: 'Error al cargar los datos nutricionales en gramos', type: 'error' }); 
         }
         if (nutriPorcentajesResponse.status === 400) {
-            customToast({ message: 'Error al cargar los datos', type: 'error' }); 
+            customToast({ message: 'Error al cargar los datos nutricionales en porcentaje', type: 'error' }); 
         }
         if (nutriKcalResponse.status === 404) {
-            customToast({ message: 'Datos no encontrados', type: 'error' }); 
+            customToast({ message: 'Datos nutricionales en kcal no encontrados', type: 'error' }); 
         }
         
         return {
@@ -151,7 +176,7 @@ export const fetchNutriData = async (fitNexusId) => {
             kcal: nutriKcalResponse.data
         };
     } catch (error) {
-        console.error('Error al cargar los datos:', error);
-        customToast({ message: 'Error al cargar los datos', type: 'error' });
+        console.error('Error al cargar los datos nutricionales:', error);
+        customToast({ message: 'Error al cargar los datos nutricionales', type: 'error' });
     }
 };
