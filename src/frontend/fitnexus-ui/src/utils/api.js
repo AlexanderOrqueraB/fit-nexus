@@ -56,7 +56,7 @@ export const fetchClientData = async (fitNexusId) => {
  
         if (clientResponse.status === 200) {
             customToast({ message: 'Datos de cliente cargados correctamente', type: 'success' });
-            return { clients: [] };
+            return clientResponse
         }
 
         if (clientResponse.status === 400) {
@@ -114,8 +114,8 @@ export const fetchExtraData = async (fitNexusId) => {
         }
 
         if (response.status === 404) {
-            customToast({ message: 'Datos de cliente no encontrados con fitNexusId: '
-                + fitNexusId , type: 'warning' }); 
+            customToast({ message: 'Datos de cliente no encontrados con fitNexusId: ',
+                 fitNexusId , type: 'warning' }); 
         }
 
         return response.data;

@@ -86,11 +86,12 @@ export function NutritionChart() {
     try {
       //uncomment this lines to use backend data
       const clientsData = await fetchClientData(fitNexusId);
+      console.log("Datos de cliente: ", clientsData.clients);
       if (clientsData !== null) {
         setClients(clientsData.clients);
         customToast({ message: "Datos de cliente cargados correctamente", type: "success" });
         //setClients(mockClients); //uncomment this lines to use mock data
-      } else {
+      } else if (clientsData.clients === 0){
         setClients([]);
         customToast({ message: "Hubo un error al cargar los datos de cliente", type: "error" });
       }
@@ -141,6 +142,7 @@ export function NutritionChart() {
   useEffect(() => {
     if (role === 'ADMIN') {
       fetchData(fitNexusId); //Cargar datos de clientes (para mostrar en el select)
+      console.log ("extra data ", extraData);
       fetchNutriData(fitNexusId); //Cargar datos del plan nutricional
     }
     if (role === 'USER') {
