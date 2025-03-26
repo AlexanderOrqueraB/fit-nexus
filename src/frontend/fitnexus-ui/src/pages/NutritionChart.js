@@ -67,7 +67,7 @@ const mockChartNutri = [
 export function NutritionChart() {
 
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
-  const { role, fitNexusId } = user; // Desestructurar el objeto user
+  const { role, fitNexusId, email } = user; // Desestructurar el objeto user
 
   const [selectedClient, setSelectedClient] = useState(null);
   const [clients, setClients] = useState([]); // uncomment this line and comment the next one to use backend data
@@ -131,7 +131,7 @@ export function NutritionChart() {
     try {
       //uncomment this lines to use backend data
       await createNutritionPlan(email);
-      fetchData();
+      fetchData(fitNexusId);
     } catch (error) {
       setError(error.message);
     } finally {

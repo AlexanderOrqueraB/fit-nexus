@@ -212,6 +212,7 @@ public class AuthHomeController {
                     .email(cliente.getEmail())
                     .fitNexusId(cliente.getFitNexusId().toString())
                     .build();
+                log.info("Datos de cliente: {} ", datosExtraUsuario);
                 return ResponseEntity.status(HttpStatus.OK).body(datosExtraUsuario);
             } else {
                 Entrenador entrenador = entrenadorOptional.get();
@@ -221,6 +222,7 @@ public class AuthHomeController {
                     .email(entrenador.getEmail())
                     .fitNexusId(entrenador.getFitNexusId().toString())
                     .build();
+                log.info("Datos de entrenador: {} ", datosExtraUsuario);
                 return ResponseEntity.status(HttpStatus.OK).body(datosExtraUsuario);
             }
 

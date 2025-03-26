@@ -59,7 +59,7 @@ public class PlanNutricionalController {
         return planNutricionalRepository.findAll();
     }
 
-    @GetMapping("/gramos/{clienteEmail}")
+    @GetMapping("/gramos/{fitNexusId}")
     public ResponseEntity <PlanNutricionalDTO> obtenerPlanNutriMacrosEnGramos (@PathVariable String fitNexusId) {
         PlanNutricionalDTO planNutricionalDTO;
 
@@ -125,7 +125,7 @@ public class PlanNutricionalController {
         }
     }
 
-    @GetMapping ("/kcal/{clienteEmail}")
+    @GetMapping ("/kcal/{fitNexusId}")
     public ResponseEntity <PlanNutricionalDTO> obtenerKcalDeCadaMacroParaClienteDesdePlanNutricional (
             @PathVariable String fitNexusId) {
         
