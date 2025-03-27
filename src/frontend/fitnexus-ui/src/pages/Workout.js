@@ -108,7 +108,7 @@ export function Workout ({ role, fitNexusId })  {
 						</Button>
 						<div className="ml-auto">
 							<Button onClick={() => loadData()}>
-							<RefreshCcwIcon className="h-3.5 w-3.5" />
+							<RefreshCcwIcon className="h-3.5 w-3.5 mr-2" />
 								Refrescar datos
 							</Button>
 						</div>
@@ -118,7 +118,7 @@ export function Workout ({ role, fitNexusId })  {
 								<DropdownMenu>
 									<DropdownMenuTrigger asChild>
 										<Button variant="outline" size="sm" className="h-8 gap-1">
-											<ListFilter className="h-3.5 w-3.5" />
+											<ListFilter className="h-3.5 w-3.5 mr-2" />
 											<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Filtro</span>
 										</Button>
 									</DropdownMenuTrigger>

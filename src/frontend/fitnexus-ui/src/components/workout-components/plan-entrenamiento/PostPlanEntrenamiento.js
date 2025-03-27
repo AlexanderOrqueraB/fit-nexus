@@ -69,7 +69,7 @@ export function PostPlanEntrenamiento() {
             <DialogTrigger asChild>
                 <Button size="sm" className="h-8 gap-1" variant="default">
                     Crear plan entrenamiento
-                    <Pencil className="h-3.5 w-3.5" />
+                    <Pencil className="h-3.5 w-3.5 ml-2" />
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">

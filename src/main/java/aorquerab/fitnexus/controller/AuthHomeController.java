@@ -18,9 +18,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -41,13 +44,15 @@ public class AuthHomeController {
     private final ClienteRepository clienteRepository;
     private final CustomUserDetailsService customUserDetailsService;
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
     public AuthHomeController(EntrenadorRepository entrenadorRepository, ClienteRepository clienteRepository,
-                              CustomUserDetailsService customUserDetailsService, AuthenticationManager authenticationManager) {
+                              CustomUserDetailsService customUserDetailsService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
         this.entrenadorRepository = entrenadorRepository;
         this.clienteRepository = clienteRepository;
         this.customUserDetailsService = customUserDetailsService;
         this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
 //    @GetMapping("/{path:^(?!api|favicon.ico|static).*}")
@@ -104,7 +109,7 @@ public class AuthHomeController {
                         .role(signupDTO.getRole())
                         .entrenador(entrenador)
                         .build();
-                clienteActualizado.setPassword(signupDTO.getPassword());
+                clienteActualizado.setPassword(passwordEncoder.encode(signupDTO.getPassword()));
 
                 log.info("Datos del cliente a guardar: {}", clienteActualizado);
                 clienteRepository.save(clienteActualizado);
@@ -125,7 +130,7 @@ public class AuthHomeController {
                         .email(signupDTO.getEmail())
                         .role(signupDTO.getRole())
                         .build();
-                entrenadorActualizado.setPassword(signupDTO.getPassword());
+                entrenadorActualizado.setPassword(passwordEncoder.encode(signupDTO.getPassword()));
 
                 log.info("Datos del entrenador a guardar: {}", entrenadorActualizado);
                 entrenadorRepository.save(entrenadorActualizado);
@@ -153,14 +158,36 @@ public class AuthHomeController {
             @RequestBody LoginDTO loginDTO) {
         log.info("Ejecutando iniciar sesión con los datos: {}", loginDTO);
 
-        if(loginDTO == null) {
+        if (loginDTO == null) {
             throw new InvalidRequestException("Peticion de inicio de sesión no valida");
         }
+
+        Authentication authenticationAfter = null;
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-            // Si la autenticación es exitosa, cargamos el usuario
+            UsernamePasswordAuthenticationToken authTokenBefore = new UsernamePasswordAuthenticationToken(
+                    loginDTO.getEmail(), loginDTO.getPassword());
+            log.info("AuthToken antes de la autenticación {}: ", authTokenBefore);
+
+            authenticationAfter = authenticationManager.authenticate(authTokenBefore);
+            log.info("AuthToken después de la autenticación {}: ", authenticationAfter);
+
+            SecurityContext sc = SecurityContextHolder.getContext();
+            sc.setAuthentication(authenticationAfter);
+
+            log.info("AuthToken en el Security Context: {}", sc.getAuthentication());
+
+            log.info("Authentication role info: {} and isAuthenticated: {} ",
+                    authenticationAfter.getAuthorities(), //[ROLE_ADMIN
+                    authenticationAfter.isAuthenticated()); //true
+
+            // Si la autenticación es exitosa, cargamos el usuario desde los datos de DB
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(loginDTO.getEmail());
+            log.info("Datos tras cargar el usuario con el email {} ", loginDTO.getEmail());
+            log.info("Contraseña del usuario en la petición: {}", loginDTO.getPassword());
+            log.info("Contraseña codificada en DB: {}", userDetails.getPassword());
+            if (!passwordEncoder.matches(loginDTO.getPassword(), userDetails.getPassword())) {
+                throw new BadCredentialsException("Contraseña incorrecta");
+            }
 
             String userEmail = loginDTO.getEmail();
             String userRole = null;
@@ -169,11 +196,11 @@ public class AuthHomeController {
                 Role role = ((CustomUserDetails) userDetails).getRole();
                 fitNexusId = ((CustomUserDetails) userDetails).getFitNexusId();
                 log.info("Obteniendo rol: {}", role);
-                if(role != null) {
+                if (role != null) {
                     userRole = role.name();
                     log.info("Rol del usuario: {}", userRole);
                 }
-                if(fitNexusId != null) {
+                if (fitNexusId != null) {
                     log.info("FitNexusId del usuario: {}", fitNexusId);
                 }
             }
@@ -184,10 +211,15 @@ public class AuthHomeController {
                 response.put("role", userRole);
                 response.put("fitNexusId", fitNexusId);
             }
+            log.info("La respuesta tras el login es: {} ", response);
 
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
+            log.info("Credenciales inválidas con el email {} y la contraseña {} ",
+                    loginDTO.getEmail(), loginDTO.getPassword());
+            log.info("Authentication info: {} ",
+                    authenticationAfter.getDetails());
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(Collections.singletonMap("message", "Credenciales inválidas: " + e.getMessage()));
@@ -250,9 +282,16 @@ public class AuthHomeController {
 
             if(clienteOptional.isPresent()) {
                 Cliente cliente = clienteOptional.get();
-                cliente.setNombre(datosUsuarioDTO.getNombre());
-                cliente.setApellido(datosUsuarioDTO.getApellido());
-                cliente.setEmail(datosUsuarioDTO.getEmail());
+                //Actualizas solo los campos enviados (distintos de null)
+                if(datosUsuarioDTO.getNombre() != null)
+                    cliente.setNombre(datosUsuarioDTO.getNombre());
+
+                if(datosUsuarioDTO.getApellido() != null)
+                    cliente.setApellido(datosUsuarioDTO.getApellido());
+
+                if(datosUsuarioDTO.getEmail() != null)
+                    cliente.setEmail(datosUsuarioDTO.getEmail());
+
                 clienteRepository.save(cliente);
                 datosUsuarioActualizado = DatosUsuarioDTO.builder()
                     .nombre(cliente.getNombre())
@@ -261,9 +300,16 @@ public class AuthHomeController {
                     .build();
             } else {
                 Entrenador entrenador = entrenadorOptional.get();
-                entrenador.setNombre(datosUsuarioDTO.getNombre());
-                entrenador.setApellido(datosUsuarioDTO.getApellido());
-                entrenador.setEmail(datosUsuarioDTO.getEmail());
+                //Actualizas solo los campos enviados (distintos de null)
+                if(datosUsuarioDTO.getNombre() != null)
+                    entrenador.setNombre(datosUsuarioDTO.getNombre());
+
+                if(datosUsuarioDTO.getApellido() != null)
+                    entrenador.setApellido(datosUsuarioDTO.getApellido());
+
+                if(datosUsuarioDTO.getEmail() != null)
+                    entrenador.setEmail(datosUsuarioDTO.getEmail());
+
                 entrenadorRepository.save(entrenador);
                 datosUsuarioActualizado = DatosUsuarioDTO.builder()
                     .nombre(entrenador.getNombre())
@@ -284,8 +330,6 @@ public class AuthHomeController {
         @PathVariable String fitNexusId, @RequestBody ChangeLoginDTO changeLoginDTO) {
         log.info("Ejecutando cambiarPassword con este fitNexusId: {}", fitNexusId);
 
-        PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
-
         try {
             Optional<Cliente> clienteOptional = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId));
             Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
@@ -293,39 +337,42 @@ public class AuthHomeController {
             if(clienteOptional.isPresent()) {
                 Cliente cliente = clienteOptional.get();
                 String emailCliente = cliente.getEmail();
-                log.info("Se va a proceder a cambiar la contraseña de cliente con email {}",cliente);
+                log.info("Se va a proceder a cambiar la contraseña de cliente con email {}",emailCliente);
 
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(emailCliente);
-
-                if (userDetails == null || !PASSWORD_ENCODER.matches(changeLoginDTO.getPasswordVieja(), userDetails.getPassword())) {
+                log.info("Los datos cargados del cliente con el email: {} ", emailCliente);
+                if (userDetails == null || !passwordEncoder.matches(changeLoginDTO.getPasswordVieja(), userDetails.getPassword())) {
+                    log.info("Contraseña actual incorrecta");
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña actual incorrecta");
                 } else if (userDetails instanceof CustomUserDetails) {
                     CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
                     if (customUserDetails.getRole().equals(Role.USER)) {
-                        cliente.setPassword(PASSWORD_ENCODER.encode(changeLoginDTO.getPasswordNueva()));
+                        cliente.setPassword(passwordEncoder.encode(changeLoginDTO.getPasswordNueva()));
                         clienteRepository.save(cliente);
+                        log.info("Se ha guardado correctamente la nueva contraseña");
+                        return ResponseEntity.status(HttpStatus.OK).body("Contraseña cambiada correctamente");
                     }
                 }
-            return ResponseEntity.status(HttpStatus.OK).body("Contraseña cambiada correctamente");
         } else if (entrenadorOptional.isPresent()) {
             Entrenador entrenador = entrenadorOptional.get();
             String emailEntrenador = entrenador.getEmail();
             log.info("Se va a proceder a cambiar la contraseña de entrenador con email {}",emailEntrenador);
 
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(emailEntrenador);
-
-            if (userDetails == null ||
-                    !PASSWORD_ENCODER.matches(changeLoginDTO.getPasswordVieja(), userDetails.getPassword())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña actual incorrecta");
-            } else if (userDetails instanceof CustomUserDetails) {
-                CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
-                if (customUserDetails.getRole().equals(Role.ADMIN)) {
-                    entrenador.setPassword(PASSWORD_ENCODER.encode(changeLoginDTO.getPasswordNueva()));
-                    entrenadorRepository.save(entrenador);
+            log.info("Los datos cargados del entrenador con el email: {}", emailEntrenador);
+                if (userDetails == null ||
+                        !passwordEncoder.matches(changeLoginDTO.getPasswordVieja(), userDetails.getPassword())) {
+                    log.info("Contraseña actual incorrecta");
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña actual incorrecta");
+                } else if (userDetails instanceof CustomUserDetails) {
+                    CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
+                    if (customUserDetails.getRole().equals(Role.ADMIN)) {
+                        entrenador.setPassword(passwordEncoder.encode(changeLoginDTO.getPasswordNueva()));
+                        entrenadorRepository.save(entrenador);
+                        log.info("Se ha guardado correctamente la nueva contraseña");
+                        return ResponseEntity.status(HttpStatus.OK).body("Contraseña cambiada correctamente");
+                    }
                 }
-            }
-
-            return ResponseEntity.status(HttpStatus.OK).body("Contraseña cambiada correctamente");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
             }
@@ -334,5 +381,6 @@ public class AuthHomeController {
             log.error("Error al cambiar la contraseña", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al cambiar la contraseña");
         }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Solicitud incorrecta");
     }
 }

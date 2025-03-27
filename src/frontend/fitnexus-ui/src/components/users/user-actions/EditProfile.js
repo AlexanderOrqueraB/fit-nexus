@@ -1,6 +1,9 @@
 import { Button } from "../../../components_ui/ui/button"
 import React, { useState, useEffect, useContext } from "react";
 import {
+  RefreshCcwIcon,
+} from "lucide-react";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -28,9 +31,12 @@ export function EditProfile () {
   const loadData = async () => {
       try {
         const userData = await fetchMyData(fitNexusId);
-        setData(userData);
-        customToast({ message: "Datos cargados correctamente", type: "success" });
-  
+        if (userData != null) {
+            setData(userData);
+            console.log("Datos cargados correctamente")
+        } else if (userData == null) {
+            console.log("Ha habido un problema cargando los datos")
+        }
       } catch (error) {
         console.error("Error al cargar datos:", error);
         customToast({
@@ -62,19 +68,18 @@ export function EditProfile () {
   const onSubmit = (e) => {
     e.preventDefault();
     const userData = {
-			nombre: myData.nombre,
+      nombre: myData.nombre,
       apellido: myData.apellido,
       email: myData.email,
 		};
 
-    console.log('Datos del usuario: ', userData);
+    console.log('Datos del usuario: ', JSON.stringify(userData));
 
     apiClient
       .put(`/api/v1/data/${fitNexusId}`, userData)
       .then((response) => {
         if (response.status === 200) {
-          console.log("Datos actualizados correctamente:", response.data);
-          customToast({message : "Datos actualizados correctamente", type : "success"});
+          customToast({message : "Perfil actualizado correctamente", type : "success"});
         }
     })
       .catch((error) => {
@@ -105,8 +110,9 @@ export function EditProfile () {
             </Label>
             <Input
               id="nombre"
-              value={mockClients[0].nombre}
-              placeholder={mockClients[0].nombre}
+              name="nombre"
+              value={myData.nombre|| data.nombre}
+              placeholder={data.nombre || mockClients[0].nombre}
               onChange={handleChange}
               className="col-span-3"
             />
@@ -117,8 +123,9 @@ export function EditProfile () {
             </Label>
             <Input
               id="apellido"
-              value={mockClients[0].apellido}
-              placeholder={mockClients[0].apellido}
+              name="apellido"
+              value={myData.apellido || data.apellido}
+              placeholder={data.apellido || mockClients[0].apellido}
               onChange={handleChange}
               className="col-span-3"
             />
@@ -129,8 +136,9 @@ export function EditProfile () {
               </Label>
               <Input
                 id="email"
-                value={mockClients[0].email}
-                placeholder={mockClients[0].email}
+                name="email"
+                value={myData.email || data.email}
+                placeholder={data.email || mockClients[0].email}
                 onChange={handleChange}
                 className="col-span-3"
               />
@@ -141,7 +149,7 @@ export function EditProfile () {
               </Label>
               <Input
               id="fitNexusId"
-              placeholder={mockClients[0].fitNexusId}
+              placeholder={data?.fitNexusId || mockClients[0].fitNexusId}
               className="col-span-3"
               disabled
               />
@@ -149,7 +157,8 @@ export function EditProfile () {
         </div>
         <DialogFooter>
         <Button onClick={onSubmit} type="submit" className="w-full">
-            Guardar cambios</Button>
+            Guardar cambios
+        </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -46,7 +46,7 @@ export function HomePage() {
 					  <span className="text-sm mt-2 text-center"></span>
 					  <Button className="h-10 gap-1" onClick={() => navigate("/workout-builder")}>
 						Workout builder
-						<BrickWall className="h-3.5 w-3.5" />
+						<BrickWall className="h-3.5 w-3.5 ml-2" />
 					  </Button>
 					</CardContent>
 				  </Card>
@@ -75,7 +75,7 @@ export function HomePage() {
 						<span className="text-sm mt-2 text-center"></span>
 						<Button className="h-10 gap-1" onClick={() => navigate("/nutri")}>
 						  Ver plan nutricional
-						  <Drumstick className="h-3.5 w-3.5" />
+						  <Drumstick className="h-3.5 w-3.5 mr-2" />
 						</Button>
 						<div className="relative flex items-center justify-center">
 						  O consulta tus ejercicios:
@@ -83,7 +83,7 @@ export function HomePage() {
 						<span className="text-sm mt-2 text-center"></span>
 						<Button className="h-10 gap-1" onClick={() => navigate("/ejercicios")}>
 						  Ejercicios
-						  <EyeIcon className="h-3.5 w-3.5" />
+						  <EyeIcon className="h-3.5 w-3.5 mr-2" />
 						</Button>
 						<span className="text-sm mt-2 text-center"></span>
 					  </CardContent>

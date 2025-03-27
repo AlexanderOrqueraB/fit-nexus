@@ -40,6 +40,9 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (role == null) {
+            throw new IllegalStateException("Role no puede ser nulo");
+        }
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 

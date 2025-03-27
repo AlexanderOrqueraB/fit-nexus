@@ -12,8 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,8 +27,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "cliente")
 public class Cliente {
-
-    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_log_gen")
@@ -61,10 +57,6 @@ public class Cliente {
     private Integer peso;
     private Integer altura;
     private LocalDate usuarioDesde;
-
-    public void setPassword (String password) {
-        this.password = PASSWORD_ENCODER.encode(password);
-    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "entrenador_id", nullable = false)

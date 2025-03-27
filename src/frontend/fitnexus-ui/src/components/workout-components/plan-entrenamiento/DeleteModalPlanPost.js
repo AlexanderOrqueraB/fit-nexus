@@ -26,7 +26,7 @@ const onSubmit = (e) => {
 
   console.log('Eliminando el plan de entrenamiento: ', data.nombrePlan);
 
-  apiClient.delete(`/api/v1/rutinas/${planData.nombrePlan}`)
+  const response = apiClient.delete(`/api/v1/rutinas/${planData.nombrePlan}`)
       .then(response => {
           console.log('Respuesta del servidor:', response.data);
           console.log('Status: ', response.status);

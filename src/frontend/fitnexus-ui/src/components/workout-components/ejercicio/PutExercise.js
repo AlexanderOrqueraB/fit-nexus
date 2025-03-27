@@ -50,7 +50,7 @@ const onSubmit = (e) => {
 
     console.log('Enviando los siguientes datos: ', updatedExercise);
 
-    apiClient.put(`/api/v1/ejercicios/${fitNexusId}`, updatedExercise)
+    const response = apiClient.put(`/api/v1/ejercicios/${fitNexusId}`, updatedExercise)
         .then(response => {
             console.log('Respuesta del servidor: ', response.data);
             console.log('Status: ', response.status);

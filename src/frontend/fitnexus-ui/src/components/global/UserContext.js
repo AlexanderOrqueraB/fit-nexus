@@ -3,7 +3,13 @@ import React, { createContext, useState, useEffect } from "react";
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null); // null significa no autenticado
+    const [user, setUser] = useState({
+      nombre: "",
+      apellido: "",
+      email: "",
+      fitNexusId: "",
+      role: "",
+    });
 
     // Persistencia opcional al recargar
     useEffect(() => {
@@ -15,10 +21,19 @@ export const UserProvider = ({ children }) => {
 
       const storedFitNexusId = localStorage.getItem("fitNexusId");
       console.log("FitNexusId tras refresh (to doublecheck): ", storedFitNexusId);
+
+      const storedNombre = localStorage.getItem("userNombre") || "";
+      const storedApellido = localStorage.getItem("userApellido") || "";
       
       if (storedEmail && storedRole && storedFitNexusId) {
-        setUser({ email: storedEmail, role: storedRole, fitNexusId: storedFitNexusId });
-      }
+              setUser({
+                nombre: storedNombre,
+                apellido: storedApellido,
+                email: storedEmail,
+                role: storedRole,
+                fitNexusId: storedFitNexusId,
+              });
+            }
     }, []);
 
   return (

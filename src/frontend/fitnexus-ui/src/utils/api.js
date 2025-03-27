@@ -34,7 +34,7 @@ export const fetchWorkoutData = async (fitNexusId) => {
         }
 
         if (exercisesResponse.status === 200 && routinesResponse.status === 200 && plansResponse.status === 200) {
-            customToast({ message: 'Datos cargados correctamente', type: 'success' });
+            console.log("Datos de entrenamiento cargados correctamente con el FitNexusId: ", fitNexusId)
         }
 
         return {
@@ -80,15 +80,15 @@ export const fetchMyData = async (fitNexusId) => {
     try {
         const response = await apiClient.get(`/api/v1/data/${fitNexusId}`);
         if (response.status === 200) {
-            customToast({ message: 'Datos cargados correctamente', type: 'success' }); 
+            console.log("Datos del usuario cargados correctamente por su FitNexusId: ", fitNexusId);
         }
 
         if (response.status === 400) {
-            customToast({ message: 'Error al cargar tus datos', type: 'error' }); 
+            customToast({ message: 'Error al cargar tus datos con ese FitNexusId', type: 'error' });
         }
 
         if (response.status === 404) {
-            customToast({ message: 'Datos de entrenador no encontrados con fitNexusId: '
+            customToast({ message: 'Datos de entrenador no encontrados con FitNexusId: '
                 + fitNexusId , type: 'warning' }); 
         }
 
@@ -97,8 +97,8 @@ export const fetchMyData = async (fitNexusId) => {
         if (error.response && error.response.status === 404) {
             return null;
         }
-        console.error('Error al cargar los datos:', error);
-        customToast({ message: 'Error al cargar los datos', type: 'error' }); 
+        console.error('Error 404 al cargar los datos con el FitNexusId: ', fitNexusId, error);
+        customToast({ message: 'Error al cargar tus datos con ese FitNexusId', type: 'error' });
     }
 };
 
@@ -106,7 +106,7 @@ export const fetchExtraData = async (fitNexusId) => {
     try {
         const response = await apiClient.get(`/api/v1/clientes/extra-data/${fitNexusId}`);
         if (response.status === 200) {
-            customToast({ message: 'Datos cargados correctamente', type: 'success' }); 
+            console.log("Datos del usuario cargados correctamente por su FitNexusId: ", fitNexusId);
         }
 
         if(response.status === 400) {
@@ -157,7 +157,7 @@ export const fetchNutriData = async (fitNexusId) => {
         ]);
 
         if (nutriGramosResponse.status === 200 && nutriPorcentajesResponse.status === 200 && nutriKcalResponse.status === 200) {
-            customToast({ message: 'Datos cargados correctamente', type: 'success' });
+            console.log("Datos cargados correctamente con el FitNexusId: ", fitNexusId)
         }
 
         if (nutriGramosResponse.status === 400) {

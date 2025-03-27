@@ -3,3 +3,8 @@ spring:
     init:
       schema-locations: classpath:schema-dev.sql
       mode: always
+#logging:
+  #level:
+    #org:
+      #springframework:
+        #security: DEBUG

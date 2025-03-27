@@ -1,4 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
+import {
+  RefreshCcwIcon,
+} from "lucide-react";
 import EditProfile from "../components/users/user-actions/EditProfile";
 import { PutProfileExtra } from '../components/users/client/PutProfileExtra';
 import ChangePassword from '../components/users/user-actions/ChangePassword';
@@ -16,6 +19,7 @@ import { UserContext } from '../components/global/UserContext';
 import customToast from '../utils/customToast';
 import { fetchMyData } from '../utils/api';
 import ProgressCustom from '../components/common/ProgressCustom';
+import { Button } from '../components_ui/ui/button';
 
 export function Settings () {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
@@ -30,6 +34,10 @@ export function Settings () {
     fitNexusId: user.fitNexusId || mockClients[0].fitNexusId,
   });
 
+  useEffect(() => {
+    loadData();
+  }, []); // Llama a loadData solo al montar el componente
+
   const objetivoMap = {
     PERDER_GRASA: "Perder grasa",
     GANAR_MUSCULO: "Ganar músculo"
@@ -40,9 +48,9 @@ export function Settings () {
     try {
       const myData = await fetchMyData(fitNexusId);
         if (myData !== null) {
-          console.log("Datos del usuario: ", myData);
+          console.log("Datos del usuario: ", JSON.stringify(myData));
           setData(myData);
-          customToast({ message: "Datos cargados correctamente", type: "success" });
+          console.log("Datos del usuario cargados correctamente por su FitNexusId: ", fitNexusId);
         } else {
           console.log("Datos del usuario (null): ", myData);
           customToast({ message: "Hubo un error al cargar los datos de cliente", type: "error" });
@@ -58,10 +66,6 @@ export function Settings () {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    loadData();
-  }, []); // Llama a loadData solo al montar el componente
 
   const renderSection = () => {
     switch (selectedSection) {
@@ -94,8 +98,12 @@ export function Settings () {
                 </div>
               </div>
             </CardContent>
-            <CardFooter className="border-t px-6 py-4">
+            <CardFooter className="border-t px-6 py-4 flex justify-between items-center">
               <EditProfile />
+              <Button onClick={() => loadData()} className="ml-4">
+                <RefreshCcwIcon className="h-3.5 w-3.5 mr-2" />
+                Refrescar datos
+              </Button>
             </CardFooter>
           </Card>
         );

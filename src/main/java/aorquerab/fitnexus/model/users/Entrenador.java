@@ -8,8 +8,6 @@ import aorquerab.fitnexus.model.enumerator.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,8 +23,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "entrenador")
 public class Entrenador {
-
-    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_log_gen")
@@ -46,10 +42,6 @@ public class Entrenador {
     @Enumerated(EnumType.STRING)
     private Role role;
     private LocalDate usuarioDesde;
-
-    public void setPassword (String password) {
-        this.password = PASSWORD_ENCODER.encode(password);
-    }
 
     @Builder.Default
     @OneToMany(mappedBy = "entrenador", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

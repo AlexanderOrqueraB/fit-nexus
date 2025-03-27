@@ -26,7 +26,7 @@ const onSubmit = (e) => {
 
   console.log('Eliminando la rutina: ', data.nombreRutina);
 
-  apiClient.delete(`/api/v1/rutinas/${routineData.nombreEjercicio}`)
+  const response = apiClient.delete(`/api/v1/rutinas/${routineData.nombreEjercicio}`)
       .then(response => {
           console.log('Respuesta del servidor:', response.data);
           console.log('Status: ', response.status);

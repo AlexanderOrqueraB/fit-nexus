@@ -189,7 +189,7 @@ export function WorkoutBuilder() {
                     </Button>
                     <div className="ml-auto">
                       <Button onClick={() => loadData()}>
-                        <RefreshCwIcon className="h-3.5 w-3.5" />
+                        <RefreshCwIcon className="h-3.5 w-3.5 mr-2" />
                           Refrescar datos
                       </Button>
                     </div>
@@ -199,7 +199,7 @@ export function WorkoutBuilder() {
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm" className="h-8 gap-1">
-                        <ListFilter className="h-3.5 w-3.5" />
+                        <ListFilter className="h-3.5 w-3.5 mr-2" />
                         <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                           Filtro
                         </span>

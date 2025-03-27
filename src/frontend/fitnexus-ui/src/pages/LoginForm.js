@@ -73,8 +73,7 @@ export function LoginForm() {
     } else {
         console.log("Datos de login: ", userData);
 
-        apiClient
-          .post("/api/v1/login", userData)
+        const response = apiClient.post("/api/v1/login", userData)
           .then((response) => {
             console.log("Respuesta del servidor: ", response.data);
             console.log("Status: ", response.status);
@@ -116,8 +115,8 @@ export function LoginForm() {
             }
         })
           .catch((error) => {
-          console.error("Error en la autenticación: ", error);
-          customToast({ message: "Error en la autenticacion", type: "error" });
+          console.error("Login erróneo. No se ha encontrado ningún usuario con los datos introducidos: ", error);
+          customToast({ message: "No se ha encontrado ningún usuario con los datos introducidos", type: "error" });
         });
       }
   };

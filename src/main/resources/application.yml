@@ -35,3 +35,10 @@ springdoc:
 #logging:
 #  level:
 #    com.fasterxml.jackson: DEBUG
+
+#Para logs de security
+#logging:
+  #level:
+    #org:
+      #springframework:
+        #security: DEBUG

@@ -49,12 +49,18 @@ export function ChangePassword() {
     console.log('Datos de registro: ', userData);
 
     try {
-      const response = await apiClient.put(`/api/v1/user/password/${fitNexusId}`, userData);
+      const response = apiClient.put(`/api/v1/user/password/${fitNexusId}`, userData);
       if (response.status === 200) {
         customToast({ message: "Contraseña cambiada correctamente", type: "success" });
       }
       if (response.status === 401) {
         customToast({ message: "Contraseña actual incorrecta", type: "warning" });
+      }
+      if (response.status === 404) {
+        customToast({ message: "Usuario no encontrado", type: "warning" });
+      }
+      if (response.status === 400) {
+        customToast({ message: "Solicitud incorrecta", type: "warning" });
       }
       if (response.status === 500) {
         customToast({ message: "Error al cambiar la contraseña", type: "error" });
@@ -112,7 +118,7 @@ export function ChangePassword() {
           </div>
           <div className="grid grid-cols-2 items-center gap-4">
             <Label htmlFor="confirmaPassword" className="text-center">
-              Confirma tu contraseña
+              Confirma la contraseña
             </Label>
             <InputPassword
               id="confirmaPassword"
