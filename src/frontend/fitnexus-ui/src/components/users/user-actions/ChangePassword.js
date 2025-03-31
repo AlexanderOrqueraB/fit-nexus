@@ -49,7 +49,7 @@ export function ChangePassword() {
     console.log('Datos de registro: ', userData);
 
     try {
-      const response = apiClient.put(`/api/v1/user/password/${fitNexusId}`, userData);
+      const response = await apiClient.put(`/api/v1/user/password/${fitNexusId}`, userData);
       if (response.status === 200) {
         customToast({ message: "Contraseña cambiada correctamente", type: "success" });
       }

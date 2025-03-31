@@ -17,7 +17,7 @@ import { Label } from '../components_ui/ui/label';
 import { mockClients } from '../mocks/mockData';
 import { UserContext } from '../components/global/UserContext';
 import customToast from '../utils/customToast';
-import { fetchMyData } from '../utils/api';
+import { fetchMyData, fetchExtraData } from '../utils/api';
 import ProgressCustom from '../components/common/ProgressCustom';
 import { Button } from '../components_ui/ui/button';
 
@@ -27,6 +27,7 @@ export function Settings () {
 
   const [selectedSection, setSelectedSection] = useState("general");
   const [loading, setLoading] = useState(true);
+
   const [data, setData] = useState({
     nombre: user.nombre || mockClients[0].nombre,
     apellido: user.apellido || mockClients[0].apellido,
@@ -34,8 +35,18 @@ export function Settings () {
     fitNexusId: user.fitNexusId || mockClients[0].fitNexusId,
   });
 
+  const [dataExtra, setDataExtra] = useState({
+    objetivo: user.objetivo || mockClients[0].objetivo,
+    genero: user.genero || mockClients[0].genero,
+    frecuenciaEjercicioSemanal: user.frecuenciaEjercicioSemanal || mockClients[0].frecuenciaEjercicioSemanal,
+    edad: user.edad || mockClients[0].edad,
+    peso: user.peso || mockClients[0].peso,
+    altura: user.altura || mockClients[0].altura
+  });
+
   useEffect(() => {
     loadData();
+    loadExtraData();
   }, []); // Llama a loadData solo al montar el componente
 
   const objetivoMap = {
@@ -46,6 +57,7 @@ export function Settings () {
   const loadData = async () => {
     setLoading(true); 
     try {
+      //cargamos datos iniciales
       const myData = await fetchMyData(fitNexusId);
         if (myData !== null) {
           console.log("Datos del usuario: ", JSON.stringify(myData));
@@ -66,6 +78,31 @@ export function Settings () {
       setLoading(false);
     }
   };
+
+    const loadExtraData = async () => {
+      setLoading(true);
+      try {
+        //cargamos datos extra
+        const myExtraData = await fetchExtraData(fitNexusId);
+            if (myExtraData !== null) {
+              console.log("Datos extra del usuario: ", JSON.stringify(myExtraData));
+              setData(myExtraData);
+              console.log("Datos extra del usuario cargados correctamente por su FitNexusId: ", fitNexusId);
+            } else {
+              console.log("Datos extra del usuario (null): ", myExtraData);
+              customToast({ message: "Hubo un error al cargar los datos extra de cliente", type: "error" });
+            }
+
+      } catch (error) {
+        console.error("Error al cargar datos:", error);
+        customToast({
+          message: "Hubo un error al cargar los datos de cliente",
+          type: "error",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
 
   const renderSection = () => {
     switch (selectedSection) {
@@ -99,7 +136,7 @@ export function Settings () {
               </div>
             </CardContent>
             <CardFooter className="border-t px-6 py-4 flex justify-between items-center">
-              <EditProfile />
+              <EditProfile data={data} reloadData={loadData} />
               <Button onClick={() => loadData()} className="ml-4">
                 <RefreshCcwIcon className="h-3.5 w-3.5 mr-2" />
                 Refrescar datos
@@ -152,7 +189,7 @@ export function Settings () {
               </div>
             </CardContent>
             <CardFooter className="border-t px-6 py-4">
-              <PutProfileExtra />
+              <PutProfileExtra data={dataExtra} reloadData={loadExtraData}/>
             </CardFooter>
           </Card>
         );

@@ -1,8 +1,8 @@
 export const mockClients = [
     {
-        "nombre": "Luke",
-        "apellido": "Skywalker",
-        "email": "luke@skywalker.com",
+        "nombre": "NombreTest",
+        "apellido": "ApellidoTest",
+        "email": "nombre@apellido.com",
         "fitNexusId": "123456789",
         "objetivo": "PERDER_GRASA",
         "genero": "HOMBRE",
@@ -13,9 +13,9 @@ export const mockClients = [
         "clienteDesde": "2023-07-12",
     },
     {
-        "nombre": "Leia",
-        "apellido": "Skywalker",
-        "email": "leia@skywalker.com",
+        "nombre": "NombreTest2",
+        "apellido": "ApellidoTest2",
+        "email": "nombre@apellido.com",
         "fitNexusId": "987654321",
         "objetivo": "GANAR_MUSCULO",
         "genero": "MUJER",
@@ -26,9 +26,9 @@ export const mockClients = [
         "clienteDesde": "2023-07-12",
     },
     {
-      "nombre": "Han Solo Data1",
-      "apellido": "Skywalker",
-      "email": "leia@skywalker.com",
+      "nombre": "NombreTest3",
+      "apellido": "ApellidoTest3",
+      "email": "nombre@apellido.com",
       "fitNexusId": "13579",
       "clienteDesde": "2023-07-12",
   }

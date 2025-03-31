@@ -21,41 +21,26 @@ import {apiClient} from "../../../utils/client";
 import { UserContext } from "../../global/UserContext";
 import { GUARDAR_MENSAJE } from "../../../utils/env";
 
-export function EditProfile () {
+export function EditProfile ({ data, reloadData }) {
 
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
   const { fitNexusId } = user; // Desestructurar el objeto user
 
-  const [data, setData] = useState([]);
-
-  const loadData = async () => {
-      try {
-        const userData = await fetchMyData(fitNexusId);
-        if (userData != null) {
-            setData(userData);
-            console.log("Datos cargados correctamente")
-        } else if (userData == null) {
-            console.log("Ha habido un problema cargando los datos")
-        }
-      } catch (error) {
-        console.error("Error al cargar datos:", error);
-        customToast({
-          message: "Hubo un error al cargar los datos de cliente",
-          type: "error",
-        });
-      }
-    };
-  
-  useEffect(() => {
-    loadData();
-  }, []); // Llama a loadData solo al montar el componente
-
   const [myData, setMyData] = useState({
-    nombre: '',
-    apellido: '',
-    email: '',
-    fitNexusId: '',
-  });
+      nombre: data?.nombre || "",
+      apellido: data?.apellido || "",
+      email: data?.email || "",
+      fitNexusId: data?.fitNexusId || "",
+    });
+
+  useEffect(() => {
+    setMyData({
+      nombre: data?.nombre || "",
+      apellido: data?.apellido || "",
+      email: data?.email || "",
+      fitNexusId: data?.fitNexusId || "",
+    });
+  }, [data]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,7 +56,7 @@ export function EditProfile () {
       nombre: myData.nombre,
       apellido: myData.apellido,
       email: myData.email,
-		};
+	};
 
     console.log('Datos del usuario: ', JSON.stringify(userData));
 
@@ -111,8 +96,7 @@ export function EditProfile () {
             <Input
               id="nombre"
               name="nombre"
-              value={myData.nombre|| data.nombre}
-              placeholder={data.nombre || mockClients[0].nombre}
+              value={myData.nombre}
               onChange={handleChange}
               className="col-span-3"
             />
@@ -124,8 +108,7 @@ export function EditProfile () {
             <Input
               id="apellido"
               name="apellido"
-              value={myData.apellido || data.apellido}
-              placeholder={data.apellido || mockClients[0].apellido}
+              value={myData.apellido}
               onChange={handleChange}
               className="col-span-3"
             />
@@ -137,8 +120,7 @@ export function EditProfile () {
               <Input
                 id="email"
                 name="email"
-                value={myData.email || data.email}
-                placeholder={data.email || mockClients[0].email}
+                value={myData.email}
                 onChange={handleChange}
                 className="col-span-3"
               />
@@ -149,7 +131,7 @@ export function EditProfile () {
               </Label>
               <Input
               id="fitNexusId"
-              placeholder={data?.fitNexusId || mockClients[0].fitNexusId}
+              value={myData?.fitNexusId || mockClients[0].fitNexusId}
               className="col-span-3"
               disabled
               />

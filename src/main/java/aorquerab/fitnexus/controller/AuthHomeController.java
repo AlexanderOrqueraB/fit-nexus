@@ -265,8 +265,7 @@ public class AuthHomeController {
     }
 
     @PutMapping("api/v1/data/{fitNexusId}")
-    public ResponseEntity<DatosUsuarioDTO> actualizarMisDatosPorFitNexusId (
-                                                                @PathVariable String fitNexusId,
+    public ResponseEntity<DatosUsuarioDTO> actualizarMisDatosPorFitNexusId (@PathVariable String fitNexusId,
                                                                 @RequestBody DatosUsuarioDTO datosUsuarioDTO) {
         log.info("Ejecutando actualizarMisDatosPorFitNexusId con este fitNexusId: {}", fitNexusId);
         log.info("Datos recibidos: {}", datosUsuarioDTO);
@@ -281,16 +280,19 @@ public class AuthHomeController {
             }
 
             if(clienteOptional.isPresent()) {
+                log.info("Cliente a actualizar: {}", clienteOptional);
                 Cliente cliente = clienteOptional.get();
-                //Actualizas solo los campos enviados (distintos de null)
-                if(datosUsuarioDTO.getNombre() != null)
+
+                if(!datosUsuarioDTO.getNombre().isEmpty())
                     cliente.setNombre(datosUsuarioDTO.getNombre());
 
-                if(datosUsuarioDTO.getApellido() != null)
+                if(!datosUsuarioDTO.getApellido().isEmpty())
                     cliente.setApellido(datosUsuarioDTO.getApellido());
 
-                if(datosUsuarioDTO.getEmail() != null)
+                if(datosUsuarioDTO.getEmail().isEmpty())
                     cliente.setEmail(datosUsuarioDTO.getEmail());
+
+                log.info("Cliente actualizado tras el mappeo: {}", cliente);
 
                 clienteRepository.save(cliente);
                 datosUsuarioActualizado = DatosUsuarioDTO.builder()
@@ -299,16 +301,18 @@ public class AuthHomeController {
                     .email(cliente.getEmail())
                     .build();
             } else {
+                log.info("Entrenador a actualizar: {}", entrenadorOptional);
                 Entrenador entrenador = entrenadorOptional.get();
                 //Actualizas solo los campos enviados (distintos de null)
-                if(datosUsuarioDTO.getNombre() != null)
+                if(!datosUsuarioDTO.getNombre().isEmpty())
                     entrenador.setNombre(datosUsuarioDTO.getNombre());
 
-                if(datosUsuarioDTO.getApellido() != null)
+                if(!datosUsuarioDTO.getApellido().isEmpty())
                     entrenador.setApellido(datosUsuarioDTO.getApellido());
 
-                if(datosUsuarioDTO.getEmail() != null)
+                if(!datosUsuarioDTO.getEmail().isEmpty())
                     entrenador.setEmail(datosUsuarioDTO.getEmail());
+                log.info("Entrenador actualizado tras el mappeo: {}", entrenador);
 
                 entrenadorRepository.save(entrenador);
                 datosUsuarioActualizado = DatosUsuarioDTO.builder()

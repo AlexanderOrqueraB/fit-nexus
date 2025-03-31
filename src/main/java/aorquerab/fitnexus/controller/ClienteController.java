@@ -120,12 +120,18 @@ public class ClienteController {
         }
 
         cliente.ifPresent(cl -> {
-            cl.setObjetivo(clienteDTORequest.getObjetivo());
-            cl.setGenero(clienteDTORequest.getGenero());
-            cl.setFrecuenciaEjercicioSemanal(clienteDTORequest.getFrecuenciaEjercicioSemanal());
-            cl.setEdad(clienteDTORequest.getEdad());
-            cl.setPeso(clienteDTORequest.getPeso());
-            cl.setAltura(clienteDTORequest.getAltura());
+            if (!clienteDTORequest.getObjetivo().toString().isEmpty())
+                cl.setObjetivo(clienteDTORequest.getObjetivo());
+            if (!clienteDTORequest.getGenero().toString().isEmpty())
+                cl.setGenero(clienteDTORequest.getGenero());
+            if (!clienteDTORequest.getFrecuenciaEjercicioSemanal().toString().isEmpty())
+                cl.setFrecuenciaEjercicioSemanal(clienteDTORequest.getFrecuenciaEjercicioSemanal());
+            if (!clienteDTORequest.getEdad().toString().isEmpty())
+                cl.setEdad(clienteDTORequest.getEdad());
+            if (!clienteDTORequest.getPeso().toString().isEmpty())
+                cl.setPeso(clienteDTORequest.getPeso());
+            if (!clienteDTORequest.getAltura().toString().isEmpty())
+                cl.setAltura(clienteDTORequest.getAltura());
         });
         log.info("Cliente creado tras el mappeo: {}", cliente);
         cliente.ifPresent(clienteRepository::save);

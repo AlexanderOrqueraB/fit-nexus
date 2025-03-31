@@ -25,59 +25,38 @@ import {apiClient} from "../../../utils/client";
 import { UserContext } from "../../global/UserContext";
 import { GUARDAR_MENSAJE } from "../../../utils/env";
 
-export function PutProfileExtra() {
+export function PutProfileExtra ({ data, reloadData }) {
 
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
   const { fitNexusId } = user; // Desestructurar el objeto user
 
   const [clients, setClients] = useState([]);
-  const [extraData, setExtraData] = useState(null);
 
-	const loadData = async () => {
-		try {
-		// Ejecutar todas las solicitudes en paralelo
-        const { clients } = await fetchClientData(fitNexusId);
+  const [extraData, setExtraData] = useState({
+        objetivo: data?.objetivo || "",
+        genero: data?.genero || "",
+        frecuenciaEjercicioSemanal: data?.frecuenciaEjercicioSemanal || "",
+        edad: data?.edad || "",
+        peso: data?.peso || "",
+        altura: data?.altura || "",
+    });
 
-		// Actualizar los estados con los datos obtenidos
-		setClients(clients);
-
-		} catch (error) {
-		  customToast({message : "Hubo un error al cargar los datos de cliente", type : "error"});
-		}
-	};
-
-  const fetchExtraData = async (fitNexusId) => {
-      try {
-        //uncomment this lines to use backend data
-        const data = await fetchExtraData(fitNexusId);
-        setExtraData(data);
-
-        //uncomment this lines to use mock data
-        //const client = mockClients.find(client => client.fitNexusId === fitNexusId);
-        //setExtraData(client ? client : null);
-      } catch (error) {
-        setExtraData(null);
-      }
-    };
-	
 	useEffect(() => {
-    loadData();
-    fetchExtraData(fitNexusId);
-	}, []); // Llama a loadData solo al montar el componente
- 	
-  const [data, setData] = useState({
-    objetivo: '',
-    genero: '',
-    frecuenciaEjercicioSemanal: '',
-    edad: '',
-    peso: '',
-    altura: '',
-  });
+        setExtraData({
+            objetivo: data?.objetivo || "",
+            genero: data?.genero || "",
+            frecuenciaEjercicioSemanal: data?.frecuenciaEjercicioSemanal || "",
+            edad: data?.edad || "",
+            peso: data?.peso || "",
+            altura: data?.altura || "",
+            });
+	}, [extraData]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setData({
-      ...data,
+    setExtraData({
+      ...extraData,
       [name]: value,
     });
   };
@@ -85,15 +64,15 @@ export function PutProfileExtra() {
   const onSubmit = (e) => {
     e.preventDefault();
     const userData = {
-      objetivo: data.objetivo,
-      genero: data.genero,
-      frecuenciaEjercicioSemanal: data.frecuenciaEjercicioSemanal,
-      edad: data.edad,
-      peso: data.peso,
-      altura: data.altura,
+      objetivo: extraData.objetivo,
+      genero: extraData.genero,
+      frecuenciaEjercicioSemanal: extraData.frecuenciaEjercicioSemanal,
+      edad: extraData.edad,
+      peso: extraData.peso,
+      altura: extraData.altura,
     };
 
-    console.log('Datos extra del usuario: ', userData);
+    console.log('Datos extra del usuario: ', JSON.stringify(userData));
 
     apiClient
       .put(`/api/v1/clientes/${fitNexusId}`, userData)
@@ -135,28 +114,28 @@ export function PutProfileExtra() {
               Objetivo
             </Label>
             <Select name="objetivo" 
-							onValueChange={(value) => setData({ ...data, objetivo: value})}>
-								<SelectTrigger className="col-span-3">
-									<SelectValue placeholder={data?.objetivo || mockClients[0].objetivo} />
-								</SelectTrigger>
-								<SelectContent>
-										<SelectItem  value="PERDER_GRASA" required>
-											Perder grasa
-										</SelectItem>
-										<SelectItem  value="GANAR_MUSCULO" required>
-											Ganar músculo
-										</SelectItem>
-								</SelectContent>
-							</Select>
+            onValueChange={(value) => setExtraData({ ...extraData, objetivo: value})}>
+                <SelectTrigger className="col-span-3">
+                    <SelectValue value={myData.objetivo}  />
+                </SelectTrigger>
+                <SelectContent>
+                        <SelectItem  value="PERDER_GRASA" required>
+                            Perder grasa
+                        </SelectItem>
+                        <SelectItem  value="GANAR_MUSCULO" required>
+                            Ganar músculo
+                        </SelectItem>
+                </SelectContent>
+            </Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="apellido" className="text-right">
               Genero
             </Label>
             <Select name="genero" 
-              onValueChange={(value) => setData({ ...data, genero: value})}>
+              onValueChange={(value) => setExtraData({ ...extraData, genero: value})}>
               <SelectTrigger className="col-span-3">
-                <SelectValue placeholder={data?.genero || mockClients[0].genero} />
+                <SelectValue value={myData.genero} />
               </SelectTrigger>
               <SelectContent>
                   <SelectItem  value="MUJER" required>
@@ -173,9 +152,9 @@ export function PutProfileExtra() {
                 Frecuencia Ejercicio
               </Label>
               <Select name="frecuencia" 
-                  onValueChange={(value) => setData({ ...data, frecuencia: value})}>
+                  onValueChange={(value) => setExtraData({ ...extraData, frecuencia: value})}>
                   <SelectTrigger className="col-span-3">
-                    <SelectValue placeholder={data?.frecuenciaEjercicioSemanal || mockClients[0].frecuenciaEjercicioSemanal} />
+                    <SelectValue value={myData.frecuenciaEjercicioSemanal} />
                   </SelectTrigger>
                   <SelectContent>
                       <SelectItem  value="POCO_NADA" required>
@@ -202,7 +181,7 @@ export function PutProfileExtra() {
               </Label>
               <Input
                 id="text"
-                placeholder={data?.edad || mockClients[0].edad}
+                value={extraData.edad}
                 onChange={handleChange}
                 className="col-span-3"
               />
@@ -213,7 +192,7 @@ export function PutProfileExtra() {
               </Label>
               <Input
                 id="text"
-                placeholder={data?.peso || mockClients[0].peso}
+                value={extraData.peso}
                 onChange={handleChange}
                 className="col-span-3"
               />
@@ -224,7 +203,7 @@ export function PutProfileExtra() {
               </Label>
               <Input
                 id="text"
-                placeholder={data?.altura || mockClients[0].altura}
+                value={extraData.altura}
                 onChange={handleChange}
                 className="col-span-3"
               />
