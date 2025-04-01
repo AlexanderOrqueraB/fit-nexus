@@ -52,6 +52,19 @@ export function EditProfile ({ data, reloadData }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    if (!myData.nombre.trim()) {
+        customToast({ message: "El campo 'Nombre' es obligatorio", type: "warning" });
+        return;
+    }
+    if (!myData.apellido.trim()) {
+        customToast({ message: "El campo 'Apellido' es obligatorio", type: "warning" });
+        return;
+    }
+    if (!myData.email.trim()) {
+            customToast({ message: "El campo 'Email' es obligatorio", type: "warning" });
+            return;
+        }
+
     const userData = {
       nombre: myData.nombre,
       apellido: myData.apellido,
@@ -97,6 +110,7 @@ export function EditProfile ({ data, reloadData }) {
               id="nombre"
               name="nombre"
               value={myData.nombre}
+              required="required"
               onChange={handleChange}
               className="col-span-3"
             />
@@ -109,6 +123,7 @@ export function EditProfile ({ data, reloadData }) {
               id="apellido"
               name="apellido"
               value={myData.apellido}
+              required="required"
               onChange={handleChange}
               className="col-span-3"
             />
@@ -121,6 +136,7 @@ export function EditProfile ({ data, reloadData }) {
                 id="email"
                 name="email"
                 value={myData.email}
+                required="required"
                 onChange={handleChange}
                 className="col-span-3"
               />

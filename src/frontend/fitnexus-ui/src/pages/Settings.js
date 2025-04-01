@@ -27,27 +27,25 @@ export function Settings () {
 
   const [selectedSection, setSelectedSection] = useState("general");
   const [loading, setLoading] = useState(true);
-
-  const [data, setData] = useState({
-    nombre: user.nombre || mockClients[0].nombre,
-    apellido: user.apellido || mockClients[0].apellido,
-    email: user.email || mockClients[0].email,
-    fitNexusId: user.fitNexusId || mockClients[0].fitNexusId,
-  });
-
-  const [dataExtra, setDataExtra] = useState({
-    objetivo: user.objetivo || mockClients[0].objetivo,
-    genero: user.genero || mockClients[0].genero,
-    frecuenciaEjercicioSemanal: user.frecuenciaEjercicioSemanal || mockClients[0].frecuenciaEjercicioSemanal,
-    edad: user.edad || mockClients[0].edad,
-    peso: user.peso || mockClients[0].peso,
-    altura: user.altura || mockClients[0].altura
-  });
+  const [dataLoading, setDataLoading] = useState(true);
+  const [dataExtraLoading, setDataExtraLoading] = useState(true);
+  const [data, setData] = useState(null);
+  const [dataExtra, setDataExtra] = useState(null);
 
   useEffect(() => {
     loadData();
-    loadExtraData();
-  }, []); // Llama a loadData solo al montar el componente
+    if (role == "USER") {
+        loadExtraData();
+    }
+  }, []);
+
+    useEffect(() => {
+        if (selectedSection === "general") {
+            loadData();
+        } else if (selectedSection === "advanced" && role === "USER") {
+            loadExtraData();
+        }
+    }, [selectedSection]);
 
   const objetivoMap = {
     PERDER_GRASA: "Perder grasa",
@@ -55,7 +53,7 @@ export function Settings () {
   };
 
   const loadData = async () => {
-    setLoading(true); 
+    setDataLoading(true);
     try {
       //cargamos datos iniciales
       const myData = await fetchMyData(fitNexusId);
@@ -76,17 +74,19 @@ export function Settings () {
       });
     } finally {
       setLoading(false);
+      setDataLoading(false);
     }
   };
 
     const loadExtraData = async () => {
       setLoading(true);
+      setDataExtraLoading(true);
       try {
         //cargamos datos extra
         const myExtraData = await fetchExtraData(fitNexusId);
             if (myExtraData !== null) {
               console.log("Datos extra del usuario: ", JSON.stringify(myExtraData));
-              setData(myExtraData);
+              setDataExtra(myExtraData);
               console.log("Datos extra del usuario cargados correctamente por su FitNexusId: ", fitNexusId);
             } else {
               console.log("Datos extra del usuario (null): ", myExtraData);
@@ -101,12 +101,16 @@ export function Settings () {
         });
       } finally {
         setLoading(false);
+        setDataExtraLoading(false);
       }
     };
 
   const renderSection = () => {
     switch (selectedSection) {
       case "general":
+      if (dataLoading) {
+        return <ProgressCustom />;
+      }
         return (
           <Card>
             <CardHeader>
@@ -120,10 +124,10 @@ export function Settings () {
               <div className="grid w-full items-center gap-4">
                 <div className="space-y-2">
                   {[
-                    { label: "Nombre", value: data?.nombre || mockClients[0].nombre },
-                    { label: "Apellido", value: data?.apellido || mockClients[0].apellido },
-                    { label: "Email", value: data?.email || mockClients[0].email },
-                    { label: "FitNexusId", value: data?.fitNexusId || mockClients[0].fitNexusId },
+                    { label: "Nombre", value: data?.nombre || "Cargando..." },
+                    { label: "Apellido", value: data?.apellido || "Cargando..." },
+                    { label: "Email", value: data?.email || "Cargando..." },
+                    { label: "FitNexusId", value: data?.fitNexusId || "Cargando..." },
                   ].map((item, index) => (
                     <div key={index} className="flex items-center">
                       <Label className="w-1/4">{item.label}</Label>
@@ -159,6 +163,16 @@ export function Settings () {
           </Card>
         );
       case "advanced":
+      if (dataExtraLoading) {
+        return <ProgressCustom />;
+      }
+      if (!dataExtra) {
+          customToast({
+            message: "No se pudieron cargar tus datos extra. Intenta refrescar.",
+            type: "error",
+          });
+          return null;
+      }
         return (
           <Card>
             <CardHeader>
@@ -171,12 +185,12 @@ export function Settings () {
               <div className="grid w-full items-center gap-4">
                 <div className="space-y-2">
                   {[
-                    { label: "Objetivo", value: data?.objetivo || mockClients[0].objetivo },
-                    { label: "Genero", value: data?.genero || mockClients[0].genero },
-                    { label: "Frecuencia Ejercicio", value: data?.frecuenciaEjercicioSemanal || mockClients[0].frecuenciaEjercicioSemanal },
-                    { label: "Edad", value: data?.edad || mockClients[0].edad },
-                    { label: "Peso", value: data?.peso || mockClients[0].peso },
-                    { label: "Altura", value: data?.altura || mockClients[0].altura },
+                    { label: "Objetivo", value: dataExtra?.objetivo || "Cargando..." },
+                    { label: "Genero", value: dataExtra?.genero || "Cargando..."},
+                    { label: "Frecuencia Ejercicio", value: dataExtra?.frecuenciaEjercicioSemanal || "Cargando..." },
+                    { label: "Edad", value: dataExtra?.edad || "Cargando..." },
+                    { label: "Peso", value: dataExtra?.peso || "Cargando..." },
+                    { label: "Altura", value: dataExtra?.altura || "Cargando..." },
                   ].map((item, index) => (
                     <div key={index} className="flex items-center">
                       <Label className="w-1/4">{item.label}</Label>
@@ -190,6 +204,10 @@ export function Settings () {
             </CardContent>
             <CardFooter className="border-t px-6 py-4">
               <PutProfileExtra data={dataExtra} reloadData={loadExtraData}/>
+              <Button onClick={() => loadExtraData()} className="ml-4">
+                    <RefreshCcwIcon className="h-3.5 w-3.5 mr-2" />
+                    Refrescar datos
+              </Button>
             </CardFooter>
           </Card>
         );

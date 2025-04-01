@@ -63,6 +63,19 @@ export function PutProfileExtra ({ data, reloadData }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    if (!extraData.edad.trim()) {
+        customToast({ message: "El campo 'Edad' es obligatorio", type: "warning" });
+        return;
+    }
+    if (!extraData.peso.trim()) {
+        customToast({ message: "El campo 'Peso' es obligatorio", type: "warning" });
+        return;
+    }
+    if (!extraData.altura.trim()) {
+        customToast({ message: "El campo 'Altura' es obligatorio", type: "warning" });
+        return;
+    }
+
     const userData = {
       objetivo: extraData.objetivo,
       genero: extraData.genero,
@@ -116,7 +129,7 @@ export function PutProfileExtra ({ data, reloadData }) {
             <Select name="objetivo" 
             onValueChange={(value) => setExtraData({ ...extraData, objetivo: value})}>
                 <SelectTrigger className="col-span-3">
-                    <SelectValue value={myData.objetivo}  />
+                    <SelectValue value={data.objetivo}  />
                 </SelectTrigger>
                 <SelectContent>
                         <SelectItem  value="PERDER_GRASA" required>
@@ -135,7 +148,7 @@ export function PutProfileExtra ({ data, reloadData }) {
             <Select name="genero" 
               onValueChange={(value) => setExtraData({ ...extraData, genero: value})}>
               <SelectTrigger className="col-span-3">
-                <SelectValue value={myData.genero} />
+                <SelectValue value={data.genero} />
               </SelectTrigger>
               <SelectContent>
                   <SelectItem  value="MUJER" required>
@@ -154,7 +167,7 @@ export function PutProfileExtra ({ data, reloadData }) {
               <Select name="frecuencia" 
                   onValueChange={(value) => setExtraData({ ...extraData, frecuencia: value})}>
                   <SelectTrigger className="col-span-3">
-                    <SelectValue value={myData.frecuenciaEjercicioSemanal} />
+                    <SelectValue value={data.frecuenciaEjercicioSemanal} />
                   </SelectTrigger>
                   <SelectContent>
                       <SelectItem  value="POCO_NADA" required>
@@ -181,7 +194,7 @@ export function PutProfileExtra ({ data, reloadData }) {
               </Label>
               <Input
                 id="text"
-                value={extraData.edad}
+                value={data.edad}
                 onChange={handleChange}
                 className="col-span-3"
               />
@@ -192,7 +205,7 @@ export function PutProfileExtra ({ data, reloadData }) {
               </Label>
               <Input
                 id="text"
-                value={extraData.peso}
+                value={data.peso}
                 onChange={handleChange}
                 className="col-span-3"
               />
@@ -203,7 +216,7 @@ export function PutProfileExtra ({ data, reloadData }) {
               </Label>
               <Input
                 id="text"
-                value={extraData.altura}
+                value={data.altura}
                 onChange={handleChange}
                 className="col-span-3"
               />
