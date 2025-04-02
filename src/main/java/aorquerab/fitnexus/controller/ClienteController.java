@@ -153,19 +153,27 @@ public class ClienteController {
                 if (clienteOptional.isEmpty()) {
                     log.error("Cliente no encontrado con fitNexusId: {}", fitNexusId);
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente no encontrado");
+                }else {
+                    log.info("Cliente a actualizar: {}", clienteOptional);
+                    Cliente cliente = clienteOptional.get();
+
+                    if(clienteDTORequest.getObjetivo() != null)
+                        cliente.setObjetivo(clienteDTORequest.getObjetivo());
+                    if(clienteDTORequest.getGenero() != null)
+                        cliente.setGenero(clienteDTORequest.getGenero());
+                    if(clienteDTORequest.getFrecuenciaEjercicioSemanal() != null)
+                        cliente.setFrecuenciaEjercicioSemanal(clienteDTORequest.getFrecuenciaEjercicioSemanal());
+                    if(clienteDTORequest.getEdad() != null)
+                        cliente.setEdad(clienteDTORequest.getEdad());
+                    if(clienteDTORequest.getPeso() != null)
+                        cliente.setPeso(clienteDTORequest.getPeso());
+                    if(clienteDTORequest.getAltura() != null)
+                        cliente.setAltura(clienteDTORequest.getAltura());
+                    clienteRepository.save(cliente);
+                    log.info("Cliente actualizado correctamente: {}", cliente);
+                    return ResponseEntity.status(HttpStatus.OK).body("Cliente actualizado correctamente");
                 }
-        
-                Cliente cliente = clienteOptional.get();
-                cliente.setObjetivo(clienteDTORequest.getObjetivo());
-                cliente.setGenero(clienteDTORequest.getGenero());
-                cliente.setFrecuenciaEjercicioSemanal(clienteDTORequest.getFrecuenciaEjercicioSemanal());
-                cliente.setEdad(clienteDTORequest.getEdad());
-                cliente.setPeso(clienteDTORequest.getPeso());
-                cliente.setAltura(clienteDTORequest.getAltura());
-        
-                clienteRepository.save(cliente);
-                log.info("Cliente actualizado correctamente: {}", cliente);
-                return ResponseEntity.status(HttpStatus.OK).body("Cliente actualizado correctamente");
+
             }
         } catch (Exception e) {
             log.error("Error al actualizar cliente", e);

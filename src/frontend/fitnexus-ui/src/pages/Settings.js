@@ -14,7 +14,6 @@ import {
   CardTitle,
 } from "../components_ui/ui/card";
 import { Label } from '../components_ui/ui/label';
-import { mockClients } from '../mocks/mockData';
 import { UserContext } from '../components/global/UserContext';
 import customToast from '../utils/customToast';
 import { fetchMyData, fetchExtraData } from '../utils/api';
@@ -50,6 +49,19 @@ export function Settings () {
   const objetivoMap = {
     PERDER_GRASA: "Perder grasa",
     GANAR_MUSCULO: "Ganar músculo"
+  };
+
+  const generoMap = {
+      HOMBRE: "Hombre",
+      MUJER: "Mujer"
+    };
+
+  const frecuenciaEjercicioMap = {
+        POCO_NADA: "Poco o nada",
+        LIGERO: "Ligero (1-3 días a la semana)",
+        MODERADO: "Moderado (3-5 días a la semana)",
+        FUERTE: "Fuerte (6-7 días a la semana)",
+        MUY_FUERTE: "Muy fuerte (2 veces al día)"
   };
 
   const loadData = async () => {
@@ -185,9 +197,9 @@ export function Settings () {
               <div className="grid w-full items-center gap-4">
                 <div className="space-y-2">
                   {[
-                    { label: "Objetivo", value: dataExtra?.objetivo || "Cargando..." },
-                    { label: "Genero", value: dataExtra?.genero || "Cargando..."},
-                    { label: "Frecuencia Ejercicio", value: dataExtra?.frecuenciaEjercicioSemanal || "Cargando..." },
+                    { label: "Objetivo", value: objetivoMap[dataExtra?.objetivo] || "Cargando..." },
+                    { label: "Género", value: generoMap[dataExtra?.genero] || "Cargando..."},
+                    { label: "Frecuencia Ejercicio", value: frecuenciaEjercicioMap[dataExtra?.frecuenciaEjercicioSemanal] || "Cargando..." },
                     { label: "Edad", value: dataExtra?.edad || "Cargando..." },
                     { label: "Peso", value: dataExtra?.peso || "Cargando..." },
                     { label: "Altura", value: dataExtra?.altura || "Cargando..." },
@@ -195,7 +207,7 @@ export function Settings () {
                     <div key={index} className="flex items-center">
                       <Label className="w-1/4">{item.label}</Label>
                       <div className="w-3/4 p-2 bg-gray-100 border border-gray-300 rounded-md text-gray-700">
-                      {item.label === "Objetivo" ? objetivoMap[item.value] || item.value : item.value}
+                      {item.value}
                       </div>
                     </div>
                   ))}

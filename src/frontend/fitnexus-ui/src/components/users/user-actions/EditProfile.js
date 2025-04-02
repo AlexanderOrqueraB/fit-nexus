@@ -1,9 +1,6 @@
 import { Button } from "../../../components_ui/ui/button"
 import React, { useState, useEffect, useContext } from "react";
 import {
-  RefreshCcwIcon,
-} from "lucide-react";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -16,7 +13,6 @@ import { Input } from "../../../components_ui/ui/input"
 import { Label } from "../../../components_ui/ui/label"
 import { mockClients } from '../../../mocks/mockData'
 import { customToast } from '../../../utils/customToast'
-import { fetchMyData } from '../../../utils/api';
 import {apiClient} from "../../../utils/client";
 import { UserContext } from "../../global/UserContext";
 import { GUARDAR_MENSAJE } from "../../../utils/env";
@@ -78,6 +74,7 @@ export function EditProfile ({ data, reloadData }) {
       .then((response) => {
         if (response.status === 200) {
           customToast({message : "Perfil actualizado correctamente", type : "success"});
+          reloadData();
         }
     })
       .catch((error) => {

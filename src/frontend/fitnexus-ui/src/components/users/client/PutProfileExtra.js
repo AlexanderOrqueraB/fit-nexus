@@ -18,8 +18,6 @@ import {
   } from "../../../components_ui/ui/select"
 import { Input } from "../../../components_ui/ui/input"
 import { Label } from "../../../components_ui/ui/label"
-import { mockClients } from '../../../mocks/mockData'
-import { fetchClientData } from '../../../utils/api';
 import { customToast } from '../../../utils/customToast'
 import {apiClient} from "../../../utils/client";
 import { UserContext } from "../../global/UserContext";
@@ -29,8 +27,6 @@ export function PutProfileExtra ({ data, reloadData }) {
 
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
   const { fitNexusId } = user; // Desestructurar el objeto user
-
-  const [clients, setClients] = useState([]);
 
   const [extraData, setExtraData] = useState({
         objetivo: data?.objetivo || "",
@@ -50,7 +46,7 @@ export function PutProfileExtra ({ data, reloadData }) {
             peso: data?.peso || "",
             altura: data?.altura || "",
             });
-	}, [extraData]);
+	}, [data]);
 
 
   const handleChange = (e) => {
@@ -63,27 +59,47 @@ export function PutProfileExtra ({ data, reloadData }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (!extraData.edad.trim()) {
+
+    if (Object.keys(userData).length === 0) {
+      customToast({ message: "No hay cambios para guardar", type: "info" });
+      return;
+    }
+
+    if (!extraData.edad.trim() && !data?.edad) {
         customToast({ message: "El campo 'Edad' es obligatorio", type: "warning" });
         return;
     }
-    if (!extraData.peso.trim()) {
+    if (!extraData.peso.trim() && !data?.peso) {
         customToast({ message: "El campo 'Peso' es obligatorio", type: "warning" });
         return;
     }
-    if (!extraData.altura.trim()) {
+    if (!extraData.altura.trim() && !data?.altura) {
         customToast({ message: "El campo 'Altura' es obligatorio", type: "warning" });
         return;
     }
 
     const userData = {
-      objetivo: extraData.objetivo,
-      genero: extraData.genero,
-      frecuenciaEjercicioSemanal: extraData.frecuenciaEjercicioSemanal,
-      edad: extraData.edad,
-      peso: extraData.peso,
-      altura: extraData.altura,
+      objetivo: extraData.objetivo !== data?.objetivo ? extraData.objetivo : undefined,
+      genero: extraData.genero !== data?.genero ? extraData.genero : undefined,
+      frecuenciaEjercicioSemanal:
+        extraData.frecuenciaEjercicioSemanal !== data?.frecuenciaEjercicioSemanal
+          ? extraData.frecuenciaEjercicioSemanal
+          : undefined,
+      edad: extraData.edad !== data?.edad ? extraData.edad : undefined,
+      peso: extraData.peso !== data?.peso ? extraData.peso : undefined,
+      altura: extraData.altura !== data?.altura ? extraData.altura : undefined,
     };
+
+    Object.keys(userData).forEach((key) => {
+      if (userData[key] === undefined) {
+        delete userData[key];
+      }
+    });
+
+    if (Object.keys(userData).length === 0) {
+      customToast({ message: "No hay cambios para guardar", type: "info" });
+      return;
+    }
 
     console.log('Datos extra del usuario: ', JSON.stringify(userData));
 
@@ -91,8 +107,8 @@ export function PutProfileExtra ({ data, reloadData }) {
       .put(`/api/v1/clientes/${fitNexusId}`, userData)
       .then((response) => {
         if (response.status === 200) {
-          console.log("Datos actualizados correctamente:", response.data);
           customToast({message : "Datos actualizados correctamente", type : "success"});
+          reloadData();
         }
         if (response.status === 404) {
           console.log("Cliente no encontrado", response.data);
@@ -126,10 +142,11 @@ export function PutProfileExtra ({ data, reloadData }) {
             <Label htmlFor="objetivo" className="text-right">
               Objetivo
             </Label>
-            <Select name="objetivo" 
+            <Select name="objetivo"
+            value={extraData.objetivo}
             onValueChange={(value) => setExtraData({ ...extraData, objetivo: value})}>
                 <SelectTrigger className="col-span-3">
-                    <SelectValue value={data.objetivo}  />
+                    <SelectValue placeholder="Selecciona un objetivo"  />
                 </SelectTrigger>
                 <SelectContent>
                         <SelectItem  value="PERDER_GRASA" required>
@@ -142,13 +159,14 @@ export function PutProfileExtra ({ data, reloadData }) {
             </Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="apellido" className="text-right">
+            <Label htmlFor="genero" className="text-right">
               Genero
             </Label>
-            <Select name="genero" 
+            <Select name="genero"
+              value={extraData.genero}
               onValueChange={(value) => setExtraData({ ...extraData, genero: value})}>
               <SelectTrigger className="col-span-3">
-                <SelectValue value={data.genero} />
+                <SelectValue placeholder="Selecciona un género" />
               </SelectTrigger>
               <SelectContent>
                   <SelectItem  value="MUJER" required>
@@ -161,13 +179,14 @@ export function PutProfileExtra ({ data, reloadData }) {
             </Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="frecuencia" className="text-right">
+              <Label htmlFor="frecuenciaEjercicioSemanal" className="text-right">
                 Frecuencia Ejercicio
               </Label>
-              <Select name="frecuencia" 
-                  onValueChange={(value) => setExtraData({ ...extraData, frecuencia: value})}>
+              <Select name="frecuenciaEjercicioSemanal"
+              value={extraData.frecuenciaEjercicioSemanal}
+                  onValueChange={(value) => setExtraData({ ...extraData, frecuenciaEjercicioSemanal: value})}>
                   <SelectTrigger className="col-span-3">
-                    <SelectValue value={data.frecuenciaEjercicioSemanal} />
+                    <SelectValue placeholder="Selecciona una frecuencia" />
                   </SelectTrigger>
                   <SelectContent>
                       <SelectItem  value="POCO_NADA" required>
@@ -193,8 +212,9 @@ export function PutProfileExtra ({ data, reloadData }) {
                 Edad
               </Label>
               <Input
-                id="text"
-                value={data.edad}
+                id="edad"
+                name="edad"
+                value={extraData.edad}
                 onChange={handleChange}
                 className="col-span-3"
               />
@@ -204,8 +224,9 @@ export function PutProfileExtra ({ data, reloadData }) {
                 Peso
               </Label>
               <Input
-                id="text"
-                value={data.peso}
+                id="peso"
+                name="peso"
+                value={extraData.peso}
                 onChange={handleChange}
                 className="col-span-3"
               />
@@ -215,8 +236,9 @@ export function PutProfileExtra ({ data, reloadData }) {
                 Altura
               </Label>
               <Input
-                id="text"
-                value={data.altura}
+                id="altura"
+                name="altura"
+                value={extraData.altura}
                 onChange={handleChange}
                 className="col-span-3"
               />
