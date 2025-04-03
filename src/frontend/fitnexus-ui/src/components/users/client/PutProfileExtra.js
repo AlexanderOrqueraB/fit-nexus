@@ -49,16 +49,7 @@ export function PutProfileExtra ({ data, reloadData }) {
       altura: data?.altura ? data.altura.toString() : "",
     });
 
-    if (
-      data && Object.values(data).every((value) => value === null) &&
-      !toastShown.current
-    ) {
-      customToast({
-        message: "No tienes aún datos extra. Por favor, actualiza los campos y guarda los cambios.",
-        type: "info",
-      });
-      toastShown.current = true;
-    }
+
   }, [data]);
 
   const handleChange = (e) => {

@@ -104,7 +104,7 @@ export function Settings () {
               console.log("Datos extra del usuario (null): ", myExtraData);
               setDataExtra(null);
             customToast({
-            message: "No se encontraron datos extra. Por favor, actualiza los campos.",
+            message: "No tienes aún datos extra. Por favor, actualiza tus datos en el apartado: Datos extra",
             type: "info",
           });
       }
@@ -181,13 +181,6 @@ export function Settings () {
       case "advanced":
       if (dataExtraLoading) {
         return <ProgressCustom />;
-      }
-      if (!dataExtra) {
-          customToast({
-            message: "No se pudieron cargar tus datos extra. Intenta refrescar.",
-            type: "error",
-          });
-          return null;
       }
         return (
           <Card>
