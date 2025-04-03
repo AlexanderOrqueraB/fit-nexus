@@ -1,5 +1,5 @@
 import { Button } from "../../../components_ui/ui/button"
-import React, { useState, useEffect, useContext } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import {
   Dialog,
   DialogContent,
@@ -28,26 +28,38 @@ export function PutProfileExtra ({ data, reloadData }) {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
   const { fitNexusId } = user; // Desestructurar el objeto user
 
-  const [extraData, setExtraData] = useState({
+    const [extraData, setExtraData] = useState({
         objetivo: data?.objetivo || "",
         genero: data?.genero || "",
         frecuenciaEjercicioSemanal: data?.frecuenciaEjercicioSemanal || "",
-        edad: data?.edad || "",
-        peso: data?.peso || "",
-        altura: data?.altura || "",
+        edad: data?.edad ? data.edad.toString() : "",
+        peso: data?.peso ? data.peso.toString() : "",
+        altura: data?.altura ? data.altura.toString() : "",
     });
 
-	useEffect(() => {
-        setExtraData({
-            objetivo: data?.objetivo || "",
-            genero: data?.genero || "",
-            frecuenciaEjercicioSemanal: data?.frecuenciaEjercicioSemanal || "",
-            edad: data?.edad || "",
-            peso: data?.peso || "",
-            altura: data?.altura || "",
-            });
-	}, [data]);
+    const toastShown = useRef(false);
 
+  useEffect(() => {
+    setExtraData({
+      objetivo: data?.objetivo || "",
+      genero: data?.genero || "",
+      frecuenciaEjercicioSemanal: data?.frecuenciaEjercicioSemanal || "",
+      edad: data?.edad ? data.edad.toString() : "",
+      peso: data?.peso ? data.peso.toString() : "",
+      altura: data?.altura ? data.altura.toString() : "",
+    });
+
+    if (
+      data && Object.values(data).every((value) => value === null) &&
+      !toastShown.current
+    ) {
+      customToast({
+        message: "No tienes aún datos extra. Por favor, actualiza los campos y guarda los cambios.",
+        type: "info",
+      });
+      toastShown.current = true;
+    }
+  }, [data]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,36 +71,14 @@ export function PutProfileExtra ({ data, reloadData }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
-    if (Object.keys(userData).length === 0) {
-      customToast({ message: "No hay cambios para guardar", type: "info" });
-      return;
-    }
-
-    if (!extraData.edad.trim() && !data?.edad) {
-        customToast({ message: "El campo 'Edad' es obligatorio", type: "warning" });
-        return;
-    }
-    if (!extraData.peso.trim() && !data?.peso) {
-        customToast({ message: "El campo 'Peso' es obligatorio", type: "warning" });
-        return;
-    }
-    if (!extraData.altura.trim() && !data?.altura) {
-        customToast({ message: "El campo 'Altura' es obligatorio", type: "warning" });
-        return;
-    }
-
     const userData = {
-      objetivo: extraData.objetivo !== data?.objetivo ? extraData.objetivo : undefined,
-      genero: extraData.genero !== data?.genero ? extraData.genero : undefined,
-      frecuenciaEjercicioSemanal:
-        extraData.frecuenciaEjercicioSemanal !== data?.frecuenciaEjercicioSemanal
-          ? extraData.frecuenciaEjercicioSemanal
-          : undefined,
-      edad: extraData.edad !== data?.edad ? extraData.edad : undefined,
-      peso: extraData.peso !== data?.peso ? extraData.peso : undefined,
-      altura: extraData.altura !== data?.altura ? extraData.altura : undefined,
-    };
+          objetivo: extraData.objetivo || null,
+          genero: extraData.genero || null,
+          frecuenciaEjercicioSemanal: extraData.frecuenciaEjercicioSemanal || null,
+          edad: extraData.edad || null,
+          peso: extraData.peso || null,
+          altura: extraData.altura || null,
+        };
 
     Object.keys(userData).forEach((key) => {
       if (userData[key] === undefined) {
@@ -99,6 +89,19 @@ export function PutProfileExtra ({ data, reloadData }) {
     if (Object.keys(userData).length === 0) {
       customToast({ message: "No hay cambios para guardar", type: "info" });
       return;
+    }
+
+    if (!extraData.edad.trim()) {
+        customToast({ message: "El campo 'Edad' es obligatorio", type: "warning" });
+        return;
+    }
+    if (!extraData.peso.trim()) {
+        customToast({ message: "El campo 'Peso' es obligatorio", type: "warning" });
+        return;
+    }
+    if (!extraData.altura.trim()) {
+        customToast({ message: "El campo 'Altura' es obligatorio", type: "warning" });
+        return;
     }
 
     console.log('Datos extra del usuario: ', JSON.stringify(userData));

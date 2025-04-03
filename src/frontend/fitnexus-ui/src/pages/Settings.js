@@ -33,7 +33,7 @@ export function Settings () {
 
   useEffect(() => {
     loadData();
-    if (role == "USER") {
+    if (role === "USER") {
         loadExtraData();
     }
   }, []);
@@ -96,14 +96,18 @@ export function Settings () {
       try {
         //cargamos datos extra
         const myExtraData = await fetchExtraData(fitNexusId);
-            if (myExtraData !== null) {
+            if (myExtraData && Object.values(myExtraData).some((value) => value !== null))  {
               console.log("Datos extra del usuario: ", JSON.stringify(myExtraData));
               setDataExtra(myExtraData);
               console.log("Datos extra del usuario cargados correctamente por su FitNexusId: ", fitNexusId);
             } else {
               console.log("Datos extra del usuario (null): ", myExtraData);
-              customToast({ message: "Hubo un error al cargar los datos extra de cliente", type: "error" });
-            }
+              setDataExtra(null);
+            customToast({
+            message: "No se encontraron datos extra. Por favor, actualiza los campos.",
+            type: "info",
+          });
+      }
 
       } catch (error) {
         console.error("Error al cargar datos:", error);
