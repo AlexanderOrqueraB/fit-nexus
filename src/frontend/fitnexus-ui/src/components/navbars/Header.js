@@ -25,6 +25,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from '../../components_ui/ui/sheet';
 import {FITNEXUS_URL} from "../../utils/client";
 import { UserContext } from "../global/UserContext";
+import { ThemeToggle } from '../common/ThemeToggle';
 
 const Header = ({ isAdmin }) => {
 
@@ -111,11 +112,13 @@ const Header = ({ isAdmin }) => {
 						</SheetContent>
 					</Sheet>
 				
-					<div className="relative ml-auto flex-1 md:grow-0">
+					<div className="flex items-center gap-4 ml-auto">
+	<ThemeToggle />
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button variant="outline" size="icon" className="overflow-hidden rounded-full">
 								<CircleUserRound className = "h-6 w-6"
+								color='gray'
 								/>
 							</Button>
 						</DropdownMenuTrigger>

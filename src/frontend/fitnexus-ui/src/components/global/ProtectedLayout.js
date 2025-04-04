@@ -12,7 +12,7 @@ const ProtectedLayout = () => {
   const isAdmin = user.role === 'ADMIN';
 
   return (
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen bg-background dark:bg-dark-900">
         <SideBar isAdmin = {isAdmin}></SideBar>
         <div className="flex flex-col flex-1">
           <Header isAdmin = {isAdmin}></Header>

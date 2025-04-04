@@ -42,7 +42,7 @@
     }
 
     .dark {
-      --background: 20 14.3% 4.1%;
+      --background: 12 6.5% 15.1%;
       --foreground: 60 9.1% 97.8%;
 
       --chart-1: 220 70% 50%;
@@ -51,7 +51,7 @@
       --chart-4: 280 65% 60%;
       --chart-5: 340 75% 55%;
 
-      --card: 20 14.3% 4.1%;
+      --card: 12 6.5% 15.1%;
       --card-foreground: 60 9.1% 97.8%;
 
       --popover: 20 14.3% 4.1%;
@@ -81,8 +81,10 @@
   @layer base {
     * {
       @apply border-border;
+      @apply transition-colors duration-200;
     }
     body {
       @apply bg-background text-foreground;
+
     }
   }
