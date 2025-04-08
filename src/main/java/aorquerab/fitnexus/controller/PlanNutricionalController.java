@@ -103,7 +103,7 @@ public class PlanNutricionalController {
             } else {
                 Cliente cliente = planNutricionalService.obtenerClientePorFitNexusId(fitNexusId)
                         .orElseThrow(()-> {
-                            log.warn("Cliente no encontrado con el fitNexusId: {}", fitNexusId);
+                            log.warn("Cliente no encontrado en -obtenerPlanNutriEnPorcentajes- con el fitNexusId: {}", fitNexusId);
                             return new InvalidRequestException("Cliente no encontrado con el fitNexusId:" + fitNexusId);
                         });
                 log.info("cliente: {} encontrado con el fitNexusId: {} ", cliente, fitNexusId);
@@ -132,11 +132,11 @@ public class PlanNutricionalController {
         log.info("Ejecutando obtenerKcalDeCadaMacroParaClienteDesdePlanNutricional con este fitNexusId: {}", fitNexusId);
 
         PlanNutricionalDTO planDeCliente = planNutricionalService.obtenerPlanDeClienteDTOPorSuFitNexusId(fitNexusId);
+        log.info ("El plan del cliente es: {}", planDeCliente);
 
         if (planDeCliente.getFechaInicio() == null) {
             log.info("Las kcal del plan nutricional no han sido calculadas aun");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PlanNutricionalDTO.builder().build());
-
         }
         else {
             int proteinaKcal = planDeCliente.getKcal() * planDeCliente.getProteina() / 100;

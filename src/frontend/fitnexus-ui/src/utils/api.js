@@ -56,6 +56,7 @@ export const fetchClientData = async (fitNexusId) => {
  
         if (clientResponse.status === 200) {
             customToast({ message: 'Datos de cliente cargados correctamente', type: 'success' });
+            console.log ("Datos de cliente cargados correctamente desde api.js");
             return clientResponse
         }
 
@@ -150,6 +151,7 @@ export const createNutritionPlan = async (email) => {
 export const fetchNutriData = async (fitNexusId) => {
     try {
         const cliente = { fitNexusId };
+        console.log("Ejecutando fetchNutriData con este fitNexusId: " + cliente.fitNexusId);
         const [nutriGramosResponse, nutriPorcentajesResponse, nutriKcalResponse] = await Promise.all([
             apiClient.get(`/api/v1/plan-nutri/gramos/${cliente.fitNexusId}`),
             apiClient.get(`/api/v1/plan-nutri/porcentajes/${cliente.fitNexusId}`),
@@ -157,7 +159,7 @@ export const fetchNutriData = async (fitNexusId) => {
         ]);
 
         if (nutriGramosResponse.status === 200 && nutriPorcentajesResponse.status === 200 && nutriKcalResponse.status === 200) {
-            console.log("Datos cargados correctamente con el FitNexusId: ", fitNexusId)
+            console.log("Datos nutri cargados correctamente con el FitNexusId: ", fitNexusId)
         }
 
         if (nutriGramosResponse.status === 400) {

@@ -18,7 +18,6 @@ import {
 } from "../components_ui/ui/chart"
 import { CustomAlertDialog } from "../components/common/CustomAlertDialog"
 import PostProfileExtra from "../components/users/client/PostProfileExtra"
-import { mockPlans} from "../mocks/mockData"
 import { Select,
   SelectContent,
   SelectItem,
@@ -86,12 +85,15 @@ export function NutritionChart() {
     try {
       //uncomment this lines to use backend data
       const clientsData = await fetchClientData(fitNexusId);
-      console.log("Datos de cliente: ", clientsData.clients);
-      if (clientsData !== null) {
+      console.log("Datos de cliente: ", clientsData);
+      if (clientsData && clientsData.clients && clientsData.clients.length > 0) {
         setClients(clientsData.clients);
         customToast({ message: "Datos de cliente cargados correctamente", type: "success" });
-        //setClients(mockClients); //uncomment this lines to use mock data
-      } else if (clientsData.clients === 0){
+        console.log("Datos de cliente cargados correctamente desde NutritionChart.js");
+      } else if (clientsData && clientsData.clients && clientsData.clients.length === 0) {
+        setClients([]);
+        customToast({ message: "No se encontraron clientes", type: "warning" });
+      } else {
         setClients([]);
         customToast({ message: "Hubo un error al cargar los datos de cliente", type: "error" });
       }
@@ -140,12 +142,17 @@ export function NutritionChart() {
   };
 
   useEffect(() => {
+    console.log ("El rol con el que cargas los datos de NutritionChart es: " + role)
     if (role === 'ADMIN') {
-      fetchData(fitNexusId); //Cargar datos de clientes (para mostrar en el select)
-      console.log ("extra data ", extraData);
-      fetchNutriData(fitNexusId); //Cargar datos del plan nutricional
+      const fetchAdminData = async () => {
+          await fetchData(fitNexusId); //Cargar datos de clientes (para mostrar en el select)
+          console.log("Ejecutando fetchData y fetchNutriData para ADMIN");
+          const { gramos, porcentajes, kcal } = await fetchNutriData(fitNexusId); //Cargar datos del plan nutricional
+      };
+      fetchAdminData();
     }
     if (role === 'USER') {
+      console.log ("Ejecutando fetchData y fetchNutriData para ADMIN");
       fetchExtraData(fitNexusId); //Cargar datos extra del cliente (para mostrar Crear Plan Nutricional)
     }
   }, []);
@@ -181,7 +188,7 @@ export function NutritionChart() {
       <Card className="flex flex-col w-1/2">
         <CardHeader className="items-center pb-0">
           <CardTitle>Plan nutricional personalizado</CardTitle>
-          <CardDescription>Desde {mockPlans[0].fechaInicio} hasta {mockPlans[0].fechaFinal}</CardDescription>
+          <CardDescription>Desde {selectedClient.fechaInicio} hasta {selectedClient.fechaFinal}</CardDescription>
         </CardHeader>
         <CardContent className="flex-1 pb-0">
           <ChartContainer
@@ -204,7 +211,7 @@ export function NutritionChart() {
               }}
             />
               <Pie
-                data={mockChartNutri}
+                data={selectedClient.macros}
                 dataKey="porcentajes"
                 nameKey="macronutriente"
                 innerRadius={70}

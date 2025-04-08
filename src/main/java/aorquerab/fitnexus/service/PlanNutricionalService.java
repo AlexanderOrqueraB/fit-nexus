@@ -48,15 +48,16 @@ public class PlanNutricionalService {
     }
 
     public Optional<Cliente> obtenerClientePorFitNexusId (String fitNexusId) {
+        log.info("Ejecutando obtenerClientePorFitNexusId con el fitNexusId: {}", fitNexusId);
         return clientService.findByFitNexusId(fitNexusId);
     }
 
     public PlanNutricionalDTO obtenerPlanDeClienteDTOPorSuFitNexusId(String fitNexusId) {
-        log.info("Obteniendo el plan asociado al cliente con email: {} ", fitNexusId);
+        log.info("Obteniendo el plan asociado al cliente con fitNexusId: {} ", fitNexusId);
         try {
             PlanNutricionalDTO planDeCliente =
                     obtenerPlanDTOMasRecientePorFitNexusId(fitNexusId).orElseThrow(() -> {
-                        log.warn("Plan nutricional no encontrado con el fitNexusId: {}", fitNexusId);
+                        log.warn("Plan nutricional no encontrado en -obtenerPlanDeClienteDTOPorSuFitNexusId- con el fitNexusId: {}", fitNexusId);
                         return new PlanNutricionalNotFoundException("Plan no encontrado en BD: " + fitNexusId);
                     });
             log.info("Existe un plan nutricional creado con al menos un identificador para el cliente con el fitNexusId: {}", fitNexusId);
@@ -75,7 +76,7 @@ public class PlanNutricionalService {
         try {
             PlanNutricional planDeCliente =
                     obtenerPlanMasRecientePorFitNexusId(fitNexusId).orElseThrow(() -> {
-                        log.warn("Plan nutricional no encontrado con el fitNexusId: {}", fitNexusId);
+                        log.warn("Plan nutricional no encontrado en -obtenerPlanDeClientePorSuFitNexusId- con el fitNexusId: {}", fitNexusId);
                         return new PlanNutricionalNotFoundException("Plan no encontrado en BD: " + fitNexusId);
                     });
             log.info("Existe un plan nutricional creado con al menos un identificador para el cliente con el fitNexusId: {}", fitNexusId);
