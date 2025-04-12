@@ -55,7 +55,8 @@ export const fetchClientData = async (fitNexusId) => {
         ]);
  
         if (clientResponse.status === 200) {
-            customToast({ message: 'Datos de cliente cargados correctamente', type: 'success' });
+        //TODO AÑADIR FUNCION PARA SACAR NUMERO CLIENTES desde homepage
+            customToast({ message: 'Datos de cliente cargados correctamente, tienes X clientes', type: 'success' });
             console.log ("Datos de cliente cargados correctamente desde api.js");
             return clientResponse
         }
@@ -68,7 +69,8 @@ export const fetchClientData = async (fitNexusId) => {
             customToast({ message: 'Datos de entrenador no encontrados con fitNexusId: ', type: 'warning' }); 
         }
 
-        return { clients: [] };
+        console.log ("Devolviendo clientResponse.data desde fetchClientData: ", clientResponse.data);
+        return clientResponse.data;
 
     } catch (error) {
         console.error('Error al cargar los datos:', error);

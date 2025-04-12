@@ -84,7 +84,7 @@ export function NutritionChart() {
     setLoading(true);
     try {
       //uncomment this lines to use backend data
-      const clientsData = await fetchClientData(fitNexusId);
+      const [clientsData] = await fetchClientData(fitNexusId);
       console.log("Datos de cliente: ", clientsData);
       if (clientsData && clientsData.clients && clientsData.clients.length > 0) {
         setClients(clientsData.clients);
