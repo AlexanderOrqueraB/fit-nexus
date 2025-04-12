@@ -7,7 +7,7 @@ const ClientDataContext = createContext();
 export const ClientDataProvider = ({ children }) => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error] = useState(null);
 
   const fetchClientDataOnce = async (fitNexusId) => {
     setLoading(true);

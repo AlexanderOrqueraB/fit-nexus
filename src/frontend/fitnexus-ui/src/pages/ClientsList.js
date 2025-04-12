@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   ListFilter,
   RefreshCcwIcon,
@@ -36,8 +36,6 @@ import {
   TabsList,
   TabsTrigger,
 } from "../components_ui/ui/tabs";
-import { customToast } from "../utils/customToast";
-import { fetchClientData } from "../utils/api";
 import { mockClients } from "../mocks/mockData";
 import { UserContext } from "../components/global/UserContext";
 import { formatObjetivo } from "../utils/utilsMethod";
@@ -49,8 +47,6 @@ export function ClientsList() {
   const { fitNexusId } = user; // Desestructurar el objeto user
 
   const { clients, fetchClientDataOnce, loading } = useClientData();
-
-  const [selectedClient, setselectedClient] = useState(null);
 
   const refreshData = async () => {
     await fetchClientDataOnce(fitNexusId);
@@ -81,7 +77,7 @@ export function ClientsList() {
   );
 
   if (loading) return <ProgressCustom />;
-  
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">

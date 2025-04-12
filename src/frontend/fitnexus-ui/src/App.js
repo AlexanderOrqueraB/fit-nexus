@@ -17,8 +17,6 @@ import { Toaster } from "sonner";
 import ProgressCustom from "./components/common/ProgressCustom";
 const HomePage = lazy (() =>import ("./pages/HomePage"));
 
-
-
 function App () {
 
 return (
