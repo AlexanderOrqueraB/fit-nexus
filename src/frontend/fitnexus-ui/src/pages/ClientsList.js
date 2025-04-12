@@ -41,13 +41,20 @@ import { fetchClientData } from "../utils/api";
 import { mockClients } from "../mocks/mockData";
 import { UserContext } from "../components/global/UserContext";
 import { formatObjetivo } from "../utils/utilsMethod";
+import { useClientData } from "../components/global/ClientDataContext";
+import ProgressCustom from "../components/common/ProgressCustom";
 
 export function ClientsList() {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
   const { fitNexusId } = user; // Desestructurar el objeto user
 
-  const [clients, setClients] = useState([]);
+  const { clients, fetchClientDataOnce, loading } = useClientData();
+
   const [selectedClient, setselectedClient] = useState(null);
+
+  const refreshData = async () => {
+    await fetchClientDataOnce();
+  }
 
   //estado booleando para "test mode"
   const [isTestMode, setIsTestMode] = useState(false);
@@ -73,29 +80,8 @@ export function ClientsList() {
       selectedObjective === "Todos" || client.objetivo === selectedObjective
   );
 
-  // Cargar datos desde varias fuentes simultáneamente
-  const loadData = async () => {
-    try {
-      // Ejecutar todas las solicitudes en paralelo
-      const { clients } = await fetchClientData(fitNexusId);
-
-      // Actualizar los estados con los datos obtenidos
-      setClients(clients);
-	  customToast({ message: "Datos de clientes cargados correctamente", type: "success" });
-
-    } catch (error) {
-      console.error("Error al cargar datos de clientes:", error);
-      customToast({
-        message: "Hubo un error al cargar los datos de cliente",
-        type: "error",
-      });
-    }
-  };
-
-  useEffect(() => {
-    loadData();
-  }, []); // Llama a loadData solo al montar el componente
-
+  if (loading) return <ProgressCustom />;
+  
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
@@ -109,7 +95,7 @@ export function ClientsList() {
                     {isTestMode ? "Usar Datos Reales" : "Usar Datos de Prueba"}
                   </Button>
                   <div className="ml-auto">
-                    <Button onClick={() => loadData()}>
+                    <Button onClick={refreshData}>
                       <RefreshCcwIcon className="h-3.5 w-3.5 mr-2" />
                       Refrescar datos
                     </Button>

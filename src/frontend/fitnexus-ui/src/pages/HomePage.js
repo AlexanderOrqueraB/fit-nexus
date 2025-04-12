@@ -5,14 +5,26 @@ import PostExercise from '../components/workout-components/ejercicio/PostExercis
 import fitNexusLogo from "../assets/images/fit-nexus-logo.jpeg"
 
 import { Card, CardContent } from '../components_ui/ui/card';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { BrickWall, Drumstick, EyeIcon } from 'lucide-react';
 import { UserContext } from '../components/global/UserContext';
+import { useClientData } from "../components/global/ClientDataContext";
+import ProgressCustom from "../components/common/ProgressCustom";
+import customToast from "../utils/customToast";
 
 export function HomePage() {	
 
 	const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+	const {fitNexusId} = user;
 	const navigate = useNavigate();
+	const { fetchClientDataOnce, loading, error } = useClientData();
+
+	useEffect (() => {
+		fetchClientDataOnce(fitNexusId);
+	}, [fitNexusId]);
+
+	if (loading) return <ProgressCustom />;
+  	if (error) return customToast({message : "Error: "+ error, type : "error"});
 
 	return (
 		<React.Fragment>

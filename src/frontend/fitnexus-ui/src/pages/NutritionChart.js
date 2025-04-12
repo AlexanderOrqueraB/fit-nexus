@@ -28,6 +28,7 @@ import { UserContext } from "../components/global/UserContext";
 import { createNutritionPlan, fetchClientData, fetchNutriData } from "../utils/api";
 import ProgressCustom from "../components/common/ProgressCustom";
 import customToast from "../utils/customToast";
+import { useClientData } from "../components/global/ClientDataContext";
 
 const chartConfig = {
   porcentajes: {
@@ -68,8 +69,9 @@ export function NutritionChart() {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
   const { role, fitNexusId, email } = user; // Desestructurar el objeto user
 
+  const { clients } = useClientData();
+
   const [selectedClient, setSelectedClient] = useState(null);
-  const [clients, setClients] = useState([]); // uncomment this line and comment the next one to use backend data
   //const [clients, setClients] = useState(mockClients); // uncomment this line and comment the previous one to use mock data
   const [extraData, setExtraData] = useState(null);
 
@@ -79,31 +81,6 @@ export function NutritionChart() {
   const totalKcal = React.useMemo(() => {
     return mockChartNutri.reduce((acc, curr) => acc + curr.kcal, 0)
   }, [])
-
-  const fetchData = async (fitNexusId) => {
-    setLoading(true);
-    try {
-      //uncomment this lines to use backend data
-      const [clientsData] = await fetchClientData(fitNexusId);
-      console.log("Datos de cliente: ", clientsData);
-      if (clientsData && clientsData.clients && clientsData.clients.length > 0) {
-        setClients(clientsData.clients);
-        customToast({ message: "Datos de cliente cargados correctamente", type: "success" });
-        console.log("Datos de cliente cargados correctamente desde NutritionChart.js");
-      } else if (clientsData && clientsData.clients && clientsData.clients.length === 0) {
-        setClients([]);
-        customToast({ message: "No se encontraron clientes", type: "warning" });
-      } else {
-        setClients([]);
-        customToast({ message: "Hubo un error al cargar los datos de cliente", type: "error" });
-      }
-
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const fetchExtraData = async (fitNexusId) => {
     setLoading(true);
@@ -133,7 +110,7 @@ export function NutritionChart() {
     try {
       //uncomment this lines to use backend data
       await createNutritionPlan(email);
-      fetchData(fitNexusId);
+      //fetchData(fitNexusId);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -145,7 +122,7 @@ export function NutritionChart() {
     console.log ("El rol con el que cargas los datos de NutritionChart es: " + role)
     if (role === 'ADMIN') {
       const fetchAdminData = async () => {
-          await fetchData(fitNexusId); //Cargar datos de clientes (para mostrar en el select)
+          //await fetchData(fitNexusId); //Cargar datos de clientes (para mostrar en el select)
           console.log("Ejecutando fetchData y fetchNutriData para ADMIN");
           const { gramos, porcentajes, kcal } = await fetchNutriData(fitNexusId); //Cargar datos del plan nutricional
       };
@@ -158,7 +135,8 @@ export function NutritionChart() {
   }, []);
 
   if (loading) return <ProgressCustom />;
-  if (error) return <div>Error: {error}</div>;
+  if (error) return customToast({message : "Error: "+ error, type : "error"});
+  
 
   return (
     <div className="flex flex-col gap-4">
