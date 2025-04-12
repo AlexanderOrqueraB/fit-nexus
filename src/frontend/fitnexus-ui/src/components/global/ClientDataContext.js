@@ -13,7 +13,6 @@ export const ClientDataProvider = ({ children }) => {
     setLoading(true);
     try {
         const { clients } = await fetchClientData(fitNexusId);
-        console.log("Datos de cliente tras fetch desde ClientDataContext: ", clients);
         setClients(clients);
         if (clients.length === 0) {
             setClients([]);
@@ -21,7 +20,7 @@ export const ClientDataProvider = ({ children }) => {
         }
         if (clients.length > 0) {
             customToast({ message: "Datos de clientes cargados correctamente", type: "success" });
-            customToast({ message: "Tienes un total de " + clients.length + " clientes", type: "info" });
+            customToast({ message: "Tienes un total de: " + clients.length + " clientes", type: "info" });
         } else {
             setClients([]);
             customToast({ message: "Hubo un error al cargar los datos de cliente", type: "error" });

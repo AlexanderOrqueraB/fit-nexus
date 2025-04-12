@@ -50,27 +50,25 @@ export const fetchWorkoutData = async (fitNexusId) => {
 
 export const fetchClientData = async (fitNexusId) => {
     try {
-        const [clientResponse] = await Promise.all([
+        const [clientsListResponse] = await Promise.all([
             apiClient.get(`/api/v1/entrenadores/${fitNexusId}`)
         ]);
- 
-        if (clientResponse.status === 200) {
-        //TODO AÑADIR FUNCION PARA SACAR NUMERO CLIENTES desde homepage
-            customToast({ message: 'Datos de cliente cargados correctamente, tienes X clientes', type: 'success' });
-            console.log ("Datos de cliente cargados correctamente desde api.js");
-            return clientResponse
+
+        if (clientsListResponse.status === 200) {
+            const clients = clientsListResponse.data;
+            console.log ("Datos de cliente cargados correctamente en api.js desde API", clients);
+            return { clients }
         }
 
-        if (clientResponse.status === 400) {
-            customToast({ message: 'Error al cargar los clientes', type: 'error' }); 
+        if (clientsListResponse.status === 400) {
+            customToast({ message: 'Error al cargar los clientes', type: 'error' });
+            return { clients: [] };
         }
 
-        if (clientResponse.status === 404) {
-            customToast({ message: 'Datos de entrenador no encontrados con fitNexusId: ', type: 'warning' }); 
+        if (clientsListResponse.status === 404) {
+            customToast({ message: 'Datos de entrenador no encontrados con fitNexusId: ', type: 'warning' });
+            return { clients: [] };
         }
-
-        console.log ("Devolviendo clientResponse.data desde fetchClientData: ", clientResponse.data);
-        return clientResponse.data;
 
     } catch (error) {
         console.error('Error al cargar los datos:', error);

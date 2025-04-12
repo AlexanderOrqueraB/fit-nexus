@@ -53,7 +53,7 @@ export function ClientsList() {
   const [selectedClient, setselectedClient] = useState(null);
 
   const refreshData = async () => {
-    await fetchClientDataOnce();
+    await fetchClientDataOnce(fitNexusId);
   }
 
   //estado booleando para "test mode"
