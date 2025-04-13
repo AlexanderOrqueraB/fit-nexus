@@ -19,5 +19,14 @@ public class PlanNutricionalDTO {
     private int kcal;
     private LocalDate fechaInicio;
     private LocalDate fechaFinal;
+    private EntrenadorDTO entrenador;
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    @Builder
+    public static class EntrenadorDTO {
+        private String fitNexusId;
+    }
 
 }

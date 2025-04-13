@@ -190,6 +190,9 @@ public class PlanNutricionalController {
 
                 PlanNutricionalDTO.PlanNutricionalDTOBuilder planNutricionalDTOBuilder = PlanNutricionalDTO
                         .builder()
+                        .entrenador(PlanNutricionalDTO.EntrenadorDTO.builder()
+                                .fitNexusId(cliente.getEntrenador().getFitNexusId())
+                                .build())
                         .kcal(kcalDiariasPorObjetivo);
 
                 //Duracion del plan en función del objetivo

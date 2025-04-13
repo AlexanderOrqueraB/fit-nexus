@@ -204,6 +204,13 @@ VALUES
     (7, 120, 250, 40, 2200, '2023-01-15', '2023-03-15', 5, 1), -- Plan de Mace Windu
     (8, 200, 400, 60, 3000, '2023-02-01', '2023-04-01', 6, 1); -- Plan de Yoda
 
+INSERT INTO cliente_plan_nutricional (cliente_id, plan_nutricional_id)
+VALUES
+    (5, 6), -- Enlazar Luke Skywalker al plan de Obi-Wan
+    (8, 6), -- Enlazar Rey Palpatine al plan de Obi-Wan
+    (6, 7), -- Enlazar Leia Organa al plan de Mace Windu
+    (7, 8); -- Enlazar Han Solo al plan de Yoda
+
 INSERT INTO rutina (id, nombre_rutina, fecha_inicio, fecha_final, entrenador_id, version)
 VALUES
     (6, 'Entrenamiento basico', '2023-01-01', '2023-01-31', 4, 1), -- Rutina de Obi-Wan

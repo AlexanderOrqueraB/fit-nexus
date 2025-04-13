@@ -84,6 +84,7 @@ export function NutritionChart() {
   }, [])
 
   const fetchExtraData = async (fitNexusId) => {
+    console.log("Ejecutando fetchExtraData con este fitNexusId: " + fitNexusId);
     setLoading(true);
     try {
       //uncomment this lines to use backend data
@@ -102,6 +103,7 @@ export function NutritionChart() {
     } catch (error) {
       setExtraData(null);
     } finally {
+      console.log("Set loading a false en fetchExtraData");
       setLoading(false);
     }
   };
@@ -121,10 +123,18 @@ export function NutritionChart() {
 
   useEffect(() => {
     console.log ("El rol con el que cargas los datos de NutritionChart es: " + role)
+    console.log("Datos de los clientes: ", clients);
+    
     if (role === 'ADMIN') {
+      if (role === 'ADMIN' && clients.length > 0 && !selectedClient) {
+        setSelectedClient(clients[0]);
+        console.log("Cliente por defecto seleccionado:", clients[0]);
+      }
       if (selectedClient) {
+        console.log("El cliente seleccionado es: ", selectedClient);
         console.log(`Ejecutando fetchNutriData para obtener gramos, porcentajes y kcal para el cliente: ${selectedClient.nombre}`);
         const fetchDataForClient = async () => {
+          setLoading(true);
           try {
             const { gramos, porcentajes, kcal } = await fetchNutriData(selectedClient.fitNexusId);
             console.log("Gramos, porcentajes y kcal cargados correctamente: ", gramos, porcentajes, kcal);
@@ -132,6 +142,10 @@ export function NutritionChart() {
           } catch (error) {
             console.error("Error al cargar datos nutricionales: ", error);
             customToast({ message: "Error al cargar los datos nutricionales", type: "error" });
+          }
+          finally {
+            console.log("Set loading a false en fetchDataForClient");
+            setLoading(false); 
           }
         };
         fetchDataForClient();
@@ -141,7 +155,7 @@ export function NutritionChart() {
       console.log ("Ejecutando fetchData y fetchNutriData para ADMIN");
       fetchExtraData(fitNexusId); //Cargar datos extra del cliente (para mostrar Crear Plan Nutricional)
     }
-  }, []);
+  }, [selectedClient, clients]);
 
   if (loading) return <ProgressCustom />;
   if (error) return customToast({message : "Error: "+ error, type : "error"});
