@@ -67,13 +67,14 @@ const mockChartNutri = [
 export function NutritionChart() {
 
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
-  const { role, fitNexusId, email } = user; // Desestructurar el objeto user
+  const { role, fitNexusId } = user; // Desestructurar el objeto user
 
-  const { clients } = useClientData();
+  const { clients } = useClientData(); //Cargar datos de clientes (para mostrar en el select)
 
   const [selectedClient, setSelectedClient] = useState(null);
   //const [clients, setClients] = useState(mockClients); // uncomment this line and comment the previous one to use mock data
   const [extraData, setExtraData] = useState(null);
+  const [nutriData, setNutriData] = useState(null);
 
   const [loading, setLoading] =useState(true);
   const [error, setError] =useState(null);
@@ -121,12 +122,20 @@ export function NutritionChart() {
   useEffect(() => {
     console.log ("El rol con el que cargas los datos de NutritionChart es: " + role)
     if (role === 'ADMIN') {
-      const fetchAdminData = async () => {
-          //await fetchData(fitNexusId); //Cargar datos de clientes (para mostrar en el select)
-          console.log("Ejecutando fetchData y fetchNutriData para ADMIN");
-          const { gramos, porcentajes, kcal } = await fetchNutriData(fitNexusId); //Cargar datos del plan nutricional
-      };
-      fetchAdminData();
+      if (selectedClient) {
+        console.log(`Ejecutando fetchNutriData para obtener gramos, porcentajes y kcal para el cliente: ${selectedClient.nombre}`);
+        const fetchDataForClient = async () => {
+          try {
+            const { gramos, porcentajes, kcal } = await fetchNutriData(selectedClient.fitNexusId);
+            console.log("Gramos, porcentajes y kcal cargados correctamente: ", gramos, porcentajes, kcal);
+            setNutriData({ gramos, porcentajes, kcal });
+          } catch (error) {
+            console.error("Error al cargar datos nutricionales: ", error);
+            customToast({ message: "Error al cargar los datos nutricionales", type: "error" });
+          }
+        };
+        fetchDataForClient();
+      }
     }
     if (role === 'USER') {
       console.log ("Ejecutando fetchData y fetchNutriData para ADMIN");
@@ -166,7 +175,7 @@ export function NutritionChart() {
       <Card className="flex flex-col w-1/2">
         <CardHeader className="items-center pb-0">
           <CardTitle>Plan nutricional personalizado</CardTitle>
-          <CardDescription>Desde {selectedClient.fechaInicio} hasta {selectedClient.fechaFinal}</CardDescription>
+          <CardDescription>Desde {selectedClient.fechaInicio || []} hasta {selectedClient.fechaFinal || []}</CardDescription>
         </CardHeader>
         <CardContent className="flex-1 pb-0">
           <ChartContainer
@@ -189,7 +198,7 @@ export function NutritionChart() {
               }}
             />
               <Pie
-                data={selectedClient.macros}
+                data={selectedClient.macros || []}
                 dataKey="porcentajes"
                 nameKey="macronutriente"
                 innerRadius={70}
@@ -228,6 +237,14 @@ export function NutritionChart() {
               </Pie>
             </PieChart>
           </ChartContainer>
+          {extraData && (
+          <div className="mt-4">
+            <h2 className="text-lg font-bold">Datos Nutricionales</h2>
+            <p>Gramos: {extraData.gramos}</p>
+            <p>Porcentajes: {extraData.porcentajes}</p>
+            <p>Kcal: {extraData.kcal}</p>
+          </div>
+        )}
         </CardContent>
         <CardFooter className="flex-col items-center gap-2 text-sm">
           <div className="flex items-center gap-2 font-medium leading-none">
@@ -251,10 +268,8 @@ export function NutritionChart() {
             description = {kcalMoreInfo} 
           />
           </div>
-          {role === 'USER' && !extraData && (
-            <PostProfileExtra />
-            )}
-            {role === 'ADMIN' && selectedClient && !extraData && (
+          {role === 'USER' && !extraData && (<PostProfileExtra />)}
+          {role === 'ADMIN' && selectedClient && !extraData && (
               <Button onClick={() => createPlan(selectedClient.email)}>Crear Plan Nutricional</Button>
             )}
         </CardFooter>
