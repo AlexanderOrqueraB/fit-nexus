@@ -58,259 +58,207 @@ const kcalMoreInfo = "Para el cálculo de kcal se utiliza en primer lugar la fó
 "y en función del objetivo se añaden (300 kcal) para ganar músculo de forma eficiente o se restan (400kcal) para perder grasa de forma saludable."
 
 export function NutritionChart() {
-
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
   const { role, fitNexusId } = user; // Desestructurar el objeto user
 
-  const { clients } = useClientData(); //Cargar datos de clientes (para mostrar en el select)
+  const { clients } = useClientData(); // Cargar datos de clientes (para mostrar en el select)
 
-  const [selectedClient, setSelectedClient] = useState(null);
-  //const [clients, setClients] = useState(mockClients); // uncomment this line and comment the previous one to use mock data
+  const [selectedClient, setSelectedClient] = useState(clients.length > 0 ? clients[0] : null);
   const [extraData, setExtraData] = useState(null);
   const [nutriData, setNutriData] = useState(null);
 
-  const [loading, setLoading] =useState(true);
-  const [error, setError] =useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const totalKcal = React.useMemo(() => {
     return nutriData ? nutriData.reduce((acc, curr) => acc + curr.kcal, 0) : 0;
   }, [nutriData]);
 
-  const fetchExtraData = async (fitNexusId) => {
-    console.log("Ejecutando fetchExtraData con este fitNexusId: " + fitNexusId);
-    setLoading(true);
-    try {
-      //uncomment this lines to use backend data
-      const data = await fetchExtraData(fitNexusId);
-      if (data !== null) {
-        setExtraData(data);
-        customToast({ message: "Datos de cliente cargados correctamente", type: "success" });
-      } else {
-        setExtraData(null);
-        customToast({ message: "Hubo un error al cargar los datos de cliente", type: "error" });
-      }
-      
-      //uncomment this lines to use mock data
-      //const client = mockClients.find(client => client.fitNexusId === fitNexusId);
-      //setExtraData(client ? client : null);
-    } catch (error) {
-      setExtraData(null);
-    } finally {
-      console.log("Set loading a false en fetchExtraData");
-      setLoading(false);
-    }
-  };
-
-  const createPlan = async (email) => {
-    setLoading(true);
-    try {
-      //uncomment this lines to use backend data
-      await createNutritionPlan(email);
-      //fetchData(fitNexusId);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    console.log ("El rol con el que cargas los datos de NutritionChart es: " + role)
+    console.log("El rol con el que cargas los datos de NutritionChart es: " + role);
     console.log("Datos de los clientes: ", clients);
-    
-    if (role === 'ADMIN') {
-      if (role === 'ADMIN' && clients.length > 0 && !selectedClient) {
-        setSelectedClient(clients[0]);
-        console.log("Cliente por defecto seleccionado:", clients[0]);
-      }
-      if (selectedClient) {
-        console.log("El cliente seleccionado es: ", selectedClient);
-        console.log(`Ejecutando fetchNutriData para obtener gramos, porcentajes y kcal para el cliente: ${selectedClient.nombre}`);
-        const fetchDataForClient = async () => {
-          setLoading(true);
-          try {
-            const { gramos, porcentajes, kcal } = await fetchNutriData(selectedClient.fitNexusId);
 
-            if (gramos && porcentajes && kcal) {
-              console.log("Gramos, porcentajes y kcal cargados correctamente: ", gramos, porcentajes, kcal);
-  
-              const chartNutri = [
-                  { macronutriente: "Proteínas", porcentajes: porcentajes.proteina, gramos: gramos.proteina, kcal: kcal.proteina, fill: "var(--color-colorOne)" },
-                  { macronutriente: "Hidratos de carbono", porcentajes: porcentajes.hidratoDeCarbono, gramos: gramos.hidratoDeCarbono, kcal: kcal.hidratoDeCarbono, fill: "var(--color-colorTwo)" },
-                  { macronutriente: "Grasas", porcentajes: porcentajes.grasa, gramos: gramos.grasa, kcal: kcal.grasa, fill: "var(--color-colorThree)" }
-              ];
-              setNutriData(chartNutri);
+    if (role === "ADMIN" && selectedClient) {
+      console.log("El cliente seleccionado es: ", selectedClient);
+      console.log(`Ejecutando fetchNutriData para obtener gramos, porcentajes y kcal para el cliente: ${selectedClient.nombre}`);
+      const fetchDataForClient = async () => {
+        setLoading(true);
+        try {
+          const { gramos, porcentajes, kcal } = await fetchNutriData(selectedClient.fitNexusId);
 
-            } else {
-              setNutriData(null);
-              console.error("Error: Datos nutricionales no encontrados para el cliente con fitNexusId: ", selectedClient.fitNexusId);
-              customToast({ message: "Error: Datos nutricionales no encontrados", type: "error" });
-            }
-          } catch (error) {
-            console.error("Error al cargar datos nutricionales: ", error);
-            customToast({ message: "Error al cargar los datos nutricionales", type: "error" });
+          if (gramos && porcentajes && kcal) {
+            console.log("Gramos, porcentajes y kcal cargados correctamente: ", gramos, porcentajes, kcal);
+
+            const chartNutri = [
+              { macronutriente: "Proteínas", porcentajes: porcentajes.proteina, gramos: gramos.proteina, kcal: kcal.proteina, fill: "var(--color-colorOne)" },
+              { macronutriente: "Hidratos de carbono", porcentajes: porcentajes.hidratoDeCarbono, gramos: gramos.hidratoDeCarbono, kcal: kcal.hidratoDeCarbono, fill: "var(--color-colorTwo)" },
+              { macronutriente: "Grasas", porcentajes: porcentajes.grasa, gramos: gramos.grasa, kcal: kcal.grasa, fill: "var(--color-colorThree)" },
+            ];
+            setNutriData(chartNutri);
+          } else {
+            setNutriData(null);
+            console.error("Error: Datos nutricionales no encontrados para el cliente con fitNexusId: ", selectedClient.fitNexusId);
+            customToast({ message: "Error: Datos nutricionales no encontrados", type: "error" });
           }
-          finally {
-            console.log("Set loading a false en fetchDataForClient");
-            setLoading(false); 
-          }
-        };
-        fetchDataForClient();
-      }
+        } catch (error) {
+          console.error("Error al cargar datos nutricionales: ", error);
+          customToast({ message: "Error al cargar los datos nutricionales", type: "error" });
+        } finally {
+          console.log("Set loading a false en fetchDataForClient");
+          setLoading(false);
+        }
+      };
+      fetchDataForClient();
     }
-    if (role === 'USER') {
-      console.log ("Ejecutando fetchData y fetchNutriData para ADMIN");
-      fetchExtraData(fitNexusId); //Cargar datos extra del cliente (para mostrar Crear Plan Nutricional)
+    if (role === "USER") {
+      console.log("Ejecutando fetchData y fetchNutriData para ADMIN");
+      const fetchExtraDataForUser = async () => {
+        try {
+          const extraDataResponse = await fetchExtraData(fitNexusId);
+          if (!extraDataResponse) {
+            customToast({ message: "El cliente no tiene datos extra configurados.", type: "warning" });
+          }
+          setExtraData(extraDataResponse);
+        } catch (error) {
+          console.error("Error al cargar datos extra del cliente: ", error);
+          customToast({ message: "Error al cargar datos extra del cliente", type: "error" });
+        }
+      };
+      fetchExtraDataForUser();
     }
   }, [selectedClient, clients]);
 
   if (loading) return <ProgressCustom />;
-  if (error) return customToast({message : "Error: "+ error, type : "error"});
-  
+  if (error) return customToast({ message: "Error: " + error, type: "error" });
+
+  const shouldShowCreatePlanButton = role === "ADMIN" && selectedClient && extraData && !nutriData;
 
   return (
     <div className="flex flex-col gap-4">
-      {role === 'ADMIN' ? (
-        <Select onValueChange={(value) => {
-          const client = clients.find(client => client.fitNexusId === value);
-          setSelectedClient(client);
-        }}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Selecciona un cliente" />
-        </SelectTrigger>
-        <SelectContent>
-          {clients.map(client => (
-            <SelectItem key={client.fitNexusId} value={client.fitNexusId}>
-              {client.nombre}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      {role === "ADMIN" ? (
+        <Select
+          onValueChange={(value) => {
+            const client = clients.find((client) => client.fitNexusId === value);
+            setSelectedClient(client);
+          }}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder={selectedClient ? selectedClient.nombre : "Selecciona un cliente"} />
+          </SelectTrigger>
+          <SelectContent>
+            {clients.map((client) => (
+              <SelectItem key={client.fitNexusId} value={client.fitNexusId}>
+                {client.nombre}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       ) : (
         <div className="text-center">
           <h1 className="text-2xl font-bold">Tu plan nutricional</h1>
         </div>
       )}
       {selectedClient ? (
-      <div className="flex justify-center items-center space-x-4">
-      <Card className="flex flex-col w-1/2">
-        <CardHeader className="items-center pb-0">
-          <CardTitle>Plan nutricional personalizado</CardTitle>
-          <CardDescription>Desde {selectedClient.fechaInicio || []} hasta {selectedClient.fechaFinal || []}</CardDescription>
-        </CardHeader>
-        <CardContent className="flex-1 pb-0">
-          <ChartContainer
-            config={chartConfig}
-            className="mx-auto aspect-square max-h-[250px]">
-            <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={({ payload }) => {
-                if (!payload || payload.length === 0) return null;
-                const { macronutriente, porcentajes, gramos, kcal } = payload[0].payload;
-                return (
-                  <div className="p-2 bg-white shadow-md rounded-md">
-                    <strong>{macronutriente}</strong>
-                    <div>Porcentaje: {porcentajes}%</div>
-                    <div>Gramos: {gramos}g</div>
-                    <div>Kcal: {kcal}</div>
-                  </div>
-                );
-              }}
-            />
-              <Pie
-                data={nutriData || []}
-                dataKey="porcentajes"
-                nameKey="macronutriente"
-                innerRadius={70}
-                outerRadius={110}
-                strokeWidth={5}
-              >
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                      return (
-                        <text
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                        >
-                          <tspan
-                            x={viewBox.cx}
-                            y={viewBox.cy}
-                            className="fill-foreground text-3xl font-bold"
-                          >
-                            {totalKcal.toLocaleString()}kcal
-                          </tspan>
-                          <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy || 0) + 24}
-                            className="fill-muted-foreground"
-                          >
-                            Mueve el cursor
-                          </tspan>
-                        </text>
-                      )
-                    }
-                  }}
-                />
-              </Pie>
-            </PieChart>
-          </ChartContainer>
-          {extraData && (
-          <div className="mt-4">
-            <h2 className="text-lg font-bold">Datos Nutricionales</h2>
-            <p>Gramos: {extraData.gramos}</p>
-            <p>Porcentajes: {extraData.porcentajes}</p>
-            <p>Kcal: {extraData.kcal}</p>
-          </div>
-        )}
-        </CardContent>
-        <CardFooter className="flex-col items-center gap-2 text-sm">
-          <div className="flex items-center gap-2 font-medium leading-none">
-          Macronutrientes:
-          </div>
-          <div className="flex items-center gap-2 font-medium leading-none">
-          Proporción en porcentaje, cantidad en gramos y en kcal y en gramos
-          </div>
-          <div className="leading-none text-muted-foreground">
-            Prueba a mover el cursor sobre el gráfico para ver los datos de cada macronutriente
-          </div>
-          <div className="flex space-x-4">
-          <CustomAlertDialog
-            messageButton = "¿De dónde salen estos datos?"
-            title = "Macronutrientes en % y en gramos"
-            description = {planNutriMoreInfo}
-          />
-          <CustomAlertDialog
-            messageButton = "De dónde salen estos datos?"
-            title = "Cantidad de kilocalorías"
-            description = {kcalMoreInfo} 
-          />
-          </div>
-          {role === 'USER' && !extraData && (<PostProfileExtra />)}
-          {role === 'ADMIN' && selectedClient && !extraData && (
-              <Button onClick={() => createPlan(selectedClient.email)}>Crear Plan Nutricional</Button>
-            )}
-        </CardFooter>
-      </Card>
-      </div>
-      ) : 
-      (
         <div className="flex justify-center items-center space-x-4">
-        <Card className="flex flex-col w-1/2">
-          <CardHeader className="items-center pb-0">
-            <CardTitle>Plan nutricional personalizado</CardTitle>
-            <CardDescription>Selecciona un cliente para visualizar</CardDescription>
-          </CardHeader>
-          <CardContent className="flex-1 pb-0">
-          </CardContent>
+          <Card className="flex flex-col w-1/2">
+            <CardHeader className="items-center pb-0">
+              <CardTitle>Plan nutricional personalizado</CardTitle>
+              <CardDescription>Desde {selectedClient.fechaInicio || []} hasta {selectedClient.fechaFinal || []}</CardDescription>
+            </CardHeader>
+            <CardContent className="flex-1 pb-0">
+              <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
+                <PieChart>
+                  <ChartTooltip
+                    cursor={false}
+                    content={({ payload }) => {
+                      if (!payload || payload.length === 0) return null;
+                      const { macronutriente, porcentajes, gramos, kcal } = payload[0].payload;
+                      return (
+                        <div className="p-2 bg-white shadow-md rounded-md">
+                          <strong>{macronutriente}</strong>
+                          <div>Porcentaje: {porcentajes}%</div>
+                          <div>Gramos: {gramos}g</div>
+                          <div>Kcal: {kcal}</div>
+                        </div>
+                      );
+                    }}
+                  />
+                  <Pie data={nutriData || []}
+                  dataKey="porcentajes"
+                  nameKey="macronutriente"
+                  innerRadius={70}
+                  outerRadius={110}
+                  strokeWidth={5}>
+                    <Label
+                      content={({ viewBox }) => {
+                        if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                          return (
+                            <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
+                              <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-3xl font-bold">
+                                {totalKcal.toLocaleString()}kcal
+                              </tspan>
+                              <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} className="fill-muted-foreground">
+                                Mueve el cursor
+                              </tspan>
+                            </text>
+                          );
+                        }
+                      }}
+                    />
+                  </Pie>
+                </PieChart>
+              </ChartContainer>
+                {extraData && (
+                <div className="mt-4">
+                  <h2 className="text-lg font-bold">Datos Nutricionales</h2>
+                  <p>Gramos: {extraData.gramos}</p>
+                  <p>Porcentajes: {extraData.porcentajes}</p>
+                  <p>Kcal: {extraData.kcal}</p>
+                </div>
+              )}
+            </CardContent>
+                <CardFooter className="flex-col items-center gap-2 text-sm">
+                  <div className="flex items-center gap-2 font-medium leading-none">
+                  Macronutrientes:
+                  </div>
+                  <div className="flex items-center gap-2 font-medium leading-none">
+                  Proporción en porcentaje, cantidad en gramos y en kcal y en gramos
+                  </div>
+                  <div className="leading-none text-muted-foreground">
+                    Prueba a mover el cursor sobre el gráfico para ver los datos de cada macronutriente
+                  </div>
+                  <div className="flex space-x-4">
+                  <CustomAlertDialog
+                    messageButton = "¿De dónde salen estos datos?"
+                    title = "Macronutrientes en % y en gramos"
+                    description = {planNutriMoreInfo}
+                  />
+                  <CustomAlertDialog
+                    messageButton = "De dónde salen estos datos?"
+                    title = "Cantidad de kilocalorías"
+                    description = {kcalMoreInfo}
+                  />
+                  </div>
+                  {role === 'USER' && !extraData && (<PostProfileExtra />)}
+                  {shouldShowCreatePlanButton && (
+                      <Button onClick={() => createPlan(selectedClient.email)}>Crear Plan Nutricional</Button>
+                    )}
+                </CardFooter>
           </Card>
-          </div>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center space-x-4">
+          <Card className="flex flex-col w-1/2">
+            <CardHeader className="items-center pb-0">
+              <CardTitle>Plan nutricional personalizado</CardTitle>
+              <CardDescription>Selecciona un cliente para visualizar</CardDescription>
+            </CardHeader>
+            <CardContent className="flex-1 pb-0"></CardContent>
+          </Card>
+        </div>
       )}
     </div>
-  )
+  );
 }
 
 export default NutritionChart;

@@ -201,7 +201,7 @@ VALUES
 
 INSERT INTO plan_nutricional (id, proteina, hidrato_de_carbono, grasa, kcal, fecha_inicio, fecha_final, entrenador_id, version)
 VALUES
-    (6, 150, 300, 50, 2500, '2023-01-01', '2023-03-01', 4, 1), -- Plan de Obi-Wan
+    (6, 30, 50, 20, 3327, '2023-01-01', '2023-02-14', 4, 1), -- Plan de Obi-Wan
     (7, 120, 250, 40, 2200, '2023-01-15', '2023-03-15', 5, 1), -- Plan de Mace Windu
     (8, 200, 400, 60, 3000, '2023-02-01', '2023-04-01', 6, 1); -- Plan de Yoda
 

@@ -173,7 +173,7 @@ public class PlanNutricionalController {
                 ObjectMapper objectMapper = new ObjectMapper();
                 Map <String,String> emailFromPayload = objectMapper.readValue(clienteEmailId, Map.class);
                 String email = emailFromPayload.get("email");
-                log.info("Email id enviado en la peticion: " + email);
+                log.info("Email id enviado en la peticion: {}", email);
 
                 Cliente cliente = clienteRepository.findByEmail(email)
                         .orElseThrow(()-> {
