@@ -4,6 +4,7 @@ import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import aorquerab.fitnexus.model.enumerator.FrecuenciaEjercicioSemanal;
 import aorquerab.fitnexus.model.enumerator.Genero;
+import aorquerab.fitnexus.model.enumerator.Objetivo;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
 import java.time.LocalDate;
@@ -14,19 +15,21 @@ public final class TestFixtures {
 
     //Test cases for testing PlanNutricionalControllerTest
     //Case 1: Cliente with extra data
-    public static Cliente createClienteWithExtraData(
-            String fitNexusId, String nombre, String apellido, String email,
-            int edad, double peso, double altura, FrecuenciaEjercicioSemanal ejercicioSemanal, Genero genero) {
+    public static Cliente createClienteWithExtraData() {
         return Cliente.builder()
-                .fitNexusId(UUID.fromString(fitNexusId))
-                .nombre(nombre)
-                .apellido(apellido)
-                .email(email)
-                .edad(edad)
-                .peso(peso)
-                .altura(altura)
-                .frecuenciaEjercicioSemanal(frecuenciaEjercicioSemanal)
-                .genero(genero)
+                .fitNexusId(UUID.fromString("660e8400-e29b-41d4-a716-446655440000"))
+                .nombre("Luke")
+                .apellido("Skywalker")
+                .email("luke@rebels.com")
+                .edad(25)
+                .peso(75)
+                .altura(180)
+                .objetivo(Objetivo.GANAR_MUSCULO)
+                .frecuenciaEjercicioSemanal(FrecuenciaEjercicioSemanal.FUERTE)
+                .genero(Genero.HOMBRE)
+                .entrenador(Entrenador.builder()
+                        .fitNexusId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000"))
+                        .build())
                 .build();
     }
 
@@ -41,14 +44,14 @@ public final class TestFixtures {
                 .build();
     } 
 
-    public static Ejercicio createEjercicio(Long id, String nombre, int series, int repeticiones, double peso, boolean cardioRealizado) {
+    public static Ejercicio createEjercicio(Long id, String nombre, int series, int repeticiones, int peso, boolean cardioRealizado) {
         return Ejercicio.builder()
                 .id(id)
                 .nombreEjercicio(nombre)
                 .serie(series)
                 .repeticion(repeticiones)
                 .peso(peso)
-                .cardioRealizado(cardioRealizado)
+                .cardio(cardioRealizado)
                 .build();
     }
 
@@ -74,7 +77,7 @@ public final class TestFixtures {
                 .build();
     }
 
-    public static Cliente createCliente(String fitNexusId, String nombre, String apellido, String email, int edad, double peso, double altura) {
+    public static Cliente createCliente(String fitNexusId, String nombre, String apellido, String email, int edad, int peso, int altura) {
         return Cliente.builder()
                 .fitNexusId(UUID.fromString(fitNexusId))
                 .nombre(nombre)
