@@ -196,7 +196,8 @@ VALUES
     (6,'660e8400-e29b-41d4-a716-446655440001', 'Leia', 'Organa', 'leia@rebels.com', '$2a$10$uGAAmuqupe9Ig6t2j9jA6ezBZEvPNdN3ukiikKS/oG3hNIYRoPsp2', 'USER', 'PERDER_PESO', 'MUJER', 'MODERADO', 23, 60, 165, '2023-01-02', 5, 1), --pass: alderaan123
     (7,'660e8400-e29b-41d4-a716-446655440002', 'Han', 'Solo', 'han@smugglers.com', '$2a$10$B9OsKAT3m/Y8KGt/UqcLOuUWc/z8tFf0Nxx34rtxTcj6CDszjC4Bi', 'USER', 'MANTENER_FORMA', 'HOMBRE', 'MODERADO', 30, 85, 175, '2023-01-03', 6, 1), --pass: millennium123
     (8,'660e8400-e29b-41d4-a716-446655440003', 'Rey', 'Palpatine', 'rey@jedi.com', '$2a$10$8lP2mP33EMEe9jfDhvJYiOGfr/mnsZX8F49g4C4YTASNY5MLoYgDa', 'USER', NULL, NULL, NULL, NULL, NULL, NULL, '2023-01-04', 4, 1), --pass: scavenger123
-    (9,'660e8400-e29b-41d4-a716-446655440004', 'Darth', 'Vader', 'vader@sith.com', '$2a$10$gumkdc5ohc7ero/QVGZJEOxBRYlKWZpZnYWRmcJKrLgGsvPXy14Se', 'USER', 'PERDER_PESO', 'HOMBRE', 'POCO_NADA', 40, 120, 190, '2023-01-05', 5, 1); --pass: darkside123
+    (9,'660e8400-e29b-41d4-a716-446655440004', 'Darth', 'Vader', 'vader@sith.com', '$2a$10$gumkdc5ohc7ero/QVGZJEOxBRYlKWZpZnYWRmcJKrLgGsvPXy14Se', 'USER', 'PERDER_PESO', 'HOMBRE', 'POCO_NADA', 40, 120, 190, '2023-01-05', 5, 1), --pass: darkside123
+    (10,'660e8400-e29b-41d4-a716-446655440005', 'Luke2', 'NoNutriPlanYet', 'luke2@rebels.com', '$2a$10$R/z/V0MPpGHF6AAoHNFs2.b.fkgk31ZQgoSE1TsF2/Re4Hav1/Zbq', 'USER', 'GANAR_MUSCULO', 'HOMBRE', 'FUERTE', 25, 75, 180, '2023-01-01', 4, 1); --pass: lightsaber123
 
 INSERT INTO plan_nutricional (id, proteina, hidrato_de_carbono, grasa, kcal, fecha_inicio, fecha_final, entrenador_id, version)
 VALUES
@@ -207,7 +208,6 @@ VALUES
 INSERT INTO cliente_plan_nutricional (cliente_id, plan_nutricional_id)
 VALUES
     (5, 6), -- Enlazar Luke Skywalker al plan de Obi-Wan
-    (8, 6), -- Enlazar Rey Palpatine al plan de Obi-Wan
     (6, 7), -- Enlazar Leia Organa al plan de Mace Windu
     (7, 8); -- Enlazar Han Solo al plan de Yoda
 

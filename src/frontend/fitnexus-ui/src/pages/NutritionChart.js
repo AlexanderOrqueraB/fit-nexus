@@ -34,16 +34,16 @@ const chartConfig = {
   porcentajes: {
     label: "Porcentajes",
   },
-  chrome: {
-    label: "Chrome",
+  colorOne: {
+    label: "ColorOne",
     color: "hsl(var(--chart-4))",
   },
-  safari: {
-    label: "Safari",
+  colorTwo: {
+    label: "ColorTwo",
     color: "hsl(var(--chart-6))",
   },
-  firefox: {
-    label: "Firefox",
+  colorThree: {
+    label: "ColorThree",
     color: "hsl(var(--chart-2))",
   },
 }
@@ -56,13 +56,6 @@ const kcalMoreInfo = "Para el cálculo de kcal se utiliza en primer lugar la fó
 "el peso y el género para calcular la tasa de metabolismo basal (la energía que quemamos en reposo). A continuación se calculan las kcal de " +
 "mantenimiento agregando un factor de actividad según la frecuencia de ejercicio semanal que modifica esas kcal. Por último, " +
 "y en función del objetivo se añaden (300 kcal) para ganar músculo de forma eficiente o se restan (400kcal) para perder grasa de forma saludable."
-
-
-const mockChartNutri = [
-  { macronutriente: "Proteínas", porcentajes: 30, gramos:120, kcal: 800, fill: "var(--color-chrome)" },
-  { macronutriente: "Hidratos de carbono", porcentajes: 30, gramos:150, kcal: 720, fill: "var(--color-safari)" },
-  { macronutriente: "Grasas", porcentajes: 40, gramos:70, kcal: 520, fill: "var(--color-firefox)" },
-];
 
 export function NutritionChart() {
 
@@ -80,8 +73,8 @@ export function NutritionChart() {
   const [error, setError] =useState(null);
 
   const totalKcal = React.useMemo(() => {
-    return mockChartNutri.reduce((acc, curr) => acc + curr.kcal, 0)
-  }, [])
+    return nutriData ? nutriData.reduce((acc, curr) => acc + curr.kcal, 0) : 0;
+  }, [nutriData]);
 
   const fetchExtraData = async (fitNexusId) => {
     console.log("Ejecutando fetchExtraData con este fitNexusId: " + fitNexusId);
@@ -137,8 +130,22 @@ export function NutritionChart() {
           setLoading(true);
           try {
             const { gramos, porcentajes, kcal } = await fetchNutriData(selectedClient.fitNexusId);
-            console.log("Gramos, porcentajes y kcal cargados correctamente: ", gramos, porcentajes, kcal);
-            setNutriData({ gramos, porcentajes, kcal });
+
+            if (gramos && porcentajes && kcal) {
+              console.log("Gramos, porcentajes y kcal cargados correctamente: ", gramos, porcentajes, kcal);
+  
+              const chartNutri = [
+                  { macronutriente: "Proteínas", porcentajes: porcentajes.proteina, gramos: gramos.proteina, kcal: kcal.proteina, fill: "var(--color-colorOne)" },
+                  { macronutriente: "Hidratos de carbono", porcentajes: porcentajes.hidratoDeCarbono, gramos: gramos.hidratoDeCarbono, kcal: kcal.hidratoDeCarbono, fill: "var(--color-colorTwo)" },
+                  { macronutriente: "Grasas", porcentajes: porcentajes.grasa, gramos: gramos.grasa, kcal: kcal.grasa, fill: "var(--color-colorThree)" }
+              ];
+              setNutriData(chartNutri);
+
+            } else {
+              setNutriData(null);
+              console.error("Error: Datos nutricionales no encontrados para el cliente con fitNexusId: ", selectedClient.fitNexusId);
+              customToast({ message: "Error: Datos nutricionales no encontrados", type: "error" });
+            }
           } catch (error) {
             console.error("Error al cargar datos nutricionales: ", error);
             customToast({ message: "Error al cargar los datos nutricionales", type: "error" });
@@ -212,7 +219,7 @@ export function NutritionChart() {
               }}
             />
               <Pie
-                data={selectedClient.macros || []}
+                data={nutriData || []}
                 dataKey="porcentajes"
                 nameKey="macronutriente"
                 innerRadius={70}

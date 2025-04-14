@@ -39,7 +39,6 @@ public class PlanNutriDTOMapper {
         planNutricional.setKcal(planNutricionalDTO.getKcal());
         planNutricional.setFechaInicio(planNutricionalDTO.getFechaInicio());
         planNutricional.setFechaFinal(planNutricionalDTO.getFechaFinal());
-        planNutricional.setEntrenador(EntrenadorDTOMapper.mapperFromEntrenadorDTO(planNutricionalDTO.getEntrenador()));
 
         return planNutricional;
     }

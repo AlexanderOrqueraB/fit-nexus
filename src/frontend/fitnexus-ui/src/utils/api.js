@@ -180,5 +180,6 @@ export const fetchNutriData = async (fitNexusId) => {
     } catch (error) {
         console.error('Error al cargar los datos nutricionales:', error);
         customToast({ message: 'Error al cargar los datos nutricionales', type: 'error' });
+        return null;
     }
 };

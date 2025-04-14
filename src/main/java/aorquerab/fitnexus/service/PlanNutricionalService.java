@@ -176,6 +176,7 @@ public class PlanNutricionalService {
     }
 
     public PlanNutricionalDTO obtenerPorcentajeMacrosPorObjetivo (Cliente cliente) {
+        log.info("Ejecutando obtenerPorcentajeMacrosPorObjetivo");
         PlanNutricionalDTO planNutricionalDTO = null;
         if (cliente.getObjetivo().equals(Objetivo.GANAR_MUSCULO)) {
             planNutricionalDTO = PlanNutricionalDTO.builder()

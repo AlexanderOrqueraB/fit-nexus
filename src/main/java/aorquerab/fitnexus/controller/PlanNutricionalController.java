@@ -4,9 +4,12 @@ import aorquerab.fitnexus.model.componenteEntrenamiento.PlanNutricional;
 import aorquerab.fitnexus.model.dtos.PlanNutricionalDTO;
 import aorquerab.fitnexus.model.enumerator.Objetivo;
 import aorquerab.fitnexus.model.exception.ClienteNotFoundException;
+import aorquerab.fitnexus.model.exception.EntrenadorNotFoundException;
 import aorquerab.fitnexus.model.exception.InvalidRequestException;
 import aorquerab.fitnexus.model.users.Cliente;
+import aorquerab.fitnexus.model.users.Entrenador;
 import aorquerab.fitnexus.repository.ClienteRepository;
+import aorquerab.fitnexus.repository.EntrenadorRepository;
 import aorquerab.fitnexus.repository.PlanNutricionalRepository;
 import aorquerab.fitnexus.service.PlanNutricionalService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 import static aorquerab.fitnexus.constants.Constants.FITNEXUS_BASE_URI;
 import static aorquerab.fitnexus.utils.PlanNutriDTOMapper.mapperFromPlanNutriDTO;
@@ -28,14 +33,16 @@ import static aorquerab.fitnexus.utils.PlanNutriDTOMapper.mapperFromPlanNutriDTO
 public class PlanNutricionalController {
     private final PlanNutricionalRepository planNutricionalRepository;
     private final ClienteRepository clienteRepository;
+    private final EntrenadorRepository entrenadorRepository;
 
     private final PlanNutricionalService planNutricionalService;
 
     public PlanNutricionalController(PlanNutricionalRepository planNutricionalRepository,
-                                     ClienteRepository clienteRepository,
+                                     ClienteRepository clienteRepository, EntrenadorRepository entrenadorRepository,
                                      PlanNutricionalService planNutricionalService) {
         this.planNutricionalRepository = planNutricionalRepository;
         this.clienteRepository = clienteRepository;
+        this.entrenadorRepository = entrenadorRepository;
         this.planNutricionalService = planNutricionalService;
     }
 
@@ -108,13 +115,13 @@ public class PlanNutricionalController {
                         });
                 log.info("cliente: {} encontrado con el fitNexusId: {} ", cliente, fitNexusId);
                 PlanNutricionalDTO planDeCliente = planNutricionalService.obtenerPlanDeClienteDTOPorSuFitNexusId(fitNexusId);
-
+                log.info("El plan del cliente {} es: {}", cliente.getNombre(), planDeCliente);
                 if (planDeCliente.getFechaInicio() == null) {
                     log.info("El plan nutricional en porcentajes no ha sido creado aun");
                     throw new InvalidRequestException("El plan nutricional en porcentajes no ha sido creado aun");
                 } else {
                     planNutricionalDTO = planNutricionalService.obtenerPorcentajeMacrosPorObjetivo(cliente);
-                    log.info("El plan nutricional en porcentajes existente en BD, porcentajes DTO creado");
+                    log.info("El plan nutricional en porcentajes existente en BD, porcentajes DTO creado: {}", planNutricionalDTO);
                 }
                 //→ 30,30,40(definición) 50,30,20(volumen)
                 return ResponseEntity.status(HttpStatus.OK).body(planNutricionalDTO);
@@ -175,6 +182,14 @@ public class PlanNutricionalController {
                         });
                 log.info("cliente: {} encontrado con el email: {} ", cliente, email);
 
+                String fitNexusIdEntrenador = cliente.getEntrenador().getFitNexusId().toString();
+                Optional<Entrenador> entrenadorOptional =
+                        entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusIdEntrenador));
+                if (entrenadorOptional.isEmpty()) {
+                    log.warn("Entrenador no encontrado en base de datos con el fitNexusId: {}", fitNexusIdEntrenador);
+                    throw new EntrenadorNotFoundException("Entrenador no encontrado en BD: " + fitNexusIdEntrenador);
+                }
+
                 PlanNutricionalDTO planNutricionalDTO;
 
                 double tasaMetabolismoBasalCliente =
@@ -190,9 +205,6 @@ public class PlanNutricionalController {
 
                 PlanNutricionalDTO.PlanNutricionalDTOBuilder planNutricionalDTOBuilder = PlanNutricionalDTO
                         .builder()
-                        .entrenador(PlanNutricionalDTO.EntrenadorDTO.builder()
-                                .fitNexusId(cliente.getEntrenador().getFitNexusId())
-                                .build())
                         .kcal(kcalDiariasPorObjetivo);
 
                 //Duracion del plan en función del objetivo
@@ -209,6 +221,7 @@ public class PlanNutricionalController {
                 planNutricionalDTO = planNutricionalDTOBuilder.build();
                 log.info("Plan nutricional DTO creado usando patron builder: {}", planNutricionalDTO);
                 PlanNutricional planNutricional = mapperFromPlanNutriDTO(planNutricionalDTO);
+                planNutricional.setEntrenador(entrenadorOptional.get());
                 log.info("Plan nutricional creada tras el mapeo: {}", planNutricional);
                 planNutricionalRepository.save(planNutricional);
                 log.info("Plan nutricional con porcentajes de macronutrientes creada en base de datos");
