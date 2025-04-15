@@ -25,7 +25,7 @@ import { Select,
   SelectValue } from "../components_ui/ui/select"
 import { Button } from "../components_ui/ui/button"
 import { UserContext } from "../components/global/UserContext";
-import { createNutritionPlan, fetchClientData, fetchNutriData } from "../utils/api";
+import { createNutritionPlan, fetchClientData, fetchExtraData, fetchNutriData } from "../utils/api";
 import ProgressCustom from "../components/common/ProgressCustom";
 import customToast from "../utils/customToast";
 import { useClientData } from "../components/global/ClientDataContext";
@@ -84,6 +84,21 @@ export function NutritionChart() {
       const fetchDataForClient = async () => {
         setLoading(true);
         try {
+
+          // Obtenemos los datos extra del cliente seleccionado
+          const extraDataResponse = await fetchExtraData(selectedClient.fitNexusId);
+          if (extraDataResponse && Object.values(extraDataResponse).some((value) => value !== null))  {
+              console.log("Datos extra del cliente: ", extraDataResponse);
+              console.log("Datos del usuario JSON: ", JSON.stringify(extraDataResponse));
+              setExtraData(extraDataResponse);
+          } else {
+              console.log("Error al cargar datos extra del usuario: ");
+              customToast({
+                  message: "El cliente no tiene aún datos extra. Por favor, pídele que actualice sus datos en el apartado: Datos extra",
+                  type: "info",
+              });
+          }
+
           const { gramos, porcentajes, kcal } = await fetchNutriData(selectedClient.fitNexusId);
 
           if (gramos && porcentajes && kcal) {
@@ -128,10 +143,16 @@ export function NutritionChart() {
     }
   }, [selectedClient, clients]);
 
+  console.log ("Datos extra del cliente: ", extraData);
+  console.log ("Datos nutricionales del cliente: ", nutriData);
+  
+  const tieneExtraData = extraData !== null;
+  const tieneNutriPlan = nutriData !== null;
+
+  const shouldShowCreatePlanButton = role === "ADMIN" && selectedClient && tieneExtraData && !tieneNutriPlan;
+
   if (loading) return <ProgressCustom />;
   if (error) return customToast({ message: "Error: " + error, type: "error" });
-
-  const shouldShowCreatePlanButton = role === "ADMIN" && selectedClient && extraData && !nutriData;
 
   return (
     <div className="flex flex-col gap-4">
@@ -158,14 +179,17 @@ export function NutritionChart() {
           <h1 className="text-2xl font-bold">Tu plan nutricional</h1>
         </div>
       )}
+
+      
       {selectedClient ? (
         <div className="flex justify-center items-center space-x-4">
           <Card className="flex flex-col w-1/2">
             <CardHeader className="items-center pb-0">
               <CardTitle>Plan nutricional personalizado</CardTitle>
-              <CardDescription>Desde {selectedClient.fechaInicio || []} hasta {selectedClient.fechaFinal || []}</CardDescription>
+              <CardDescription>Desde {nutriData?.[0]?.fechaInicio || "N/A"} hasta {selectedClient.fechaFinal || []}</CardDescription>
             </CardHeader>
             <CardContent className="flex-1 pb-0">
+            {tieneExtraData && tieneNutriPlan ? (
               <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
                 <PieChart>
                   <ChartTooltip
@@ -208,12 +232,14 @@ export function NutritionChart() {
                   </Pie>
                 </PieChart>
               </ChartContainer>
-                {extraData && (
-                <div className="mt-4">
-                  <h2 className="text-lg font-bold">Datos Nutricionales</h2>
-                  <p>Gramos: {extraData.gramos}</p>
-                  <p>Porcentajes: {extraData.porcentajes}</p>
-                  <p>Kcal: {extraData.kcal}</p>
+              ) : shouldShowCreatePlanButton ? (
+                <div className="text-center">
+                  <p>No hay plan nutricional creado para este cliente.</p>
+                  <Button onClick={() => createNutritionPlan(selectedClient.email)}>Crear Plan Nutricional</Button>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <p>El cliente no tiene datos extra configurados.</p>
                 </div>
               )}
             </CardContent>
@@ -240,9 +266,6 @@ export function NutritionChart() {
                   />
                   </div>
                   {role === 'USER' && !extraData && (<PostProfileExtra />)}
-                  {shouldShowCreatePlanButton && (
-                      <Button onClick={() => createPlan(selectedClient.email)}>Crear Plan Nutricional</Button>
-                    )}
                 </CardFooter>
           </Card>
         </div>
