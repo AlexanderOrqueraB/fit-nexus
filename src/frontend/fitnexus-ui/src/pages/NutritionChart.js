@@ -83,6 +83,11 @@ export function NutritionChart() {
       console.log(`Ejecutando fetchNutriData para obtener gramos, porcentajes y kcal para el cliente: ${selectedClient.nombre}`);
       const fetchDataForClient = async () => {
         setLoading(true);
+        
+        // Reseteamos los datos extra y nutricionales al cambiar de cliente
+        setExtraData(null);
+        setNutriData(null);
+
         try {
 
           // Obtenemos los datos extra del cliente seleccionado
