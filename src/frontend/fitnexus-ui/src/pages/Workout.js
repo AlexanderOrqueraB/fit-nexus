@@ -1,5 +1,5 @@
 import { Info, ListFilter, RefreshCcwIcon } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button } from '../components_ui/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components_ui/ui/card';
 
@@ -23,10 +23,13 @@ import {
 } from '../components_ui/ui/dropdown-menu';
 import ExercisesInfoImg from '../components/workout-components/ejercicio/ExercisesInfoImg';
 import { Badge } from '../components_ui/ui/badge';
-import { mockExercises, mockRoutine, mockPlans } from '../mocks/mockData'
 import { formatDateToDDMMYYYY } from '../utils/utilsMethod';
+import { fetchWorkoutData } from '../utils/api';
+import { UserContext } from '../components/global/UserContext';
 
-export function Workout ({ role, fitNexusId })  {
+export function Workout ()  {
+  	const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
+	const { fitNexusId } = user; // Desestructurar el objeto user
 
 	const [exercises, setExercises] = useState([]);
   
@@ -40,13 +43,9 @@ export function Workout ({ role, fitNexusId })  {
 		setSelectedExercise(exercise);
 	};
 
-	//estado booleando para "test mode"
-	const [isTestMode, setIsTestMode] = useState(false);
-
-	//Alternamos entre datos reales y datos de prueba
-	const displayedExercises = (isTestMode ? mockExercises : exercises) || [];
-	const displayedRoutines = (isTestMode ? mockRoutine : routines) || [];
-	const displayedPlans = (isTestMode ? mockPlans : plans) || [];
+	const displayedExercises = exercises || [];
+	const displayedRoutines = routines || [];
+	const displayedPlans = plans || [];
 
 	//Para el filtro de objetivo
 	const [selectedCardio, setSelectedCardio] = useState('Todos');
@@ -57,26 +56,18 @@ export function Workout ({ role, fitNexusId })  {
 	const filteredExercises = displayedExercises.filter((exercise) => {
 		if (selectedCardio === 'Todos') return true;
 		const isCardio = selectedCardio === 'true'; // Convertimos a booleano
-		return exercise.cardioRealizado === isCardio; // Compararmos valores booleanos
+		return exercise.cardioRealizado === isCardio; // Comparamos valores booleanos
 	  });
 	  
 	const loadData = async () => {
 		try {
-		// Ejecutar todas las solicitudes en paralelo
-
-		//uncomment this lines to use backend data
-		//const { exercises, routines, plans } = await fetchWorkoutData(fitNexusId);
-		const exercises = mockExercises.map((exercise) => ({...exercise}));
-		const routines = mockRoutine.map((routine) => ({...routine}));
-		const plans = mockPlans.map((plan) => ({...plan}));
-		// Actualizar los estados con los datos obtenidos
-		//setExercises(exercises);
-		//setRoutines(routines);
-		//setPlans(plans);
-		setExercises(exercises ? exercises : null);
-		setRoutines(routines ? routines : null);
-		setPlans(plans ? plans : null);
-
+		const { exercises, routines, plans } = await fetchWorkoutData(fitNexusId);
+		setExercises(exercises);
+		setRoutines(routines);
+		setPlans(plans);
+		console.log('Datos cargados:', { exercises, routines, plans });
+		customToast({message : "Datos cargados correctamente", type : "success"});
+		
 		} catch (error) {
 		setExercises(null);
 		setRoutines(null);
@@ -103,9 +94,6 @@ export function Workout ({ role, fitNexusId })  {
 						<TabsTrigger value="plan">Planes</TabsTrigger>
 						<TabsTrigger value="rutina">Rutinas</TabsTrigger>
 						<TabsTrigger value="ejercicio">Ejercicios</TabsTrigger>
-						<Button onClick={() => setIsTestMode(!isTestMode)}>
-							{isTestMode ? 'Usar Datos Reales' : 'Usar Datos de Prueba'}
-						</Button>
 						<div className="ml-auto">
 							<Button onClick={() => loadData()}>
 							<RefreshCcwIcon className="h-3.5 w-3.5 mr-2" />

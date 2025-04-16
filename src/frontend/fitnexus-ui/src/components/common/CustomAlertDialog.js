@@ -14,7 +14,8 @@ import { Button } from "../../components_ui/ui/button"
 export function CustomAlertDialog ({ 
   messageButton = "Ver info", 
   title = "Titulo ejemplo",
-  description = "descripcion" }) {
+  description = "" ,
+  description2 = "" }) {
   return (
   <AlertDialog>
   <AlertDialogTrigger asChild>
@@ -28,9 +29,12 @@ export function CustomAlertDialog ({
       <AlertDialogDescription>
       {description}
       </AlertDialogDescription>
+      <AlertDialogDescription>
+      {description2}
+      </AlertDialogDescription>
     </AlertDialogHeader>
     <AlertDialogFooter>
-      <AlertDialogCancel>Entendido!</AlertDialogCancel>
+      <AlertDialogCancel>¡Entendido!</AlertDialogCancel>
       {/*<AlertDialogAction>Continue</AlertDialogAction>*/}
     </AlertDialogFooter>
   </AlertDialogContent>

@@ -21,7 +21,6 @@ import PutPlanEntrenamiento from '../components/workout-components/plan-entrenam
 import DeleteModalPlanPost from '../components/workout-components/plan-entrenamiento/DeleteModalPlanPost';
 import PostListRoutinesInPlan from '../components/workout-components/plan-entrenamiento/PostListRoutinesInPlan';
 import DeleteListRoutinesInPlan from '../components/workout-components/plan-entrenamiento/DeleteListRoutinesInPlan';
-import { mockExercises, mockRoutinesBuilder, mockPlans, mockClients } from '../mocks/mockData'
 import { UserContext } from "../components/global/UserContext";
 import { formatDateToDDMMYYYY } from '../utils/utilsMethod';
 import {   DropdownMenu,
@@ -53,11 +52,9 @@ export function WorkoutBuilder() {
   const [plans, setPlans] = useState([]);
   const [selectedPlan, setSelectedPlan] = useState(null);
 
-  const [isTestMode, setIsTestMode] = useState(false);
-
-  const displayedExercises = (isTestMode ? mockExercises : exercises) || [];
-  const displayedRoutines = (isTestMode ? mockRoutinesBuilder : routines) || [];
-  const displayedPlans = (isTestMode ? mockPlans : plans) || [];
+  const displayedExercises = exercises || [];
+  const displayedRoutines = routines || [];
+  const displayedPlans = plans || [];
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -94,11 +91,12 @@ export function WorkoutBuilder() {
   const loadData = async () => {
     try {
       const { exercises, routines, plans } = await fetchWorkoutData(fitNexusId);
-
-      // Actualizar los estados con los datos obtenidos
       setExercises(exercises);
       setRoutines(routines);
       setPlans(plans);
+      console.log('Datos cargados:', { exercises, routines, plans });
+      customToast({message : "Datos cargados correctamente", type : "success"});
+
     } catch (error) {
       console.error('Error al cargar datos:', error);
       customToast({message : "Hubo un error al cargar los datos de planes/rutinas/ejercicios", type : "error"});
@@ -107,7 +105,7 @@ export function WorkoutBuilder() {
 
   useEffect(() => {
     loadData();
-  }, []); // Llama a loadData solo al montar el componente
+  }, []); 
 
   const handleEditClick = (item, type) => {
     if (type === 'exercise') {
@@ -133,6 +131,7 @@ export function WorkoutBuilder() {
     setIsEditOpen(false);
   };
 
+
   //rutina
   const handleAddExerciseToRoutine = (routine) => {
     console.log("Selected Routine:", routine);
@@ -144,6 +143,7 @@ export function WorkoutBuilder() {
     setSelectedExercise(routine); // Guarda la rutina que tiene ejercicios seleccionados
     setIsRemoveExerciseFromRoutineOpen(true); // Abre el modal de eliminación
   };
+
 
   //plan
   const handleAddRoutineToPlan = (plan) => {
@@ -184,9 +184,6 @@ export function WorkoutBuilder() {
                     <TabsTrigger value="plan">Planes</TabsTrigger>
                     <TabsTrigger value="rutina">Rutinas</TabsTrigger>
                     <TabsTrigger value="ejercicio">Ejercicios</TabsTrigger>
-                    <Button onClick={() => setIsTestMode(!isTestMode)}>
-                      {isTestMode ? 'Usar Datos Reales' : 'Usar Datos de Prueba'}
-                    </Button>
                     <div className="ml-auto">
                       <Button onClick={() => loadData()}>
                         <RefreshCwIcon className="h-3.5 w-3.5 mr-2" />
@@ -307,8 +304,7 @@ export function WorkoutBuilder() {
                               <TableCell className="font-medium">{plan.nombrePlan}</TableCell>
                             )}
                               {visibleColumns.includes("cliente") && (
-                              <TableCell className="font-medium">{mockClients[0].fitNexusId || ''
-                              }</TableCell>
+                              <TableCell className="font-medium">{fitNexusId || ''}</TableCell>
                               )}
                               {visibleColumns.includes("fecha Inicio") && (
                               <TableCell className="font-medium">{plan.fechaInicio ? formatDateToDDMMYYYY(plan.fechaInicio) : ''}</TableCell>

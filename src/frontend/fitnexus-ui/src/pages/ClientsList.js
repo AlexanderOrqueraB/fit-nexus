@@ -36,7 +36,6 @@ import {
   TabsList,
   TabsTrigger,
 } from "../components_ui/ui/tabs";
-import { mockClients } from "../mocks/mockData";
 import { UserContext } from "../components/global/UserContext";
 import { formatObjetivo } from "../utils/utilsMethod";
 import { useClientData } from "../components/global/ClientDataContext";
@@ -52,11 +51,8 @@ export function ClientsList() {
     await fetchClientDataOnce(fitNexusId);
   }
 
-  //estado booleando para "test mode"
-  const [isTestMode, setIsTestMode] = useState(false);
-
   //Alternamos entre datos reales y datos de prueba
-  const displayedClients = (isTestMode ? mockClients : clients) || [];
+  const displayedClients = clients || [];
 
   const [visibleColumns, setVisibleColumns] = useState([
     "nombre",
@@ -87,9 +83,6 @@ export function ClientsList() {
               <div className="flex items-center">
                 <TabsList className="flex items-center space-x-4">
                   <TabsTrigger value="all">Clientes</TabsTrigger>
-                  <Button onClick={() => setIsTestMode(!isTestMode)}>
-                    {isTestMode ? "Usar Datos Reales" : "Usar Datos de Prueba"}
-                  </Button>
                   <div className="ml-auto">
                     <Button onClick={refreshData}>
                       <RefreshCcwIcon className="h-3.5 w-3.5 mr-2" />
