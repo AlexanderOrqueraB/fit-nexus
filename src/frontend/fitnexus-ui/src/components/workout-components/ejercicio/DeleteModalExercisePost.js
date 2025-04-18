@@ -27,7 +27,6 @@ const onSubmit = (e) => {
 
   console.log('Eliminando el ejercicio: ', data.nombreEjercicio);
 
-  // Enviar la solicitud PUT para actualizar el ejercicio
   const response = apiClient.delete(`/api/v1/ejercicios/${exerciseData.nombreEjercicio}`)
       .then(response => {
           console.log('Respuesta del servidor:', response.data);

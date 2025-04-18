@@ -32,6 +32,17 @@ import ProgressCustom from "../components/common/ProgressCustom";
 import customToast from "../utils/customToast";
 import { useClientData } from "../components/global/ClientDataContext";
 import { set } from "react-hook-form";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "../components_ui/ui/alert-dialog";
 
 const chartConfig = {
   porcentajes: {
@@ -285,7 +296,33 @@ export function NutritionChart() {
               <CardContent className="flex-1 pb-0">
                 <div className="text-center">
                   <p></p>
-                  <Button onClick={() => createNutritionPlan(selectedClient.email)}>Crear Plan Nutricional</Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                        <Button>
+                            Crear plan nutricional
+                        </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Vas a crear un plan nutricional para {selectedClient.nombre}</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Utilizarás para ello los datos extra del cliente (edad, peso, altura, objetivo, frecuencia de actividad física y género).
+                        </AlertDialogDescription>
+                        <AlertDialogDescription>
+                            El resultado será un gráfico que contendrá el plan nutricional de {selectedClient.nombre}
+                        </AlertDialogDescription>
+                        <AlertDialogDescription>
+                            Haz click en el botón Crear Plan Nutricional o cancelar para anular la acción
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => createNutritionPlan(selectedClient.email)}>
+                              Crear Plan Nutricional
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                   <p></p>
                 </div>
               </CardContent>

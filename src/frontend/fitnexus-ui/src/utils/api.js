@@ -133,7 +133,7 @@ export const createNutritionPlan = async (email) => {
     try {
         const response = await apiClient.post('/api/v1/plan-nutri', { email });
         
-        if (response.status === 200) {
+        if (response.status === 201) {
             customToast({ message: 'Plan nutricional creado correctamente', type: 'success' });
         }
 
