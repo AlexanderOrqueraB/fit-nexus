@@ -11,17 +11,17 @@ import lombok.*;
 @Data
 @EqualsAndHashCode
 @Entity
-@Table(name = "plan_de_entrenamiento_rutina")
-public class PlanRutina {
+@Table(name = "cliente_plan_nutricional")
+public class ClientePlanNutricional {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "plan_de_entrenamiento_id")
-    private Long planDeEntrenamientoId;
+    @Column(name = "cliente_id")
+    private Long clienteId;
 
-    @Column(name = "rutina_id")
-    private Long rutinaId;
+    @Column(name = "plan_nutricional_id")
+    private Long planNutricionalId;
 
 }

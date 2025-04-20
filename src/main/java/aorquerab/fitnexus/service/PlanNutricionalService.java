@@ -108,7 +108,7 @@ public class PlanNutricionalService {
             int hidratosGramos = hidratosKcal / 4;   // 4 kcal por gramo de carbohidratos
             int grasasGramos = grasasKcal / 9;       // 9 kcal por gramo de grasas
 
-            log.info("macros en gramos: (proteina/hc/grasas): {} gramos de proteina, {} gramos de hc {} y gramos de grasa"
+            log.info("macros en gramos: (proteina/hc/grasas): {} gramos de proteina, {} gramos de hc y {} gramos de grasa"
                     , proteinaGramos, hidratosGramos, grasasGramos);
 
             return PlanNutricionalDTO.builder()

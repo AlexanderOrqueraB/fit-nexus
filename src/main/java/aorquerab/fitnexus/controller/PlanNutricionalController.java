@@ -1,5 +1,6 @@
 package aorquerab.fitnexus.controller;
 
+import aorquerab.fitnexus.model.componenteEntrenamiento.ClientePlanNutricional;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanNutricional;
 import aorquerab.fitnexus.model.dtos.PlanNutricionalDTO;
 import aorquerab.fitnexus.model.enumerator.Objetivo;
@@ -11,6 +12,7 @@ import aorquerab.fitnexus.model.users.Entrenador;
 import aorquerab.fitnexus.repository.ClienteRepository;
 import aorquerab.fitnexus.repository.EntrenadorRepository;
 import aorquerab.fitnexus.repository.PlanNutricionalRepository;
+import aorquerab.fitnexus.repository.intermediate.ClientePlanNutricionalRepository;
 import aorquerab.fitnexus.service.PlanNutricionalService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -34,15 +36,18 @@ public class PlanNutricionalController {
     private final PlanNutricionalRepository planNutricionalRepository;
     private final ClienteRepository clienteRepository;
     private final EntrenadorRepository entrenadorRepository;
+    private final ClientePlanNutricionalRepository clientePlanNutricionalRepository;
 
     private final PlanNutricionalService planNutricionalService;
 
     public PlanNutricionalController(PlanNutricionalRepository planNutricionalRepository,
-                                     ClienteRepository clienteRepository, EntrenadorRepository entrenadorRepository,
+                                     ClientePlanNutricionalRepository clientePlanNutricionalRepository,
+                                     ClienteRepository clienteRepository, EntrenadorRepository entrenadorRepository, ClientePlanNutricionalRepository clientePlanNutricionalRepository1,
                                      PlanNutricionalService planNutricionalService) {
         this.planNutricionalRepository = planNutricionalRepository;
         this.clienteRepository = clienteRepository;
         this.entrenadorRepository = entrenadorRepository;
+        this.clientePlanNutricionalRepository = clientePlanNutricionalRepository1;
         this.planNutricionalService = planNutricionalService;
     }
 
@@ -224,7 +229,22 @@ public class PlanNutricionalController {
                 planNutricional.setEntrenador(entrenadorOptional.get());
                 log.info("Plan nutricional creada tras el mapeo: {}", planNutricional);
                 planNutricionalRepository.save(planNutricional);
-                log.info("Plan nutricional con porcentajes de macronutrientes creada en base de datos");
+
+                //OPCION 1 Asignar el plan nutricional al cliente en la tabla intermedia
+                // clientePlanNutricionalRepository.addPlanNutricionalToCliente(cliente.getId(), planNutricional.getId());
+                // log.info("Plan nutricional asociado al cliente en la tabla intermedia: {} ", clientePlanNutricionalRepository.findByClienteId(cliente.getId()));
+                // log.info("Plan nutricional asociado al cliente en la tabla intermedia: {} ", clientePlanNutricionalRepository.findByPlanNutricionalId(planNutricional.getId()));
+
+                //OPCION 2
+                ClientePlanNutricional clientePlanNutricional = ClientePlanNutricional.builder()
+                        .clienteId(cliente.getId())
+                        .planNutricionalId(planNutricional.getId())
+                        .build();
+                log.info("ClientePlanNutricional creado: {}", clientePlanNutricional);
+                clientePlanNutricionalRepository.save(clientePlanNutricional);
+
+                log.info("Después de save (planNutricional) Cliente id: {}, plan nutricional id: {}", cliente.getId(), planNutricional.getId());
+                log.info("Plan nutricional con porcentajes de macronutrientes GUARDADO en base de datos: {}", planNutricional);
             }
             return ResponseEntity.status(HttpStatus.CREATED).body("Plan nutricional en porcentajes creada correctamente.");
         } catch (Exception e) {

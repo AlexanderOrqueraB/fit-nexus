@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext } from "react";
 import { fetchClientData } from "../../utils/api";
 import customToast from "../../utils/customToast";
+import { UserContext } from "./UserContext";
 
 const ClientDataContext = createContext();
 
@@ -9,7 +10,15 @@ export const ClientDataProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error] = useState(null);
 
+  const { user } = useContext(UserContext);
+  const { role } = user; // Desestructurar el objeto user
+
   const fetchClientDataOnce = async (fitNexusId) => {
+    if (role !== "ADMIN") {
+      console.warn("fetchClientDataOnce can only be executed by ADMIN users.");
+      return;
+    }
+    
     setLoading(true);
     try {
         const { clients } = await fetchClientData(fitNexusId);

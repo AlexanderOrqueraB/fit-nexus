@@ -99,10 +99,6 @@ export function LoginForm() {
               console.log("Rol del usuario:", role);
               if (role === "ADMIN") {
                 console.log("Redireccionando a pagina admin");
-                customToast({
-                  message: "Bienvenidx! Login efectuado correctamente como administrador!",
-                  type: "success",
-                });
                 navigate("/dashboard", { state: { isAdminProp: true } });
               } else if (role === "USER") {
                 console.log("Redireccionando a pagina usuario");

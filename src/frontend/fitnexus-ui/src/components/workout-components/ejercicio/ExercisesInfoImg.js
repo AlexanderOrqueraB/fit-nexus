@@ -8,13 +8,17 @@ export function ExercisesInfoImg ({exercise}) {
 
   const { nombreEjercicio } = exercise;
   
+  const exerciseNameMapping = {
+    "remo con barra": "remo con barra",
+  };
   // función para normalizar el nombre y procesar todo en minúsculas y singular
   const normalizeName = (name) => {
-    return name.toLowerCase().replace(/s$/, "");
+    const lowerCaseNoS = name.toLowerCase().replace(/s$/, "");
+    return exerciseNameMapping[lowerCaseNoS] || lowerCaseNoS;
   };
 
   const normalizedName = normalizeName(nombreEjercicio);
-  const exerciseData = exerciseImages[normalizedName];
+  const exerciseData = exerciseImages[normalizedName] || exerciseImages.notFound.image;
 
   if (!exerciseData) {
     return (

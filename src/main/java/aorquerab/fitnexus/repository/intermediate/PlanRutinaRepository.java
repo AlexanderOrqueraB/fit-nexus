@@ -23,7 +23,7 @@ public interface PlanRutinaRepository extends JpaRepository<PlanRutina,Long> {
     @Query(value = "DELETE FROM plan_de_entrenamiento_rutina " +
             "WHERE plan_de_entrenamiento_id = :planId AND rutina_id = :rutinaId", nativeQuery = true)
     void deleteRutinaFromPlan(
-            @Param("planId") Long rutinaId,
-            @Param("rutinaId") Long ejercicioId);
+            @Param("planId") Long planId,
+            @Param("rutinaId") Long rutinaId);
 
 }

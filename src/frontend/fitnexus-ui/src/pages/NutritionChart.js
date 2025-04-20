@@ -31,7 +31,6 @@ import { createNutritionPlan, fetchClientData, fetchExtraData, fetchNutriData } 
 import ProgressCustom from "../components/common/ProgressCustom";
 import customToast from "../utils/customToast";
 import { useClientData } from "../components/global/ClientDataContext";
-import { set } from "react-hook-form";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -155,6 +154,7 @@ export function NutritionChart() {
     if (role === "USER") {
       console.log("Ejecutando fetchData y fetchNutriData para ADMIN");
       const fetchExtraDataForUser = async () => {
+      setLoading(true);
         try {
           const extraDataResponse = await fetchExtraData(fitNexusId);
           if (!extraDataResponse) {
@@ -164,6 +164,9 @@ export function NutritionChart() {
         } catch (error) {
           console.error("Error al cargar datos extra del cliente: ", error);
           customToast({ message: "Error al cargar datos extra del cliente", type: "error" });
+        } finally {
+        console.log("Set loading a false en fetchExtraDataForUser");
+        setLoading(false);
         }
       };
       fetchExtraDataForUser();
@@ -304,12 +307,12 @@ export function NutritionChart() {
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Vas a crear un plan nutricional para {selectedClient.nombre}</AlertDialogTitle>
+                        <AlertDialogTitle>Vas a crear un plan nutricional para: {selectedClient.nombre}</AlertDialogTitle>
                         <AlertDialogDescription>
                             Utilizarás para ello los datos extra del cliente (edad, peso, altura, objetivo, frecuencia de actividad física y género).
                         </AlertDialogDescription>
                         <AlertDialogDescription>
-                            El resultado será un gráfico que contendrá el plan nutricional de {selectedClient.nombre}
+                            El resultado será un gráfico que contendrá el plan nutricional de: {selectedClient.nombre}
                         </AlertDialogDescription>
                         <AlertDialogDescription>
                             Haz click en el botón Crear Plan Nutricional o cancelar para anular la acción
