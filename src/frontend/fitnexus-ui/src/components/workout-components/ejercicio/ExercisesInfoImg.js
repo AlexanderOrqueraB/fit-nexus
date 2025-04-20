@@ -7,7 +7,14 @@ import { exerciseImages } from '../../../utils/exercisesImg'
 export function ExercisesInfoImg ({exercise}) {
 
   const { nombreEjercicio } = exercise;
-  const exerciseData = exerciseImages[nombreEjercicio];
+  
+  // función para normalizar el nombre y procesar todo en minúsculas y singular
+  const normalizeName = (name) => {
+    return name.toLowerCase().replace(/s$/, "");
+  };
+
+  const normalizedName = normalizeName(nombreEjercicio);
+  const exerciseData = exerciseImages[normalizedName];
 
   if (!exerciseData) {
     return (
