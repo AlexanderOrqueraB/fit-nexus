@@ -18,6 +18,7 @@ public class PlanEntrenamientoGetDTO {
     private String nombrePlan;
     private LocalDate fechaInicio;
     private LocalDate fechaFinal;
+    private String clienteFitNexusId;
     private List<PlanEntrenamientoGetDTO.RutinaDTO> rutinas;
 
     @AllArgsConstructor

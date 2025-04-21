@@ -235,3 +235,27 @@ VALUES
     (15, 'Burpees', 10, 3, NULL, TRUE, 4, 1), -- Ejercicio de Obi-Wan
     (16, 'Remo con barra', 5, 3, NULL, FALSE, 4, 1), -- Ejercicio de Obi-Wan
     (17, 'Zancadas', 10, 3, NULL, FALSE, 4, 1); -- Ejercicio de Obi-Wan
+
+-- Link Rutinas to Planes
+INSERT INTO plan_de_entrenamiento_rutina (plan_de_entrenamiento_id, rutina_id)
+VALUES
+    (6, 6), -- Link "Plan de Obi-Wan" to "Entrenamiento basico"
+    (7, 7), -- Link "Plan de Windu" to "Torso"
+    (8, 8); -- Link "Plan de Yoda" to "Pierna"
+
+-- Link Ejercicios to Rutinas
+INSERT INTO rutina_ejercicio (rutina_id, ejercicio_id)
+VALUES
+-- Link "Entrenamiento basico" a los ejercicios de Obi-wan
+    (6, 9), 
+    (6, 10),
+    (6, 11),
+    (6, 12),
+    (6, 13),
+    (6, 14),
+    (6, 15),
+    (6, 16),
+    (6, 17),
+    (7, 10), -- Link "Torso" a "Peso muerto rumano"
+    (7, 11), -- Link "Torso" a "Sentadilla goblet"
+    (8, 12); -- Link "Pierna" a "Correr en cinta"

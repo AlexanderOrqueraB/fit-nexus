@@ -304,7 +304,7 @@ export function WorkoutBuilder() {
                               <TableCell className="font-medium">{plan.nombrePlan}</TableCell>
                             )}
                               {visibleColumns.includes("cliente") && (
-                              <TableCell className="font-medium">{fitNexusId || ''}</TableCell>
+                              <TableCell className="font-medium">{plan.clienteFitNexusId || 'Sin asignar'}</TableCell>
                               )}
                               {visibleColumns.includes("fecha Inicio") && (
                               <TableCell className="font-medium">{plan.fechaInicio ? formatDateToDDMMYYYY(plan.fechaInicio) : ''}</TableCell>

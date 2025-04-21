@@ -121,16 +121,17 @@ public class PlanDeEntrenamientoController {
             if(clienteOptional.isPresent()) {
                 Cliente cliente = clienteOptional.get();
                 planes = cliente.getPlanDeEntrenamiento();
+                log.info("obtenerPlanPorFitNexusId: Planes de entrenamiento del cliente: {}", planes);
             }
             if (entrenadorOptional.isPresent()){
                 Entrenador entrenador = entrenadorOptional.get();
                 planes = entrenador.getPlanesDeEntrenamiento();
+                log.info("obtenerPlanPorFitNexusId: Planes de entrenamiento del entrenador: {}", planes);
             }
 
             if (planes.isEmpty()) {
                 log.warn("Planes no encontrados para el usuario con el fitNexusId: {}", fitNexusId);
-                throw new RutinaNotFoundException("Planes no encontrados para el usuario con el fitNexusId: {}"
-                        + fitNexusId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
             }
 
             List<PlanEntrenamientoGetDTO> planDtoRequestList = planes.stream()
@@ -139,6 +140,7 @@ public class PlanDeEntrenamientoController {
                             .nombrePlan(plan.getNombrePlan())
                             .fechaInicio(plan.getFechaInicio())
                             .fechaFinal(plan.getFechaFinal())
+                            .clienteFitNexusId(plan.getCliente() != null ? plan.getCliente().getFitNexusId().toString() : null)
                                 .rutinas(plan.getRutinas().stream()
                                         .map(rutina -> PlanEntrenamientoGetDTO.RutinaDTO.builder()
                                                 .id(rutina.getId())

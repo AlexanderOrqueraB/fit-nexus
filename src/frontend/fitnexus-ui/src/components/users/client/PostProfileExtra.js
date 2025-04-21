@@ -1,5 +1,5 @@
 import { Button } from "../../../components_ui/ui/button"
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,6 @@ import {
 import { Input } from "../../../components_ui/ui/input"
 import { Label } from "../../../components_ui/ui/label"
 import { mockClients } from '../../../mocks/mockData'
-import { fetchClientData } from '../../../utils/api';
 import { customToast } from '../../../utils/customToast'
 import {apiClient} from "../../../utils/client";
 import { UserContext } from "../../global/UserContext";
@@ -29,24 +28,6 @@ export function PostProfileExtra() {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
   const { fitNexusId } = user; // Desestructurar el objeto user
 
-  const [setClients] = useState([]);
-	const loadData = async () => {
-		try {
-		// Ejecutar todas las solicitudes en paralelo
-		const { clients } = await fetchClientData(fitNexusId);
-
-		// Actualizar los estados con los datos obtenidos
-		setClients(clients);
-
-		} catch (error) {
-		  customToast({message : "Hubo un error al cargar los datos de cliente", type : "error"});
-		}
-	};
-	
-	useEffect(() => {
-	loadData();
-	}, []); // Llama a loadData solo al montar el componente
- 	
   const [data, setData] = useState({
     objetivo: '',
     genero: '',
@@ -66,6 +47,12 @@ export function PostProfileExtra() {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    if (!data.objetivo || !data.genero || !data.frecuenciaEjercicioSemanal || !data.edad || !data.peso || !data.altura) {
+      customToast({ message: "Por favor, completa todos los campos.", type: "warning" });
+      return;
+    }
+
     const userData = {
 	  objetivo: data.objetivo,
       genero: data.genero,
@@ -151,11 +138,11 @@ export function PostProfileExtra() {
 							</Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="frecuencia" className="text-right">
+              <Label htmlFor="frecuenciaEjercicioSemanal" className="text-right">
                 Frecuencia Ejercicio
               </Label>
-              <Select name="frecuencia" 
-							onValueChange={(value) => setData({ ...data, frecuencia: value})}>
+              <Select name="frecuenciaEjercicioSemanal" 
+							onValueChange={(value) => setData({ ...data, frecuenciaEjercicioSemanal: value})}>
 								<SelectTrigger className="col-span-3">
 									<SelectValue placeholder="Selecciona una opción" />
 								</SelectTrigger>
@@ -183,7 +170,8 @@ export function PostProfileExtra() {
                 Edad
               </Label>
               <Input
-                id="text"
+                id="edad"
+                name="edad"
                 placeholder={mockClients[0].edad}
                 onChange={handleChange}
                 className="col-span-3"
@@ -194,7 +182,8 @@ export function PostProfileExtra() {
                 Peso
               </Label>
               <Input
-                id="text"
+                id="peso"
+                name="peso"
                 placeholder={mockClients[0].peso}
                 onChange={handleChange}
                 className="col-span-3"
@@ -205,7 +194,8 @@ export function PostProfileExtra() {
                 Altura
               </Label>
               <Input
-                id="text"
+                id="altura"
+                name="altura"
                 placeholder={mockClients[0].altura}
                 onChange={handleChange}
                 className="col-span-3"

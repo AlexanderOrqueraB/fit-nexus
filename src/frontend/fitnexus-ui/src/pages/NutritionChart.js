@@ -186,7 +186,6 @@ export function NutritionChart() {
           }
         } catch (error) {
           console.error("Error al cargar datos extra del cliente: ", error);
-          customToast({ message: "Error al cargar datos extra del cliente", type: "error" });
         } finally {
         console.log("Set loading a false en fetchExtraDataForUser");
         setLoading(false);

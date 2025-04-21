@@ -15,12 +15,13 @@ export const ClientDataProvider = ({ children }) => {
 
   const fetchClientDataOnce = async (fitNexusId) => {
     if (role !== "ADMIN") {
-      console.warn("fetchClientDataOnce can only be executed by ADMIN users.");
+      console.warn("fetchClientDataOnce solo puede ejecutarse por un ADMIN");
       return;
     }
     
     setLoading(true);
     try {
+      if (role === "ADMIN") {
         const { clients } = await fetchClientData(fitNexusId);
         setClients(clients);
         if (clients.length === 0) {
@@ -34,7 +35,7 @@ export const ClientDataProvider = ({ children }) => {
             setClients([]);
             customToast({ message: "Hubo un error al cargar los datos de cliente", type: "error" });
         }
-
+      }
     } catch (error) {
         console.error("Error al cargar datos de clientes:", error);
         customToast({
