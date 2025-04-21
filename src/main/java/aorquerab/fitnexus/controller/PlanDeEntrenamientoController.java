@@ -1,14 +1,13 @@
 package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
+import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.*;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.response.PlanEntrenamientoGetDTO;
 import aorquerab.fitnexus.model.exception.*;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
-import aorquerab.fitnexus.repository.ClienteRepository;
-import aorquerab.fitnexus.repository.EntrenadorRepository;
-import aorquerab.fitnexus.repository.PlanDeEntrenamientoRepository;
+import aorquerab.fitnexus.repository.*;
 import aorquerab.fitnexus.repository.intermediate.PlanRutinaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,12 +31,16 @@ public class PlanDeEntrenamientoController {
     private final ClienteRepository clienteRepository;
     private final EntrenadorRepository entrenadorRepository;
     private final PlanRutinaRepository planRutinaRepository;
+    private final RutinaRepository rutinaRepository;
+    private final EjercicioRepository ejercicioRepository;
 
-    public PlanDeEntrenamientoController(PlanDeEntrenamientoRepository planDeEntrenamientoRepository, ClienteRepository clienteRepository, EntrenadorRepository entrenadorRepository, PlanRutinaRepository planRutinaRepository) {
+    public PlanDeEntrenamientoController(PlanDeEntrenamientoRepository planDeEntrenamientoRepository, ClienteRepository clienteRepository, EntrenadorRepository entrenadorRepository, PlanRutinaRepository planRutinaRepository, RutinaRepository rutinaRepository, EjercicioRepository ejercicioRepository) {
         this.planDeEntrenamientoRepository = planDeEntrenamientoRepository;
         this.clienteRepository = clienteRepository;
         this.entrenadorRepository = entrenadorRepository;
         this.planRutinaRepository = planRutinaRepository;
+        this.rutinaRepository = rutinaRepository;
+        this.ejercicioRepository = ejercicioRepository;
     }
 
     //TODO: Testear con postman
@@ -353,7 +356,10 @@ public class PlanDeEntrenamientoController {
             }
 
             //Usamos la tabla intermedia para asignar el plan al cliente
+            log.info("Añadiendo el plan {} usando de forma directa la tabla intermedia con cliente.getPlanDeEntrenamiento().add(plan)", plan);
             cliente.getPlanDeEntrenamiento().add(plan);
+
+            //TODO: Find a way to set rutinas and ejercicios for Cliente so we can retrieve that info and show them in Workout.js
             clienteRepository.save(cliente);
 
             return ResponseEntity.status(HttpStatus.OK).body("Plan asignado correctamente al cliente");

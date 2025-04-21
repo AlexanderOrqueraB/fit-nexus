@@ -42,6 +42,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "../components_ui/ui/alert-dialog";
+import { custom } from "zod";
 
 const chartConfig = {
   porcentajes: {
@@ -159,8 +160,30 @@ export function NutritionChart() {
           const extraDataResponse = await fetchExtraData(fitNexusId);
           if (!extraDataResponse) {
             customToast({ message: "El cliente no tiene datos extra configurados.", type: "warning" });
+          } else {
+            console.log("Datos extra del cliente: ", extraDataResponse);
+            console.log("Datos del usuario JSON: ", JSON.stringify(extraDataResponse));
+            setExtraData(extraDataResponse);
           }
-          setExtraData(extraDataResponse);
+
+          const { gramos, porcentajes, kcal } = await fetchNutriData(fitNexusId);
+
+          if (gramos && porcentajes && kcal) {
+            console.log("Gramos, porcentajes y kcal cargados correctamente: ", gramos, porcentajes, kcal);
+
+            const chartNutri = [
+              { macronutriente: "Proteínas", porcentajes: porcentajes.proteina, gramos: gramos.proteina, kcal: kcal.proteina, fill: "var(--color-colorOne)" },
+              { macronutriente: "Hidratos de carbono", porcentajes: porcentajes.hidratoDeCarbono, gramos: gramos.hidratoDeCarbono, kcal: kcal.hidratoDeCarbono, fill: "var(--color-colorTwo)" },
+              { macronutriente: "Grasas", porcentajes: porcentajes.grasa, gramos: gramos.grasa, kcal: kcal.grasa, fill: "var(--color-colorThree)" },
+            ];
+            setNutriData(chartNutri);
+            setNutriDataDate({ fechaInicio: gramos.fechaInicio, fechaFinal: gramos.fechaFinal });
+          } else {
+            setNutriData(null);
+            setNutriDataDate(null);
+            console.error("Error: Datos nutricionales no encontrados para el cliente con fitNexusId: ", selectedClient.fitNexusId);
+            customToast({ message: "Error: Datos nutricionales no encontrados", type: "error" });
+          }
         } catch (error) {
           console.error("Error al cargar datos extra del cliente: ", error);
           customToast({ message: "Error al cargar datos extra del cliente", type: "error" });
@@ -176,13 +199,27 @@ export function NutritionChart() {
   console.log("Datos extra del cliente: ", extraData);
   console.log("Datos nutricionales del cliente: ", nutriData);
 
-  const tieneExtraData = extraData !== null;
+  const tieneExtraData = extraData && Object.values(extraData).some((value) => value !== null);
   const tieneNutriPlan = nutriData !== null;
 
   const shouldShowCreatePlanButton = role === "ADMIN" && selectedClient && tieneExtraData && !tieneNutriPlan;
 
   if (loading) return <ProgressCustom />;
   if (error) return customToast({ message: "Error: " + error, type: "error" });
+
+  if (role === 'USER' && !tieneExtraData && !tieneNutriPlan) {
+    customToast({ message: "No tienes datos extra configurados. Por favor rellena tus datos para que tu entrenador pueda crear tu plan nutricional", type: "warning" });
+    return <PostProfileExtra />;
+  }
+
+  if (role === 'USER' && tieneExtraData && !tieneNutriPlan) {
+    customToast({ message: "No tienes un plan nutricional creado.", type: "warning" });
+    return (
+      <div className="text-center">
+        <p>Por favor pídele a tu entrenador que lo cree.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -211,7 +248,7 @@ export function NutritionChart() {
       )}
 
 
-      {selectedClient ? (
+      {selectedClient || role === "USER" ? (
         <div className="flex justify-center items-center space-x-4">
 
           {tieneExtraData && tieneNutriPlan ? (
@@ -286,7 +323,6 @@ export function NutritionChart() {
                 description2={kcalMoreInfo2}
               />
             </div>
-            {role === 'USER' && !extraData && (<PostProfileExtra />)}
           </CardFooter>
             </Card>
           ) : shouldShowCreatePlanButton ? (
