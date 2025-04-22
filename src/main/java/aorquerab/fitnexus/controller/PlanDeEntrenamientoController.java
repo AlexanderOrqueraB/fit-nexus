@@ -108,7 +108,7 @@ public class PlanDeEntrenamientoController {
     //TODO: Testear en Postman y React NEW UI
     @GetMapping("/plan/usuario/{fitNexusId}")
     public ResponseEntity<List<PlanEntrenamientoGetDTO>> obtenerPlanPorFitNexusId(@PathVariable String fitNexusId) {
-        log.info("Ejecutando obtenerEjerciciosPorFitNexusId con el FitNexusId: {}...", fitNexusId);
+        log.info("Ejecutando obtenerPlanPorFitNexusId con el FitNexusId: {}...", fitNexusId);
         try {
             List<PlanDeEntrenamiento> planes = Collections.emptyList();
             Optional<Cliente> clienteOptional = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId));
@@ -121,12 +121,26 @@ public class PlanDeEntrenamientoController {
             if(clienteOptional.isPresent()) {
                 Cliente cliente = clienteOptional.get();
                 planes = cliente.getPlanDeEntrenamiento();
-                log.info("obtenerPlanPorFitNexusId: Planes de entrenamiento del cliente: {}", planes);
+                log.info("Planes de entrenamiento del entrenador: {}", planes.stream()
+                    .map(plan -> PlanEntrenamientoGetDTO.builder()
+                        .id(plan.getId())
+                        .nombrePlan(plan.getNombrePlan())
+                        .fechaInicio(plan.getFechaInicio())
+                        .fechaFinal(plan.getFechaFinal())
+                        .build())
+                    .collect(Collectors.toList()));
             }
             if (entrenadorOptional.isPresent()){
                 Entrenador entrenador = entrenadorOptional.get();
                 planes = entrenador.getPlanesDeEntrenamiento();
-                log.info("obtenerPlanPorFitNexusId: Planes de entrenamiento del entrenador: {}", planes);
+                log.info("Planes de entrenamiento del cliente: {}", planes.stream()
+                    .map(plan -> PlanEntrenamientoGetDTO.builder()
+                        .id(plan.getId())
+                        .nombrePlan(plan.getNombrePlan())
+                        .fechaInicio(plan.getFechaInicio())
+                        .fechaFinal(plan.getFechaFinal())
+                        .build())
+                    .collect(Collectors.toList()));
             }
 
             if (planes.isEmpty()) {

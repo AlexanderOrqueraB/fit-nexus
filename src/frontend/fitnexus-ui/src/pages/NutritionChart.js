@@ -212,10 +212,10 @@ export function NutritionChart() {
   }
 
   if (role === 'USER' && tieneExtraData && !tieneNutriPlan) {
-    customToast({ message: "No tienes un plan nutricional creado.", type: "warning" });
+    customToast({ message: "No tienes todavía ningún plan nutricional creado.", type: "warning" });
     return (
       <div className="text-center">
-        <p>Por favor pídele a tu entrenador que lo cree.</p>
+        <p>Por favor pídele a tu entrenador que lo cree. O consúltale sobre el estado de tu plan nutricional.</p>
       </div>
     );
   }
