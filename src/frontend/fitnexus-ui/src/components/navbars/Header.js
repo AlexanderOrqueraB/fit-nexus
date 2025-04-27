@@ -31,7 +31,7 @@ const Header = ({ isAdmin }) => {
 
     const navigate = useNavigate();
 
-	const { setUser } = useContext(UserContext); // Use UserContext to get setUser
+	const { user, setUser } = useContext(UserContext); // Use UserContext to get setUser
 	
 	  const handleLogout = () => {
 	
@@ -123,7 +123,9 @@ const Header = ({ isAdmin }) => {
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
-							<DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
+							<DropdownMenuLabel>
+							{user?.nombre ? `${user.nombre}` : "Mi cuenta"}
+							</DropdownMenuLabel>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem onClick= {()=>navigate('/settings')}>
                                 Ajustes

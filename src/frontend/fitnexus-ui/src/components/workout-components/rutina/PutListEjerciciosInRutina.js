@@ -84,7 +84,7 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
     console.log('Enviando los siguientes datos: ', updatedRoutine);
 
     apiClient
-        .post(`/api/v1/rutina/ejercicios/${routineData.id}`, updatedRoutine)
+        .put(`/api/v1/rutina/ejercicios/${routineData.id}`, updatedRoutine)
         .then((response) => {
         console.log('Respuesta del servidor: ', response.data);
         console.log('Status: ', response.status);

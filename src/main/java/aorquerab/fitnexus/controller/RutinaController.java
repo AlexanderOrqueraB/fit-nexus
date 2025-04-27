@@ -151,10 +151,24 @@ public class RutinaController {
             if(clienteOptional.isPresent()) {
                 Cliente cliente = clienteOptional.get();
                 rutinas = cliente.getRutinas();
+                log.info("Rutinas del cliente: {}", rutinas.stream()
+                        .map(rutina -> RutinaGetDTO.builder()
+                                .id(rutina.getId())
+                                .nombreRutina(rutina.getNombreRutina())
+                                .build())
+                                .collect(Collectors.toList())
+                        );
             }
             if (entrenadorOptional.isPresent()){
                 Entrenador entrenador = entrenadorOptional.get();
                 rutinas = entrenador.getRutinas();
+                log.info("Rutinas del entrenador: {}", rutinas.stream()
+                        .map(rutina -> RutinaGetDTO.builder()
+                                .id(rutina.getId())
+                                .nombreRutina(rutina.getNombreRutina())
+                                .build())
+                        .collect(Collectors.toList())
+                );
             }
 
             if (rutinas.isEmpty()) {

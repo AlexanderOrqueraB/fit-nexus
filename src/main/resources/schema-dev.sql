@@ -199,6 +199,8 @@ VALUES
     (9,'660e8400-e29b-41d4-a716-446655440004', 'Darth', 'Vader', 'vader@sith.com', '$2a$10$gumkdc5ohc7ero/QVGZJEOxBRYlKWZpZnYWRmcJKrLgGsvPXy14Se', 'USER', 'PERDER_GRASA', 'HOMBRE', 'POCO_NADA', 40, 120, 190, '2023-01-05', 5, 1), --pass: darkside123
     (10,'660e8400-e29b-41d4-a716-446655440005', 'Luke2', 'NoNutriPlanYet', 'luke2@rebels.com', '$2a$10$R/z/V0MPpGHF6AAoHNFs2.b.fkgk31ZQgoSE1TsF2/Re4Hav1/Zbq', 'USER', 'PERDER_GRASA', 'HOMBRE', 'FUERTE', 25, 75, 180, '2023-01-01', 4, 1); --pass: lightsaber123
 
+
+-- NUTRI TABLES
 INSERT INTO plan_nutricional (id, proteina, hidrato_de_carbono, grasa, kcal, fecha_inicio, fecha_final, entrenador_id, version)
 VALUES
     (6, 30, 50, 20, 3327, '2023-01-01', '2023-02-14', 4, 1), -- Plan de Obi-Wan
@@ -211,17 +213,20 @@ VALUES
     (6, 7), -- Enlazar Leia Organa al plan de Mace Windu
     (7, 8); -- Enlazar Han Solo al plan de Yoda
 
+
+-- WORKOUT TABLES
+INSERT INTO plan_de_entrenamiento (id, nombre_plan, fecha_inicio, fecha_final, entrenador_id, cliente_id, version)
+VALUES
+    (6, 'Plan de Obi-Wan', '2023-01-01', '2023-03-01', 4, 5, 1), -- Plan de Obi-Wan
+    (7, 'Plan de Windu', '2023-01-15', '2023-03-15', 5, 6, 1), -- Plan de Mace Windu
+    (8, 'Plan de Yoda', '2023-02-01', '2023-04-01', 6, 7, 1), -- Plan de Yoda
+    (9, 'Plan de Obi-Wan 2', '2023-01-01', '2023-03-01', 4, NULL, 1); -- Plan de Obi-Wan
+
 INSERT INTO rutina (id, nombre_rutina, fecha_inicio, fecha_final, entrenador_id, version)
 VALUES
     (6, 'Entrenamiento basico', '2023-01-01', '2023-01-31', 4, 1), -- Rutina de Obi-Wan
     (7, 'Torso', '2023-01-15', '2023-02-15', 5, 1), -- Rutina de Mace Windu
     (8, 'Pierna', '2023-02-01', '2023-03-01', 6, 1); -- Rutina de Yoda
-
-INSERT INTO plan_de_entrenamiento (id, nombre_plan, fecha_inicio, fecha_final, entrenador_id, cliente_id, version)
-VALUES
-    (6, 'Plan de Obi-Wan', '2023-01-01', '2023-03-01', 4, 5, 1), -- Plan de Obi-Wan
-    (7, 'Plan de Windu', '2023-01-15', '2023-03-15', 5, 6, 1), -- Plan de Mace Windu
-    (8, 'Plan de Yoda', '2023-02-01', '2023-04-01', 6, 7, 1); -- Plan de Yoda
 
 INSERT INTO ejercicio (id, nombre_ejercicio, repeticion, serie, peso, cardio, entrenador_id, version)
 VALUES
@@ -246,16 +251,15 @@ VALUES
 -- Link Ejercicios to Rutinas
 INSERT INTO rutina_ejercicio (rutina_id, ejercicio_id)
 VALUES
--- Link "Entrenamiento basico" a los ejercicios de Obi-wan
-    (6, 9), 
-    (6, 10),
-    (6, 11),
-    (6, 12),
-    (6, 13),
-    (6, 14),
-    (6, 15),
-    (6, 16),
-    (6, 17),
+    (6, 9), -- Link "Entrenamiento basico" a los ejercicios de Obi-wan
+    (6, 10), -- same
+    (6, 11), -- same
+    (6, 12), -- same
+    (6, 13), -- same
+    (6, 14), -- same
+    (6, 15), -- same
+    (6, 16), -- same
+    (6, 17), -- same
     (7, 10), -- Link "Torso" a "Peso muerto rumano"
     (7, 11), -- Link "Torso" a "Sentadilla goblet"
     (8, 12); -- Link "Pierna" a "Correr en cinta"

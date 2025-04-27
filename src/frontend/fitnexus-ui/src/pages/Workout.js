@@ -62,6 +62,10 @@ export function Workout ()  {
 	const loadData = async () => {
 		try {
 		const { exercises, routines, plans } = await fetchWorkoutData(fitNexusId);
+        console.log('Datos cargados sobre plans:', { plans });
+        console.log('Datos cargados sobre routines:', { routines });
+        console.log('Datos cargados sobre exercises:', { exercises });
+
 		setExercises(exercises);
 		setRoutines(routines);
 		setPlans(plans);

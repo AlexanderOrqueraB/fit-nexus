@@ -9,7 +9,7 @@ import { Calendar, CalendarDays, CircleMinusIcon, CirclePlusIcon, Edit, RefreshC
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components_ui/ui/card';
 import { fetchWorkoutData } from '../utils/api';
 import PostRutina from '../components/workout-components/rutina/PostRutina';
-import PostListEjerciciosInRutina from '../components/workout-components/rutina/PostListEjerciciosInRutina';
+import PutListEjerciciosInRutina from '../components/workout-components/rutina/PutListEjerciciosInRutina';
 import PostPlanEntrenamientoFecha from '../components/workout-components/plan-entrenamiento/PostPlanEntrenamientoFecha';
 import PutPlanEntrenamientoFecha  from '../components/workout-components/plan-entrenamiento/PutPlanEntrenamientoFecha';
 import PostPlanEntrenamiento  from '../components/workout-components/plan-entrenamiento/PostPlanEntrenamiento';
@@ -19,7 +19,7 @@ import DeleteModalRoutinePost from '../components/workout-components/rutina/Dele
 import DeleteListEjerciciosInRutina from '../components/workout-components/rutina/DeleteListEjerciciosInRutina';
 import PutPlanEntrenamiento from '../components/workout-components/plan-entrenamiento/PutPlanEntrenamiento';
 import DeleteModalPlanPost from '../components/workout-components/plan-entrenamiento/DeleteModalPlanPost';
-import PostListRoutinesInPlan from '../components/workout-components/plan-entrenamiento/PostListRoutinesInPlan';
+import PutListRoutinesInPlan from '../components/workout-components/plan-entrenamiento/PutListRoutinesInPlan';
 import DeleteListRoutinesInPlan from '../components/workout-components/plan-entrenamiento/DeleteListRoutinesInPlan';
 import { UserContext } from "../components/global/UserContext";
 import { formatDateToDDMMYYYY } from '../utils/utilsMethod';
@@ -440,7 +440,7 @@ export function WorkoutBuilder() {
                         />
                       )}
                       {isAddRoutineToPlanOpen && (
-                        <PostListRoutinesInPlan
+                        <PutListRoutinesInPlan
                           open={isAddRoutineToPlanOpen}
                           onClose={() => setIsAddRoutineToPlanOpen(false)}
                           planData={selectedPlan}
@@ -560,7 +560,7 @@ export function WorkoutBuilder() {
                       )}
 
                       {isAddExerciseToRoutineOpen && (
-                        <PostListEjerciciosInRutina
+                        <PutListEjerciciosInRutina
                           open={isAddExerciseToRoutineOpen}
                           onClose={() => setIsAddExerciseToRoutineOpen(false)}
                           routineData={selectedRoutine}

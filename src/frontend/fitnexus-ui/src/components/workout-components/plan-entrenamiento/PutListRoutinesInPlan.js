@@ -85,7 +85,7 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
     console.log('Enviando los siguientes datos: ', updatedPlan);
 
     apiClient
-        .post(`/api/v1/planes/plan/rutinas/${planData.id}`, updatedPlan)
+        .put(`/api/v1/planes/plan/rutinas/${planData.id}`, updatedPlan)
         .then((response) => {
         console.log('Respuesta del servidor: ', response.data);
         console.log('Status: ', response.status);

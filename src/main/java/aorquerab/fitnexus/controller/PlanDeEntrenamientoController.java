@@ -121,10 +121,11 @@ public class PlanDeEntrenamientoController {
             if(clienteOptional.isPresent()) {
                 Cliente cliente = clienteOptional.get();
                 planes = cliente.getPlanDeEntrenamiento();
-                log.info("Planes de entrenamiento del entrenador: {}", planes.stream()
+                log.info("Planes de entrenamiento del cliente: {}", planes.stream()
                     .map(plan -> PlanEntrenamientoGetDTO.builder()
                         .id(plan.getId())
                         .nombrePlan(plan.getNombrePlan())
+                        .clienteFitNexusId(String.valueOf(plan.getCliente().getFitNexusId()))
                         .fechaInicio(plan.getFechaInicio())
                         .fechaFinal(plan.getFechaFinal())
                         .build())
@@ -133,7 +134,7 @@ public class PlanDeEntrenamientoController {
             if (entrenadorOptional.isPresent()){
                 Entrenador entrenador = entrenadorOptional.get();
                 planes = entrenador.getPlanesDeEntrenamiento();
-                log.info("Planes de entrenamiento del cliente: {}", planes.stream()
+                log.info("Planes de entrenamiento del entrenador: {}", planes.stream()
                     .map(plan -> PlanEntrenamientoGetDTO.builder()
                         .id(plan.getId())
                         .nombrePlan(plan.getNombrePlan())
@@ -372,7 +373,10 @@ public class PlanDeEntrenamientoController {
             }
 
             //Usamos la tabla intermedia para asignar el plan al cliente
-            log.info("Añadiendo el plan {} usando de forma directa la tabla intermedia con cliente.getPlanDeEntrenamiento().add(plan)", plan);
+            log.info("El plan estará enlazado al cliente: {}", cliente.getNombre());
+            plan.setCliente(cliente);
+
+            log.info("Añadiendo el plan [{}] usando de forma directa la tabla intermedia con cliente.getPlanDeEntrenamiento().add(plan)", plan);
             cliente.getPlanDeEntrenamiento().add(plan);
 
             //TODO: Find a way to set rutinas and ejercicios for Cliente so we can retrieve that info and show them in Workout.js
