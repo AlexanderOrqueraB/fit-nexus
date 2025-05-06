@@ -8,6 +8,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString(exclude = {"entrenador", "rutinas"}) //To avoid circular references when logging entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

@@ -3,6 +3,7 @@ package aorquerab.fitnexus.model.componenteEntrenamiento;
 import jakarta.persistence.*;
 import lombok.*;
 
+@ToString
 @Setter
 @Getter
 @Builder

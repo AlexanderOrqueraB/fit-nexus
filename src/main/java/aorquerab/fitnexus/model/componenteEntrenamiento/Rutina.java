@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@ToString(exclude = {"entrenador", "planDeEntrenamientos"})
+@ToString(exclude = {"entrenador", "planDeEntrenamientos", "ejercicios"}) //To avoid circular references when logging entity
 @EqualsAndHashCode
 @Entity
 @Table(name = "rutina")

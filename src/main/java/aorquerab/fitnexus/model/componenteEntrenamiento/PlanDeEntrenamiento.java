@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString(exclude = {"cliente", "entrenador", "rutinas"})
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

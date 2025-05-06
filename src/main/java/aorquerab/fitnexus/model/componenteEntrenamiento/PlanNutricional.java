@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+@ToString(exclude = "entrenador")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
