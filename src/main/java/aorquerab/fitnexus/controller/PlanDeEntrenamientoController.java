@@ -253,7 +253,15 @@ public class PlanDeEntrenamientoController {
             }
     
             log.info("Plan de entrenamiento a eliminar: {}", planDeEntrenamientoByNombre);
+            //Eliminamos las referencias de la tabla intermedia (al eliminar el CASCADE.ALL de la entidad)
+            log.info("Eliminadas las referencias de la tabla intermedia plan_de_entrenamiento_rutina");
+            for (Rutina rutina : planDeEntrenamientoByNombre.getRutinas()) {
+                rutina.getPlanDeEntrenamientos().remove(planDeEntrenamientoByNombre);
+                rutinaRepository.save(rutina);
+            }
+            planDeEntrenamientoByNombre.getRutinas().clear();
             planDeEntrenamientoRepository.delete(planDeEntrenamientoByNombre);
+            log.info("Plan de entrenamiento eliminado");
     
             return ResponseEntity.status(HttpStatus.OK).body("Plan de entrenamiento borrado correctamente");
 

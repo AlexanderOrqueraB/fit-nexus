@@ -13,6 +13,7 @@ import aorquerab.fitnexus.model.exception.UsuarioNotFoundException;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
 import aorquerab.fitnexus.repository.ClienteRepository;
+import aorquerab.fitnexus.repository.EjercicioRepository;
 import aorquerab.fitnexus.repository.EntrenadorRepository;
 import aorquerab.fitnexus.repository.RutinaRepository;
 import aorquerab.fitnexus.repository.intermediate.RutinaEjercicioRepository;
@@ -38,13 +39,15 @@ public class RutinaController {
     private final EntrenadorRepository entrenadorRepository;
     private final ClienteRepository clienteRepository;
     private final RutinaEjercicioRepository rutinaEjercicioRepository;
+    private final EjercicioRepository ejercicioRepository;
 
     public RutinaController(RutinaRepository rutinaRepository, EntrenadorRepository entrenadorRepository, ClienteRepository clienteRepository,
-                            RutinaEjercicioRepository rutinaEjercicioRepository) {
+                            RutinaEjercicioRepository rutinaEjercicioRepository, EjercicioRepository ejercicioRepository) {
         this.rutinaRepository = rutinaRepository;
         this.entrenadorRepository = entrenadorRepository;
         this.clienteRepository = clienteRepository;
         this.rutinaEjercicioRepository = rutinaEjercicioRepository;
+        this.ejercicioRepository = ejercicioRepository;
     }
 
     //Testeado Postman + SB
@@ -288,7 +291,16 @@ public class RutinaController {
             }
     
             log.info("Rutina a eliminar: {}", rutinaByNombre);
+            //Eliminamos las referencias de la tabla intermedia (al eliminar el CASCADE.ALL de la entidad)
+            for (Ejercicio ejercicio : rutinaByNombre.getEjercicios()) {
+                ejercicio.getRutinas().remove(rutinaByNombre);
+                ejercicioRepository.save(ejercicio);
+            }
+            rutinaByNombre.getEjercicios().clear();
+
+            log.info("Eliminadas las referencias de la tabla intermedia rutina_ejercicio");
             rutinaRepository.delete(rutinaByNombre);
+            log.info("Rutina eliminada");
     
             return ResponseEntity.status(HttpStatus.OK).body("Rutina borrada correctamente");
 

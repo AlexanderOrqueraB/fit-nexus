@@ -43,7 +43,7 @@ public class Ejercicio {
     private Entrenador entrenador;
 
     @Builder.Default
-    @ManyToMany(mappedBy = "ejercicios", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "ejercicios", fetch = FetchType.LAZY)
     @JsonIgnore //To avoid infinite serialization
     private List<Rutina> rutinas = new ArrayList<>();
 }

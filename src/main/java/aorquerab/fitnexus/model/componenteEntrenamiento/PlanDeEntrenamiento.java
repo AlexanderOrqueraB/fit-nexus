@@ -44,7 +44,7 @@ public class PlanDeEntrenamiento {
     private Entrenador entrenador;
 
     @Builder.Default
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable (
             name = "plan_de_entrenamiento_rutina",
             joinColumns = @JoinColumn(name= "plan_de_entrenamiento_id"),

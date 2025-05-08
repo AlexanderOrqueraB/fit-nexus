@@ -1,6 +1,7 @@
 package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
+import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.EjercicioDtoRequest;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.response.EjercicioGetDTO;
 import aorquerab.fitnexus.model.enumerator.Role;
@@ -10,6 +11,7 @@ import aorquerab.fitnexus.model.users.Entrenador;
 import aorquerab.fitnexus.repository.ClienteRepository;
 import aorquerab.fitnexus.repository.EjercicioRepository;
 import aorquerab.fitnexus.repository.EntrenadorRepository;
+import aorquerab.fitnexus.repository.RutinaRepository;
 import aorquerab.fitnexus.utils.EjercicioDTOMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,11 +33,13 @@ public class EjercicioController {
     private final EjercicioRepository ejercicioRepository;
     private final ClienteRepository clienteRepository;
     private final EntrenadorRepository entrenadorRepository;
+    private final RutinaRepository rutinaRepository;
 
-    public EjercicioController(EjercicioRepository ejercicioRepository, ClienteRepository clienteRepository, EntrenadorRepository entrenadorRepository) {
+    public EjercicioController(EjercicioRepository ejercicioRepository, ClienteRepository clienteRepository, EntrenadorRepository entrenadorRepository, RutinaRepository rutinaRepository) {
         this.ejercicioRepository = ejercicioRepository;
         this.clienteRepository = clienteRepository;
         this.entrenadorRepository = entrenadorRepository;
+        this.rutinaRepository = rutinaRepository;
     }
 
     //Testeado Postman + SB
@@ -279,7 +283,16 @@ public class EjercicioController {
             }
     
             log.info("Ejercicio a eliminar: {}", ejercicioByNombre);
+            //Eliminamos las referencias de la tabla intermedia (al eliminar el CASCADE.ALL de la entidad)
+            for (Rutina rutina : ejercicioByNombre.getRutinas()) {
+                rutina.getEjercicios().remove(ejercicioByNombre);
+                rutinaRepository.save(rutina);
+            }
+            ejercicioByNombre.getRutinas().clear();
+            log.info("Eliminadas las referencias de la tabla intermedia rutina_ejercicio");
+
             ejercicioRepository.delete(ejercicioByNombre);
+            log.info("Ejercicio eliminado");
     
             return ResponseEntity.status(HttpStatus.OK).body("Ejercicio borrado correctamente");
 

@@ -74,7 +74,7 @@ public class Cliente {
     private List<PlanNutricional> planNutricional = new ArrayList<>();
 
     @Builder.Default
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
         name = "cliente_plan_de_entrenamiento",
         joinColumns = @JoinColumn(name = "cliente_id"),
@@ -84,7 +84,7 @@ public class Cliente {
     private List<PlanDeEntrenamiento> planDeEntrenamiento = new ArrayList<>();
 
     @Builder.Default
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
         name = "cliente_rutina",
         joinColumns = @JoinColumn(name = "cliente_id"),
@@ -94,7 +94,7 @@ public class Cliente {
     private List<Rutina> rutinas = new ArrayList<>();
 
     @Builder.Default
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
         name = "cliente_ejercicio",
         joinColumns = @JoinColumn(name = "cliente_id"),
