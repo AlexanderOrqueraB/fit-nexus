@@ -436,7 +436,7 @@ export function WorkoutBuilder() {
                           description = {deleteDescription} 
                           open={isDeleteOpen}
                           onClose={() => setIsDeleteOpen(false)}
-                          routineData={selectedRoutine}
+                          planData={selectedPlan}
                         />
                       )}
                       {isAddRoutineToPlanOpen && (
@@ -555,7 +555,7 @@ export function WorkoutBuilder() {
                           description = {deleteDescription} 
                           open={isDeleteOpen}
                           onClose={() => setIsDeleteOpen(false)}
-                          exerciseData={selectedExercise}
+                          routineData={selectedRoutine}
                         />
                       )}
 

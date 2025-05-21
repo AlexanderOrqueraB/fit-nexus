@@ -1,6 +1,7 @@
 package aorquerab.fitnexus.controller;
 
 import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
+import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.RutinaDTO;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.EjerciciosListDTO;
@@ -12,10 +13,7 @@ import aorquerab.fitnexus.model.exception.RutinaNotFoundException;
 import aorquerab.fitnexus.model.exception.UsuarioNotFoundException;
 import aorquerab.fitnexus.model.users.Cliente;
 import aorquerab.fitnexus.model.users.Entrenador;
-import aorquerab.fitnexus.repository.ClienteRepository;
-import aorquerab.fitnexus.repository.EjercicioRepository;
-import aorquerab.fitnexus.repository.EntrenadorRepository;
-import aorquerab.fitnexus.repository.RutinaRepository;
+import aorquerab.fitnexus.repository.*;
 import aorquerab.fitnexus.repository.intermediate.RutinaEjercicioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -40,14 +38,16 @@ public class RutinaController {
     private final ClienteRepository clienteRepository;
     private final RutinaEjercicioRepository rutinaEjercicioRepository;
     private final EjercicioRepository ejercicioRepository;
+    private final PlanDeEntrenamientoRepository planDeEntrenamientoRepository;
 
     public RutinaController(RutinaRepository rutinaRepository, EntrenadorRepository entrenadorRepository, ClienteRepository clienteRepository,
-                            RutinaEjercicioRepository rutinaEjercicioRepository, EjercicioRepository ejercicioRepository) {
+                            RutinaEjercicioRepository rutinaEjercicioRepository, EjercicioRepository ejercicioRepository, PlanDeEntrenamientoRepository planDeEntrenamientoRepository) {
         this.rutinaRepository = rutinaRepository;
         this.entrenadorRepository = entrenadorRepository;
         this.clienteRepository = clienteRepository;
         this.rutinaEjercicioRepository = rutinaEjercicioRepository;
         this.ejercicioRepository = ejercicioRepository;
+        this.planDeEntrenamientoRepository = planDeEntrenamientoRepository;
     }
 
     //Testeado Postman + SB
@@ -291,14 +291,23 @@ public class RutinaController {
             }
     
             log.info("Rutina a eliminar: {}", rutinaByNombre);
-            //Eliminamos las referencias de la tabla intermedia (al eliminar el CASCADE.ALL de la entidad)
+
+            //Eliminamos las referencias de la tabla intermedia rutina_ejercicio (al eliminar el CASCADE.ALL de la entidad)
             for (Ejercicio ejercicio : rutinaByNombre.getEjercicios()) {
                 ejercicio.getRutinas().remove(rutinaByNombre);
                 ejercicioRepository.save(ejercicio);
             }
             rutinaByNombre.getEjercicios().clear();
-
             log.info("Eliminadas las referencias de la tabla intermedia rutina_ejercicio");
+
+            //Eliminamos las referencias de la tabla intermedia plan_de_entrenamiento_rutina
+            for (PlanDeEntrenamiento plan : rutinaByNombre.getPlanDeEntrenamientos()) {
+                plan.getRutinas().remove(rutinaByNombre);
+                planDeEntrenamientoRepository.save(plan);
+            }
+            rutinaByNombre.getPlanDeEntrenamientos().clear();
+            log.info("Eliminadas las referencias de la tabla intermedia plan_de_entrenamiento_rutina");
+
             rutinaRepository.delete(rutinaByNombre);
             log.info("Rutina eliminada");
     

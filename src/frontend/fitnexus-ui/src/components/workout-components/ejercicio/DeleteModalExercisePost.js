@@ -27,7 +27,7 @@ const onSubmit = (e) => {
 
   console.log('Eliminando el ejercicio: ', data.nombreEjercicio);
 
-  const response = apiClient.delete(`/api/v1/ejercicios/${exerciseData.nombreEjercicio}`)
+  const response = apiClient.delete(`/api/v1/ejercicios/${data.nombreEjercicio}`)
       .then(response => {
           console.log('Respuesta del servidor:', response.data);
           console.log('Status: ', response.status);
