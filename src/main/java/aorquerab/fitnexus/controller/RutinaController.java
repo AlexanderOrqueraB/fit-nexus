@@ -175,8 +175,8 @@ public class RutinaController {
             }
 
             if (rutinas.isEmpty()) {
-                log.warn("Rutinas no encontradas para el usuario con el fitNexusId: {}", fitNexusId);
-                throw new RutinaNotFoundException("Rutinas no encontradas para el usuario con el fitNexusId: {}"
+                log.warn("No hay rutinas para el usuario con el fitNexusId: {}", fitNexusId);
+                throw new RutinaNotFoundException("No hay rutinas para el usuario con el fitNexusId: {}"
                         + fitNexusId);
             }
 

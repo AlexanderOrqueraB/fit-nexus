@@ -133,8 +133,8 @@ public class EjercicioController {
             }
 
             if (ejercicios.isEmpty()) {
-                log.warn("Ejercicios no encontrados para el usuario con el fitNexusId: {} ", fitNexusId);
-                throw new EjercicioNotFoundException("Ejercicios no encontrados para el usuario con el fitNexusId: {}"
+                log.warn("No hay ejercicios para el usuario con el fitNexusId: {} ", fitNexusId);
+                throw new EjercicioNotFoundException("No hay ejercicios para el usuario con el fitNexusId: {}"
                         + fitNexusId);
             }
 

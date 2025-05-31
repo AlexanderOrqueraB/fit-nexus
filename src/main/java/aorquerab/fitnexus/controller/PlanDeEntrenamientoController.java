@@ -51,8 +51,8 @@ public class PlanDeEntrenamientoController {
         try {
             List<PlanDeEntrenamiento> planesDeEntrenamientoList = planDeEntrenamientoRepository.findAll();
             if (planesDeEntrenamientoList.isEmpty()) {
-                log.warn("Planes de entrenamiento no encontradas en base de datos...");
-                throw new PlanDeEntrenamientoNotFoundException("Planes de entrenamiento no encontrados...");
+                log.warn("No hay planes de entrenamiento en base de datos...");
+                throw new PlanDeEntrenamientoNotFoundException("No hay planes de entrenamiento en base de datos..");
             }
             return ResponseEntity.status(HttpStatus.OK).body(planesDeEntrenamientoList);
         } catch (Exception e) {
@@ -145,7 +145,7 @@ public class PlanDeEntrenamientoController {
             }
 
             if (planes.isEmpty()) {
-                log.warn("Planes no encontrados para el usuario con el fitNexusId: {}", fitNexusId);
+                log.warn("No hay planes de entrenamiento para el usuario con el fitNexusId: {}", fitNexusId);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
             }
 
