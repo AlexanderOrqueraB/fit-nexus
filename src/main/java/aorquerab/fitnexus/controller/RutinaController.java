@@ -294,8 +294,13 @@ public class RutinaController {
 
             //Eliminamos las referencias de la tabla intermedia rutina_ejercicio (al eliminar el CASCADE.ALL de la entidad)
             for (Ejercicio ejercicio : rutinaByNombre.getEjercicios()) {
+                log.info("Obteniendo rutina por nombre: {}", rutinaByNombre.getNombreRutina());
+                
                 ejercicio.getRutinas().remove(rutinaByNombre);
+                log.info("Ejercicio a eliminar de la rutina: {}", ejercicio.getNombreEjercicio());
+                
                 ejercicioRepository.save(ejercicio);
+                log.info("Ejercicio guardado en el repository: {}", ejercicio.getNombreEjercicio());
             }
             rutinaByNombre.getEjercicios().clear();
             log.info("Eliminadas las referencias de la tabla intermedia rutina_ejercicio");

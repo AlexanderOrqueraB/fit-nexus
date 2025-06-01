@@ -95,7 +95,6 @@ export function WorkoutBuilder() {
       setRoutines(routines);
       setPlans(plans);
       console.log('Datos cargados:', { exercises, routines, plans });
-      customToast({message : "Datos cargados correctamente", type : "success"});
 
     } catch (error) {
       console.error('Error al cargar datos:', error);
@@ -143,7 +142,6 @@ export function WorkoutBuilder() {
     setSelectedExercise(routine); // Guarda la rutina que tiene ejercicios seleccionados
     setIsRemoveExerciseFromRoutineOpen(true); // Abre el modal de eliminación
   };
-
 
   //plan
   const handleAddRoutineToPlan = (plan) => {
