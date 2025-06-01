@@ -7,33 +7,37 @@ export const fetchWorkoutData = async (fitNexusId) => {
             const routinesResponse = await apiClient.get(`/api/v1/rutinas/rutina/usuario/${fitNexusId}`);
             const plansResponse = await apiClient.get(`/api/v1/planes/plan/usuario/${fitNexusId}`);
 
-        if (exercisesResponse.status === 400) {
-            customToast({ message: 'Error al cargar los ejercicios', type: 'error' }); 
-        } else if (exercisesResponse.status === 404) {
-            customToast({ message: 'Datos no encontrados (FitNexusId o ejercicio)', type: 'error' }); 
-        }
+            console.log("lOG- Ejercicios Response:", exercisesResponse.data);
+            console.log("LOG- Rutinas Response:", routinesResponse.data);
+            console.log("LOG- Planes Response:", plansResponse.data);
+    
+            if (exercisesResponse.status === 400) {
+                customToast({ message: 'Error al cargar los ejercicios', type: 'error' }); 
+            } else if (exercisesResponse.status === 404) {
+                customToast({ message: 'Datos no encontrados (FitNexusId o ejercicio)', type: 'error' }); 
+            }
 
-        if (routinesResponse.status === 400) {
-            customToast({ message: 'Error al cargar las rutinas', type: 'error' }); 
-        } else if (routinesResponse.status === 404) {
-            customToast({ message: 'Datos no encontrados (FitNexusId o rutina)', type: 'error' }); 
-        }
-         
-        if (plansResponse.status === 400) {
-            customToast({ message: 'Error al cargar los planes', type: 'error' }); 
-        } else if (plansResponse.status === 404) {
-            customToast({ message: 'Datos no encontrados (FitNexusId o plan)', type: 'error' }); 
-        }
+            if (routinesResponse.status === 400) {
+                customToast({ message: 'Error al cargar las rutinas', type: 'error' }); 
+            } else if (routinesResponse.status === 404) {
+                customToast({ message: 'Datos no encontrados (FitNexusId o rutina)', type: 'error' }); 
+            }
+            
+            if (plansResponse.status === 400) {
+                customToast({ message: 'Error al cargar los planes', type: 'error' }); 
+            } else if (plansResponse.status === 404) {
+                customToast({ message: 'Datos no encontrados (FitNexusId o plan)', type: 'error' }); 
+            }
 
-        if (exercisesResponse.status === 200 && routinesResponse.status === 200 && plansResponse.status === 200) {
-            console.log("Datos de entrenamiento cargados correctamente con el FitNexusId: ", fitNexusId)
-        }
+            if (exercisesResponse.status === 200 && routinesResponse.status === 200 && plansResponse.status === 200) {
+                console.log("Datos de entrenamiento cargados correctamente con el FitNexusId: ", fitNexusId)
+            }
 
-        return {
-            exercises: exercisesResponse.data,
-            routines: routinesResponse.data,
-            plans: plansResponse.data
-        };
+            return {
+                exercises: exercisesResponse.data,
+                routines: routinesResponse.data,
+                plans: plansResponse.data
+            };
     } catch (error) {
         console.error('Error al cargar los datos:', error);
         customToast({ message: 'Error al cargar los datos planes/rutinas/ejercicios', type: 'error' }); 

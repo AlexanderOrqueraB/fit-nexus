@@ -136,23 +136,6 @@ CREATE TABLE IF NOT EXISTS plan_de_entrenamiento_rutina (
         REFERENCES rutina(id)
 );
 
--- Drop the existing foreign key constraints
-ALTER TABLE plan_de_entrenamiento_rutina DROP CONSTRAINT fk_plan_de_entrenamiento_rutina;
-ALTER TABLE plan_de_entrenamiento_rutina DROP CONSTRAINT fk_rutina;
-
--- Recreate the constraints without ON DELETE CASCADE
-ALTER TABLE plan_de_entrenamiento_rutina
-ADD CONSTRAINT fk_plan_de_entrenamiento_rutina
-FOREIGN KEY (plan_de_entrenamiento_id)
-REFERENCES plan_de_entrenamiento(id)
-ON DELETE NO ACTION;
-
-ALTER TABLE plan_de_entrenamiento_rutina
-ADD CONSTRAINT fk_rutina
-FOREIGN KEY (rutina_id)
-REFERENCES rutina(id)
-ON DELETE NO ACTION;
-
 --Rutina y ejercicio
 CREATE TABLE IF NOT EXISTS rutina_ejercicio (
     rutina_id INT,
@@ -165,23 +148,6 @@ CREATE TABLE IF NOT EXISTS rutina_ejercicio (
         FOREIGN KEY(ejercicio_id)
         REFERENCES ejercicio(id)
 );
-
--- Drop the existing foreign key constraints
-ALTER TABLE rutina_ejercicio DROP CONSTRAINT fk_rutina_ejercicio;
-ALTER TABLE rutina_ejercicio DROP CONSTRAINT fk_ejercicio;
-
--- Recreate the constraints without ON DELETE CASCADE
-ALTER TABLE rutina_ejercicio
-ADD CONSTRAINT fk_rutina_ejercicio
-FOREIGN KEY (rutina_id)
-REFERENCES rutina(id)
-ON DELETE NO ACTION;
-
-ALTER TABLE rutina_ejercicio
-ADD CONSTRAINT fk_ejercicio
-FOREIGN KEY (ejercicio_id)
-REFERENCES ejercicio(id)
-ON DELETE NO ACTION;
 
 CREATE TABLE IF NOT EXISTS cliente_ejercicio (
     cliente_id INT,
