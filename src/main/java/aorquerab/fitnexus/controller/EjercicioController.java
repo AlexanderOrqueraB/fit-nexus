@@ -134,8 +134,8 @@ public class EjercicioController {
 
             if (ejercicios.isEmpty()) {
                 log.warn("No hay ejercicios para el usuario con el fitNexusId: {} ", fitNexusId);
-                throw new EjercicioNotFoundException("No hay ejercicios para el usuario con el fitNexusId: {}"
-                        + fitNexusId);
+                return ResponseEntity.status(HttpStatus.OK).body(Collections.emptyList());
+
             }
 
             List<EjercicioGetDTO> ejercicioDtoRequestList = ejercicios.stream()

@@ -176,8 +176,7 @@ public class RutinaController {
 
             if (rutinas.isEmpty()) {
                 log.warn("No hay rutinas para el usuario con el fitNexusId: {}", fitNexusId);
-                throw new RutinaNotFoundException("No hay rutinas para el usuario con el fitNexusId: {}"
-                        + fitNexusId);
+                return ResponseEntity.status(HttpStatus.OK).body(Collections.emptyList());
             }
 
             List<RutinaGetDTO> rutinaDtoRequestList = rutinas.stream()

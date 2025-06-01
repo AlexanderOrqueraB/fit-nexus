@@ -92,18 +92,18 @@ export function WorkoutBuilder() {
     try {
       const { exercises, routines, plans } = await fetchWorkoutData(fitNexusId);
       
-      console.log("LOG- Fetched Exercises:", exercises);
-      console.log("LOG- Fetched Routines:", routines);
-      console.log("LOG- Fetched Plans:", plans);
+      //console.log("LOG- Fetched Exercises:", exercises);
+      //console.log("LOG- Fetched Routines:", routines);
+      //console.log("LOG- Fetched Plans:", plans);
       
       setExercises(exercises);
       setRoutines(routines);
       setPlans(plans);
 
-      console.log("LOG- Displayed Exercises:", exercises || []);
-      console.log("LOG- Displayed Routines:", routines || []);
-      console.log("LOG- Displayed Plans:", plans || []);
-      console.log('Datos cargados:', { exercises, routines, plans });
+      //console.log("LOG- Displayed Exercises:", exercises || []);
+      //console.log("LOG- Displayed Routines:", routines || []);
+      //console.log("LOG- Displayed Plans:", plans || []);
+      //console.log('Datos cargados:', { exercises, routines, plans });
 
     } catch (error) {
       console.error('Error al cargar datos:', error);

@@ -7,9 +7,9 @@ export const fetchWorkoutData = async (fitNexusId) => {
             const routinesResponse = await apiClient.get(`/api/v1/rutinas/rutina/usuario/${fitNexusId}`);
             const plansResponse = await apiClient.get(`/api/v1/planes/plan/usuario/${fitNexusId}`);
 
-            console.log("lOG- Ejercicios Response:", exercisesResponse.data);
-            console.log("LOG- Rutinas Response:", routinesResponse.data);
-            console.log("LOG- Planes Response:", plansResponse.data);
+            //console.log("LOG- Ejercicios Response:", exercisesResponse.data);
+            //console.log("LOG- Rutinas Response:", routinesResponse.data);
+            //console.log("LOG- Planes Response:", plansResponse.data);
     
             if (exercisesResponse.status === 400) {
                 customToast({ message: 'Error al cargar los ejercicios', type: 'error' }); 
@@ -30,7 +30,16 @@ export const fetchWorkoutData = async (fitNexusId) => {
             }
 
             if (exercisesResponse.status === 200 && routinesResponse.status === 200 && plansResponse.status === 200) {
-                console.log("Datos de entrenamiento cargados correctamente con el FitNexusId: ", fitNexusId)
+                console.log("Datos de entrenamiento cargados correctamente con el FitNexusId: ", fitNexusId);
+                if (exercisesResponse.data.length === 0) {
+                    customToast({ message: 'No tienes ejercicios guardados', type: 'info' });
+                } 
+                if (routinesResponse.data.length === 0) {
+                    customToast({ message: 'No tienes rutinas guardadas', type: 'info' });
+                }
+                if (plansResponse.data.length === 0) {
+                    customToast({ message: 'No tienes planes guardados', type: 'info' });
+                }
             }
 
             return {
