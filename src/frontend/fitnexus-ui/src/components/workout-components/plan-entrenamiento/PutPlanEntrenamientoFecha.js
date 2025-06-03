@@ -33,6 +33,15 @@ export function PutPlanEntrenamientoFecha ({ open, onClose, planData }) {
 
     const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
+
+        if (new Date(data.fechaFinal) < new Date(data.fechaInicio)) {
+            customToast({
+                message: "La fecha final no puede ser anterior a la fecha inicial.",
+                type: "error",
+            });
+            return;
+        }
+
         const updatedPlan = {
 			nombrePlan: data.nombrePlan,
 			fechaInicio: data.fechaInicio,

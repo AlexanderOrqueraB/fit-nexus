@@ -10,6 +10,14 @@ import {
 	DialogTrigger,
 } from "../../../components_ui/ui/dialog"
 
+import {
+Select,
+SelectContent,
+SelectItem,
+SelectTrigger,
+SelectValue,
+} from "../../../components_ui/ui/select"
+
 import { Button } from '../../../components_ui/ui/button';
 import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
@@ -29,7 +37,7 @@ export function PostExercise() {
 		repeticion: '',
 		serie: '',
 		peso: '',
-		cardioRealizado: '',
+		cardio: '',
 	});
 
     const handleChange = (e) => {
@@ -40,6 +48,13 @@ export function PostExercise() {
 		});
 	};
 
+    const handleCardioChange = (value) => {
+		setData((prevData) => ({
+			...prevData,
+			cardioRealizado: value === "true",
+		}));
+	};
+
     const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
 		const newExercise = {
@@ -47,7 +62,7 @@ export function PostExercise() {
 			repeticion: data.repeticion,
 			serie: data.serie,
 			peso: data.peso,
-			cardioRealizado: data.cardioRealizado,
+			cardio: data.cardioRealizado,
 		};
 
 		console.log('Enviando los siguientes datos: ', newExercise);
@@ -150,16 +165,21 @@ export function PostExercise() {
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="cardioRealizado" className="text-right">
-                            Cardio (TRUE, FALSE)
+                            Cardio
                         </Label>
-                        <Input
-                            id="cardioRealizado"
-                            name="cardioRealizado"
-                            value={data.cardioRealizado}
-                            onChange={handleChange}
-                            placeholder="false"
-                            className="col-span-3"
-                        />
+                        <Select name="cardioRealizado" onValueChange={handleCardioChange}>
+                            <SelectTrigger className="col-span-3">
+                                <SelectValue placeholder="Selecciona una opción" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                    <SelectItem  value="true" required>
+                                        Si
+                                    </SelectItem>
+                                    <SelectItem  value="false" required>
+                                        No
+                                    </SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
                 </div>
                 <DialogFooter>

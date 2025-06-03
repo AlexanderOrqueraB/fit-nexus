@@ -51,7 +51,7 @@ export function PutRutina ({ open, onClose, routineData }) {
 				console.log('Respuesta del servidor: ', response.data);
 				console.log('Status: ', response.status);
 				if (response.status === 200) {
-                    customToast({message : "Rutina actualizada correctamente!", type : "error"});
+                    customToast({message : "Rutina actualizada correctamente!", type : "success"});
 				}
                 if (response.status === 404) {
                     customToast({message : "FitNexusID de entrenador o rutina no encontrada", type : "error"});
@@ -97,6 +97,7 @@ export function PutRutina ({ open, onClose, routineData }) {
                             onChange={handleChange}
                             value={data.nombreRutina || ''}
                             className="col-span-3"
+                            disabled
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">

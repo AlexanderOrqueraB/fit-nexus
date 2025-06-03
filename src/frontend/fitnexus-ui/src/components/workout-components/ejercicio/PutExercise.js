@@ -8,6 +8,14 @@ import {
 	DialogTitle,
 } from "../../../components_ui/ui/dialog"
 
+import {
+Select,
+SelectContent,
+SelectItem,
+SelectTrigger,
+SelectValue,
+} from "../../../components_ui/ui/select"
+
 import { Button } from '../../../components_ui/ui/button';
 import { Input } from '../../../components_ui/ui/input';
 import { Label } from '../../../components_ui/ui/label';
@@ -27,7 +35,7 @@ export function PutExercise ({ open, onClose, exerciseData }) {
         repeticion: exerciseData?.repeticion || '',
         serie: exerciseData?.serie || '',
         peso: exerciseData?.peso || '',
-        cardioRealizado: exerciseData?.cardioRealizado || '',
+        cardio: exerciseData?.cardioRealizado || '',
         });
 
     const handleChange = (e) => {
@@ -38,6 +46,13 @@ export function PutExercise ({ open, onClose, exerciseData }) {
 		});
 	};
 
+    const handleCardioChange = (value) => {
+		setData((prevData) => ({
+			...prevData,
+			cardioRealizado: value === "true",
+		}));
+	};
+
 const onSubmit = (e) => {
     e.preventDefault();
     const updatedExercise = {
@@ -45,7 +60,7 @@ const onSubmit = (e) => {
         repeticion: data.repeticion,
         serie: data.serie,
         peso: data.peso,
-        cardioRealizado: data.cardioRealizado,
+        cardio: data.cardioRealizado,
     };
 
     console.log('Enviando los siguientes datos: ', updatedExercise);
@@ -105,6 +120,7 @@ useEffect(() => {
                             value={data.nombreEjercicio || ''}
                             onChange={handleChange}
                             className="col-span-3"
+                            disabled
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -151,15 +167,21 @@ useEffect(() => {
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="cardioRealizado" className="text-right">
-                            Cardio (TRUE, FALSE)
+                            Cardio 
                         </Label>
-                        <Input
-                            id="cardioRealizado"
-                            name="cardioRealizado"
-                            value={data.cardioRealizado || ''}
-                            onChange={handleChange}
-                            className="col-span-3"
-                        />
+                        <Select name="cardioRealizado" onValueChange={handleCardioChange}>
+                            <SelectTrigger className="col-span-3">
+                                <SelectValue placeholder="Selecciona una opción" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                    <SelectItem  value="true" required>
+                                        Si
+                                    </SelectItem>
+                                    <SelectItem  value="false" required>
+                                        No
+                                    </SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
                 </div>
                 <DialogFooter>

@@ -40,6 +40,7 @@ import { UserContext } from "../components/global/UserContext";
 import { formatObjetivo } from "../utils/utilsMethod";
 import { useClientData } from "../components/global/ClientDataContext";
 import ProgressCustom from "../components/common/ProgressCustom";
+import customToast from "../utils/customToast";
 
 export function ClientsList() {
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
@@ -229,8 +230,33 @@ export function ClientsList() {
                             )}
                             {visibleColumns.includes("fitNexusId") && (
                               <TableCell className="font-medium">
+                              <div
+                                className="flex items-center gap-2 cursor-pointer"
+                                onClick={() => {
+                                  navigator.clipboard.writeText(client.fitNexusId);
+                                  customToast({ message: "FitNexusID copiado al portapapeles", type: "success" });
+                                }}
+                                title="Haz clic para copiar"
+                              >
                                 {client.fitNexusId}
-                              </TableCell>
+                                <Button variant="ghost" size="xs" className="p-0">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-4 w-4"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M8 16h8M8 12h8m-6 8h6a2 2 0 002-2V6a2 2 0 00-2-2H8a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                    />
+                                  </svg>
+                                </Button>
+                              </div>
+                            </TableCell>
                             )}
                             {visibleColumns.includes("email") && (
                               <TableCell className="font-medium">

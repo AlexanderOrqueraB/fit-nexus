@@ -66,10 +66,15 @@ export function Workout ()  {
         console.log('Datos cargados sobre routines:', { routines });
         console.log('Datos cargados sobre exercises:', { exercises });
 
-		setExercises(exercises);
+        const mappedExercises = exercises.map((exercise) => ({
+            ...exercise,
+            cardioRealizado: exercise.cardio,
+        }));
+
+		setExercises(mappedExercises);
 		setRoutines(routines);
 		setPlans(plans);
-		console.log('Datos cargados:', { exercises, routines, plans });
+        console.log('Datos cargados:', { exercises: mappedExercises, routines, plans });
 		customToast({message : "Datos cargados correctamente", type : "success"});
 		
 		} catch (error) {

@@ -96,15 +96,18 @@ export function WorkoutBuilder() {
       //console.log("LOG- Fetched Routines:", routines);
       //console.log("LOG- Fetched Plans:", plans);
       
-      setExercises(exercises);
+      const mappedExercises = exercises.map((exercise) => ({
+        ...exercise,
+        cardioRealizado: exercise.cardio,
+    }));
+
+      setExercises(mappedExercises);
       setRoutines(routines);
       setPlans(plans);
 
-      //console.log("LOG- Displayed Exercises:", exercises || []);
+      //console.log("LOG- Displayed Exercises:", mappedExercises || []);
       //console.log("LOG- Displayed Routines:", routines || []);
       //console.log("LOG- Displayed Plans:", plans || []);
-      //console.log('Datos cargados:', { exercises, routines, plans });
-
     } catch (error) {
       console.error('Error al cargar datos:', error);
       customToast({message : "Hubo un error al cargar los datos de planes/rutinas/ejercicios", type : "error"});

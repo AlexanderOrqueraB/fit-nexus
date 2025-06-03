@@ -64,7 +64,7 @@ export const mockExercises = [
 		"repeticion": 10,
 		"serie": 3,
 		"peso": 0,
-		"cardioRealizado": false,
+		"cardio": false,
 	},
 	{
 		"id": 2,
@@ -72,7 +72,7 @@ export const mockExercises = [
 		"repeticion": 12,
 		"serie": 4,
 		"peso": 50,
-		"cardioRealizado": false,
+		"cardio": false,
 	},
 	{
 		"id": 3,
@@ -80,7 +80,7 @@ export const mockExercises = [
 		"repeticion": 1,
 		"serie": 1,
 		"peso": 0,
-		"cardioRealizado": true,
+		"cardio": true,
 		},
 	];
 

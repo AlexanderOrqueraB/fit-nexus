@@ -92,6 +92,7 @@ export function PutPlanEntrenamiento ({ open, onClose, planData }) {
                             onChange={handleChange}
                             value={data.nombrePlan || ''}
                             className="col-span-3"
+                            disabled
                         />
                     </div>
                 </div>

@@ -222,7 +222,7 @@ public class EjercicioController {
     public ResponseEntity<String> actualizarEjercicio (@PathVariable String fitNexusId,
             @RequestBody EjercicioDtoRequest ejercicioDtoRequest) {
         
-        log.info("Ejecutando crearEjercicio con este ejercicioDTO: {}", ejercicioDtoRequest);
+        log.info("Ejecutando actualizarEjercicio con este ejercicioDTO: {}", ejercicioDtoRequest);
 
         Optional<Entrenador> entrenadorOptional = entrenadorRepository.findByFitNexusId(UUID.fromString(fitNexusId));
         if (entrenadorOptional.isEmpty()) {
