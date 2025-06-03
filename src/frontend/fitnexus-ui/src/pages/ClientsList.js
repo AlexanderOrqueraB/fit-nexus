@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import {
+  Copy,
   ListFilter,
   RefreshCcwIcon,
 } from "lucide-react";
@@ -240,20 +241,7 @@ export function ClientsList() {
                               >
                                 {client.fitNexusId}
                                 <Button variant="ghost" size="xs" className="p-0">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="h-4 w-4"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M8 16h8M8 12h8m-6 8h6a2 2 0 002-2V6a2 2 0 00-2-2H8a2 2 0 00-2 2v10a2 2 0 002 2z"
-                                    />
-                                  </svg>
+                                  <Copy className="h-4 w-4" /> Copiar
                                 </Button>
                               </div>
                             </TableCell>

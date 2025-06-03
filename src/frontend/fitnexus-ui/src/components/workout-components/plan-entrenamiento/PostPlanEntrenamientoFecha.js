@@ -33,6 +33,15 @@ export function PostPlanEntrenamientoFecha ({ open, onClose, planData }) {
 
     const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
+
+		if (new Date(data.fechaFinal) < new Date(data.fechaInicio)) {
+            customToast({
+                message: "La fecha final no puede ser anterior a la fecha inicial.",
+                type: "error",
+            });
+            return;
+        }
+
         const createdDatePlan = {
 			nombrePlan: data.nombrePlan,
 			fechaInicio: data.fechaInicio,
@@ -97,12 +106,12 @@ export function PostPlanEntrenamientoFecha ({ open, onClose, planData }) {
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="fechaInicial" className="text-right">
-                            Fecha Inicial
+                        <Label htmlFor="fechaInicio" className="text-right">
+                            Fecha Inicio
                         </Label>
                         <Input
-                            id="fechaInicial"
-                            name="fechaInicial"
+                            id="fechaInicio"
+                            name="fechaInicio"
                             type="date"
                             value={data.fechaInicio || ''}
                             onChange={handleChange}

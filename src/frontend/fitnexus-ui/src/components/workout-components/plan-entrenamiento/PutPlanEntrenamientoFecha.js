@@ -105,12 +105,12 @@ export function PutPlanEntrenamientoFecha ({ open, onClose, planData }) {
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="fechaInicial" className="text-right">
+                        <Label htmlFor="fechaInicio" className="text-right">
                             Fecha Inicial
                         </Label>
                         <Input
-                            id="fechaInicial"
-                            name="fechaInicial"
+                            id="fechaInicio"
+                            name="fechaInicio"
                             type="date"
                             value={data.fechaInicio || ''}
                             onChange={handleChange}

@@ -292,7 +292,7 @@ public class EjercicioController {
             log.info("Eliminadas las referencias de la tabla intermedia rutina_ejercicio");
 
             ejercicioRepository.delete(ejercicioByNombre);
-            log.info("Ejercicio eliminado");
+            log.info("Ejercicio {} eliminado", ejercicioByNombre.getNombreEjercicio());
     
             return ResponseEntity.status(HttpStatus.OK).body("Ejercicio borrado correctamente");
 

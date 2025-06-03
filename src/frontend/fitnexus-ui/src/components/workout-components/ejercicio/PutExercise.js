@@ -169,7 +169,7 @@ useEffect(() => {
                         <Label htmlFor="cardioRealizado" className="text-right">
                             Cardio 
                         </Label>
-                        <Select name="cardioRealizado" onValueChange={handleCardioChange}>
+                        <Select name="cardioRealizado" value={data.cardioRealizado} onValueChange={handleCardioChange}>
                             <SelectTrigger className="col-span-3">
                                 <SelectValue placeholder="Selecciona una opción" />
                             </SelectTrigger>

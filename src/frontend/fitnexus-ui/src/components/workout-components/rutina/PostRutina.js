@@ -39,6 +39,15 @@ export function PostRutina() {
 
     const onSubmit = (e) => {
 		e.preventDefault(); //prevent refresh on page
+
+		if (new Date(data.fechaFinal) < new Date(data.fechaInicio)) {
+            customToast({
+                message: "La fecha final no puede ser anterior a la fecha inicial.",
+                type: "error",
+            });
+            return;
+        }
+
 		const newRoutine = {
 			nombreRutina: data.nombreRutina,
 			fechaInicio: data.fechaInicio,
