@@ -79,7 +79,7 @@ export function DeleteListEjerciciosInRutina({ open, onClose, routineData }) {
     };
 
     apiClient
-      .delete(`/api/v1/rutina/ejercicios/${routineData.id}`, { data: updatedRoutine })
+      .delete(`/api/v1/rutinas/rutina/ejercicios/${routineData.id}`, { data: updatedRoutine })
       .then((response) => {
       console.log('Respuesta del servidor: ', response.data);
       console.log('Status: ', response.status);

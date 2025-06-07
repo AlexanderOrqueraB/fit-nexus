@@ -18,7 +18,7 @@ export function PostSetPlanACliente ({ open, onClose, planData }) {
     const [data, setData] = useState({
         nombrePlan: planData?.nombrePlan || '',
         clienteFitNexusId: '',
-      });
+    });
 
     const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -28,7 +28,7 @@ export function PostSetPlanACliente ({ open, onClose, planData }) {
 		});
 	};
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
 		e.preventDefault(); //prevent refresh on page
 		const assignedPlan = {
 			nombrePlan: data.nombrePlan,
@@ -37,29 +37,38 @@ export function PostSetPlanACliente ({ open, onClose, planData }) {
 
 		console.log('Enviando los siguientes datos: ', assignedPlan);
 
-		apiClient
-			.post('/api/v1/planes/plan/asignar-plan', assignedPlan)
-			.then((response) => {
-				console.log('Respuesta del servidor: ', response.data);
-				console.log('Status: ', response.status);
-				if (response.status === 200) {
+        try {
+		    const planResponse = await apiClient
+                .post('/api/v1/planes/plan/asignar-plan', assignedPlan);
+                
+                console.log('Respuesta del servidor: ', planResponse.data);
+				console.log('Status: ', planResponse.status);
+
+                if (planResponse.status === 200) {
                     customToast({message : "Plan asignado correctamente!", type : "success"});
-				}
-                if (response.status === 404) {
-                    customToast({message : "Plan o cliente no encontrado!", type : "error"});
-                }
-                if (response.status === 409) {
-                    customToast({message : "El cliente ya tiene un plan asignado!", type : "error"});
-                }
-                if (response.status === 400) {
-                    customToast({message : "Error al asignar el plan de entrenamiento!", type : "error"});
                 }
                 onClose(); // Cerrar el modal
-			})
-			.catch((error) => {
-                customToast({message : "Error al asignar el plan de entrenamiento!", type : "error"});
-			});
-            //onClose(); // Cerrar el modal después de guardar
+            
+			} catch (error) {
+                if (error.response) {
+                    if (error.response.status === 400) {
+                        customToast({ message: 'Error al asignar el plan de entrenamiento! ', type: 'error' });
+                        console.error('Error al asignar el plan de entrenamiento!', error);
+                    } else if (error.response.status === 404) {
+                        customToast({ message: 'Plan o cliente no encontrado!', type: 'warning' });
+                        console.error('Plan o cliente no encontrado!', error);
+                    }
+                    else if (error.response.status === 409) {
+                        customToast({ message: 'No puedes asignar un plan que ya ha sido asignado a otro cliente!', type: 'warning' });
+                        console.error('No puedes asignar un plan que ya ha sido asignado a otro cliente!', error);
+                    }
+                } else {
+                    console.error('Error al realizar la operación', error);
+                    customToast({ message: 'Error al realizar la operación', type: 'error' });
+                }
+                return null;
+            }
+
 	};
 
     useEffect(() => {

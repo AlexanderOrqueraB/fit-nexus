@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class PlanEntrenamientoAsignarRequest {
+public class PlanEntrenamientoAsignarDesasignarRequest {
 
     private String nombrePlan;
     private String clienteFitNexusId;

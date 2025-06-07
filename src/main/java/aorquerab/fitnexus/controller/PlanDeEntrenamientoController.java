@@ -359,25 +359,30 @@ public class PlanDeEntrenamientoController {
     //TODO: Testear en Postman y React NEW UI
     @PostMapping("/plan/asignar-plan")
     public ResponseEntity<String> asignarPlanACliente(
-        @RequestBody PlanEntrenamientoAsignarRequest planEntrenamientoAsignarRequest) {
-        log.info("Ejecutando asignarPlanACliente con el DTO: {}", planEntrenamientoAsignarRequest);
+        @RequestBody PlanEntrenamientoAsignarDesasignarRequest planEntrenamientoAsignarDesasignarRequest) {
+        log.info("Ejecutando asignarPlanACliente con el DTO: {}", planEntrenamientoAsignarDesasignarRequest);
 
         try {
-            PlanDeEntrenamiento plan = planDeEntrenamientoRepository.findByNombrePlan(planEntrenamientoAsignarRequest.getNombrePlan());
+            PlanDeEntrenamiento plan = planDeEntrenamientoRepository.findByNombrePlan(planEntrenamientoAsignarDesasignarRequest.getNombrePlan());
             if (plan == null) {
-                log.warn("Plan no encontrado con el nombre: {}", planEntrenamientoAsignarRequest.getNombrePlan());
-                throw new PlanDeEntrenamientoNotFoundException("Plan no encontrado con el nombre: " + planEntrenamientoAsignarRequest.getNombrePlan());
+                log.warn("Plan no encontrado con el nombre: {}", planEntrenamientoAsignarDesasignarRequest.getNombrePlan());
+                throw new PlanDeEntrenamientoNotFoundException("Plan no encontrado con el nombre: " + planEntrenamientoAsignarDesasignarRequest.getNombrePlan());
             }
 
-            Cliente cliente = clienteRepository.findByFitNexusId(UUID.fromString(planEntrenamientoAsignarRequest.getClienteFitNexusId()))
+            Cliente cliente = clienteRepository.findByFitNexusId(UUID.fromString(planEntrenamientoAsignarDesasignarRequest.getClienteFitNexusId()))
                     .orElseThrow(() -> {
-                        log.warn("Cliente no encontrado con el fitNexusId: {}", planEntrenamientoAsignarRequest.getClienteFitNexusId());
-                        return new ClienteNotFoundException("Cliente no encontrado con el fitNexusId: " + planEntrenamientoAsignarRequest.getClienteFitNexusId());
+                        log.warn("Cliente no encontrado con el fitNexusId: {}", planEntrenamientoAsignarDesasignarRequest.getClienteFitNexusId());
+                        return new ClienteNotFoundException("Cliente no encontrado con el fitNexusId: " + planEntrenamientoAsignarDesasignarRequest.getClienteFitNexusId());
                     });
 
-            if (cliente.getPlanDeEntrenamiento().stream().anyMatch(p -> p.getNombrePlan().equals(planEntrenamientoAsignarRequest.getNombrePlan()))) {
-                log.warn("El cliente ya tiene el plan asignado con el nombre: {}", planEntrenamientoAsignarRequest.getNombrePlan());
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("El cliente ya tiene el plan asignado con el nombre: " + planEntrenamientoAsignarRequest.getNombrePlan());
+            if (cliente.getPlanDeEntrenamiento().stream().anyMatch(p -> p.getNombrePlan().equals(planEntrenamientoAsignarDesasignarRequest.getNombrePlan()))) {
+                log.warn("El cliente ya tiene el plan asignado con el nombre: {}", planEntrenamientoAsignarDesasignarRequest.getNombrePlan());
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("El cliente ya tiene el plan asignado con el nombre: " + planEntrenamientoAsignarDesasignarRequest.getNombrePlan());
+            }
+
+            if (plan.getCliente() != null) {
+                log.warn("El plan ya está asignado a otro cliente: {}", plan.getCliente().getNombre());
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("El plan ya está asignado a otro cliente: " + plan.getCliente().getNombre());
             }
 
             //Usamos la tabla intermedia para asignar el plan al cliente
@@ -397,4 +402,41 @@ public class PlanDeEntrenamientoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al asignar el plan al cliente");
         }
     }
+
+    @PostMapping("/plan/desasignar-plan")
+    public ResponseEntity<String> desasignarPlanDeCliente(
+            @RequestBody PlanEntrenamientoAsignarDesasignarRequest planEntrenamientoDesasignarRequest) {
+        log.info("Ejecutando desasignarPlanDeCliente con el DTO: {}", planEntrenamientoDesasignarRequest);
+
+        try {
+            PlanDeEntrenamiento plan = planDeEntrenamientoRepository.findByNombrePlan(planEntrenamientoDesasignarRequest.getNombrePlan());
+            if (plan == null) {
+                log.warn("Plan no encontrado con el nombre: {}", planEntrenamientoDesasignarRequest.getNombrePlan());
+                throw new PlanDeEntrenamientoNotFoundException("Plan no encontrado con el nombre: " + planEntrenamientoDesasignarRequest.getNombrePlan());
+            }
+
+            Cliente cliente = clienteRepository.findByFitNexusId(UUID.fromString(planEntrenamientoDesasignarRequest.getClienteFitNexusId()))
+                    .orElseThrow(() -> {
+                        log.warn("Cliente no encontrado con el fitNexusId: {}", planEntrenamientoDesasignarRequest.getClienteFitNexusId());
+                        return new ClienteNotFoundException("Cliente no encontrado con el fitNexusId: " + planEntrenamientoDesasignarRequest.getClienteFitNexusId());
+                    });
+
+            if (!cliente.getPlanDeEntrenamiento().contains(plan)) {
+                log.warn("El cliente no tiene asignado el plan con el nombre: {}", planEntrenamientoDesasignarRequest.getNombrePlan());
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("El cliente no tiene asignado el plan con el nombre: " + planEntrenamientoDesasignarRequest.getNombrePlan());
+            }
+
+            //Usamos la tabla intermedia para desasignar el plan del cliente
+            log.info("Eliminando la relación entre el cliente [{}] y el plan [{}]", cliente.getNombre(), plan.getNombrePlan());
+            cliente.getPlanDeEntrenamiento().remove(plan);
+            plan.setCliente(null);
+
+            clienteRepository.save(cliente);
+            return ResponseEntity.status(HttpStatus.OK).body("Plan desasignado correctamente del cliente");
+
+        } catch (Exception e) {
+            log.error("Error al desasignar el plan del cliente", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al desasignar el plan del cliente");
+            }
+        }
 }

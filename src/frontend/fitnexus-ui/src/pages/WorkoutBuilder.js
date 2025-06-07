@@ -5,7 +5,7 @@ import PostExercise from '../components/workout-components/ejercicio/PostExercis
 import PutExercise from '../components/workout-components/ejercicio/PutExercise';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components_ui/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components_ui/ui/tabs';
-import { Calendar, CalendarDays, CircleMinusIcon, CirclePlusIcon, Edit, RefreshCwIcon, Trash2Icon, UserRoundPlus } from 'lucide-react';
+import { Calendar, CalendarDays, CircleMinusIcon, CirclePlusIcon, Edit, RefreshCwIcon, Trash2Icon, UserRoundMinus, UserRoundPlus } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components_ui/ui/card';
 import { fetchWorkoutData } from '../utils/api';
 import PostRutina from '../components/workout-components/rutina/PostRutina';
@@ -17,7 +17,6 @@ import DeleteModalExercisePost from '../components/workout-components/ejercicio/
 import PutRutina from '../components/workout-components/rutina/PutRutina';
 import DeleteModalRoutinePost from '../components/workout-components/rutina/DeleteModalRoutinePost';
 import DeleteListEjerciciosInRutina from '../components/workout-components/rutina/DeleteListEjerciciosInRutina';
-import PutPlanEntrenamiento from '../components/workout-components/plan-entrenamiento/PutPlanEntrenamiento';
 import DeleteModalPlanPost from '../components/workout-components/plan-entrenamiento/DeleteModalPlanPost';
 import PutListRoutinesInPlan from '../components/workout-components/plan-entrenamiento/PutListRoutinesInPlan';
 import DeleteListRoutinesInPlan from '../components/workout-components/plan-entrenamiento/DeleteListRoutinesInPlan';
@@ -33,6 +32,7 @@ import {   DropdownMenu,
     ListFilter,
   } from "lucide-react";
 import { PostSetPlanACliente } from '../components/workout-components/plan-entrenamiento/PostSetPlanACliente';
+import { PostUnSetPlanACliente } from '../components/workout-components/plan-entrenamiento/PostUnSetPlanACliente';
 
 const deleteMessage = "deleteMessage"
 const deleteTitle = "¡¡ Esta acción NO se puede revertir !!"
@@ -68,7 +68,8 @@ export function WorkoutBuilder() {
   const [isRemoveRoutineFromPlanOpen, setIsRemoveRoutineFromPlanOpen] = useState(false);
   const [isAddDateOpen, setIsAddDateOpen] = useState(false);
   const [isEditDateOpen, setIsEditDateOpen] = useState(false);
-  const [isSetPlanToClientOpen, setIsSetPlanToClientOpen] = useState(false);	
+  const [isSetPlanToClientOpen, setIsSetPlanToClientOpen] = useState(false);
+  const [isUnSetPlanToClientOpen, setIsUnSetPlanToClientOpen] = useState(false);
 
   const [visibleColumns, setVisibleColumns] = useState([
     "nombrePlan",
@@ -77,7 +78,7 @@ export function WorkoutBuilder() {
     "fecha Final",
     "rutinas",
     "Asignar",
-    "Editar",
+    "Desasignar",
     "Añadir fechas",
     "Cambiar fechas",
     "Añadir",
@@ -123,9 +124,7 @@ export function WorkoutBuilder() {
       setSelectedExercise(item);
     } else if (type === 'routine') {
       setSelectedRoutine(item);
-    } else if (type === 'plan') {
-      setSelectedPlan(item);
-    }
+    } 
     setIsEditOpen(true);
     setIsDeleteOpen(false);
   };
@@ -181,6 +180,11 @@ export function WorkoutBuilder() {
     setSelectedPlan(plan);
     setIsSetPlanToClientOpen(true);
   }
+  const handleUnSetPlanToClient = (plan) => {
+    console.log("Selected Plan:", plan);
+    setSelectedPlan(plan);
+    setIsUnSetPlanToClientOpen(true);
+  }
   
   return (
     <React.Fragment>
@@ -223,7 +227,7 @@ export function WorkoutBuilder() {
                         "fecha Final",
                         "rutinas",
                         "Asignar",
-                        "Editar",
+                        "Desasignar",
                         "Añadir fechas",
                         "Cambiar fechas",
                         "Añadir",
@@ -285,8 +289,8 @@ export function WorkoutBuilder() {
                             {visibleColumns.includes("Asignar") && (
                             <TableHead className="hidden md:table-cell">Asignar</TableHead>
                           )}
-                            {visibleColumns.includes("Editar") && (
-                            <TableHead className="hidden md:table-cell">Editar</TableHead>
+                            {visibleColumns.includes("Desasignar") && (
+                            <TableHead className="hidden md:table-cell">Desasignar</TableHead>
                           )}
                             {visibleColumns.includes("Añadir fechas") && (
                             <TableHead className="hidden md:table-cell">Añadir fechas</TableHead>
@@ -342,14 +346,14 @@ export function WorkoutBuilder() {
                                 </Button>
                               </TableCell>
                               )}
-                              {visibleColumns.includes("Editar") && (
+                              {visibleColumns.includes("Desasignar") && (
                               <TableCell>
                                 <Button 
                                     aria-haspopup="true"
                                     size="icon"
                                     variant="ghost"
-                                    onClick={() => handleEditClick(plan, 'plan')}>
-                                  <Edit/>
+                                    onClick={() => handleUnSetPlanToClient(plan, 'plan')}>
+                                  <UserRoundMinus/>
                                 </Button>
                               </TableCell>
                               )}
@@ -412,19 +416,21 @@ export function WorkoutBuilder() {
                           ))}
                         </TableBody>
                       </Table>
-                      {isEditOpen && (
-                        <PutPlanEntrenamiento
-                          open={isEditOpen}
-                          onClose={() => setIsEditOpen(false)}
-                          planData={selectedPlan}
-                        />
-                      )}
                       {isSetPlanToClientOpen && (
                         <PostSetPlanACliente
                           open={isSetPlanToClientOpen}
                           onClose={() => setIsSetPlanToClientOpen(false)}
                           planData={selectedPlan}
                         />
+                      )}
+                      {isUnSetPlanToClientOpen && (
+                        <PostUnSetPlanACliente
+                          title = {deleteTitle}
+                          description = "Pulsa Eliminar para confirmar la acción de Desasignar, Cancelar para salir"
+                          open={isUnSetPlanToClientOpen}
+                          onClose={() => setIsUnSetPlanToClientOpen(false)}
+                          planData={selectedPlan}
+                          />
                       )}
                       {isAddDateOpen && (
                         <PostPlanEntrenamientoFecha
