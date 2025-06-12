@@ -31,7 +31,7 @@ export function PutPlanEntrenamientoFecha ({ open, onClose, planData }) {
 		});
 	};
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
 		e.preventDefault(); //prevent refresh on page
 
         if (new Date(data.fechaFinal) < new Date(data.fechaInicio)) {
@@ -49,24 +49,33 @@ export function PutPlanEntrenamientoFecha ({ open, onClose, planData }) {
 		};
 
 		console.log('Enviando los siguientes datos: ', updatedPlan);
-		apiClient
-			.put('/api/v1/planes/plan/fecha', updatedPlan)
-			.then((response) => {
-				console.log('Respuesta del servidor: ', response.data);
-				console.log('Status: ', response.status);
-				if (response.status === 200) {
-                    customToast({message : "Fecha del plan actualizada correctamente!", type : "success"});
-				}
-                if (response.status === 404) {
+
+        try {
+            const response = await apiClient
+                .put('/api/v1/planes/plan/fecha', updatedPlan);
+
+            console.log('Respuesta del servidor: ', response.data);
+            console.log('Status: ', response.status);
+
+            if (response.status === 200) {
+                customToast({message : "Fecha del plan actualizada correctamente!", type : "success"});
+            }
+            onClose(); // Close the modal
+        } catch (error) {
+            if (error.response) {
+                if (error.response.status === 404) {
                     customToast({message : "Plan de entrenamiento no encontrado!", type : "warning"});
-				}
-                if (response.status === 400) {
-                    customToast({message : "Error al actualizar la fecha del plan de entrenamiento!", type : "error"});
-				}
-			})
-			.catch((error) => {
-                customToast({message : "Error al actualizar la fecha del plan de entrenamiento!", type : "error"});
-			});
+                }
+                if (error.response.status === 400) {
+                    customToast({message : "Error al actualizar la fecha al plan de entrenamiento!", type : "error"});
+                }
+                onClose(); // Close the modal
+            } else {
+                    console.error('Error al realizar la operación', error);
+                    customToast({ message: 'Error al realizar la operación', type: 'error' });
+                }
+                return null;
+        }
 	};
 
     useEffect(() => {

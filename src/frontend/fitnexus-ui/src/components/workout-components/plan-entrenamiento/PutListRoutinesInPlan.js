@@ -22,7 +22,7 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
   const { fitNexusId } = user; // Desestructurar el objeto user
   
   const [data, setData] = useState({
-  nombreRutina: planData?.nombreRutina || '',
+  nombrePlan: planData?.nombrePlan || '',
   rutinasSeleccionadas: planData?.rutinas?.map((e) => e.id) || [],
   });
 
@@ -51,14 +51,14 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
   }, [planData]);
 
   const handleCheckboxChange = (routineId, isChecked) => {
-    console.log('Checkbox change:', routineId, isChecked); // Log the exercise id and checked status
+    console.log('Checkbox change:', routineId, isChecked); 
 
     setData((prev) => {
       const updatedRutinas = isChecked
         ? [...prev.rutinasSeleccionadas, routineId]
         : prev.rutinasSeleccionadas.filter((id) => id !== routineId);
         
-      console.log('Updated rutinasSeleccionadas:', updatedRutinas); // Log the updated list of selected exercises
+      console.log('Updated rutinasSeleccionadas:', updatedRutinas);
 
       return {
         ...prev,
@@ -67,7 +67,7 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
     });
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault(); // prevent page refresh
     const rutinasSeleccionadas = availableRoutines.filter(routine => 
         data.rutinasSeleccionadas.includes(routine.id)
@@ -84,14 +84,18 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
 
     console.log('Enviando los siguientes datos: ', updatedPlan);
 
-    apiClient
-        .put(`/api/v1/planes/plan/rutinas/${planData.id}`, updatedPlan)
-        .then((response) => {
-        console.log('Respuesta del servidor: ', response.data);
-        console.log('Status: ', response.status);
-        if (response.status === 200) {
-          customToast({ message: "Plan actualizado correctamente!", type: "success" });
-        }
+    try {
+      const response = await apiClient
+        .put(`/api/v1/planes/plan/rutinas/${planData.id}`, updatedPlan);
+
+      console.log('Respuesta del servidor: ', response.data);
+      console.log('Status: ', response.status);
+      if (response.status === 200) {
+        customToast({ message: "Plan actualizado correctamente!", type: "success" });
+      }
+      onClose(); // Close the modal
+    } catch (error) {
+      if (error.response) {
         if (response.status === 404) {
           customToast({ message: "Plan de entrenamiento no encontrado!", type: "warning" });
         }
@@ -99,11 +103,12 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
           customToast({ message: "Runtime exception from @Transactional!", type: "error" });
         }
         onClose(); // Close the modal
-      })
-      .catch((error) => {
-        customToast({ message: "Error al añadir rutinas!", type: "error" });
-        console.error('Error en la petición: ', error);
-      });
+      } else {
+              console.error('Error al realizar la operación', error);
+              customToast({ message: 'Error al realizar la operación', type: 'error' });
+          }
+          return null;
+    }
   };
 
   return (

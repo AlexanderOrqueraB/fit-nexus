@@ -58,7 +58,9 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
       const updatedEjercicios = isChecked
         ? [...prev.ejerciciosSeleccionados, exerciseId]
         : prev.ejerciciosSeleccionados.filter((id) => id !== exerciseId);
-        
+      
+      console.log('Updated ejerciciosSeleccionados:', updatedEjercicios); 
+      
       return {
         ...prev,
         ejerciciosSeleccionados: updatedEjercicios,
@@ -66,7 +68,7 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
     });
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault(); // prevent page refresh
     const ejerciciosSeleccionados = availableExercises.filter(exercise => 
         data.ejerciciosSeleccionados.includes(exercise.id)
@@ -83,14 +85,17 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
 
     console.log('Enviando los siguientes datos: ', updatedRoutine);
 
-    apiClient
-        .put(`/api/v1/rutinas/rutina/ejercicios/${routineData.id}`, updatedRoutine)
-        .then((response) => {
-        console.log('Respuesta del servidor: ', response.data);
-        console.log('Status: ', response.status);
-        if (response.status === 200) {
-          customToast({ message: "Rutina actualizada correctamente!", type: "success" });
-        }
+    try {
+      const response = await apiClient
+        .put(`/api/v1/rutinas/rutina/ejercicios/${routineData.id}`, updatedRoutine);
+      console.log('Respuesta del servidor: ', response.data);
+      console.log('Status: ', response.status);
+      if (response.status === 200) {
+        customToast({ message: "Rutina actualizada correctamente!", type: "success" });
+      }
+      onClose(); // Close the modal
+    } catch (error) {
+      if (error.response) {
         if (response.status === 404) {
           customToast({ message: "Rutina no encontrada!", type: "warning" });
         }
@@ -98,11 +103,13 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
           customToast({ message: "Runtime exception from @Transactional!", type: "error" });
         }
         onClose(); // Close the modal
-      })
-      .catch((error) => {
-        customToast({ message: "Error al añadir ejercicios!", type: "error" });
-        console.error('Error en la petición: ', error);
-      });
+      } else {
+              console.error('Error al realizar la operación', error);
+              customToast({ message: 'Error al realizar la operación', type: 'error' });
+          }
+          return null;
+    }
+  
   };
 
   return (

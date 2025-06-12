@@ -494,7 +494,7 @@ export function WorkoutBuilder() {
                             <TableHead>Fecha Inicio</TableHead>
                             <TableHead className="hidden md:table-cell">Fecha Final</TableHead>
                             <TableHead className="hidden md:table-cell">Ejercicios</TableHead>
-                            <TableHead className="hidden md:table-cell">Editar</TableHead>
+                            <TableHead className="hidden md:table-cell">Editar fecha</TableHead>
                             <TableHead className="hidden md:table-cell">Añadir</TableHead>
                             <TableHead className="hidden md:table-cell">Quitar</TableHead>
                             <TableHead className="hidden md:table-cell">Eliminar</TableHead>
