@@ -18,7 +18,7 @@ import { GUARDAR_MENSAJE } from '../../../utils/env';
 import { fetchWorkoutData } from '../../../utils/api';
 import { UserContext } from '../../global/UserContext';
 
-export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
+export function PutListEjerciciosInRutina({ open, onClose, routineData }) {
 
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
   const { fitNexusId } = user; // Desestructurar el objeto user
@@ -96,10 +96,10 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
       onClose(); // Close the modal
     } catch (error) {
       if (error.response) {
-        if (response.status === 404) {
+        if (error.response.status === 404) {
           customToast({ message: "Rutina no encontrada!", type: "warning" });
         }
-        if (response.status === 500) {
+        if (error.response.status === 500) {
           customToast({ message: "Runtime exception from @Transactional!", type: "error" });
         }
         onClose(); // Close the modal
@@ -170,4 +170,4 @@ export function PostListEjerciciosInRutina({ open, onClose, routineData }) {
   
 }
 
-export default PostListEjerciciosInRutina;
+export default PutListEjerciciosInRutina;

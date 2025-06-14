@@ -292,7 +292,7 @@ public class PlanDeEntrenamientoController {
                     rutinaId -> planRutinaRepository.addRutinaToPlan(idPlan,rutinaId)
             );
 
-            return ResponseEntity.status(HttpStatus.OK).body("Rutinas añadidas correctamente al plan de entrenamiento");
+        return ResponseEntity.status(HttpStatus.OK).body("Rutinas añadidas correctamente al plan de entrenamiento");
 
         } catch (RuntimeException e) {
             log.warn("Error al intentar añadir una rutina al plan de entrenamiento", e);

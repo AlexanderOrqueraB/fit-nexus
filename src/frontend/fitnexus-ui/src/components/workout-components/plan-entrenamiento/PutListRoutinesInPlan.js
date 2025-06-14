@@ -16,7 +16,7 @@ import { GUARDAR_MENSAJE } from '../../../utils/env';
 import { UserContext } from '../../global/UserContext';
 import { fetchWorkoutData } from '../../../utils/api';
 
-export function PostListRoutinesInPlan({ open, onClose, planData }) {
+export function PutListRoutinesInPlan({ open, onClose, planData }) {
 
   const { user } = useContext(UserContext); // Obtener el usuario del contexto (UserContext.js)
   const { fitNexusId } = user; // Desestructurar el objeto user
@@ -79,7 +79,7 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
     }));
 
     const updatedPlan = {
-    ejercicios: rutinasDTO,  // Lista de RUTINAS con id y nombre
+    rutinas: rutinasDTO,  // Lista de RUTINAS con id y nombre
     };
 
     console.log('Enviando los siguientes datos: ', updatedPlan);
@@ -96,10 +96,10 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
       onClose(); // Close the modal
     } catch (error) {
       if (error.response) {
-        if (response.status === 404) {
+        if (error.response.status === 404) {
           customToast({ message: "Plan de entrenamiento no encontrado!", type: "warning" });
         }
-        if (response.status === 500) {
+        if (error.response.status === 500) {
           customToast({ message: "Runtime exception from @Transactional!", type: "error" });
         }
         onClose(); // Close the modal
@@ -169,4 +169,4 @@ export function PostListRoutinesInPlan({ open, onClose, planData }) {
   
 }
 
-export default PostListRoutinesInPlan;
+export default PutListRoutinesInPlan;

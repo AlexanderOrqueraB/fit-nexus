@@ -347,7 +347,7 @@ public class RutinaController {
                     ejercicioId -> rutinaEjercicioRepository.addEjercicioToRutina(idRutina,ejercicioId)
             );
 
-            return ResponseEntity.status(HttpStatus.OK).body("Ejercicios añadidos correctamente a la rutina");
+        return ResponseEntity.status(HttpStatus.OK).body("Ejercicios añadidos correctamente a la rutina");
 
         } catch (RuntimeException e) {
             log.warn("Error al intentar añadir un ejercicio a la rutina", e);
