@@ -241,7 +241,7 @@ VALUES
     (14, 'Sentadillas', 5, 3, NULL, FALSE, 4, 1), -- Ejercicio de Obi-Wan
     (15, 'Burpees', 10, 3, NULL, TRUE, 4, 1), -- Ejercicio de Obi-Wan
     (16, 'Remo con barra', 5, 3, NULL, FALSE, 4, 1), -- Ejercicio de Obi-Wan
-    (17, 'Zancadas', 10, 3, NULL, FALSE, 4, 1); -- Ejercicio de Obi-Wan
+    (17, 'ZancadasNoImage', 10, 3, NULL, FALSE, 4, 1); -- Ejercicio de Obi-Wan
 
 -- Link Rutinas to Planes
 INSERT INTO plan_de_entrenamiento_rutina (plan_de_entrenamiento_id, rutina_id)

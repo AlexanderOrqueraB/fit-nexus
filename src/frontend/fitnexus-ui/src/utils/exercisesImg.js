@@ -12,7 +12,6 @@ export const exerciseImages  = {
       description: "Imagen no encontrada",
     },
 
-    //new images (not tested yet)
     "press banca": {
       image: "/assets/images/pressbanca.webp",
       description: "Baja hasta la parte inferior del pecho y empuja hacia arriba. Agarra la barra con las manos un poco más anchas que el ancho de los hombros.",

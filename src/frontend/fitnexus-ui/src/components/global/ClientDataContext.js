@@ -11,7 +11,7 @@ export const ClientDataProvider = ({ children }) => {
   const [error] = useState(null);
 
   const { user } = useContext(UserContext);
-  const { role } = user; // Desestructurar el objeto user
+  const role = user?.role || null;
 
   const fetchClientDataOnce = async (fitNexusId) => {
     if (role !== "ADMIN") {

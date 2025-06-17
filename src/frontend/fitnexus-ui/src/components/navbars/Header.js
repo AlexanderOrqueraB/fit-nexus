@@ -50,7 +50,7 @@ const Header = ({ isAdmin }) => {
 		console.log ("userEmail después del logout: ", localStorage.getItem("userEmail"));
 		console.log ("fitNexusId después del logout: ", localStorage.getItem("fitNexusId"));
 	
-		navigate('/');
+		navigate('/logout');
 	  };
 
 	const location = useLocation(); // Get the current location

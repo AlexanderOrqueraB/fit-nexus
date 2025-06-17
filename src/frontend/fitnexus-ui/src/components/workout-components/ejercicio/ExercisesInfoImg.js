@@ -18,9 +18,9 @@ export function ExercisesInfoImg ({exercise}) {
   };
 
   const normalizedName = normalizeName(nombreEjercicio);
-  const exerciseData = exerciseImages[normalizedName] || exerciseImages.notFound.image;
+  const exerciseData = exerciseImages[normalizedName] || exerciseImages.notFound;
 
-  if (!exerciseData) {
+  if (!exerciseData || !exerciseData.image) {
     return (
       <div className="text-center">
         <Card>
