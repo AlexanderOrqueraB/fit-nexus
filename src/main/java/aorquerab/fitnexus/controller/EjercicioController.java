@@ -113,7 +113,7 @@ public class EjercicioController {
     //TODO: Testear en Postman y React NEW UI
     @GetMapping("/ejercicio/usuario/{fitNexusId}")
     public ResponseEntity<List<EjercicioGetDTO>> obtenerEjerciciosPorFitNexusId(@PathVariable String fitNexusId) {
-        log.info("Ejecutando obtenerEjerciciosPorFitNexusId con el FitNexusId: {} ...", fitNexusId);
+        log.info("Ejecutando obtenerEjerciciosPorFitNexusId con el FitNexusId: {}", fitNexusId);
         try {
             List<Ejercicio> ejercicios = Collections.emptyList();
             Optional<Cliente> clienteOptional = clienteRepository.findByFitNexusId(UUID.fromString(fitNexusId));

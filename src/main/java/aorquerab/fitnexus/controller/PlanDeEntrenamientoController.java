@@ -1,5 +1,6 @@
 package aorquerab.fitnexus.controller;
 
+import aorquerab.fitnexus.model.componenteEntrenamiento.Ejercicio;
 import aorquerab.fitnexus.model.componenteEntrenamiento.PlanDeEntrenamiento;
 import aorquerab.fitnexus.model.componenteEntrenamiento.Rutina;
 import aorquerab.fitnexus.model.dtos.componenteEntrenamientoDTO.postman.*;
@@ -375,11 +376,13 @@ public class PlanDeEntrenamientoController {
                         return new ClienteNotFoundException("Cliente no encontrado con el fitNexusId: " + planEntrenamientoAsignarDesasignarRequest.getClienteFitNexusId());
                     });
 
+            // Verificamos si el cliente ya tiene asignado el plan
             if (cliente.getPlanDeEntrenamiento().stream().anyMatch(p -> p.getNombrePlan().equals(planEntrenamientoAsignarDesasignarRequest.getNombrePlan()))) {
                 log.warn("El cliente ya tiene el plan asignado con el nombre: {}", planEntrenamientoAsignarDesasignarRequest.getNombrePlan());
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("El cliente ya tiene el plan asignado con el nombre: " + planEntrenamientoAsignarDesasignarRequest.getNombrePlan());
             }
 
+            // Verificamos si el plan ya está asignado a otro cliente
             if (plan.getCliente() != null) {
                 log.warn("El plan ya está asignado a otro cliente: {}", plan.getCliente().getNombre());
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("El plan ya está asignado a otro cliente: " + plan.getCliente().getNombre());
@@ -392,7 +395,17 @@ public class PlanDeEntrenamientoController {
             log.info("Añadiendo el plan [{}] usando de forma directa la tabla intermedia con cliente.getPlanDeEntrenamiento().add(plan)", plan);
             cliente.getPlanDeEntrenamiento().add(plan);
 
-            //TODO: Find a way to set rutinas and ejercicios for Cliente so we can retrieve that info and show them in Workout.js
+            // Propagamos a cliente_rutina y cliente_ejercicio
+            for (Rutina rutina : plan.getRutinas()) {
+            log.info("Asignando rutina [{}] al cliente [{}]", rutina.getNombreRutina(), cliente.getNombre());
+            cliente.getRutinas().add(rutina);
+
+            for (Ejercicio ejercicio : rutina.getEjercicios()) {
+                    log.info("Asignando ejercicio [{}] al cliente [{}]", ejercicio.getNombreEjercicio(), cliente.getNombre());
+                    cliente.getEjercicios().add(ejercicio);
+                }
+            }
+
             clienteRepository.save(cliente);
 
             return ResponseEntity.status(HttpStatus.OK).body("Plan asignado correctamente al cliente");
@@ -424,6 +437,17 @@ public class PlanDeEntrenamientoController {
             if (!cliente.getPlanDeEntrenamiento().contains(plan)) {
                 log.warn("El cliente no tiene asignado el plan con el nombre: {}", planEntrenamientoDesasignarRequest.getNombrePlan());
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("El cliente no tiene asignado el plan con el nombre: " + planEntrenamientoDesasignarRequest.getNombrePlan());
+            }
+
+            // Eliminamos las rutinas y ejercicios asociados al plan del cliente
+            for (Rutina rutina : plan.getRutinas()) {
+            log.info("Eliminando rutina [{}] del cliente [{}]", rutina.getNombreRutina(), cliente.getNombre());
+            cliente.getRutinas().remove(rutina);
+
+            for (Ejercicio ejercicio : rutina.getEjercicios()) {
+                    log.info("Eliminando ejercicio [{}] del cliente [{}]", ejercicio.getNombreEjercicio(), cliente.getNombre());
+                    cliente.getEjercicios().remove(ejercicio);
+                }
             }
 
             //Usamos la tabla intermedia para desasignar el plan del cliente
