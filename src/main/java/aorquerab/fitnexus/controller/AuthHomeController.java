@@ -289,7 +289,7 @@ public class AuthHomeController {
                 if(!datosUsuarioDTO.getApellido().isEmpty())
                     cliente.setApellido(datosUsuarioDTO.getApellido());
 
-                if(datosUsuarioDTO.getEmail().isEmpty())
+                if(!datosUsuarioDTO.getEmail().isEmpty())
                     cliente.setEmail(datosUsuarioDTO.getEmail());
 
                 log.info("Cliente actualizado tras el mappeo: {}", cliente);

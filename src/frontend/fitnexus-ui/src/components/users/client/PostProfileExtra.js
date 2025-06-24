@@ -142,28 +142,28 @@ export function PostProfileExtra() {
                 Frecuencia Ejercicio
               </Label>
               <Select name="frecuenciaEjercicioSemanal" 
-							onValueChange={(value) => setData({ ...data, frecuenciaEjercicioSemanal: value})}>
-								<SelectTrigger className="col-span-3">
-									<SelectValue placeholder="Selecciona una opción" />
-								</SelectTrigger>
-								<SelectContent>
-										<SelectItem  value="POCO_NADA" required>
-											Poco o nada (xdiasxsemana)
-										</SelectItem>
-										<SelectItem  value="LIGERO" required>
-											Ligero (xdiasxsemana)
-										</SelectItem>
-                    <SelectItem  value="MODERADO" required>
-											Moderado (xdiasxsemana)
-										</SelectItem>
-                    <SelectItem  value="FUERTE" required>
-											Fuerte (xdiasxsemana)
-										</SelectItem>
-                    <SelectItem  value="MUY_FUERTE" required>
-											Muy fuerte (xdiasxsemana)
-										</SelectItem>
-								</SelectContent>
-							</Select>
+                onValueChange={(value) => setData({ ...data, frecuenciaEjercicioSemanal: value})}>
+                    <SelectTrigger className="col-span-3">
+                        <SelectValue placeholder="Selecciona una opción" />
+                    </SelectTrigger>
+                    <SelectContent>
+                            <SelectItem  value="POCO_NADA" required>
+                                Poco o nada
+                            </SelectItem>
+                            <SelectItem  value="LIGERO" required>
+                                Ligero (1-3 días a la semana)
+                            </SelectItem>
+                        <SelectItem  value="MODERADO" required>
+                                Moderado (3-5 días a la semana)
+                            </SelectItem>
+                        <SelectItem  value="FUERTE" required>
+                                Fuerte (6-7 días a la semana)
+                            </SelectItem>
+                        <SelectItem  value="MUY_FUERTE" required>
+                                Muy fuerte (2 veces al día)
+                            </SelectItem>
+                    </SelectContent>
+                </Select>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="edad" className="text-right">
