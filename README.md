@@ -1,6 +1,7 @@
 # FitNexus
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
+[![License Apache2](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 A web application Fitness training tool that will be the Nexus between trainers and their clients
 
